@@ -3,6 +3,7 @@ package com.eai.idss.util;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,6 +131,24 @@ public class IDSSUtil {
 		return daysMap;
 	}
 	
+	public static Map<String, List<String>> getPastAndFutureDaysMap() {
+		LocalDateTime currentTime = LocalDateTime.now();
+		String date30DaysBack = currentTime.minusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String date90DaysBack = currentTime.minusDays(90).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String date120DaysBack = currentTime.minusDays(120).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		
+		String date30Days = currentTime.plusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String date90Days = currentTime.plusDays(90).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String date120Days = currentTime.plusDays(120).format(DateTimeFormatter.ISO_LOCAL_DATE);
+
+		Map<String,List<String>> daysMap = new LinkedHashMap<String, List<String>>();
+		
+		daysMap.put("_30Days", Arrays.asList(date30DaysBack, date30Days));
+		daysMap.put("_90Days", Arrays.asList(date90DaysBack, date90Days));
+		daysMap.put("_120Days",Arrays.asList(date120DaysBack,date120Days));
+		return daysMap;
+	}
+	
 	public static Map<String, String> getPastDaysMapForLegal() {
 		LocalDateTime currentTime = LocalDateTime.now();
 		String date30DaysBack = currentTime.minusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -248,6 +267,50 @@ public class IDSSUtil {
 		days.add(date5DaysBack);
 		days.add(date15DaysBack);
 		daysMap.put("_5-15Days",days);
+		
+		days = new ArrayList<String>();
+		days.add(date15DaysBack);
+		days.add(date30DaysBack);
+		daysMap.put("_15-30Days",days);
+
+		days = new ArrayList<String>();
+		days.add(date30DaysBack);
+		days.add("1970-01-01");
+		daysMap.put("_30-allDays",days);
+		
+		days = new ArrayList<String>();
+		days.add(date90DaysBack);
+		days.add("1970-01-01");
+		daysMap.put("_90-allDays",days);
+		
+		days = new ArrayList<String>();
+		days.add(date120DaysBack);
+		days.add("1970-01-01");
+		daysMap.put("_120-allDays",days);
+		
+		return daysMap;
+	}
+	
+	public static Map<String, List<String>> getDaysMapForVisits() {
+		LocalDateTime currentTime = LocalDateTime.now();
+		String dateToday = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String date7DaysBack = currentTime.minusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String date15DaysBack = currentTime.minusDays(15).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String date30DaysBack = currentTime.minusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String date90DaysBack = currentTime.minusDays(90).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String date120DaysBack = currentTime.minusDays(120).format(DateTimeFormatter.ISO_LOCAL_DATE);
+
+		Map<String,List<String>> daysMap = new LinkedHashMap<String, List<String>>();
+		List<String> days = new ArrayList<String>();
+		
+		days.add(dateToday);
+		days.add(date7DaysBack);
+		daysMap.put("_0-7Days",days);
+		
+		days = new ArrayList<String>();
+		days.add(date7DaysBack);
+		days.add(date15DaysBack);
+		daysMap.put("_7-15Days",days);
 		
 		days = new ArrayList<String>();
 		days.add(date15DaysBack);

@@ -20,7 +20,7 @@ public interface LegalDao {
 	
 	public Map<String,Map<String,List<TileVo>>> getBySubRegionLegalData(String region,LegalFilter cf);
 	
-	public Map<String,List<TileVo>> getByTeamLegalData(LegalFilter cf);
+	public Map<String,List<TileVo>> getByTeamLegalData(LegalFilter cf,String region);
 	
 	public List<Legal> getLegalPaginatedRecords(LegalDetailsRequest cdr, Pageable pageable);
 }

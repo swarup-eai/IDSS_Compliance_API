@@ -246,7 +246,7 @@ public class LegalDaoImpl implements LegalDao {
             Map<String,Map<String,List<TileVo>>> byRegionMap = new LinkedHashMap<String, Map<String,List<TileVo>>>(); 
             
             for(String days : daysMap.keySet()) {
-            	logger.info("getByRegionConcentData : "+days);
+            	logger.info("getByRegionLegalData : "+days);
             	Map<String,List<TileVo>> regionConcentMap = IDSSUtil.getRegionMap();
 	            List<? extends Bson> pipeline = getByRegionLegalPipeline(days,cf);
 	            
@@ -409,7 +409,7 @@ public class LegalDaoImpl implements LegalDao {
 		return pipeline;
 	}
 	
-	public Map<String,List<TileVo>> getByTeamLegalData(LegalFilter cf){
+	public Map<String,List<TileVo>> getByTeamLegalData(LegalFilter cf,String region){
 		try {
 			logger.info("getByTeamLegalData");
 			Map<String, List<String>> daysMap = IDSSUtil.getDaysMapForLegal();
@@ -421,7 +421,7 @@ public class LegalDaoImpl implements LegalDao {
             
             for(String days : daysMap.keySet()) {
             	logger.info("getByTeamLegalData : "+days);
-	            List<? extends Bson> pipeline = getByTeamLegalPipeline(daysMap.get(days),cf);
+	            List<? extends Bson> pipeline = getByTeamLegalPipeline(daysMap.get(days),cf,region);
 	            
 	            collection.aggregate(pipeline)
 	                    .allowDiskUse(false)
@@ -456,7 +456,7 @@ public class LegalDaoImpl implements LegalDao {
 		return null;
 	}
 	
-	private List<? extends Bson> getByTeamLegalPipeline(List<String> days,LegalFilter cf) throws ParseException {
+	private List<? extends Bson> getByTeamLegalPipeline(List<String> days,LegalFilter cf,String region) throws ParseException {
 		
 		Document matchDoc = new Document();
 		
@@ -464,6 +464,7 @@ public class LegalDaoImpl implements LegalDao {
 							.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
 							.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))
 						);
+		matchDoc.append("region",region);
 		
 		if(null!=cf && null!=cf.getPendingByTeamCategoryList() ) 
 			matchDoc.append("category", new Document().append("$in", cf.getPendingByTeamCategoryList()));

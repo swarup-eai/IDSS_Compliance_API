@@ -380,7 +380,7 @@ public class ConcentDaoImpl implements ConcentDao {
 		return pipeline;
 	}
 	
-	public Map<String,Map<String,List<TileVo>>> getByTeamConcentData(ConcentFilter cf){
+	public Map<String,Map<String,List<TileVo>>> getByTeamConcentData(ConcentFilter cf,String region){
 		try {
 			logger.info("getByTeamConcentData");
 			Map<String, String> daysMap = IDSSUtil.getPastDaysMap();
@@ -393,7 +393,7 @@ public class ConcentDaoImpl implements ConcentDao {
             for(String days : daysMap.keySet()) {
             	logger.info("getByTeamConcentData : "+days);
             	Map<String,List<TileVo>> subRegionConcentMap = new LinkedHashMap<String, List<TileVo>>();
-	            List<? extends Bson> pipeline = getByTeamConcentPipeline(days,cf);
+	            List<? extends Bson> pipeline = getByTeamConcentPipeline(days,cf,region);
 	            
 	            collection.aggregate(pipeline)
 	                    .allowDiskUse(false)
@@ -427,7 +427,7 @@ public class ConcentDaoImpl implements ConcentDao {
 		return null;
 	}
 	
-	private List<? extends Bson> getByTeamConcentPipeline(String days,ConcentFilter cf) throws ParseException {
+	private List<? extends Bson> getByTeamConcentPipeline(String days,ConcentFilter cf,String region) throws ParseException {
 		
 		Document matchDoc = new Document();
 		
@@ -436,7 +436,7 @@ public class ConcentDaoImpl implements ConcentDao {
 			matchDoc.append("category", new Document().append("$in", cf.getPendingByTeamCategoryList()));
 		if(null!=cf && null!=cf.getPendingByTeamScaleList() ) 
 			matchDoc.append("scale", new Document().append("$in", cf.getPendingByTeamScaleList()));
-		
+		matchDoc.append("region",region);
 		List<? extends Bson> pipeline = Arrays.asList(
 				new Document().append("$match", matchDoc),  
                 new Document()

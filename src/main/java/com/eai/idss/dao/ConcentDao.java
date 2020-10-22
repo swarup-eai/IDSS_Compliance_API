@@ -20,7 +20,7 @@ public interface ConcentDao {
 	
 	public Map<String,List<TileVo>> getBySubRegionConcentData(String region,ConcentFilter cf);
 	
-	public Map<String,Map<String,List<TileVo>>> getByTeamConcentData(ConcentFilter cf);
+	public Map<String,Map<String,List<TileVo>>> getByTeamConcentData(ConcentFilter cf,String region);
 	
 	public List<Consent> getConsentPaginatedRecords(ConsentDetailsRequest cdr, Pageable pageable);
 }

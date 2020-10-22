@@ -121,10 +121,11 @@ public class ConsentController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.POST, value = "/concent-dashboard/pending-by-team",  produces = "application/json")
-	public ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>> getConcentDashboardPendingByTeamData(@RequestBody ConcentFilter cf) throws IOException {
+	public ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>> getConcentDashboardPendingByTeamData(@RequestHeader String userName,@RequestBody ConcentFilter cf) throws IOException {
     	Map<String,Map<String,Map<String,List<TileVo>>>> ct = new HashMap<String, Map<String,Map<String,List<TileVo>>>>();
 	    try {
-	    	ct.put("bySubRegionRequest",cd.getByTeamConcentData(cf));
+	    	User u = userRepository.findByUserName(userName);
+	    	ct.put("bySubRegionRequest",cd.getByTeamConcentData(cf,u.getRegion()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /concent-dashboard/pending-request", HttpStatus.INTERNAL_SERVER_ERROR);

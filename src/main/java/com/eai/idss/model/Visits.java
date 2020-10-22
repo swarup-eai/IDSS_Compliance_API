@@ -1,5 +1,6 @@
 package com.eai.idss.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -9,9 +10,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Document(collection = "Visit_master")
 public class Visits {
 
-	private int elapsedDays;
+	private long elapsedDays;
 	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date visitDate;
+	private Date visitedDate;
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private LocalDate schduledOn;
 	private String industryName;
 	private String visitStatus;
 	private String scale;
@@ -19,17 +22,24 @@ public class Visits {
 	private String type;
 	private String category;
 	private int cScore;
-	public int getElapsedDays() {
+	
+	public long getElapsedDays() {
 		return elapsedDays;
 	}
-	public void setElapsedDays(int elapsedDays) {
+	public void setElapsedDays(long elapsedDays) {
 		this.elapsedDays = elapsedDays;
 	}
-	public Date getVisitDate() {
-		return visitDate;
+	public Date getVisitedDate() {
+		return visitedDate;
 	}
-	public void setVisitDate(Date visitDate) {
-		this.visitDate = visitDate;
+	public void setVisitedDate(Date visitedDate) {
+		this.visitedDate = visitedDate;
+	}
+	public LocalDate getSchduledOn() {
+		return schduledOn;
+	}
+	public void setSchduledOn(LocalDate schduledOn) {
+		this.schduledOn = schduledOn;
 	}
 	public String getIndustryName() {
 		return industryName;

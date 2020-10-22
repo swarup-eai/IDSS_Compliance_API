@@ -93,10 +93,11 @@ public class LegalController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.POST, value = "/legal-dashboard/pending-by-team",  produces = "application/json")
-	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getLegalDataPendingByTeam(@RequestBody LegalFilter cf) throws IOException {
+	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getLegalDataPendingByTeam(@RequestHeader String userName,@RequestBody LegalFilter cf) throws IOException {
     	Map<String,Map<String,List<TileVo>>> ct = new LinkedHashMap<String, Map<String,List<TileVo>>>();
 	    try {
-	    	ct.put("bySubRegionRequest",cd.getByTeamLegalData(cf));
+	    	User u = userRepository.findByUserName(userName);
+	    	ct.put("bySubRegionRequest",cd.getByTeamLegalData(cf,u.getRegion()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /legal-dashboard/pending-by-team", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -106,7 +107,7 @@ public class LegalController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.POST, value = "/legal-dashboard/by-region", produces = "application/json")
-	public ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>> getLegalDataByRegion(LegalFilter cf) throws IOException {
+	public ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>> getLegalDataByRegion(@RequestBody LegalFilter cf) throws IOException {
     	Map<String,Map<String,Map<String,List<TileVo>>>> ct = new LinkedHashMap<String,Map<String, Map<String,List<TileVo>>>>();
 	    try {
 	    	ct.put("byRegion",cd.getByRegionLegalData(cf));
