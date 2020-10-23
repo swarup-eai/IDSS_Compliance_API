@@ -10,7 +10,6 @@ com\eai\idss\controller\UserController.class
 com\eai\idss\controller\LegalController.class
 com\eai\idss\dao\ConcentDao.class
 com\eai\idss\dao\ConcentDaoImpl$1.class
-com\eai\idss\dao\VisitsDaoImpl$5.class
 com\eai\idss\dao\ConcentDaoImpl.class
 com\eai\idss\dao\LegalDaoImpl$3.class
 com\eai\idss\dao\ConcentDaoImpl$3.class
@@ -22,7 +21,6 @@ com\eai\idss\dao\VisitsDaoImpl.class
 com\eai\idss\repository\UserRepository.class
 com\eai\idss\vo\ConcentByRegionVo.class
 com\eai\idss\configuration\WebSecurityConfiguration$1.class
-com\eai\idss\dao\VisitsDaoImpl$4.class
 com\eai\idss\vo\MyVisits.class
 com\eai\idss\vo\DashboardRequest.class
 com\eai\idss\vo\VisitsFilter.class
@@ -44,6 +42,7 @@ com\eai\idss\dao\GenericDaoImpl$4.class
 com\eai\idss\model\Visits.class
 com\eai\idss\configuration\SwaggerConfig.class
 com\eai\idss\dao\VisitsDaoImpl$3.class
+com\eai\idss\vo\VisitsSubRegionVo.class
 com\eai\idss\service\LoginUserDetailsService.class
 com\eai\idss\vo\TileVo.class
 com\eai\idss\dao\LegalDaoImpl$2.class
@@ -66,5 +65,6 @@ com\eai\idss\dao\ConcentDaoImpl$5.class
 com\eai\idss\dao\IndustryMasterDao.class
 com\eai\idss\dao\GenericDaoImpl$5.class
 com\eai\idss\dao\IndustryMasterDaoImpl.class
+com\eai\idss\controller\VisitsController.class
 com\eai\idss\dao\ConcentDaoImpl$2.class
 com\eai\idss\vo\LegalSubRegionVo.class

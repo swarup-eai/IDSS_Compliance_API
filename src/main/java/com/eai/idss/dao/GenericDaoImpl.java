@@ -363,68 +363,108 @@ public class GenericDaoImpl implements GenericDao {
 			String date7DaysBack = currentTime.minusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
 			String date7DaysAhead = currentTime.plusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
 	        
+			List<? extends Bson> pipeline = getMyvisitsPipeline(userName, date7DaysBack, true);
 			
-			List<? extends Bson> pipeline = Arrays.asList(
-					new Document()
-		            .append("$match", new Document()
-		                    .append("schduledOn", new Document()
-		                    		.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(date7DaysAhead+" 00:00:00.000+0000"))
-		                            .append("$gt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(date7DaysBack+" 00:00:00.000+0000"))
-		                    )
-		                    .append("adminEmail", "srosolapur@mpcb.gov.in")
-		            ),    
-					new Document()
-                    .append("$group", new Document()
-                            .append("_id", "$schduledOn")
-                            .append("industries", new Document()
-                                    .append("$push", new Document()
-                                            .append("industryName", "$industryName")
-                                            .append("cScore", "0")
-                                    )
-                            )
-                    ),
-	                new Document()
-                    .append("$project", new Document()
-                            .append("_id", false)
-                            .append("date", new Document()
-                                    .append("$dateToString", new Document()
-                                            .append("format", "%Y-%m-%d")
-                                            .append("date", "$_id")
-                                    )
-                            )
-                            .append("industries", "$industries")
-                    )
-			);
+		    extractVisitsData(collection, tileMap, pipeline);
+		    
+		    pipeline = getMyvisitsPipeline(userName, date7DaysAhead, false);
 			
-			
-		    collection.aggregate(pipeline)
-		            .allowDiskUse(false)
-		            .forEach(new Consumer<Document>() {
-			                @Override
-			                public void accept(Document document) {
-			                    System.out.println(document.toJson());
-								try {
-									MyVisits mvVo= new ObjectMapper().readValue(document.toJson(), MyVisits.class);
-									List<TileVo> tVoList = new ArrayList<TileVo>();
-									for(MyVisitsIndustries industries : mvVo.getIndustries()) {
-										tVoList.add(new TileVo(industries.getIndustryName(), industries.getcScore()));
-									}
-									tileMap.put(mvVo.getDate(), tVoList);
-								} catch (JsonMappingException e) {
-									e.printStackTrace();
-								} catch (JsonProcessingException e) {
-									e.printStackTrace();
-								}
-			                    
-			                }
-			            }
-		            );
+		    extractVisitsData(collection, tileMap, pipeline);
 		    
 		    return tileMap;
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
 		return null;
+	}
+
+	private void extractVisitsData(MongoCollection<Document> collection, Map<String, List<TileVo>> tileMap,
+			List<? extends Bson> pipeline) {
+		collection.aggregate(pipeline)
+		        .allowDiskUse(false)
+		        .forEach(new Consumer<Document>() {
+		                @Override
+		                public void accept(Document document) {
+		                    System.out.println(document.toJson());
+							try {
+								MyVisits mvVo= new ObjectMapper().readValue(document.toJson(), MyVisits.class);
+								List<TileVo> tVoList = new ArrayList<TileVo>();
+								for(MyVisitsIndustries industries : mvVo.getIndustries()) {
+									tVoList.add(new TileVo(industries.getIndustryName(), industries.getcScore()));
+								}
+								tileMap.put(mvVo.getDate(), tVoList);
+							} catch (JsonMappingException e) {
+								e.printStackTrace();
+							} catch (JsonProcessingException e) {
+								e.printStackTrace();
+							}
+		                    
+		                }
+		            }
+		        );
+	}
+
+	private List<? extends Bson> getMyvisitsPipeline(String userName, String date, boolean pastVisits)
+			throws ParseException {
+		Document matchDoc = null;
+		Document groupDoc = null;
+		if(pastVisits) {
+			matchDoc = new Document()
+	        .append("$match", new Document()
+	                .append("visitedDate", new Document()
+	                		.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE)+" 00:00:00.000+0000"))
+	                        .append("$gt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(date+" 00:00:00.000+0000"))
+	                )
+	                .append("userId", userName)
+	        );
+			groupDoc = new Document()
+	        .append("$group", new Document()
+	                .append("_id", "$visitedDate")
+	                .append("industries", new Document()
+	                        .append("$push", new Document()
+	                                .append("industryName", "$industryName")
+	                                .append("cScore", "0")
+	                        )
+	                )
+	        );
+		}else
+		{
+			matchDoc = new Document()
+			        .append("$match", new Document()
+			                .append("schduledOn", new Document()
+			                		.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(date+" 00:00:00.000+0000"))
+			                        .append("$gt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE)+" 00:00:00.000+0000"))
+			                )
+			                .append("userId", userName)
+			);
+			groupDoc = new Document()
+			        .append("$group", new Document()
+			                .append("_id", "$schduledOn")
+			                .append("industries", new Document()
+			                        .append("$push", new Document()
+			                                .append("industryName", "$industryName")
+			                                .append("cScore", "0")
+			                        )
+			                )
+			);
+		}
+		
+		List<? extends Bson> pipeline = Arrays.asList(
+				matchDoc,    
+				groupDoc,
+		        new Document()
+		        .append("$project", new Document()
+		                .append("_id", false)
+		                .append("date", new Document()
+		                        .append("$dateToString", new Document()
+		                                .append("format", "%Y-%m-%d")
+		                                .append("date", "$_id")
+		                        )
+		                )
+		                .append("industries", "$industries")
+		        )
+		);
+		return pipeline;
 	}
 		
 }

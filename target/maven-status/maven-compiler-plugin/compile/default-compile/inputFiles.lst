@@ -5,6 +5,7 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\se
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\IndustryMasterDaoImpl.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\repository\UserRepository.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\LegalByTeamVo.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\controller\VisitsController.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\VisitsDaoImpl.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\controller\IndustryMasterController.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\IndustryMaster.java
@@ -26,6 +27,7 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\re
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Legal.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\configuration\SecurityConfiguration.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ConcentByStatusVo.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\VisitsSubRegionVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\IndustryMasterDao.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ConcentByRegionVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\LegalSubRegionVo.java
