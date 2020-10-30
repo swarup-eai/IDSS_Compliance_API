@@ -12,6 +12,7 @@ com\eai\idss\dao\ConcentDao.class
 com\eai\idss\dao\ConcentDaoImpl$1.class
 com\eai\idss\dao\ConcentDaoImpl.class
 com\eai\idss\dao\LegalDaoImpl$3.class
+com\eai\idss\vo\VisitsScheduleDetailsRequest.class
 com\eai\idss\dao\ConcentDaoImpl$3.class
 com\eai\idss\IDSSApiApplication.class
 com\eai\idss\model\Consent.class

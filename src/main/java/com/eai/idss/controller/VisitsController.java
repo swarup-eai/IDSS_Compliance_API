@@ -23,6 +23,7 @@ import com.eai.idss.repository.UserRepository;
 import com.eai.idss.vo.TileVo;
 import com.eai.idss.vo.VisitsDetailsRequest;
 import com.eai.idss.vo.VisitsFilter;
+import com.eai.idss.vo.VisitsScheduleDetailsRequest;
 
 
 @RestController
@@ -90,5 +91,17 @@ public class VisitsController {
 		}
 	    return new ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>>(ct,HttpStatus.OK);
 	}
-    
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+   	@RequestMapping(method = RequestMethod.POST, value = "/visits-schedule-details", produces = "application/json")
+   	public ResponseEntity<List<Visits>> getVisitsScheduleDetailsData(@RequestBody VisitsScheduleDetailsRequest vdr, Pageable pageable) throws IOException {
+       	List<Visits> cl = null;
+   	    try {
+   	    	cl =  cd.getVisitsSchedulePaginatedRecords(vdr,pageable);
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   			return new ResponseEntity("Exception in /visits-details", HttpStatus.INTERNAL_SERVER_ERROR);
+   		}
+   	    return new ResponseEntity<List<Visits>>(cl,HttpStatus.OK);
+   	}
 }

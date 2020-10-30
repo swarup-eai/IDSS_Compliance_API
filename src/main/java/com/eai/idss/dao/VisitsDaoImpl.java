@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ import com.eai.idss.vo.LegalSubRegionVo;
 import com.eai.idss.vo.TileVo;
 import com.eai.idss.vo.VisitsDetailsRequest;
 import com.eai.idss.vo.VisitsFilter;
+import com.eai.idss.vo.VisitsScheduleDetailsRequest;
 import com.eai.idss.vo.VisitsSubRegionVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -524,5 +526,63 @@ public class VisitsDaoImpl implements VisitsDao {
 			
 			query.addCriteria(Criteria.where("legalDirection").ne("NA"));
 		}
+	}
+	
+	public List<Visits> getVisitsSchedulePaginatedRecords(VisitsScheduleDetailsRequest cdr, Pageable pageable){
+		try {
+			Query query = new Query().with(pageable);
+			if(null!=cdr) {
+				String[] my = cdr.getMonth().split("-");
+
+				YearMonth ym = YearMonth.of(Integer.parseInt(my[1]),Integer.parseInt(my[0]));
+				LocalDate startDate = ym.atDay(1);
+				LocalDate endDate = ym.atEndOfMonth();
+				
+				if("Historical".equalsIgnoreCase(cdr.getWhen())) {
+					Criteria c = new Criteria();
+					c.orOperator(Criteria.where("visitedDate")
+							.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(startDate+" 00:00:00.000+0000"))
+							.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(endDate+" 00:00:00.000+0000")),
+							
+							Criteria.where("schduledOn")
+							.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(startDate+" 00:00:00.000+0000"))
+							.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(endDate+" 00:00:00.000+0000"))
+							);
+						query.addCriteria(c);
+						
+				}else {
+						query.addCriteria(Criteria.where("schduledOn")
+								.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(startDate+" 00:00:00.000+0000"))
+								.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(endDate+" 00:00:00.000+0000")));
+				}
+			}
+				
+//			if(StringUtils.hasText(cdr.getCompliance())) {
+//				String[] op = cdr.getCompliance().split("-");
+//				query.addCriteria(Criteria.where("cScore").gte(Integer.parseInt(op[0])).lte(Integer.parseInt(op[1])));
+//			}
+			
+			if(StringUtils.hasText(cdr.getStatus())) {
+				if("Pending".equalsIgnoreCase(cdr.getStatus()) || "Scheduled".equalsIgnoreCase(cdr.getStatus()))
+					query.addCriteria(Criteria.where("visitStatus").in("Not visited"));
+				if("Visited".equalsIgnoreCase(cdr.getStatus()))
+					query.addCriteria(Criteria.where("visitStatus").in("Visited"));
+			}
+	
+			System.out.println(mongoTemplate.count(query, Visits.class));
+			
+			List<Visits> filteredLegalList= mongoTemplate.find(query, Visits.class);
+			
+			Page<Visits> cPage = PageableExecutionUtils.getPage(
+					filteredLegalList,
+					pageable,
+			        () -> mongoTemplate.count(query, Visits.class));
+			
+			return cPage.toList();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
