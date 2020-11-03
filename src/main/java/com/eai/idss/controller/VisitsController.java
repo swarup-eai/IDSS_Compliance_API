@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eai.idss.dao.VisitsDao;
+import com.eai.idss.model.LeaveSchedule;
 import com.eai.idss.model.User;
 import com.eai.idss.model.Visits;
+import com.eai.idss.repository.LeaveScheduleRepository;
 import com.eai.idss.repository.UserRepository;
 import com.eai.idss.vo.TileVo;
 import com.eai.idss.vo.VisitsDetailsRequest;
@@ -33,7 +35,8 @@ public class VisitsController {
 	@Autowired
 	private VisitsDao cd;
 	
-	
+	@Autowired
+	private LeaveScheduleRepository lsr;
 	
     @Autowired
     private UserRepository userRepository;
@@ -100,8 +103,34 @@ public class VisitsController {
    	    	cl =  cd.getVisitsSchedulePaginatedRecords(vdr,pageable);
    		} catch (Exception e) {
    			e.printStackTrace();
-   			return new ResponseEntity("Exception in /visits-details", HttpStatus.INTERNAL_SERVER_ERROR);
+   			return new ResponseEntity("Exception in /visits-schedule-details", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
    	    return new ResponseEntity<List<Visits>>(cl,HttpStatus.OK);
+   	}
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+   	@RequestMapping(method = RequestMethod.GET, value = "/visits-schedule-current-month", produces = "application/json")
+   	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getVisitsScheduleByScaleCategory(@RequestHeader String userName) throws IOException {
+    	Map<String,Map<String,List<TileVo>>> cl =  new LinkedHashMap<String, Map<String,List<TileVo>>>();
+   	    try {
+   	    	cl.put("visitsForCurrentMonth",cd.getVisitsScheduleByScaleCategory(userName));
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   			return new ResponseEntity("Exception in /visits-schedule-current-month", HttpStatus.INTERNAL_SERVER_ERROR);
+   		}
+   	    return new ResponseEntity<Map<String,Map<String,List<TileVo>>>>(cl,HttpStatus.OK);
+   	}
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+   	@RequestMapping(method = RequestMethod.POST, value = "/leave-calender", produces = "application/json")
+   	public ResponseEntity<String> saveLeaveCalender(@RequestBody LeaveSchedule ls) throws IOException {
+   	    try {
+   	    	lsr.deleteByUserNameAndMonthYear(ls.getUserName(), ls.getMonthYear());
+   	    	lsr.save(ls);
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   			return new ResponseEntity("Exception in /leave-calender", HttpStatus.INTERNAL_SERVER_ERROR);
+   		}
+   	    return new ResponseEntity<>("Leave schedule updated.",HttpStatus.OK);
    	}
 }

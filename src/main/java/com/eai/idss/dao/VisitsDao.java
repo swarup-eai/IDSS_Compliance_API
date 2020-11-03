@@ -25,4 +25,6 @@ public interface VisitsDao {
 	
 	public List<Visits> getVisitsSchedulePaginatedRecords(VisitsScheduleDetailsRequest cdr, Pageable pageable);
 	
+	public Map<String,List<TileVo>> getVisitsScheduleByScaleCategory(String userName);
+	
 }

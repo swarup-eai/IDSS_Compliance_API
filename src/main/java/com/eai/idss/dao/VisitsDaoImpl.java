@@ -32,6 +32,7 @@ import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.ConcentByRegionVo;
 import com.eai.idss.vo.LegalSubRegionVo;
 import com.eai.idss.vo.TileVo;
+import com.eai.idss.vo.VisitsByScaleCategory;
 import com.eai.idss.vo.VisitsDetailsRequest;
 import com.eai.idss.vo.VisitsFilter;
 import com.eai.idss.vo.VisitsScheduleDetailsRequest;
@@ -466,13 +467,15 @@ public class VisitsDaoImpl implements VisitsDao {
 				addCriteriaFilter(cdr.getVisitStatus(), day, query);
 				
 				if(StringUtils.hasText(cdr.getRegion()))
-						query.addCriteria(Criteria.where("region").is(cdr.getRegion()));
+					query.addCriteria(Criteria.where("region").is(cdr.getRegion()));
 				if(StringUtils.hasText(cdr.getCategory()))
-						query.addCriteria(Criteria.where("category").is(cdr.getCategory()));
+					query.addCriteria(Criteria.where("category").is(cdr.getCategory()));
 				if(StringUtils.hasText(cdr.getSubRegion()))
-						query.addCriteria(Criteria.where("subregion").is(cdr.getSubRegion()));
+					query.addCriteria(Criteria.where("subregion").is(cdr.getSubRegion()));
 				if(StringUtils.hasText(cdr.getScale()))
 					query.addCriteria(Criteria.where("scale").is(cdr.getScale()));
+				if(StringUtils.hasText(cdr.getIndustryName()))
+					query.addCriteria(Criteria.where("industryName").is(cdr.getIndustryName()));
 			}
 	
 			System.out.println(mongoTemplate.count(query, Visits.class));
@@ -564,9 +567,9 @@ public class VisitsDaoImpl implements VisitsDao {
 			
 			if(StringUtils.hasText(cdr.getStatus())) {
 				if("Pending".equalsIgnoreCase(cdr.getStatus()) || "Scheduled".equalsIgnoreCase(cdr.getStatus()))
-					query.addCriteria(Criteria.where("visitStatus").in("Not visited"));
+					query.addCriteria(Criteria.where("visitStatus").is("Not visited"));
 				if("Visited".equalsIgnoreCase(cdr.getStatus()))
-					query.addCriteria(Criteria.where("visitStatus").in("Visited"));
+					query.addCriteria(Criteria.where("visitStatus").is("Visited"));
 			}
 	
 			System.out.println(mongoTemplate.count(query, Visits.class));
@@ -584,5 +587,88 @@ public class VisitsDaoImpl implements VisitsDao {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public Map<String,List<TileVo>> getVisitsScheduleByScaleCategory(String userName){
+		try {
+			logger.info("getVisitsScheduleByScaleCategory");
+			
+		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+            MongoCollection<Document> collection = database.getCollection("Visit_master");
+            
+            Map<String,List<TileVo>> tileMap = new LinkedHashMap<String, List<TileVo>>();
+            
+            List<? extends Bson> pipeline = getCurrentMonthVisitsPipeline(userName);
+	            
+            collection.aggregate(pipeline)
+                    .allowDiskUse(false)
+                    .forEach(new Consumer<Document>() {
+	    	                @Override
+	    	                public void accept(Document document) {
+	    	                    System.out.println(document.toJson());
+								try {
+									VisitsByScaleCategory vVo = new ObjectMapper().readValue(document.toJson(), VisitsByScaleCategory.class);
+									List<TileVo> ltvo = tileMap.get(vVo.getScale());
+									if(null==ltvo) {
+										ltvo = new ArrayList<TileVo>();
+									}
+									ltvo.add(new TileVo(vVo.getCategory(),vVo.getCount()));
+									tileMap.put(vVo.getScale(), ltvo);
+								} catch (JsonMappingException e) {
+									e.printStackTrace();
+								} catch (JsonProcessingException e) {
+									e.printStackTrace();
+								}
+	    	                    
+	    	                }
+	    	            }
+                    );
+            
+            return tileMap;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private List<? extends Bson> getCurrentMonthVisitsPipeline(String userName) throws ParseException {
+		
+		Document matchDoc = new Document();
+		
+		LocalDate d = LocalDate.now();
+		LocalDate fd = d.withDayOfMonth(1);
+		LocalDate ld = d.withDayOfMonth(d.lengthOfMonth());
+		
+		matchDoc.append("schduledOn", new Document()
+							.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fd.format(DateTimeFormatter.ISO_LOCAL_DATE)+" 00:00:00.000+0000"))
+							.append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(ld.format(DateTimeFormatter.ISO_LOCAL_DATE)+" 00:00:00.000+0000"))
+						);
+		matchDoc.append("userId", userName);
+		
+		List<? extends Bson> pipeline = Arrays.asList(
+				new Document().append("$match", matchDoc),  
+				new Document()
+                .append("$group", new Document()
+                        .append("_id", new Document()
+                                .append("scale", "$scale")
+                                .append("category", "$category")
+	                        )
+	                        .append("count", new Document()
+	                                .append("$sum", 1.0)
+	                        )
+                		), 
+		        new Document()
+		                .append("$project", new Document()
+		                        .append("_id", false)
+		                        .append("scale", "$_id.scale")
+		                        .append("category", "$_id.category")
+		                        .append("count", "$count")
+		                ), 
+		        new Document()
+		                .append("$sort", new Document()
+		                        .append("scale", 1.0)
+		                )
+				);
+		return pipeline;
 	}
 }
