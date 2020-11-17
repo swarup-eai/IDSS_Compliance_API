@@ -7,6 +7,7 @@ com\eai\idss\dao\GenericDaoImpl$3.class
 com\eai\idss\dao\LegalDaoImpl$4.class
 com\eai\idss\configuration\MongoDBConfig.class
 com\eai\idss\controller\UserController.class
+com\eai\idss\model\LeaveSchedule.class
 com\eai\idss\controller\LegalController.class
 com\eai\idss\dao\ConcentDao.class
 com\eai\idss\dao\ConcentDaoImpl$1.class
@@ -21,7 +22,7 @@ com\eai\idss\vo\ConcentFilter.class
 com\eai\idss\dao\VisitsDaoImpl.class
 com\eai\idss\repository\UserRepository.class
 com\eai\idss\vo\ConcentByRegionVo.class
-com\eai\idss\configuration\WebSecurityConfiguration$1.class
+com\eai\idss\dao\VisitsDaoImpl$4.class
 com\eai\idss\vo\MyVisits.class
 com\eai\idss\vo\DashboardRequest.class
 com\eai\idss\vo\VisitsFilter.class
@@ -33,6 +34,7 @@ com\eai\idss\model\Legal.class
 com\eai\idss\vo\LegalFilter.class
 com\eai\idss\dao\GenericDaoImpl$1.class
 com\eai\idss\model\User.class
+com\eai\idss\vo\VisitDetails.class
 com\eai\idss\dao\VisitsDao.class
 com\eai\idss\vo\ConcentByStatusVo.class
 com\eai\idss\dao\GenericDaoImpl.class
@@ -50,6 +52,7 @@ com\eai\idss\dao\LegalDaoImpl$2.class
 com\eai\idss\vo\DashboardResponse.class
 com\eai\idss\dao\LegalDao.class
 com\eai\idss\dao\LegalDaoImpl.class
+com\eai\idss\repository\LeaveScheduleRepository.class
 com\eai\idss\model\User_Filters.class
 com\eai\idss\configuration\WebSecurityConfiguration.class
 com\eai\idss\dao\LegalDaoImpl$5.class
@@ -58,6 +61,7 @@ com\eai\idss\dao\GenericDaoImpl$2.class
 com\eai\idss\model\IndustryMaster.class
 com\eai\idss\vo\LegalDetailsRequest.class
 com\eai\idss\vo\ConsentDetailsRequest.class
+com\eai\idss\vo\VisitsByScaleCategory.class
 com\eai\idss\repository\ConcentRepository.class
 com\eai\idss\repository\UserFiltersRepository.class
 com\eai\idss\dao\GenericDao.class

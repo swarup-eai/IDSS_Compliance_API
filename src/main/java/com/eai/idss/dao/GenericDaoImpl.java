@@ -466,5 +466,14 @@ public class GenericDaoImpl implements GenericDao {
 		);
 		return pipeline;
 	}
+
+	public List<TileVo> getTopPerformer(String region){
+		List<TileVo> lt = new ArrayList<TileVo>();
+		lt.add(new TileVo("Pune",4));
+		lt.add(new TileVo("Mumbai",3));
+		lt.add(new TileVo("Nasik",3));
+		lt.add(new TileVo("Nagpur",2));
 		
+		return lt;
+	}
 }

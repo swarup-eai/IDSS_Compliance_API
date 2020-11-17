@@ -32,12 +32,14 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\IndustryMasterDao.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ConcentByRegionVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\LegalSubRegionVo.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\repository\LeaveScheduleRepository.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\VisitsDetailsRequest.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\GenericDaoImpl.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\MyVisitsIndustries.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\TileVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\LegalGroupByVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\controller\CommonController.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\VisitsByScaleCategory.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\User.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\IndustryMasterRequest.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\LegalTileVo.java
@@ -45,7 +47,9 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\co
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Visits.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\VisitsFilter.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\LegalDao.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\LeaveSchedule.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\LegalFilter.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\VisitDetails.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\DashboardResponse.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\VisitsDao.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\DashboardRequest.java

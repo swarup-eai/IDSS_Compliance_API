@@ -32,6 +32,7 @@ import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.ConcentByRegionVo;
 import com.eai.idss.vo.LegalSubRegionVo;
 import com.eai.idss.vo.TileVo;
+import com.eai.idss.vo.VisitDetails;
 import com.eai.idss.vo.VisitsByScaleCategory;
 import com.eai.idss.vo.VisitsDetailsRequest;
 import com.eai.idss.vo.VisitsFilter;
@@ -474,18 +475,16 @@ public class VisitsDaoImpl implements VisitsDao {
 					query.addCriteria(Criteria.where("subregion").is(cdr.getSubRegion()));
 				if(StringUtils.hasText(cdr.getScale()))
 					query.addCriteria(Criteria.where("scale").is(cdr.getScale()));
-				if(StringUtils.hasText(cdr.getIndustryName()))
-					query.addCriteria(Criteria.where("industryName").is(cdr.getIndustryName()));
 			}
 	
 			System.out.println(mongoTemplate.count(query, Visits.class));
 			
-			List<Visits> filteredLegalList= mongoTemplate.find(query, Visits.class);
+			List<Visits> filteredVisitsList= mongoTemplate.find(query, Visits.class);
 			
-			filteredLegalList.stream().forEach(v -> v.setElapsedDays(ChronoUnit.DAYS.between(LocalDate.now(),v.getSchduledOn())));
+			filteredVisitsList.stream().forEach(v -> v.setElapsedDays(ChronoUnit.DAYS.between(LocalDate.now(),v.getSchduledOn())));
 			
 			Page<Visits> cPage = PageableExecutionUtils.getPage(
-					filteredLegalList,
+					filteredVisitsList,
 					page,
 			        () -> mongoTemplate.count(query, Visits.class));
 			
@@ -670,5 +669,77 @@ public class VisitsDaoImpl implements VisitsDao {
 		                )
 				);
 		return pipeline;
+	}
+	
+	public VisitDetails getVisitDetailsForOneIndustryOneVisit(long industryId,long visitId) {
+		VisitDetails vd = new VisitDetails();
+		try {
+			Query query = new Query();
+			
+			query.addCriteria(Criteria.where("industryId").is(industryId));
+			
+			List<Visits> industryVisitsList= mongoTemplate.find(query, Visits.class);
+			
+			vd.setVisit(industryVisitsList.stream().filter(v -> v.getVisitId()==visitId).findFirst().get());
+			
+			vd.setPastVisits(industryVisitsList.stream().filter(v -> v.getVisitStatus().equalsIgnoreCase("Visited")).count());
+			
+			Map<String, List<TileVo>> visitStatusDaysMap = new LinkedHashMap<String, List<TileVo>>();
+			
+			visitStatusDaysMap.put("reportFiled", getVisitStats(vd, industryVisitsList));
+			
+			visitStatusDaysMap.put("sampleSubmitted", getVisitStats());
+			
+			visitStatusDaysMap.put("sampleAnalyzed", getVisitStats());
+			
+			visitStatusDaysMap.put("reviewCompleted", getVisitStats());
+			
+			visitStatusDaysMap.put("legalAction", getVisitStats());
+			
+			vd.setVisitSteps(visitStatusDaysMap);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return vd;
+	}
+
+	private List<TileVo> getVisitStats(VisitDetails vd, List<Visits> industryVisitsList) {
+		List<TileVo> ltvo = new ArrayList<TileVo>();
+		
+		ltvo.add(new TileVo("actual",(int)ChronoUnit.DAYS.between(vd.getVisit().getReportSubmittedOn(),vd.getVisit().getVisitedDate())));
+		ltvo.add(new TileVo("defined",2));
+		ltvo.add(new TileVo("average",(int)industryVisitsList.stream()
+				.filter(v -> v.getVisitStatus().equalsIgnoreCase("Visited"))
+				.mapToLong(v -> ChronoUnit.DAYS.between(v.getReportSubmittedOn(),v.getVisitedDate())).average().getAsDouble()));
+		return ltvo;
+	}
+	
+	private List<TileVo> getVisitStats() {
+		List<TileVo> ltvo = new ArrayList<TileVo>();
+		
+		ltvo.add(new TileVo("actual",0));
+		ltvo.add(new TileVo("defined",2));
+		ltvo.add(new TileVo("average",0));
+		return ltvo;
+	}
+	
+	public List<Visits> getVisitDetailsForOneIndustry(long industryId) {
+		try {
+			Query query = new Query();
+			
+			query.addCriteria(Criteria.where("industryId").is(industryId));
+			
+			query.addCriteria(Criteria.where("visitStatus").is("Visited"));
+			
+			List<Visits> industryVisitsList= mongoTemplate.find(query, Visits.class);
+			
+			return industryVisitsList;
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

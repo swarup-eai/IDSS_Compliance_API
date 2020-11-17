@@ -15,4 +15,6 @@ public interface GenericDao {
 	public Map<String,List<TileVo>> getVisitsTileData(DashboardRequest dbr);
 	
 	public Map<String,List<TileVo>> getMyVisitsData(String userName);
+	
+	public List<TileVo> getTopPerformer(String region);
 }

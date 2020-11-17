@@ -10,9 +10,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Document(collection = "Visit_master")
 public class Visits {
 
+	private long industryId;
+	private long visitId;
 	private long elapsedDays;
 	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date visitedDate;
+	private LocalDate visitedDate;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate schduledOn;
 	private String industryName;
@@ -22,17 +24,45 @@ public class Visits {
 	private String type;
 	private String category;
 	private int cScore;
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private LocalDate reportSubmittedOn;
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private LocalDate legalDirectionIssuedOn;
 	
+	public long getIndustryId() {
+		return industryId;
+	}
+	public void setIndustryId(long industryId) {
+		this.industryId = industryId;
+	}
+	public long getVisitId() {
+		return visitId;
+	}
+	public void setVisitId(long visitId) {
+		this.visitId = visitId;
+	}
+	public LocalDate getReportSubmittedOn() {
+		return reportSubmittedOn;
+	}
+	public void setReportSubmittedOn(LocalDate reportSubmittedOn) {
+		this.reportSubmittedOn = reportSubmittedOn;
+	}
+	public LocalDate getLegalDirectionIssuedOn() {
+		return legalDirectionIssuedOn;
+	}
+	public void setLegalDirectionIssuedOn(LocalDate legalDirectionIssuedOn) {
+		this.legalDirectionIssuedOn = legalDirectionIssuedOn;
+	}
 	public long getElapsedDays() {
 		return elapsedDays;
 	}
 	public void setElapsedDays(long elapsedDays) {
 		this.elapsedDays = elapsedDays;
 	}
-	public Date getVisitedDate() {
+	public LocalDate getVisitedDate() {
 		return visitedDate;
 	}
-	public void setVisitedDate(Date visitedDate) {
+	public void setVisitedDate(LocalDate visitedDate) {
 		this.visitedDate = visitedDate;
 	}
 	public LocalDate getSchduledOn() {

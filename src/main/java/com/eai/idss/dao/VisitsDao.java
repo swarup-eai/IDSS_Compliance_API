@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.eai.idss.model.Visits;
 import com.eai.idss.vo.TileVo;
+import com.eai.idss.vo.VisitDetails;
 import com.eai.idss.vo.VisitsDetailsRequest;
 import com.eai.idss.vo.VisitsFilter;
 import com.eai.idss.vo.VisitsScheduleDetailsRequest;
@@ -26,5 +27,9 @@ public interface VisitsDao {
 	public List<Visits> getVisitsSchedulePaginatedRecords(VisitsScheduleDetailsRequest cdr, Pageable pageable);
 	
 	public Map<String,List<TileVo>> getVisitsScheduleByScaleCategory(String userName);
+	
+	public VisitDetails getVisitDetailsForOneIndustryOneVisit(long industryId,long visitId);
+	
+	public List<Visits> getVisitDetailsForOneIndustry(long industryId);
 	
 }

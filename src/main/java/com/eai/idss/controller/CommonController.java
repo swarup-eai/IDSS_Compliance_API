@@ -49,6 +49,8 @@ public class CommonController {
 	    	dashboardMap.put("legalTile", gd.getLegalTileData(dbr));
 	    	dashboardMap.put("visitTile", gd.getVisitsTileData(dbr));
 	    	dashboardMap.put("myVisits", gd.getMyVisitsData(userName));
+	    	User u = userRepository.findByUserName(userName);
+	    	dr.setTopPerformers(gd.getTopPerformer(u.getRegion()));
 	    	dr.setDashboardMap(dashboardMap);
 		} catch (Exception e) {
 			e.printStackTrace();

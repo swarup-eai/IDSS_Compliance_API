@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import com.eai.idss.model.Visits;
 import com.eai.idss.repository.LeaveScheduleRepository;
 import com.eai.idss.repository.UserRepository;
 import com.eai.idss.vo.TileVo;
+import com.eai.idss.vo.VisitDetails;
 import com.eai.idss.vo.VisitsDetailsRequest;
 import com.eai.idss.vo.VisitsFilter;
 import com.eai.idss.vo.VisitsScheduleDetailsRequest;
@@ -132,5 +134,32 @@ public class VisitsController {
    			return new ResponseEntity("Exception in /leave-calender", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
    	    return new ResponseEntity<>("Leave schedule updated.",HttpStatus.OK);
+   	}
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+   	@RequestMapping(method = RequestMethod.GET, value = "/visits-details/{industryId}/{visitId}", produces = "application/json")
+   	public ResponseEntity<VisitDetails> getVisitsDetailsForOneVisit(@PathVariable("industryId") Long industryId,
+   			@PathVariable("visitId") Long visitId) throws IOException {
+    	VisitDetails vd = null;
+   	    try {
+   	    	vd = cd.getVisitDetailsForOneIndustryOneVisit(industryId,visitId);
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   			return new ResponseEntity("Exception in /visits-schedule-current-month", HttpStatus.INTERNAL_SERVER_ERROR);
+   		}
+   	    return new ResponseEntity<VisitDetails>(vd,HttpStatus.OK);
+   	}
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+   	@RequestMapping(method = RequestMethod.GET, value = "/visits-details/{industryId}", produces = "application/json")
+   	public ResponseEntity<List<Visits>> getVisitsDetailsForIndustry(@PathVariable("industryId") Long industryId) throws IOException {
+    	List<Visits> vd = null;
+   	    try {
+   	    	vd = cd.getVisitDetailsForOneIndustry(industryId);
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   			return new ResponseEntity("Exception in /visits-schedule-current-month", HttpStatus.INTERNAL_SERVER_ERROR);
+   		}
+   	    return new ResponseEntity<List<Visits>>(vd,HttpStatus.OK);
    	}
 }

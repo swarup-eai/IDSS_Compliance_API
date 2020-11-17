@@ -31,7 +31,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 //    public void configure(HttpSecurity http) throws Exception {
 //        http
 //            .authorizeRequests()
-//            .antMatchers("/idss_api/user/**").permitAll();
+//            .antMatchers("/idss_api/**").permitAll();
 //    }
 
     @Override

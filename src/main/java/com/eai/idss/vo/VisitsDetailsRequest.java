@@ -8,14 +8,7 @@ public class VisitsDetailsRequest {
 	String category;
 	String subRegion;
 	String region;
-	String industryName;
 	
-	public String getIndustryName() {
-		return industryName;
-	}
-	public void setIndustryName(String industryName) {
-		this.industryName = industryName;
-	}
 	public String getVisitStatus() {
 		return visitStatus;
 	}
