@@ -26,6 +26,7 @@ import org.springframework.util.StringUtils;
 
 import com.eai.idss.model.IndustryMaster;
 import com.eai.idss.model.LegalDataMaster;
+import com.eai.idss.model.OCEMS_data;
 import com.eai.idss.model.consent_RESOURCES_comparison;
 import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.ComlianceScoreFilter;
@@ -196,101 +197,105 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 					// paramList.addAll(cf.getParametersList());
 
-					if (type.equalsIgnoreCase("Consented") && ((param.equalsIgnoreCase("SO2")
-							|| param.equalsIgnoreCase("NO2") || param.equalsIgnoreCase("PM")))) {
+					if (type.equalsIgnoreCase("Consented")) {
+						List<String> consentedESRAirParamList = IDSSUtil.getConsentedESRAirParam();
+						if (consentedESRAirParamList.contains(param)) {
+							type = "ConsentedAir";
+						}
 
-						type = "ConsentedAir";
 					}
 
-					if (type.equalsIgnoreCase("ESR") && ((param.equalsIgnoreCase("SO2") || param.equalsIgnoreCase("NO2")
-							|| param.equalsIgnoreCase("PM")))) {
+					if (type.equalsIgnoreCase("ESR")) {
+						List<String> consentedESRAirParamList = IDSSUtil.getConsentedESRAirParam();
+						if (consentedESRAirParamList.contains(param)) {
+							type = "ESRAir";
+						}
 
-						type = "ESRAir";
 					}
-					if (type.equalsIgnoreCase("Consented")
-							&& ((param.equalsIgnoreCase("BOD") || param.equalsIgnoreCase("COD")))) {
 
-						if (param.equalsIgnoreCase("BOD")) {
-							param = "treatedEffluentBod";
-						}
-						if (param.equalsIgnoreCase("COD")) {
-							param = "treatedEffluentCod";
+					if (type.equalsIgnoreCase("Consented")) {
+						List<String> consentedESRWaterParamList = IDSSUtil.getConsentedESRWaterParam();
+
+						if (consentedESRWaterParamList.contains(param)) {
+							type = "ConsentedWater";
 						}
 
-						type = "ConsentedWater";
 					}
-					if (type.equalsIgnoreCase("ESR")
-							&& ((param.equalsIgnoreCase("BOD") || param.equalsIgnoreCase("COD")))) {
+					if (type.equalsIgnoreCase("ESR")) {
+						List<String> consentedESRWaterParamList = IDSSUtil.getConsentedESRWaterParam();
 
-						if (param.equalsIgnoreCase("BOD")) {
-							param = "treatedEffluentBod";
+						if (consentedESRWaterParamList.contains(param)) {
+							type = "ConsentedWater";
 						}
-						if (param.equalsIgnoreCase("COD")) {
-							param = "treatedEffluentCod";
-						}
-
 						type = "ESRWater";
 					}
-					if (type.equalsIgnoreCase("Consented") && (param.equalsIgnoreCase("Stack"))) {
 
-						type = "ConsentedStack";
+					if (type.equalsIgnoreCase("Consented")) {
+						List<String> consentedESRStackParamList = IDSSUtil.getConsentedESRStackParam();
+						if (consentedESRStackParamList.contains(param)) {
+							type = "ConsentedStack";
+						}
+
 					}
 
-					if (type.equalsIgnoreCase("Consented") && ((param.equalsIgnoreCase("Electricity")
-							|| param.equalsIgnoreCase("PNG") || param.equalsIgnoreCase("HSD")
-							|| param.equalsIgnoreCase("Petrol") || param.equalsIgnoreCase("Coal")))) {
+					if (type.equalsIgnoreCase("Consented")) {
+						List<String> consentedESRFuelParamList = IDSSUtil.getConsentedESRFuelParam();
+						if (consentedESRFuelParamList.contains(param)) {
+							type = "ConsentedFuel";
+						}
 
-						// collection = database.getCollection("consent_FUEL_comparison");
-						type = "ConsentedFuel";
 					}
 
-					if (type.equalsIgnoreCase("ESR") && ((param.equalsIgnoreCase("Electricity")
-							|| param.equalsIgnoreCase("PNG") || param.equalsIgnoreCase("HSD")
-							|| param.equalsIgnoreCase("Petrol") || param.equalsIgnoreCase("Coal")))) {
+					if (type.equalsIgnoreCase("ESR")) {
+						List<String> consentedESRFuelParamList = IDSSUtil.getConsentedESRFuelParam();
+						if (consentedESRFuelParamList.contains(param)) {
+							type = "ESRFuel";
+						}
 
-						// collection = database.getCollection("consent_FUEL_comparison");
-						type = "ESRFuel";
 					}
-					if (type.equalsIgnoreCase("Consented") && ((param.equalsIgnoreCase("28.1 Residues and wastes*")
-							|| param.equalsIgnoreCase("34.3 Chemical sludge from waste water treatment")
-							|| param.equalsIgnoreCase("1.9 ETP sludge containing hazardous constituent")
-							|| param.equalsIgnoreCase("12.1 Acid residue")))) {
 
-						// collection = database.getCollection("consent_FUEL_comparison");
-						type = "ConsentedHW";
+					if (type.equalsIgnoreCase("Consented")) {
+						List<String> consentedESRHWParamList = IDSSUtil.getConsentedESRHWParam();
+						if (consentedESRHWParamList.contains(param)) {
+							type = "ConsentedHW";
+						}
+
 					}
-					if (type.equalsIgnoreCase("ESR") && ((param.equalsIgnoreCase("28.1 Residues and wastes*")
-							|| param.equalsIgnoreCase("34.3 Chemical sludge from waste water treatment")
-							|| param.equalsIgnoreCase("1.9 ETP sludge containing hazardous constituent")
-							|| param.equalsIgnoreCase("12.1 Acid residue")))) {
+					if (type.equalsIgnoreCase("ESR")) {
+						List<String> consentedESRHWParamList = IDSSUtil.getConsentedESRHWParam();
+						if (consentedESRHWParamList.contains(param)) {
+							type = "EsrHW";
+						}
 
-						// collection = database.getCollection("consent_FUEL_comparison");
-						type = "EsrHW";
 					}
-					if (type.equalsIgnoreCase("Consented")
-							&& ((param.equalsIgnoreCase("M.S INGOTS,BILLETS,SCRAP, M.S SPONGE IRON")
-									|| param.equalsIgnoreCase("MS PLATE")
-									|| param.equalsIgnoreCase("NITRO BENZENE, IMPORTED MATERIAL, AMINO ACID POWDER")
-									|| param.equalsIgnoreCase("MS PIPE") || param.equalsIgnoreCase("MS ANGEL")))) {
 
-						// collection = database.getCollection("consent_FUEL_comparison");
-						type = "ConsentedRESOURCES";
+					if (type.equalsIgnoreCase("Consented")) {
+						List<String> consentedESRResourceParamList = IDSSUtil.getConsentedESRResourcesParam();
+						if (consentedESRResourceParamList.contains(param)) {
+							type = "ConsentedRESOURCES";
+						}
+
 					}
-					if (type.equalsIgnoreCase("ESR")
-							&& ((param.equalsIgnoreCase("M.S INGOTS,BILLETS,SCRAP, M.S SPONGE IRON")
-									|| param.equalsIgnoreCase("MS PLATE") || param.equalsIgnoreCase("ADDITIVE")
-									|| param.equalsIgnoreCase("NITRO BENZENE, IMPORTED MATERIAL, AMINO ACID POWDER")
-									|| param.equalsIgnoreCase("MS PIPE") || param.equalsIgnoreCase("MS ANGEL")))) {
+					if (type.equalsIgnoreCase("ESR")) {
+						List<String> consentedESRResourceParamList = IDSSUtil.getConsentedESRResourcesParam();
+						if (consentedESRResourceParamList.contains(param)) {
+							type = "EsrRESOURCES";
+						}
 
-						// collection = database.getCollection("consent_FUEL_comparison");
-						type = "EsrRESOURCES";
+					}
+
+					if (type.equalsIgnoreCase("OCEMS")) {
+						List<String> ocemsParamList = IDSSUtil.getOCEMSParam();
+						if (ocemsParamList.contains(param)) {
+							type = "OCEMSData";
+						}
 					}
 
 					if (type.equalsIgnoreCase("ConsentedAir")) {
 
 						Map<String, List<PollutionScoreResponseVo>> resMap = new LinkedHashMap<String, List<PollutionScoreResponseVo>>();
 
-						logger.info("getComplainceScoreCardData");
+						logger.info("getPollutionScoreCard_ConsentedAirData");
 
 						Map<String, String> daysMap1 = IDSSUtil.getPastDaysMapForPollutionScoreCard();
 
@@ -300,7 +305,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 								Query query = new Query().with(page);
 								List<PollutionScoreResponseVo> consentedList = new ArrayList<PollutionScoreResponseVo>();
 
-								logger.info("getComplainceScoreCardData : " + days);
+								logger.info("getPollutionScoreCard_ConsentedAirData : " + days);
 								// query.addCriteria(Criteria.where("created").gte(days));
 
 								query.addCriteria(Criteria.where("industryId").is(cf.getIndustryId()));
@@ -348,7 +353,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 					}
 					if (type.equalsIgnoreCase("ESRAir")) {
 
-						logger.info("getComplainceScoreCardData");
+						logger.info("getPollutionScoreCard_ESRAirData");
 
 						Map<String, String> daysMap1 = IDSSUtil.getPastDaysMapForPollutionScoreCard();
 						Map<String, List<PollutionScoreResponseVo>> resMap = new LinkedHashMap<String, List<PollutionScoreResponseVo>>();
@@ -359,7 +364,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 								Query query = new Query().with(page);
 								List<PollutionScoreResponseVo> esrList = new ArrayList<PollutionScoreResponseVo>();
 
-								logger.info("getComplainceScoreCardData : " + days);
+								logger.info("getPollutionScoreCard_ESRAirData : " + days);
 								// query.addCriteria(Criteria.where("created").gte(days));
 
 								String[] dateParts = days.split("-");
@@ -405,7 +410,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 					if (type.equalsIgnoreCase("ConsentedFuel")) {
 
-						logger.info("getComplainceScoreCardData");
+						logger.info("getPollutionScoreCard_ConsentedFuelData");
 
 						Map<String, List<PollutionScoreResponseVo>> resMap = new LinkedHashMap<String, List<PollutionScoreResponseVo>>();
 
@@ -416,7 +421,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 							for (String days : daysMap1.keySet()) {
 								Query query = new Query().with(page);
-								logger.info("getComplainceScoreCardConsentedFuelData : " + days);
+								logger.info("getPollutionScoreCard_ConsentedFuelData : " + days);
 
 								query.addCriteria(Criteria.where("industryid").is(cf.getIndustryId()));
 
@@ -451,7 +456,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 					}
 					if (type.equalsIgnoreCase("ESRFuel")) {
 
-						logger.info("getComplainceScoreCardData");
+						logger.info("getPollutionScoreCard_ESRFuelData");
 
 						Map<String, List<PollutionScoreResponseVo>> resMap = new LinkedHashMap<String, List<PollutionScoreResponseVo>>();
 
@@ -464,7 +469,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 								List<PollutionScoreResponseVo> esrFuelList = new ArrayList<PollutionScoreResponseVo>();
 
 								Query query = new Query().with(page);
-								logger.info("getComplainceScoreCard_ESRFuelData : " + days);
+								logger.info("getPollutionScoreCard_ESRFuelData : " + days);
 
 								String[] dateParts = days.split("-");
 
@@ -512,7 +517,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 					}
 					if (type.equalsIgnoreCase("ConsentedHW")) {
 
-						logger.info("getComplainceScoreCardData");
+						logger.info("getPollutionScoreCard_ConsentedHWData");
 
 						Map<String, List<PollutionScoreResponseVo>> resMap = new LinkedHashMap<String, List<PollutionScoreResponseVo>>();
 
@@ -525,7 +530,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 								List<PollutionScoreResponseVo> cHWList = new ArrayList<PollutionScoreResponseVo>();
 
 								Query query = new Query().with(page);
-								logger.info("getComplainceScoreCard_ConsentedHWData : " + days);
+								logger.info("getPollutionScoreCard_ConsentedHWData : " + days);
 
 								query.addCriteria(Criteria.where("Industry_id").is(cf.getIndustryId()));
 
@@ -557,7 +562,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 					}
 					if (type.equalsIgnoreCase("EsrHW")) {
 
-						logger.info("getComplainceScoreCardData");
+						logger.info("getPollutionScoreCard_ConsentedHWData");
 						Map<String, List<PollutionScoreResponseVo>> resMap = new LinkedHashMap<String, List<PollutionScoreResponseVo>>();
 
 						Map<String, String> daysMap1 = IDSSUtil.getPastDaysMapForPollutionScoreCard();
@@ -569,7 +574,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 								List<PollutionScoreResponseVo> esrHWList = new ArrayList<PollutionScoreResponseVo>();
 
 								Query query = new Query().with(page);
-								logger.info("getComplainceScoreCard_ConsentedHWData : " + days);
+								logger.info("getPollutionScoreCard_ConsentedHWData : " + days);
 
 								query.addCriteria(Criteria.where("Industry_id").is(cf.getIndustryId()));
 
@@ -616,7 +621,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 					if (type.equalsIgnoreCase("ConsentedRESOURCES")) {
 
-						logger.info("getComplainceScoreCard_ConsentedRESOURCESData");
+						logger.info("getPollutionScoreCard_ConsentedRESOURCESData");
 						Map<String, List<PollutionScoreResponseVo>> resMap = new LinkedHashMap<String, List<PollutionScoreResponseVo>>();
 
 						Map<String, String> daysMap1 = IDSSUtil.getPastDaysMapForPollutionScoreCard();
@@ -626,7 +631,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 							for (String days : daysMap1.keySet()) {
 								Query query = new Query().with(page);
-								logger.info("getComplainceScoreCard_ConsentedRESOURCESData : " + days);
+								logger.info("getPollutionScoreCard_ConsentedRESOURCESData : " + days);
 
 								query.addCriteria(Criteria.where("industryId").is(cf.getIndustryId()));
 
@@ -663,7 +668,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 					}
 					if (type.equalsIgnoreCase("EsrRESOURCES")) {
 
-						logger.info("getComplainceScoreCard_ESRResourcesData");
+						logger.info("getPollutionScoreCard_ESRResourcesData");
 
 						Map<String, List<PollutionScoreResponseVo>> resMap = new LinkedHashMap<String, List<PollutionScoreResponseVo>>();
 
@@ -676,7 +681,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 								List<PollutionScoreResponseVo> eResList = new ArrayList<PollutionScoreResponseVo>();
 
 								Query query = new Query().with(page);
-								logger.info("getComplainceScoreCard_ESRResourcesData : " + days);
+								logger.info("getPollutionScoreCard_ESRResourcesData : " + days);
 
 								String[] dateParts = days.split("-");
 
@@ -721,9 +726,10 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 							responseMap.put(type, resMap);
 						}
 					}
+
 					if (type.equalsIgnoreCase("ConsentedStack")) {
 
-						logger.info("getComplainceScoreCard_ConsentedStackData");
+						logger.info("getPollutionScoreCard_ConsentedStackData");
 
 						Map<String, List<PollutionScoreResponseVo>> resMap = new LinkedHashMap<String, List<PollutionScoreResponseVo>>();
 
@@ -736,7 +742,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 								List<PollutionScoreResponseVo> cStList = new ArrayList<PollutionScoreResponseVo>();
 
 								Query query = new Query().with(page);
-								logger.info("getComplainceScoreCard_ConsentedStackData : " + days);
+								logger.info("getPollutionScoreCard_ConsentedStackData : " + days);
 
 								query.addCriteria(Criteria.where("industryId").is(cf.getIndustryId()));
 
@@ -768,6 +774,52 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 						}
 
 					}
+					if (type.equalsIgnoreCase("OCEMSData")) {
+
+						logger.info("getPollutionScoreCard_OCEMSData");
+
+						Map<String, List<PollutionScoreResponseVo>> resMap = new LinkedHashMap<String, List<PollutionScoreResponseVo>>();
+
+						Map<String, String> daysMap1 = IDSSUtil.getPastDaysMap();
+
+						if (null != cf) {
+
+							for (String days : daysMap1.keySet()) {
+
+								List<PollutionScoreResponseVo> ocemsList = new ArrayList<PollutionScoreResponseVo>();
+
+								Query query = new Query().with(page);
+								logger.info("getPollutionScoreCard_OCEMSData : " + days);
+
+								query.addCriteria(Criteria.where("industry_name").is(cf.getIndustryName()));
+
+								// System.out.println(mongoTemplate.count(query,OCEMS_data.class));
+
+								List<OCEMS_data> filteredStackList = mongoTemplate.find(query, OCEMS_data.class);
+								Page<OCEMS_data> cPage = PageableExecutionUtils.getPage(filteredStackList, page,
+										() -> mongoTemplate.count(query, OCEMS_data.class));
+
+								List<OCEMS_data> ocmsList = new ArrayList<OCEMS_data>(cPage.toList());
+
+								for (OCEMS_data ocmsListData : ocmsList) {
+
+									ocemsList.add(new PollutionScoreResponseVo(ocmsListData.getSite_id(),
+											ocmsListData.getIndustry_name(), ocmsListData.getIndustry(),
+											ocmsListData.getStation_name(), ocmsListData.getParameter_name(),
+											ocmsListData.getTime_stamp(), ocmsListData.getValue(),
+											ocmsListData.getUnits()));
+
+									resMap.put(daysMap1.get(days), ocemsList);
+
+								}
+
+							}
+							responseMap.put(type, resMap);
+
+						}
+
+					}
+
 				}
 			}
 		} catch (Exception e) {
