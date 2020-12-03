@@ -1,6 +1,7 @@
 com\eai\idss\dao\VisitsDaoImpl$1.class
 com\eai\idss\util\IDSSUtil.class
 com\eai\idss\vo\LegalGroupByVo.class
+com\eai\idss\dao\GenericDaoImpl$6.class
 com\eai\idss\dao\ConcentDaoImpl$4.class
 com\eai\idss\vo\MyVisitsIndustries.class
 com\eai\idss\dao\GenericDaoImpl$3.class
@@ -22,6 +23,7 @@ com\eai\idss\vo\ConcentFilter.class
 com\eai\idss\dao\VisitsDaoImpl.class
 com\eai\idss\repository\UserRepository.class
 com\eai\idss\vo\ConcentByRegionVo.class
+com\eai\idss\configuration\WebSecurityConfiguration$1.class
 com\eai\idss\dao\VisitsDaoImpl$4.class
 com\eai\idss\vo\MyVisits.class
 com\eai\idss\vo\DashboardRequest.class

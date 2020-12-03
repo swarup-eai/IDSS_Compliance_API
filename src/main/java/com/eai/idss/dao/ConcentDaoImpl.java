@@ -71,7 +71,7 @@ public class ConcentDaoImpl implements ConcentDao {
 	                    .forEach(new Consumer<Document>() {
 		    	                @Override
 		    	                public void accept(Document document) {
-		    	                    System.out.println(document.toJson());
+		    	                    logger.info(document.toJson());
 									try {
 										TileVo tVo = new ObjectMapper().readValue(document.toJson(), TileVo.class);
 										tVoList.add(tVo);
@@ -156,7 +156,7 @@ public class ConcentDaoImpl implements ConcentDao {
 		            .forEach(new Consumer<Document>() {
 			                @Override
 			                public void accept(Document document) {
-			                    System.out.println(document.toJson());
+			                    logger.info(document.toJson());
 								try {
 									TileVo tVo = new ObjectMapper().readValue(document.toJson(), TileVo.class);
 									tVoList.add(tVo);
@@ -241,9 +241,12 @@ public class ConcentDaoImpl implements ConcentDao {
 	                    .forEach(new Consumer<Document>() {
 		    	                @Override
 		    	                public void accept(Document document) {
-		    	                    System.out.println(document.toJson());
+		    	                    logger.info(document.toJson());
 									try {
 										ConcentByRegionVo crVo = new ObjectMapper().readValue(document.toJson(), ConcentByRegionVo.class);
+										String regionNameCamelCase = crVo.getRegion().replaceAll(" ", "").replaceAll("\"", "");
+										regionNameCamelCase = "" +Character.toLowerCase(regionNameCamelCase.charAt(0)) + regionNameCamelCase.substring(1);
+										crVo.setRegion(regionNameCamelCase);
 										TileVo tVo = new TileVo(crVo.getStatus(),crVo.getCount());
 										List<TileVo> concentStatusList = regionConcentMap.get(crVo.getRegion());
 										if(null==concentStatusList) concentStatusList = new ArrayList<TileVo>();
@@ -327,7 +330,7 @@ public class ConcentDaoImpl implements ConcentDao {
 	                    .forEach(new Consumer<Document>() {
 		    	                @Override
 		    	                public void accept(Document document) {
-		    	                    System.out.println(document.toJson());
+		    	                    logger.info(document.toJson());
 									try {
 										TileVo tVo = new ObjectMapper().readValue(document.toJson(), TileVo.class);
 										tVoList.add(tVo);
@@ -400,7 +403,7 @@ public class ConcentDaoImpl implements ConcentDao {
 	                    .forEach(new Consumer<Document>() {
 		    	                @Override
 		    	                public void accept(Document document) {
-		    	                    System.out.println(document.toJson());
+		    	                    logger.info(document.toJson());
 									try {
 										ConcentByStatusVo crVo = new ObjectMapper().readValue(document.toJson(), ConcentByStatusVo.class);
 										TileVo tVo = new TileVo(crVo.getStatus(),crVo.getCount());
@@ -507,7 +510,7 @@ public class ConcentDaoImpl implements ConcentDao {
 			}
 			
 	
-			System.out.println(mongoTemplate.count(query, Consent.class));
+			logger.info(mongoTemplate.count(query, Consent.class));
 			
 			List<Consent> filteredConsentList= 
 			mongoTemplate.find(query, Consent.class);

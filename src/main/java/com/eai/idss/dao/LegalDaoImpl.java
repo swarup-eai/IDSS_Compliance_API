@@ -71,7 +71,7 @@ public class LegalDaoImpl implements LegalDao {
 	                    .forEach(new Consumer<Document>() {
 		    	                @Override
 		    	                public void accept(Document document) {
-		    	                    System.out.println(document.toJson());
+		    	                    logger.info(document.toJson());
 									try {
 										TileVo tVo = new ObjectMapper().readValue(document.toJson(), TileVo.class);
 										tVoList.add(tVo);
@@ -154,7 +154,7 @@ public class LegalDaoImpl implements LegalDao {
 		            .forEach(new Consumer<Document>() {
 			                @Override
 			                public void accept(Document document) {
-			                    System.out.println(document.toJson());
+			                    logger.info(document.toJson());
 								try {
 									LegalGroupByVo lVo = new ObjectMapper().readValue(document.toJson(), LegalGroupByVo.class);
 									List<TileVo> lVoList = legalMap.get(lVo.getGroupBy());
@@ -255,9 +255,12 @@ public class LegalDaoImpl implements LegalDao {
 	                    .forEach(new Consumer<Document>() {
 		    	                @Override
 		    	                public void accept(Document document) {
-		    	                    System.out.println(document.toJson());
+		    	                    logger.info(document.toJson());
 									try {
 										ConcentByRegionVo crVo = new ObjectMapper().readValue(document.toJson(), ConcentByRegionVo.class);
+										String regionNameCamelCase = crVo.getRegion().replaceAll(" ", "").replaceAll("\"", "");
+										regionNameCamelCase = "" +Character.toLowerCase(regionNameCamelCase.charAt(0)) + regionNameCamelCase.substring(1);
+										crVo.setRegion(regionNameCamelCase);
 										TileVo tVo = new TileVo(crVo.getStatus(),crVo.getCount());
 										List<TileVo> concentStatusList = regionConcentMap.get(crVo.getRegion());
 										if(null==concentStatusList) concentStatusList = new ArrayList<TileVo>();
@@ -344,7 +347,7 @@ public class LegalDaoImpl implements LegalDao {
 	                    .forEach(new Consumer<Document>() {
 		    	                @Override
 		    	                public void accept(Document document) {
-		    	                    System.out.println(document.toJson());
+		    	                    logger.info(document.toJson());
 									try {
 										LegalSubRegionVo lsVo = new ObjectMapper().readValue(document.toJson(), LegalSubRegionVo.class);
 										List<TileVo> tVoList = subRegionMap.get(lsVo.getSubRegion());
@@ -428,7 +431,7 @@ public class LegalDaoImpl implements LegalDao {
 	                    .forEach(new Consumer<Document>() {
 		    	                @Override
 		    	                public void accept(Document document) {
-		    	                    System.out.println(document.toJson());
+		    	                    logger.info(document.toJson());
 									try {
 										LegalByTeamVo crVo = new ObjectMapper().readValue(document.toJson(), LegalByTeamVo.class);
 										
@@ -530,7 +533,7 @@ public class LegalDaoImpl implements LegalDao {
 			}
 			
 	
-			System.out.println(mongoTemplate.count(query, Legal.class));
+			logger.info(mongoTemplate.count(query, Legal.class));
 			
 			List<Legal> filteredLegalList= 
 			mongoTemplate.find(query, Legal.class);

@@ -29,9 +29,26 @@ public class IDSSUtil {
 		return regionList;
 	}
 	
+	public static List<String> getRegionListForJson(){
+		List<String> regionList = new ArrayList<String>();
+		regionList.add("mumbai");
+		regionList.add("kalyan");
+		regionList.add("kolhapur");
+		regionList.add("nagpur");
+		regionList.add("aurangabad");
+		regionList.add("nashik");
+		regionList.add("naviMumbai");
+		regionList.add("pune");
+		regionList.add("raigad");
+		regionList.add("thane");
+		regionList.add("chandrapur");
+		regionList.add("amravati");
+		return regionList;
+	}
+	
 	public static Map<String,List<TileVo>> getRegionMap(){
 		Map<String,List<TileVo>> regionMap = new LinkedHashMap<String, List<TileVo>>();
-		for(String region : IDSSUtil.getRegionList()) {
+		for(String region : IDSSUtil.getRegionListForJson()) {
 			regionMap.put(region, new ArrayList<TileVo>());
 		}
 		return regionMap;
@@ -158,7 +175,7 @@ public class IDSSUtil {
 		Map<String,String> daysMap = new LinkedHashMap<String, String>();
 		daysMap.put(date30DaysBack, "_30Days");
 		daysMap.put(date90DaysBack, "_90Days");
-		daysMap.put(date120DaysBack, "120Days");
+		daysMap.put(date120DaysBack, "_120Days");
 		daysMap.put("1970-01-01", "_allDays");
 		return daysMap;
 	}
@@ -261,32 +278,32 @@ public class IDSSUtil {
 		
 		days.add(dateToday);
 		days.add(date5DaysBack);
-		daysMap.put("_0-5Days",days);
+		daysMap.put("_0To5Days",days);
 		
 		days = new ArrayList<String>();
 		days.add(date5DaysBack);
 		days.add(date15DaysBack);
-		daysMap.put("_5-15Days",days);
+		daysMap.put("_5To15Days",days);
 		
 		days = new ArrayList<String>();
 		days.add(date15DaysBack);
 		days.add(date30DaysBack);
-		daysMap.put("_15-30Days",days);
+		daysMap.put("_15To30Days",days);
 
 		days = new ArrayList<String>();
 		days.add(date30DaysBack);
 		days.add("1970-01-01");
-		daysMap.put("_30-allDays",days);
+		daysMap.put("_30ToAllDays",days);
 		
 		days = new ArrayList<String>();
 		days.add(date90DaysBack);
 		days.add("1970-01-01");
-		daysMap.put("_90-allDays",days);
+		daysMap.put("_90ToAllDays",days);
 		
 		days = new ArrayList<String>();
 		days.add(date120DaysBack);
 		days.add("1970-01-01");
-		daysMap.put("_120-allDays",days);
+		daysMap.put("_120ToAllDays",days);
 		
 		return daysMap;
 	}
@@ -305,32 +322,32 @@ public class IDSSUtil {
 		
 		days.add(dateToday);
 		days.add(date7DaysBack);
-		daysMap.put("_0-7Days",days);
+		daysMap.put("_0To7Days",days);
 		
 		days = new ArrayList<String>();
 		days.add(date7DaysBack);
 		days.add(date15DaysBack);
-		daysMap.put("_7-15Days",days);
+		daysMap.put("_7To15Days",days);
 		
 		days = new ArrayList<String>();
 		days.add(date15DaysBack);
 		days.add(date30DaysBack);
-		daysMap.put("_15-30Days",days);
+		daysMap.put("_15To30Days",days);
 
 		days = new ArrayList<String>();
 		days.add(date30DaysBack);
 		days.add("1970-01-01");
-		daysMap.put("_30-allDays",days);
+		daysMap.put("_30ToAllDays",days);
 		
 		days = new ArrayList<String>();
 		days.add(date90DaysBack);
 		days.add("1970-01-01");
-		daysMap.put("_90-allDays",days);
+		daysMap.put("_90ToAllDays",days);
 		
 		days = new ArrayList<String>();
 		days.add(date120DaysBack);
 		days.add("1970-01-01");
-		daysMap.put("_120-allDays",days);
+		daysMap.put("_120ToAllDays",days);
 		
 		return daysMap;
 	}

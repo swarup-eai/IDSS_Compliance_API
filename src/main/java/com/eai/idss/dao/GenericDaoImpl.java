@@ -60,7 +60,7 @@ public class GenericDaoImpl implements GenericDao {
 	                    .forEach(new Consumer<Document>() {
 		    	                @Override
 		    	                public void accept(Document document) {
-		    	                    System.out.println(document.toJson());
+		    	                    logger.info(document.toJson());
 									try {
 										TileVo tVo = new ObjectMapper().readValue(document.toJson(), TileVo.class);
 										if(!"Operate".equalsIgnoreCase(tVo.getCaseType()) && !"New".equalsIgnoreCase(tVo.getCaseType()) )
@@ -108,7 +108,7 @@ public class GenericDaoImpl implements GenericDao {
 	                    .forEach(new Consumer<Document>() {
 		    	                @Override
 		    	                public void accept(Document document) {
-		    	                    System.out.println(document.toJson());
+		    	                    logger.info(document.toJson());
 									try {
 										LegalTileVo ltVo = new ObjectMapper().readValue(document.toJson(), LegalTileVo.class);
 										TileVo tVoNew = new TileVo("new",ltVo.getNeu());
@@ -246,7 +246,7 @@ public class GenericDaoImpl implements GenericDao {
 		            .forEach(new Consumer<Document>() {
 			                @Override
 			                public void accept(Document document) {
-			                    System.out.println(document.toJson());
+			                    logger.info(document.toJson());
 								try {
 									TileVo tVo = new ObjectMapper().readValue(document.toJson(), TileVo.class);
 									tVoList.add(tVo);
@@ -276,7 +276,7 @@ public class GenericDaoImpl implements GenericDao {
 		            .forEach(new Consumer<Document>() {
 			                @Override
 			                public void accept(Document document) {
-			                    System.out.println(document.toJson());
+			                    logger.info(document.toJson());
 								try {
 									TileVo tVo = new ObjectMapper().readValue(document.toJson(), TileVo.class);
 									tVoList.add(tVo);
@@ -385,7 +385,7 @@ public class GenericDaoImpl implements GenericDao {
 		        .forEach(new Consumer<Document>() {
 		                @Override
 		                public void accept(Document document) {
-		                    System.out.println(document.toJson());
+		                    logger.info(document.toJson());
 							try {
 								MyVisits mvVo= new ObjectMapper().readValue(document.toJson(), MyVisits.class);
 								List<TileVo> tVoList = new ArrayList<TileVo>();
@@ -468,12 +468,49 @@ public class GenericDaoImpl implements GenericDao {
 	}
 
 	public List<TileVo> getTopPerformer(String region){
-		List<TileVo> lt = new ArrayList<TileVo>();
-		lt.add(new TileVo("Pune",4));
-		lt.add(new TileVo("Mumbai",3));
-		lt.add(new TileVo("Nasik",3));
-		lt.add(new TileVo("Nagpur",2));
-		
-		return lt;
+		List<TileVo> tVoList = new ArrayList<TileVo>();
+//		lt.add(new TileVo("Pune",4));
+//		lt.add(new TileVo("Mumbai",3));
+//		lt.add(new TileVo("Nasik",3));
+//		lt.add(new TileVo("Nagpur",2));
+		try {
+		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+	        MongoCollection<Document> collection = database.getCollection("topPerformance");
+			List<? extends Bson> pipeline = Arrays.asList(
+					new Document()
+	                .append("$sort", new Document()
+	                        .append("regionTpScore", -1.0)
+	                ),
+					new Document().append("$limit", 4),
+					new Document()
+		            .append("$project", new Document()
+		                    .append("_id", false)
+		                    .append("caseType", "region")
+		                    .append("caseCount", "regionTpScore")
+		            )
+			);
+			
+			collection.aggregate(pipeline)
+	        .allowDiskUse(false)
+	        .forEach(new Consumer<Document>() {
+	                @Override
+	                public void accept(Document document) {
+	                    logger.info(document.toJson());
+						try {
+							TileVo tVo = new ObjectMapper().readValue(document.toJson(), TileVo.class);
+							tVoList.add(tVo);
+						} catch (JsonMappingException e) {
+							e.printStackTrace();
+						} catch (JsonProcessingException e) {
+							e.printStackTrace();
+						}
+	                    
+	                }
+	            }
+	        );
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return tVoList;
 	}
 }
