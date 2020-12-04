@@ -23,6 +23,7 @@ import com.eai.idss.model.User_Filters;
 import com.eai.idss.repository.UserFiltersRepository;
 import com.eai.idss.repository.UserRepository;
 import com.eai.idss.vo.ComlianceScoreFilter;
+import com.eai.idss.vo.ComparisonVo;
 import com.eai.idss.vo.IndustryMasterRequest;
 import com.eai.idss.vo.PollutionScoreFilter;
 import com.eai.idss.vo.PollutionScoreResponseVo;
@@ -150,6 +151,20 @@ public class IndustryMasterController {
    			return new ResponseEntity("Exception in /industry-master-filter/pollution-score", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
         return new ResponseEntity<Map<String,Map<String,List<PollutionScoreResponseVo>>>>(iml,HttpStatus.OK);
+        
+    }
+    
+    @RequestMapping(method = RequestMethod.POST, value = "/industry-master-filter/comparison",  produces = "application/json")
+   	public ResponseEntity  <Map<String,Map<String,List<ComparisonVo>>>> getComparisonData(@RequestBody PollutionScoreFilter imr,Pageable pageable) throws IOException {
+    	Map<String,Map<String,List<ComparisonVo>>> iml = null;
+       	try {
+   	    	iml=imd.getComparisonData(imr,pageable);
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   			
+   			return new ResponseEntity("Exception in /industry-master-filter/comparison", HttpStatus.INTERNAL_SERVER_ERROR);
+   		}
+        return new ResponseEntity<Map<String,Map<String,List<ComparisonVo>>>>(iml,HttpStatus.OK);
         
     }
 }
