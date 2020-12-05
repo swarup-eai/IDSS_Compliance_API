@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.eai.idss.vo.DashboardRequest;
 import com.eai.idss.vo.TileVo;
+import com.eai.idss.vo.TopPerfVo;
 
 public interface GenericDao {
 
@@ -16,5 +17,5 @@ public interface GenericDao {
 	
 	public Map<String,List<TileVo>> getMyVisitsData(String userName);
 	
-	public List<TileVo> getTopPerformer(String region);
+	public List<TopPerfVo> getTopPerformer(String region);
 }

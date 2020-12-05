@@ -6,7 +6,7 @@ import java.util.Map;
 public class DashboardResponse {
 
 	private Map<String,Map<String,List<TileVo>>> dashboardMap;
-	private List<TileVo> topPerformers;
+	private List<TopPerfVo> topPerformers;
 
 	
 	public Map<String, Map<String, List<TileVo>>> getDashboardMap() {
@@ -15,10 +15,10 @@ public class DashboardResponse {
 	public void setDashboardMap(Map<String, Map<String, List<TileVo>>> dashboardMap) {
 		this.dashboardMap = dashboardMap;
 	}
-	public List<TileVo> getTopPerformers() {
+	public List<TopPerfVo> getTopPerformers() {
 		return topPerformers;
 	}
-	public void setTopPerformers(List<TileVo> topPerformers) {
+	public void setTopPerformers(List<TopPerfVo> topPerformers) {
 		this.topPerformers = topPerformers;
 	}
 

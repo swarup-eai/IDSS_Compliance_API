@@ -24,6 +24,7 @@ import com.eai.idss.vo.LegalTileVo;
 import com.eai.idss.vo.MyVisits;
 import com.eai.idss.vo.MyVisitsIndustries;
 import com.eai.idss.vo.TileVo;
+import com.eai.idss.vo.TopPerfVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -467,12 +468,8 @@ public class GenericDaoImpl implements GenericDao {
 		return pipeline;
 	}
 
-	public List<TileVo> getTopPerformer(String region){
-		List<TileVo> tVoList = new ArrayList<TileVo>();
-//		lt.add(new TileVo("Pune",4));
-//		lt.add(new TileVo("Mumbai",3));
-//		lt.add(new TileVo("Nasik",3));
-//		lt.add(new TileVo("Nagpur",2));
+	public List<TopPerfVo> getTopPerformer(String region){
+		List<TopPerfVo> tVoList = new ArrayList<TopPerfVo>();
 		try {
 		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
 	        MongoCollection<Document> collection = database.getCollection("topPerformance");
@@ -485,8 +482,8 @@ public class GenericDaoImpl implements GenericDao {
 					new Document()
 		            .append("$project", new Document()
 		                    .append("_id", false)
-		                    .append("caseType", "region")
-		                    .append("caseCount", "regionTpScore")
+		                    .append("region", "$region")
+		                    .append("rating", "$regionTpScore")
 		            )
 			);
 			
@@ -497,7 +494,10 @@ public class GenericDaoImpl implements GenericDao {
 	                public void accept(Document document) {
 	                    logger.info(document.toJson());
 						try {
-							TileVo tVo = new ObjectMapper().readValue(document.toJson(), TileVo.class);
+							TopPerfVo tVo = new ObjectMapper().readValue(document.toJson(), TopPerfVo.class);
+							double d = tVo.getRating()*5/100;
+							double rating = (float)(Math.ceil(d * 4) / 4d);
+							tVo.setRating(rating);
 							tVoList.add(tVo);
 						} catch (JsonMappingException e) {
 							e.printStackTrace();
