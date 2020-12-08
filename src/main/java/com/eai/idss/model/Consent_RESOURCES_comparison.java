@@ -18,6 +18,7 @@ public class Consent_RESOURCES_comparison {
 
 	}
 
+	
 	public Consent_RESOURCES_comparison(String _id, Double industryId, String industryName, String rawMaterialName,
 			Double uom, String name) {
 		super();
