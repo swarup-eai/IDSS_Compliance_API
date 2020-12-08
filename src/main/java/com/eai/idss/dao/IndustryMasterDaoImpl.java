@@ -37,8 +37,6 @@ import com.eai.idss.model.Consent_HW_Comparison;
 import com.eai.idss.model.Consent_SKU_comparison;
 import com.eai.idss.model.Consent_STACK_comparison;
 import com.eai.idss.model.Consent_WATER_comparison;
-//import com.eai.idss.model.Consent_FUEL_comparison;
-//import com.eai.idss.model.Consent_WATER_comparison;
 import com.eai.idss.model.Consented_Air_Pollution_Comparison;
 import com.eai.idss.model.ESR_Air_Pollution_Comparison;
 import com.eai.idss.model.ESR_FUEL_comparison;
@@ -46,8 +44,6 @@ import com.eai.idss.model.ESR_RESOURCES_comparison;
 import com.eai.idss.model.ESR_SKU_comparison;
 import com.eai.idss.model.ESR_WATER_comparison;
 
-//import com.eai.idss.model.ESR_Air_Pollution_Comparison;
-//import com.eai.idss.model.ESR_WATER_comparison;
 @Repository
 public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
