@@ -364,6 +364,14 @@ public class IDSSUtil {
 		List<String> consentedESRWaterParamList = new ArrayList<String>();
 		consentedESRWaterParamList.add("treatedEffluentBod");
 		consentedESRWaterParamList.add("treatedEffluentCod");
+		consentedESRWaterParamList.add("EFFLUENT");
+		consentedESRWaterParamList.add("CHEMICAL SLUDGE");
+		consentedESRWaterParamList.add("BOD");
+		consentedESRWaterParamList.add("COD");
+		consentedESRWaterParamList.add("TDS");
+		consentedESRWaterParamList.add("TSS");
+		consentedESRWaterParamList.add("SS");
+		consentedESRWaterParamList.add("CHLORIDES");
 
 		return consentedESRWaterParamList;
 	}
@@ -407,6 +415,26 @@ public class IDSSUtil {
 		return consentedESRResourceParamList;
 	}
 
+	public static List<String> getConsentedESRSkuParam() {
+		List<String> consentedESRSkuParamList = new ArrayList<String>();
+		consentedESRSkuParamList.add("M.S. TMT BARS &,ROUND BARS, CTD BARS ,M.S. INGOT, BILLETS, RUNNERS, RI...");
+		consentedESRSkuParamList.add("MICRONUTRIENTS & BIO FERTILIZERS");
+		consentedESRSkuParamList.add("FABRICATION JOB");
+		consentedESRSkuParamList.add("STONE CRUSHED");
+		consentedESRSkuParamList.add("AUTOMOBILE COMPONENT, CAST COMPONENT, GENERAL FABRICATION");
+		consentedESRSkuParamList.add("PRIMER");
+		consentedESRSkuParamList.add("EMULSION PAINT");
+		consentedESRSkuParamList.add("ACRYLIC DISTEMPER");
+		consentedESRSkuParamList.add("CEMENT BASED PUTTY");
+		consentedESRSkuParamList.add("BRASS,COPPER CIRCLE/SHEET/UTENSIL ,RODS AND PIPES");
+		consentedESRSkuParamList.add("GRILL, GATE & OTHER FABRICATION");
+		consentedESRSkuParamList.add("S.S. UTENCILS");
+		consentedESRSkuParamList.add("ENGINEERING & FABRICATION JOB WORK");
+		consentedESRSkuParamList.add("SUGAR");
+		
+		
+		return consentedESRSkuParamList;
+	}
 	public static List<String> getOCEMSParam() {
 		List<String> ocemsParamList = new ArrayList<String>();
 		ocemsParamList.add("Flow");

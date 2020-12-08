@@ -16,14 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eai.idss.dao.IndustryMasterDao;
-import com.eai.idss.model.Consented_Air_Pollution_Comparison;
 import com.eai.idss.model.IndustryMaster;
 import com.eai.idss.model.LegalDataMaster;
 import com.eai.idss.model.User_Filters;
 import com.eai.idss.repository.UserFiltersRepository;
-import com.eai.idss.repository.UserRepository;
 import com.eai.idss.vo.ComlianceScoreFilter;
-import com.eai.idss.vo.ComparisonVo;
 import com.eai.idss.vo.IndustryMasterRequest;
 import com.eai.idss.vo.PollutionScoreFilter;
 import com.eai.idss.vo.PollutionScoreResponseVo;
@@ -36,9 +33,6 @@ public class IndustryMasterController {
 	@Autowired
 	private IndustryMasterDao imd;
 	
-    @Autowired
-    private UserRepository userRepository;
-    
     @Autowired
     private UserFiltersRepository ufr;
 
@@ -140,6 +134,7 @@ public class IndustryMasterController {
         
     }
     
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(method = RequestMethod.POST, value = "/industry-master-filter/pollution-score",  produces = "application/json")
    	public ResponseEntity  <Map<String,Map<String,List<PollutionScoreResponseVo>>>> getPollutionScoreCardDatabyDate(@RequestBody PollutionScoreFilter imr,Pageable pageable) throws IOException {
     	Map<String,Map<String,List<PollutionScoreResponseVo>>> iml = null;
@@ -154,17 +149,18 @@ public class IndustryMasterController {
         
     }
     
-    @RequestMapping(method = RequestMethod.POST, value = "/industry-master-filter/comparison",  produces = "application/json")
-   	public ResponseEntity  <Map<String,Map<String,List<ComparisonVo>>>> getComparisonData(@RequestBody PollutionScoreFilter imr,Pageable pageable) throws IOException {
-    	Map<String,Map<String,List<ComparisonVo>>> iml = null;
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @RequestMapping(method = RequestMethod.GET, value = "/industry-master-filter/comparison",  produces = "application/json")
+   	public ResponseEntity  <Map<String,List<PollutionScoreResponseVo>>> getComparisonData() throws IOException {
+    	Map<String,List<PollutionScoreResponseVo>> iml = null;
        	try {
-   	    	iml=imd.getComparisonData(imr,pageable);
+   	    	iml=imd.getComparisonData();
    		} catch (Exception e) {
    			e.printStackTrace();
    			
    			return new ResponseEntity("Exception in /industry-master-filter/comparison", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
-        return new ResponseEntity<Map<String,Map<String,List<ComparisonVo>>>>(iml,HttpStatus.OK);
+        return new ResponseEntity<Map<String,List<PollutionScoreResponseVo>>>(iml,HttpStatus.OK);
         
     }
 }

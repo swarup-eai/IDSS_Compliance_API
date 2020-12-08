@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +29,6 @@ import com.eai.idss.model.OCEMS_data;
 import com.eai.idss.model.Consent_RESOURCES_comparison;
 import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.ComlianceScoreFilter;
-import com.eai.idss.vo.ComparisonVo;
 import com.eai.idss.vo.IndustryMasterRequest;
 import com.eai.idss.vo.PollutionScoreFilter;
 import com.eai.idss.vo.PollutionScoreResponseVo;
@@ -56,6 +54,8 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	@Autowired
 	MongoTemplate mongoTemplate;
 	public static final Logger logger = Logger.getLogger(IndustryMasterDaoImpl.class);
+	public static List<PollutionScoreResponseVo> consentedComparisonList = new ArrayList<PollutionScoreResponseVo>();
+	public static List<PollutionScoreResponseVo> esrComparisonList = new ArrayList<PollutionScoreResponseVo>();
 
 	public List<IndustryMaster> getIndustryMasterPaginatedRecords(IndustryMasterRequest imr, Pageable page) {
 
@@ -188,8 +188,6 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			String param = "";
 			logger.info("getPollutionScoreCardData");
 
-			Map<String, String> daysMap = IDSSUtil.getPastDaysMapForPollutionScoreCard();
-
 			List<Map<String, String>> paramList = new ArrayList<>();
 
 			paramList.addAll(cf.getParamList());
@@ -232,7 +230,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 						if (consentedESRWaterParamList.contains(param)) {
 							type = "ESRWater";
 						}
-						
+
 					}
 
 					if (type.equalsIgnoreCase("Consented")) {
@@ -288,7 +286,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 						}
 
 					}
-					
+
 					if (type.equalsIgnoreCase("Consented")) {
 						List<String> consentedESRSkuParamList = IDSSUtil.getConsentedESRSkuParam();
 						if (consentedESRSkuParamList.contains(param)) {
@@ -303,7 +301,6 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 						}
 
 					}
-					
 
 					if (type.equalsIgnoreCase("OCEMS")) {
 						List<String> ocemsParamList = IDSSUtil.getOCEMSParam();
@@ -345,7 +342,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 								List<Consented_Air_Pollution_Comparison> consentedAirList = new ArrayList<Consented_Air_Pollution_Comparison>(
 										cPage.toList());
-
+								int count = 0;
 								for (Consented_Air_Pollution_Comparison cAir : consentedAirList) {
 
 									String created = cAir.getCreated();
@@ -357,9 +354,19 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 									logger.info("filter date: " + date1);
 
 									if (date2.after(date1)) {
+										count++;
 										consentedList.add(new PollutionScoreResponseVo(cAir.get_id(),
 												cAir.getIndustryId(), cAir.getIndustryname(), cAir.getConcentration(),
 												cAir.getConcentrationUom(), cAir.getCreated(), cAir.getParameter()));
+
+										if (count == 1) {
+
+											consentedComparisonList.add(
+													new PollutionScoreResponseVo(cAir.get_id(), cAir.getIndustryId(),
+															cAir.getIndustryname(), cAir.getConcentration(),
+															cAir.getConcentrationUom(), cAir.getParameter()));
+
+										}
 									}
 
 									resMap.put(daysMap1.get(days), consentedList);
@@ -380,9 +387,11 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 						Map<String, List<PollutionScoreResponseVo>> resMap = new LinkedHashMap<String, List<PollutionScoreResponseVo>>();
 
 						if (null != cf) {
-
+							int count = 0;
 							for (String days : daysMap1.keySet()) {
 								Query query = new Query().with(page);
+
+								count++;
 								List<PollutionScoreResponseVo> esrList = new ArrayList<PollutionScoreResponseVo>();
 
 								logger.info("getPollutionScoreCard_ESRAirData : " + days);
@@ -405,9 +414,8 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 								List<ESR_Air_Pollution_Comparison> filteredList = mongoTemplate.find(query,
 										ESR_Air_Pollution_Comparison.class);
-								Page<ESR_Air_Pollution_Comparison> cPage = PageableExecutionUtils.getPage(
-										filteredList, page,
-										() -> mongoTemplate.count(query, ESR_Air_Pollution_Comparison.class));
+								Page<ESR_Air_Pollution_Comparison> cPage = PageableExecutionUtils.getPage(filteredList,
+										page, () -> mongoTemplate.count(query, ESR_Air_Pollution_Comparison.class));
 
 								List<ESR_Air_Pollution_Comparison> esrAirList = new ArrayList<ESR_Air_Pollution_Comparison>(
 										cPage.toList());
@@ -417,6 +425,15 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 									esrList.add(new PollutionScoreResponseVo(cAir.get_id(), cAir.getIndustryid(),
 											cAir.getCompanyname(), cAir.getAirpollutantquantity(), cAir.getQtyuom(),
 											cAir.getFinantialyear()));
+
+									if (count == 1) {
+
+										esrComparisonList
+												.add(new PollutionScoreResponseVo(cAir.get_id(), cAir.getIndustryid(),
+														cAir.getCompanyname(), cAir.getAirpollutantquantity(),
+														cAir.getQtyuom(), cAir.getFinantialyear()));
+
+									}
 
 									resMap.put(daysMap1.get(days), esrList);
 
@@ -438,8 +455,10 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 						if (null != cf) {
 
+							int count = 0;
 							for (String days : daysMap1.keySet()) {
 								Query query = new Query().with(page);
+								count++;
 								List<PollutionScoreResponseVo> consentedList = new ArrayList<PollutionScoreResponseVo>();
 
 								logger.info("getPollutionScoreCard_ConsentedWaterData : " + days);
@@ -455,8 +474,8 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 								List<Consent_WATER_comparison> filteredList = mongoTemplate.find(query,
 										Consent_WATER_comparison.class);
-								Page<Consent_WATER_comparison> cPage = PageableExecutionUtils.getPage(
-										filteredList, page,
+								Page<Consent_WATER_comparison> cPage = PageableExecutionUtils.getPage(filteredList,
+										page,
 										() -> mongoTemplate.count(query, Consented_Air_Pollution_Comparison.class));
 
 								List<Consent_WATER_comparison> consentedWaterList = new ArrayList<Consent_WATER_comparison>(
@@ -464,21 +483,32 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 								for (Consent_WATER_comparison cAir : consentedWaterList) {
 
-									/*String created = cAir.getCreated();
+									/*
+									 * String created = cAir.getCreated();
+									 * 
+									 * Date date2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(created); Date
+									 * date1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(days +
+									 * " 00:00:00");
+									 * 
+									 * logger.info("created date: " + date2); logger.info("filter date: " + date1);
+									 */
+									// if (date2.after(date1)) {
+									consentedList.add(new PollutionScoreResponseVo(cAir.get_id(), cAir.getIndustryId(),
+											cAir.getIndustryName(), cAir.getUom(), cAir.getName(),
+											cAir.getTreatedEffluentBod(), cAir.getTreatedEffluentCod(),
+											cAir.getTreatedEffluentSs(), cAir.getTreatedEffluentTds(),
+											cAir.getTreatedEffluentPh()));
 
-									Date date2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(created);
-									Date date1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(days + " 00:00:00");
+									// }
 
-									logger.info("created date: " + date2);
-									logger.info("filter date: " + date1);
-*/
-									//if (date2.after(date1)) {
-										consentedList.add(new PollutionScoreResponseVo(cAir.get_id(),
+									if (count == 1) {
+										consentedComparisonList.add(new PollutionScoreResponseVo(cAir.get_id(),
 												cAir.getIndustryId(), cAir.getIndustryName(), cAir.getUom(),
-												cAir.getName(), cAir.getTreatedEffluentBod(), cAir.getTreatedEffluentCod(),cAir.getTreatedEffluentSs(),cAir.getTreatedEffluentTds(),cAir.getTreatedEffluentPh()));
-										
-										
-									//}
+												cAir.getName(), cAir.getTreatedEffluentBod(),
+												cAir.getTreatedEffluentCod(), cAir.getTreatedEffluentSs(),
+												cAir.getTreatedEffluentTds(), cAir.getTreatedEffluentPh()));
+
+									}
 
 									resMap.put(daysMap1.get(days), consentedList);
 
@@ -498,9 +528,10 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 						Map<String, List<PollutionScoreResponseVo>> resMap = new LinkedHashMap<String, List<PollutionScoreResponseVo>>();
 
 						if (null != cf) {
-
+							int count = 0;
 							for (String days : daysMap1.keySet()) {
 								Query query = new Query().with(page);
+								count++;
 								List<PollutionScoreResponseVo> esrList = new ArrayList<PollutionScoreResponseVo>();
 
 								logger.info("getPollutionScoreCard_ESRWaterData : " + days);
@@ -512,19 +543,18 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 								int inDate = Integer.parseInt(year);
 
-							//	query.addCriteria(Criteria.where("finantialyear").gte(inum));
+								// query.addCriteria(Criteria.where("finantialyear").gte(inum));
 
 								query.addCriteria(Criteria.where("industryId").is(cf.getIndustryId()));
 
 								if (StringUtils.hasText(param))
 									query.addCriteria(Criteria.where("waterPollutants").is(param));
 
-							//	System.out.println(mongoTemplate.count(query, ESR_WATER_comparison.class));
+								// System.out.println(mongoTemplate.count(query, ESR_WATER_comparison.class));
 
 								List<ESR_WATER_comparison> filteredList = mongoTemplate.find(query,
 										ESR_WATER_comparison.class);
-								Page<ESR_WATER_comparison> cPage = PageableExecutionUtils.getPage(
-										filteredList, page,
+								Page<ESR_WATER_comparison> cPage = PageableExecutionUtils.getPage(filteredList, page,
 										() -> mongoTemplate.count(query, ESR_WATER_comparison.class));
 
 								List<ESR_WATER_comparison> esrWaterList = new ArrayList<ESR_WATER_comparison>(
@@ -532,16 +562,24 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 								for (ESR_WATER_comparison eWater : esrWaterList) {
 
-									
-									int financialYr=eWater.getFinantialyear();
-									
-									
-									if(financialYr>=inDate) {
-									esrList.add(new PollutionScoreResponseVo(eWater.get_id(), eWater.getIndustryid(),
-											eWater.getCompanyname(), eWater.getWaterPollutants(), eWater.getWaterPollutantQuantity(),
-											eWater.getUomName(),eWater.getFinantialyear()));
-									
-									resMap.put(daysMap1.get(days), esrList);
+									int financialYr = eWater.getFinantialyear();
+
+									if (financialYr >= inDate) {
+										esrList.add(new PollutionScoreResponseVo(eWater.get_id(),
+												eWater.getIndustryid(), eWater.getCompanyname(),
+												eWater.getWaterPollutants(), eWater.getWaterPollutantQuantity(),
+												eWater.getUomName(), eWater.getFinantialyear()));
+
+										if (count == 1) {
+
+											esrComparisonList.add(new PollutionScoreResponseVo(eWater.get_id(),
+													eWater.getIndustryid(), eWater.getCompanyname(),
+													eWater.getWaterPollutants(), eWater.getWaterPollutantQuantity(),
+													eWater.getUomName(), eWater.getFinantialyear()));
+
+										}
+
+										resMap.put(daysMap1.get(days), esrList);
 									}
 
 								}
@@ -564,8 +602,10 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 						if (null != cf) {
 
+							int count = 0;
 							for (String days : daysMap1.keySet()) {
 								Query query = new Query().with(page);
+								count++;
 								logger.info("getPollutionScoreCard_ConsentedFuelData : " + days);
 
 								query.addCriteria(Criteria.where("industryid").is(cf.getIndustryId()));
@@ -590,6 +630,13 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 											cFuel.getIndustryName(), cFuel.getUom(), cFuel.getName(),
 											cFuel.getFuelName()));
 
+									if (count == 1) {
+
+										consentedComparisonList.add(new PollutionScoreResponseVo(cFuel.get_id(),
+												cFuel.getIndustryId(), cFuel.getIndustryName(), cFuel.getUom(),
+												cFuel.getName(), cFuel.getFuelName()));
+									}
+
 									resMap.put(daysMap1.get(days), cFuelList);
 
 								}
@@ -608,9 +655,9 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 						Map<String, String> daysMap1 = IDSSUtil.getPastDaysMapForPollutionScoreCard();
 
 						if (null != cf) {
-
+							int count = 0;
 							for (String days : daysMap1.keySet()) {
-
+								count++;
 								List<PollutionScoreResponseVo> esrFuelList = new ArrayList<PollutionScoreResponseVo>();
 
 								Query query = new Query().with(page);
@@ -649,6 +696,14 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 												esrFuel.getIndustryId(), esrFuel.getFuelName(), esrFuel.getFuelUom(),
 												esrFuel.getName(), esrFuel.getFinantialYear()));
 
+										if (count == 1) {
+
+											esrComparisonList.add(new PollutionScoreResponseVo(esrFuel.get_id(),
+													esrFuel.getIndustryId(), esrFuel.getFuelName(),
+													esrFuel.getFuelUom(), esrFuel.getName(),
+													esrFuel.getFinantialYear()));
+
+										}
 										resMap.put(daysMap1.get(days), esrFuelList);
 
 									}
@@ -669,9 +724,9 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 						Map<String, String> daysMap1 = IDSSUtil.getPastDaysMapForPollutionScoreCard();
 
 						if (null != cf) {
-
+							int count = 0;
 							for (String days : daysMap1.keySet()) {
-
+								count++;
 								List<PollutionScoreResponseVo> cHWList = new ArrayList<PollutionScoreResponseVo>();
 
 								Query query = new Query().with(page);
@@ -696,6 +751,13 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 									cHWList.add(new PollutionScoreResponseVo(chwlst.get_id(), chwlst.getIndustryName(),
 											chwlst.getIndustry_id(), chwlst.getUOM(), chwlst.getName(),
 											chwlst.getUOM_name()));
+
+									if (count == 1) {
+
+										consentedComparisonList.add(new PollutionScoreResponseVo(chwlst.get_id(),
+												chwlst.getIndustryName(), chwlst.getIndustry_id(), chwlst.getUOM(),
+												chwlst.getName(), chwlst.getUOM_name()));
+									}
 									resMap.put(daysMap1.get(days), cHWList);
 
 								}
@@ -713,9 +775,9 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 						Map<String, String> daysMap1 = IDSSUtil.getPastDaysMapForPollutionScoreCard();
 
 						if (null != cf) {
-
+							int count = 0;
 							for (String days : daysMap1.keySet()) {
-
+								count++;
 								List<PollutionScoreResponseVo> esrHWList = new ArrayList<PollutionScoreResponseVo>();
 
 								Query query = new Query().with(page);
@@ -751,6 +813,12 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 												esrhw.getIndustry_id(), esrhw.getCompany_name(), esrhw.getCreated(),
 												esrhw.getName(), esrhw.getUom(), esrhw.getUOM_name()));
 
+										if (count == 1) {
+											esrComparisonList.add(new PollutionScoreResponseVo(esrhw.get_id(),
+													esrhw.getIndustry_id(), esrhw.getCompany_name(), esrhw.getCreated(),
+													esrhw.getName(), esrhw.getUom(), esrhw.getUOM_name()));
+
+										}
 									}
 
 									resMap.put(daysMap1.get(days), esrHWList);
@@ -773,11 +841,11 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 						List<PollutionScoreResponseVo> cFuelList = new ArrayList<PollutionScoreResponseVo>();
 
 						if (null != cf) {
-
+							int count = 0;
 							for (String days : daysMap1.keySet()) {
 								Query query = new Query().with(page);
 								logger.info("getPollutionScoreCard_ConsentedRESOURCESData : " + days);
-
+								count++;
 								query.addCriteria(Criteria.where("industryId").is(cf.getIndustryId()));
 
 								if (StringUtils.hasText(param))
@@ -801,6 +869,13 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 											cFuel.getIndustryName(), cFuel.getRawMaterialName(), cFuel.getUom(),
 											cFuel.getName()));
 
+									if (count == 1) {
+
+										consentedComparisonList.add(new PollutionScoreResponseVo(cFuel.get_id(),
+												cFuel.getIndustryId(), cFuel.getIndustryName(),
+												cFuel.getRawMaterialName(), cFuel.getUom(), cFuel.getName()));
+									}
+
 									resMap.put(daysMap1.get(days), cFuelList);
 
 								}
@@ -820,11 +895,11 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 						Map<String, String> daysMap1 = IDSSUtil.getPastDaysMapForPollutionScoreCard();
 
 						if (null != cf) {
-
+							int count = 0;
 							for (String days : daysMap1.keySet()) {
 
 								List<PollutionScoreResponseVo> eResList = new ArrayList<PollutionScoreResponseVo>();
-
+								count++;
 								Query query = new Query().with(page);
 								logger.info("getPollutionScoreCard_ESRResourcesData : " + days);
 
@@ -861,7 +936,13 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 												new PollutionScoreResponseVo(esrRes.get_id(), esrRes.getCompanyname(),
 														esrRes.getIndustryId(), esrRes.getRawMaterialName(),
 														esrRes.getName(), esrRes.getUom(), esrRes.getFinantialyear()));
+										if (count == 1) {
+											esrComparisonList.add(new PollutionScoreResponseVo(esrRes.get_id(),
+													esrRes.getCompanyname(), esrRes.getIndustryId(),
+													esrRes.getRawMaterialName(), esrRes.getName(), esrRes.getUom(),
+													esrRes.getFinantialyear()));
 
+										}
 										resMap.put(daysMap1.get(days), eResList);
 
 									}
@@ -880,11 +961,11 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 						List<PollutionScoreResponseVo> cSkuList = new ArrayList<PollutionScoreResponseVo>();
 
 						if (null != cf) {
-
+							int count = 0;
 							for (String days : daysMap1.keySet()) {
 								Query query = new Query().with(page);
 								logger.info("getPollutionScoreCard_ConsentedSkuData : " + days);
-
+								count++;
 								query.addCriteria(Criteria.where("industryId").is(cf.getIndustryId()));
 
 								if (StringUtils.hasText(param))
@@ -895,8 +976,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 								List<Consent_SKU_comparison> filteredList = mongoTemplate.find(query,
 										Consent_SKU_comparison.class);
-								Page<Consent_SKU_comparison> cPage = PageableExecutionUtils.getPage(
-										filteredList, page,
+								Page<Consent_SKU_comparison> cPage = PageableExecutionUtils.getPage(filteredList, page,
 										() -> mongoTemplate.count(query, Consent_SKU_comparison.class));
 
 								List<Consent_SKU_comparison> consentSkuList = new ArrayList<Consent_SKU_comparison>(
@@ -906,8 +986,14 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 									cSkuList.add(new PollutionScoreResponseVo(cSku.get_id(), cSku.getIndustryId(),
 											cSku.getIndustryName(), cSku.getType(), cSku.getRegion(),
-											cSku.getSubRegion(),cSku.getProductname(),cSku.getUom(),cSku.getName()));
+											cSku.getSubRegion(), cSku.getProductname(), cSku.getUom(), cSku.getName()));
+									if (count == 1) {
+										consentedComparisonList.add(new PollutionScoreResponseVo(cSku.get_id(),
+												cSku.getIndustryId(), cSku.getIndustryName(), cSku.getType(),
+												cSku.getRegion(), cSku.getSubRegion(), cSku.getProductname(),
+												cSku.getUom(), cSku.getName()));
 
+									}
 									resMap.put(daysMap1.get(days), cSkuList);
 
 								}
@@ -927,11 +1013,11 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 						List<PollutionScoreResponseVo> eSkuList = new ArrayList<PollutionScoreResponseVo>();
 
 						if (null != cf) {
-
+							int count = 0;
 							for (String days : daysMap1.keySet()) {
 								Query query = new Query().with(page);
 								logger.info("getPollutionScoreCard_EsrSkuData : " + days);
-								
+								count++;
 								String[] dateParts = days.split("-");
 
 								String year = dateParts[0];
@@ -950,18 +1036,22 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 								List<ESR_SKU_comparison> filteredList = mongoTemplate.find(query,
 										ESR_SKU_comparison.class);
-								Page<ESR_SKU_comparison> cPage = PageableExecutionUtils.getPage(
-										filteredList, page,
+								Page<ESR_SKU_comparison> cPage = PageableExecutionUtils.getPage(filteredList, page,
 										() -> mongoTemplate.count(query, ESR_SKU_comparison.class));
 
-								List<ESR_SKU_comparison> esrSkuList = new ArrayList<ESR_SKU_comparison>(
-										cPage.toList());
+								List<ESR_SKU_comparison> esrSkuList = new ArrayList<ESR_SKU_comparison>(cPage.toList());
 
 								for (ESR_SKU_comparison eSku : esrSkuList) {
 
 									eSkuList.add(new PollutionScoreResponseVo(eSku.get_id(), eSku.getIndustryId(),
-											eSku.getCompanyName(),eSku.getProductname(),eSku.getUom(),eSku.getName(),eSku.getFinantialYear()));
+											eSku.getCompanyName(), eSku.getProductname(), eSku.getUom(), eSku.getName(),
+											eSku.getFinantialYear()));
+									if (count == 1) {
+										esrComparisonList.add(new PollutionScoreResponseVo(eSku.get_id(),
+												eSku.getIndustryId(), eSku.getCompanyName(), eSku.getProductname(),
+												eSku.getUom(), eSku.getName(), eSku.getFinantialYear()));
 
+									}
 									resMap.put(daysMap1.get(days), eSkuList);
 
 								}
@@ -982,11 +1072,11 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 						Map<String, String> daysMap1 = IDSSUtil.getPastDaysMapForPollutionScoreCard();
 
 						if (null != cf) {
-
+							int count = 0;
 							for (String days : daysMap1.keySet()) {
 
 								List<PollutionScoreResponseVo> cStList = new ArrayList<PollutionScoreResponseVo>();
-
+								count++;
 								Query query = new Query().with(page);
 								logger.info("getPollutionScoreCard_ConsentedStackData : " + days);
 
@@ -1010,6 +1100,14 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 											cStack.getStackFuelType(), cStack.getStackFuelQuantity(),
 											cStack.getFuelQtyUom()));
 
+									if (count == 1) {
+										consentedComparisonList.add(new PollutionScoreResponseVo(cStack.get_id(),
+												cStack.getIndustryId(), cStack.getIndustryName(),
+												cStack.getStackNumber(), cStack.getStackAttachedTo(),
+												cStack.getCapacityUom(), cStack.getStackFuelType(),
+												cStack.getStackFuelQuantity(), cStack.getFuelQtyUom()));
+									}
+
 									resMap.put(daysMap1.get(days), cStList);
 
 								}
@@ -1029,11 +1127,11 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 						Map<String, String> daysMap1 = IDSSUtil.getPastDaysMap();
 
 						if (null != cf) {
-
+							int count = 0;
 							for (String days : daysMap1.keySet()) {
 
 								List<PollutionScoreResponseVo> ocemsList = new ArrayList<PollutionScoreResponseVo>();
-
+								count++;
 								Query query = new Query().with(page);
 								logger.info("getPollutionScoreCard_OCEMSData : " + days);
 
@@ -1055,6 +1153,14 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 											ocmsListData.getTime_stamp(), ocmsListData.getValue(),
 											ocmsListData.getUnits()));
 
+									if (count == 1) {
+										ocemsList.add(new PollutionScoreResponseVo(ocmsListData.getSite_id(),
+												ocmsListData.getIndustry_name(), ocmsListData.getIndustry(),
+												ocmsListData.getStation_name(), ocmsListData.getParameter_name(),
+												ocmsListData.getTime_stamp(), ocmsListData.getValue(),
+												ocmsListData.getUnits()));
+									}
+
 									resMap.put(daysMap1.get(days), ocemsList);
 
 								}
@@ -1075,9 +1181,18 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	}
 
 	@Override
-	public Map<String, Map<String, List<ComparisonVo>>> getComparisonData(PollutionScoreFilter imr, Pageable page) {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String, List<PollutionScoreResponseVo>> getComparisonData() {
+
+		logger.info("getComparisonData...");
+		// Map<String, Map<String, List<PollutionScoreResponseVo>>> responseMap = new
+		// LinkedHashMap<String, Map<String, List<PollutionScoreResponseVo>>>();
+
+		Map<String, List<PollutionScoreResponseVo>> resMap = new LinkedHashMap<String, List<PollutionScoreResponseVo>>();
+
+		resMap.put("ConsentedData", consentedComparisonList);
+		resMap.put("ESRData", esrComparisonList);
+
+		return resMap;
 	}
 
 }

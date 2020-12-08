@@ -63,6 +63,11 @@ public class PollutionScoreResponseVo {
 	private Double value;
 	private String units;
 	
+	//SKU
+	private String type;
+	private String region;
+	private String subRegion;
+	private String productname;
 	
 	public PollutionScoreResponseVo() {
 
@@ -219,6 +224,65 @@ public class PollutionScoreResponseVo {
 		this.fuelQtyUom = fuelQtyUom;
 	}
 	
+	public PollutionScoreResponseVo(String _id, Double industryId, String industryName, String productname, Double uom, String name,String type, String region,
+			String subRegion) {
+		super();
+		this._id = _id;
+		this.industryId = industryId;
+		this.industryName = industryName;
+		this.type = type;
+		this.region = region;
+		this.subRegion = subRegion;
+		this.productname = productname;
+		this.uom = uom;
+		this.name = name;
+	}
+
+	//ESRSku
+	
+	public PollutionScoreResponseVo(String _id, Double industryId, String companyName, String productname, Double uom,
+			String name, int finantialYear) {
+		super();
+		this._id = _id;
+		this.industryId = industryId;
+		this.companyname = companyName;
+		this.productname = productname;
+		this.uom = uom;
+		this.name = name;
+		this.finantialyear = finantialYear;
+	}
+	
+	//ESRWater
+	
+	public PollutionScoreResponseVo(String _id, Double industryid, String companyname, String waterPollutants,
+			int finantialyear,Double waterPollutantQuantity, String uomName) {
+		super();
+		this._id = _id;
+		this.industryId = industryid;
+		this.companyname = companyname;
+		this.waterPollutants = waterPollutants;
+		this.waterPollutantQuantity = waterPollutantQuantity;
+		this.uomName = uomName;
+		this.finantialyear = finantialyear;
+	}
+	
+	//ConcentedWater
+	
+	public PollutionScoreResponseVo(String _id, Double industryId, String industryName, Double uom, String name,
+			Double treatedEffluentBod, Double treatedEffluentCod, Double treatedEffluentSs, Double treatedEffluentTds,
+			Double treatedEffluentPh) {
+		super();
+		this._id = _id;
+		this.industryId = industryId;
+		this.industryName = industryName;
+		this.uom = uom;
+		this.name = name;
+		this.treatedEffluentBod = treatedEffluentBod;
+		this.treatedEffluentCod = treatedEffluentCod;
+		this.treatedEffluentSs = treatedEffluentSs;
+		this.treatedEffluentTds = treatedEffluentTds;
+		this.treatedEffluentPh = treatedEffluentPh;
+	}
 	
 	
 	
@@ -548,6 +612,38 @@ public class PollutionScoreResponseVo {
 
 	public void setUnits(String units) {
 		this.units = units;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getRegion() {
+		return region;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
+	public String getSubRegion() {
+		return subRegion;
+	}
+
+	public void setSubRegion(String subRegion) {
+		this.subRegion = subRegion;
+	}
+
+	public String getProductname() {
+		return productname;
+	}
+
+	public void setProductname(String productname) {
+		this.productname = productname;
 	}
 
 	
