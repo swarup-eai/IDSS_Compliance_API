@@ -183,9 +183,10 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			String type = "";
 			String param = "";
 			logger.info("getPollutionScoreCardData");
-
 			List<Map<String, String>> paramList = new ArrayList<>();
-
+            esrComparisonList.clear();
+            consentedComparisonList.clear();
+            
 			paramList.addAll(cf.getParamList());
 
 			for (int i = 0; i < paramList.size(); i++) {
