@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ import com.eai.idss.vo.ConcentByRegionVo;
 import com.eai.idss.vo.LegalSubRegionVo;
 import com.eai.idss.vo.TileVo;
 import com.eai.idss.vo.VisitDetails;
+import com.eai.idss.vo.VisitsByComplianceVo;
 import com.eai.idss.vo.VisitsByScaleCategory;
 import com.eai.idss.vo.VisitsDetailsRequest;
 import com.eai.idss.vo.VisitsFilter;
@@ -48,6 +50,12 @@ import com.mongodb.client.MongoDatabase;
 @Repository
 public class VisitsDaoImpl implements VisitsDao {
 	
+	private static final String NA = "NA";
+
+	private static final String VISITED = "Visited";
+
+	private static final String NOT_VISITED = "Not_visited";
+
 	private static final String TEAM_WISE = "TeamWise";
 
 	private static final String REGION_WISE = "RegionWise";
@@ -68,7 +76,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	@Autowired
 	MongoClient mongoClient;
 
-	public Map<String,List<TileVo>> getPendingVisitsData(VisitsFilter vf){
+	public Map<String,List<TileVo>> getPendingVisitsData(VisitsFilter vf,String region, String subRegion){
 		try {
 			logger.info("getPendingVisitsData");
 			Map<String, List<String>> daysMap = IDSSUtil.getDaysMapForVisits();
@@ -80,7 +88,7 @@ public class VisitsDaoImpl implements VisitsDao {
             
             for(String days : daysMap.keySet()) {
             	logger.info("getPendingVisitsData : "+days);
-	            List<? extends Bson> pipeline = getPendingVisitsPipeline(daysMap.get(days),vf);
+	            List<? extends Bson> pipeline = getPendingVisitsPipeline(daysMap.get(days),vf,region, subRegion);
 	            
 	            List<TileVo> tVoList = new ArrayList<TileVo>();
 	            collection.aggregate(pipeline)
@@ -88,7 +96,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	                    .forEach(new Consumer<Document>() {
 		    	                @Override
 		    	                public void accept(Document document) {
-		    	                    System.out.println(document.toJson());
+		    	                    logger.info(document.toJson());
 									try {
 										TileVo tVo = new ObjectMapper().readValue(document.toJson(), TileVo.class);
 										tVoList.add(tVo);
@@ -112,7 +120,7 @@ public class VisitsDaoImpl implements VisitsDao {
 		return null;
 	}
 	
-	private List<? extends Bson> getPendingVisitsPipeline(List<String> days,VisitsFilter vf) throws ParseException {
+	private List<? extends Bson> getPendingVisitsPipeline(List<String> days,VisitsFilter vf,String region, String subRegion) throws ParseException {
 		
 		Document matchDoc = new Document();
 		
@@ -120,7 +128,13 @@ public class VisitsDaoImpl implements VisitsDao {
 							.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
 							.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))
 						);
-		matchDoc.append("visitStatus", "Not visited");
+		matchDoc.append("visitStatus", NOT_VISITED);
+
+		if(!"ALL".equalsIgnoreCase(region))
+			matchDoc.append("region",region);
+		if(!"ALL".equalsIgnoreCase(subRegion))
+			matchDoc.append("subRegion",subRegion);
+		
 		if(null!=vf.getPendingScaleList())
 			matchDoc.append("scale", new Document().append("$in", vf.getPendingScaleList()));
 		if(null!=vf.getPendingCategoryList())
@@ -194,7 +208,7 @@ public class VisitsDaoImpl implements VisitsDao {
 		        .forEach(new Consumer<Document>() {
 		                @Override
 		                public void accept(Document document) {
-		                    System.out.println(type +" ::: "+document.toJson());
+		                    logger.info(type +" ::: "+document.toJson());
 							try {
 								if(REGION_WISE.equalsIgnoreCase(extractType)) {
 									ConcentByRegionVo crVo = new ObjectMapper().readValue(document.toJson(), ConcentByRegionVo.class);
@@ -270,21 +284,21 @@ public class VisitsDaoImpl implements VisitsDao {
 					.append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(dateToday+" 00:00:00.000+0000"))
 					.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
 				);
-			matchDoc.append("visitStatus", "Not visited");
+			matchDoc.append("visitStatus", NOT_VISITED);
 		}
 		
 		if(COMPLETED.equalsIgnoreCase(caseType)) {
 			matchDoc.append("visitedDate", new Document()
 					.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
 				);
-			matchDoc.append("visitStatus","Visited");
+			matchDoc.append("visitStatus",VISITED);
 		}
 		
 		if(LEGAL_NOTICES.equalsIgnoreCase(caseType)) {
 			matchDoc.append("legalDirectionIssuedOn", new Document()
 					.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
 				);
-			matchDoc.append("legalDirection", new Document().append("$ne", "NA"));
+			matchDoc.append("legalDirection", new Document().append("$ne", NA));
 		}
 	}
 	
@@ -309,7 +323,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	                    .forEach(new Consumer<Document>() {
 		    	                @Override
 		    	                public void accept(Document document) {
-		    	                    System.out.println(document.toJson());
+		    	                    logger.info(document.toJson());
 									try {
 										LegalSubRegionVo lsVo = new ObjectMapper().readValue(document.toJson(), LegalSubRegionVo.class);
 										List<TileVo> tVoList = subRegionMap.get(lsVo.getSubRegion());
@@ -420,7 +434,8 @@ public class VisitsDaoImpl implements VisitsDao {
 		
 		applyMatchFilter(caseType, days, matchDoc);
 		
-		matchDoc.append("region",region);
+		if(!"ALL".equalsIgnoreCase(region))
+			matchDoc.append("region",region);
 		
 		if(null!=cf && null!=cf.getPendingByTeamCategoryList() ) 
 			matchDoc.append("category", new Document().append("$in", cf.getPendingByTeamCategoryList()));
@@ -477,7 +492,7 @@ public class VisitsDaoImpl implements VisitsDao {
 					query.addCriteria(Criteria.where("scale").is(cdr.getScale()));
 			}
 	
-			System.out.println(mongoTemplate.count(query, Visits.class));
+			logger.info(mongoTemplate.count(query, Visits.class));
 			
 			List<Visits> filteredVisitsList= mongoTemplate.find(query, Visits.class);
 			
@@ -511,14 +526,14 @@ public class VisitsDaoImpl implements VisitsDao {
 					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(dateToday+" 00:00:00.000+0000"))
 					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000")));
 			
-			query.addCriteria(Criteria.where("visitStatus").is("Not visited"));
+			query.addCriteria(Criteria.where("visitStatus").is(NOT_VISITED));
 		}
 		
 		if(COMPLETED.equalsIgnoreCase(caseType)) {
 			query.addCriteria(Criteria.where("visitedDate")
 					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000")));
 			
-			query.addCriteria(Criteria.where("visitStatus").is("Visited"));
+			query.addCriteria(Criteria.where("visitStatus").is(VISITED));
 		}
 		
 		if(LEGAL_NOTICES.equalsIgnoreCase(caseType)) {
@@ -526,7 +541,7 @@ public class VisitsDaoImpl implements VisitsDao {
 			query.addCriteria(Criteria.where("legalDirectionIssuedOn")
 					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000")));
 			
-			query.addCriteria(Criteria.where("legalDirection").ne("NA"));
+			query.addCriteria(Criteria.where("legalDirection").ne(NA));
 		}
 	}
 	
@@ -566,12 +581,12 @@ public class VisitsDaoImpl implements VisitsDao {
 			
 			if(StringUtils.hasText(cdr.getStatus())) {
 				if("Pending".equalsIgnoreCase(cdr.getStatus()) || "Scheduled".equalsIgnoreCase(cdr.getStatus()))
-					query.addCriteria(Criteria.where("visitStatus").is("Not visited"));
-				if("Visited".equalsIgnoreCase(cdr.getStatus()))
-					query.addCriteria(Criteria.where("visitStatus").is("Visited"));
+					query.addCriteria(Criteria.where("visitStatus").is(NOT_VISITED));
+				if(VISITED.equalsIgnoreCase(cdr.getStatus()))
+					query.addCriteria(Criteria.where("visitStatus").is(VISITED));
 			}
 	
-			System.out.println(mongoTemplate.count(query, Visits.class));
+			logger.info(mongoTemplate.count(query, Visits.class));
 			
 			List<Visits> filteredLegalList= mongoTemplate.find(query, Visits.class);
 			
@@ -604,7 +619,7 @@ public class VisitsDaoImpl implements VisitsDao {
                     .forEach(new Consumer<Document>() {
 	    	                @Override
 	    	                public void accept(Document document) {
-	    	                    System.out.println(document.toJson());
+	    	                    logger.info(document.toJson());
 								try {
 									VisitsByScaleCategory vVo = new ObjectMapper().readValue(document.toJson(), VisitsByScaleCategory.class);
 									List<TileVo> ltvo = tileMap.get(vVo.getScale());
@@ -682,7 +697,7 @@ public class VisitsDaoImpl implements VisitsDao {
 			
 			vd.setVisit(industryVisitsList.stream().filter(v -> v.getVisitId()==visitId).findFirst().get());
 			
-			vd.setPastVisits(industryVisitsList.stream().filter(v -> v.getVisitStatus().equalsIgnoreCase("Visited")).count());
+			vd.setPastVisits(industryVisitsList.stream().filter(v -> v.getVisitStatus().equalsIgnoreCase(VISITED)).count());
 			
 			Map<String, List<TileVo>> visitStatusDaysMap = new LinkedHashMap<String, List<TileVo>>();
 			
@@ -710,7 +725,7 @@ public class VisitsDaoImpl implements VisitsDao {
 		ltvo.add(new TileVo("actual",(int)ChronoUnit.DAYS.between(vd.getVisit().getReportSubmittedOn(),vd.getVisit().getVisitedDate())));
 		ltvo.add(new TileVo("defined",2));
 		ltvo.add(new TileVo("average",(int)industryVisitsList.stream()
-				.filter(v -> v.getVisitStatus().equalsIgnoreCase("Visited"))
+				.filter(v -> v.getVisitStatus().equalsIgnoreCase(VISITED))
 				.mapToLong(v -> ChronoUnit.DAYS.between(v.getReportSubmittedOn(),v.getVisitedDate())).average().getAsDouble()));
 		return ltvo;
 	}
@@ -730,7 +745,7 @@ public class VisitsDaoImpl implements VisitsDao {
 			
 			query.addCriteria(Criteria.where("industryId").is(industryId));
 			
-			query.addCriteria(Criteria.where("visitStatus").is("Visited"));
+			query.addCriteria(Criteria.where("visitStatus").is(VISITED));
 			
 			List<Visits> industryVisitsList= mongoTemplate.find(query, Visits.class);
 			
@@ -742,4 +757,207 @@ public class VisitsDaoImpl implements VisitsDao {
 		}
 		return null;
 	}
+	
+	public Map<String,List<VisitsByComplianceVo>> getVisitsByCompliance(String region, String subRegion){
+		Map<String,List<VisitsByComplianceVo>> mapVisitsByCompliance = new LinkedHashMap<String, List<VisitsByComplianceVo>>();
+		
+		try {
+			logger.info("getVisitsByCompliance");
+			Map<String, String> daysMap = IDSSUtil.get3090120PastDaysMap();
+			
+		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+            MongoCollection<Document> collection = database.getCollection("C_score_visits_days");
+            
+            for(String days : daysMap.keySet()) {
+            	List<VisitsByComplianceVo> vbcList = new ArrayList<VisitsByComplianceVo>();
+            	logger.info("getVisitsByCompliance : "+days);
+	            List<? extends Bson> pipeline = getVisitsByCompliancePipeline(days,region, subRegion);
+	            collection.aggregate(pipeline)
+	                    .allowDiskUse(false)
+	                    .forEach(new Consumer<Document>() {
+		    	                @Override
+		    	                public void accept(Document document) {
+		    	                    logger.info(document.toJson());
+									try {
+										VisitsByComplianceVo vbc = new ObjectMapper().readValue(document.toJson(), VisitsByComplianceVo.class);
+										vbcList.add(vbc);
+									} catch (JsonMappingException e) {
+										e.printStackTrace();
+									} catch (JsonProcessingException e) {
+										e.printStackTrace();
+									}
+		    	                    
+		    	                }
+		    	            }
+	                    );
+	            mapVisitsByCompliance.put(daysMap.get(days), vbcList);
+            }
+            return mapVisitsByCompliance;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private List<? extends Bson> getVisitsByCompliancePipeline(String days,String region, String subRegion) throws ParseException {
+		Document matchDoc = new Document().append("$match",	new Document().append("lastVisit", new Document()
+				.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))));
+		
+		if(!"ALL".equalsIgnoreCase(region))
+			matchDoc.append("region",region);
+		if(!"ALL".equalsIgnoreCase(subRegion))
+			matchDoc.append("subRegion",subRegion);
+		
+		List<? extends Bson> pipeline = Arrays.asList(
+				matchDoc,
+                new Document()
+                        .append("$project", new Document()
+                                .append("_id", false)
+                                .append("expected", new Document()
+                                        .append("$cond", new Document()
+                                                .append("if", new Document()
+                                                        .append("$lt", Arrays.asList(
+                                                                "$expectedFreqDays",
+                                                                0.0
+                                                            )
+                                                        )
+                                                )
+                                                .append("then", 0.0)
+                                                .append("else", "$expectedFreqDays")
+                                        )
+                                )
+                                .append("actual", new Document()
+                                        .append("$cond", new Document()
+                                                .append("if", new Document()
+                                                        .append("$lt", Arrays.asList(
+                                                                "$actualFreqDays",
+                                                                0.0
+                                                            )
+                                                        )
+                                                )
+                                                .append("then", 0.0)
+                                                .append("else", "$actualFreqDays")
+                                        )
+                                )
+                                .append("score", new Document()
+                                        .append("$concat", Arrays.asList(
+                                                new Document()
+                                                        .append("$cond", Arrays.asList(
+                                                                new Document()
+                                                                        .append("$and", Arrays.asList(
+                                                                                new Document()
+                                                                                        .append("$gte", Arrays.asList(
+                                                                                                "$cscore",
+                                                                                                0.0
+                                                                                            )
+                                                                                        ),
+                                                                                new Document()
+                                                                                        .append("$lt", Arrays.asList(
+                                                                                                "$cscore",
+                                                                                                26.0
+                                                                                            )
+                                                                                        )
+                                                                            )
+                                                                        ),
+                                                                "0-25",
+                                                                ""
+                                                            )
+                                                        ),
+                                                new Document()
+                                                        .append("$cond", Arrays.asList(
+                                                                new Document()
+                                                                        .append("$and", Arrays.asList(
+                                                                                new Document()
+                                                                                        .append("$gte", Arrays.asList(
+                                                                                                "$cscore",
+                                                                                                26.0
+                                                                                            )
+                                                                                        ),
+                                                                                new Document()
+                                                                                        .append("$lt", Arrays.asList(
+                                                                                                "$cscore",
+                                                                                                51.0
+                                                                                            )
+                                                                                        )
+                                                                            )
+                                                                        ),
+                                                                "26-50",
+                                                                ""
+                                                            )
+                                                        ),
+                                                new Document()
+                                                        .append("$cond", Arrays.asList(
+                                                                new Document()
+                                                                        .append("$and", Arrays.asList(
+                                                                                new Document()
+                                                                                        .append("$gte", Arrays.asList(
+                                                                                                "$cscore",
+                                                                                                51.0
+                                                                                            )
+                                                                                        ),
+                                                                                new Document()
+                                                                                        .append("$lt", Arrays.asList(
+                                                                                                "$cscore",
+                                                                                                76.0
+                                                                                            )
+                                                                                        )
+                                                                            )
+                                                                        ),
+                                                                "51-75",
+                                                                ""
+                                                            )
+                                                        ),
+                                                new Document()
+                                                        .append("$cond", Arrays.asList(
+                                                                new Document()
+                                                                        .append("$and", Arrays.asList(
+                                                                                new Document()
+                                                                                        .append("$gte", Arrays.asList(
+                                                                                                "$cscore",
+                                                                                                76.0
+                                                                                            )
+                                                                                        ),
+                                                                                new Document()
+                                                                                        .append("$lt", Arrays.asList(
+                                                                                                "$cscore",
+                                                                                                101.0
+                                                                                            )
+                                                                                        )
+                                                                            )
+                                                                        ),
+                                                                "76-100",
+                                                                ""
+                                                            )
+                                                        )
+                                            )
+                                        )
+                                )
+                        ), 
+                new Document()
+                        .append("$group", new Document()
+                                .append("_id", "$score")
+                                .append("expected", new Document()
+                                        .append("$avg", "$expected")
+                                )
+                                .append("actual", new Document()
+                                        .append("$avg", "$actual")
+                                )
+                        ), 
+                new Document()
+                .append("$project", new Document()
+                        .append("_id", false)
+                        .append("cScore", "$_id")
+                        .append("scheduledFreq", new Document()
+                                .append("$ceil", "$expected")
+                        )
+                        .append("actualFreq", new Document()
+                                .append("$ceil", "$actual")
+                        )
+                )
+        );
+		
+		
+		return pipeline;
+	}
+	
 }

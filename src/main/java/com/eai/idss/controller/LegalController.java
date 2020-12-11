@@ -53,10 +53,11 @@ public class LegalController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.GET, value = "/legal-dashboard/action-by-category-type", produces = "application/json")
-	public ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>> getLegalActionByCategoryTypeData() throws IOException {
+	public ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>> getLegalActionByCategoryTypeData(@RequestHeader String userName) throws IOException {
     	Map<String,Map<String,Map<String,List<TileVo>>>> ct = new LinkedHashMap<String,Map<String, Map<String,List<TileVo>>>>();
 	    try {
-	    	ct.put("actionByCategory",cd.getLegalActionsByIndustryScaleCategoryData());
+	    	User u = userRepository.findByUserName(userName);
+	    	ct.put("actionByCategory",cd.getLegalActionsByIndustryScaleCategoryData(u.getRegion(),u.getSubRegion()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /legal-dashboard/action-by-category-type", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -66,10 +67,11 @@ public class LegalController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.GET, value = "/legal-dashboard/pending-legal-actions",  produces = "application/json")
-	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getLegalDashboardPendingData() throws IOException {
+	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getLegalDashboardPendingData(@RequestHeader String userName) throws IOException {
     	Map<String,Map<String,List<TileVo>>> ct = new LinkedHashMap<String, Map<String,List<TileVo>>>();
 	    try {
-	    	ct.put("pendingRequest",cd.getPendingLegalActionsData());
+	    	User u = userRepository.findByUserName(userName);
+	    	ct.put("pendingRequest",cd.getPendingLegalActionsData(u.getRegion(),u.getSubRegion()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /legal-dashboard/pending-legal-actions", HttpStatus.INTERNAL_SERVER_ERROR);

@@ -8,13 +8,14 @@ import org.springframework.data.domain.Pageable;
 import com.eai.idss.model.Visits;
 import com.eai.idss.vo.TileVo;
 import com.eai.idss.vo.VisitDetails;
+import com.eai.idss.vo.VisitsByComplianceVo;
 import com.eai.idss.vo.VisitsDetailsRequest;
 import com.eai.idss.vo.VisitsFilter;
 import com.eai.idss.vo.VisitsScheduleDetailsRequest;
 
 public interface VisitsDao {
 
-	public Map<String,List<TileVo>> getPendingVisitsData(VisitsFilter vf);
+	public Map<String,List<TileVo>> getPendingVisitsData(VisitsFilter vf,String region, String subRegion);
 	
 	public Map<String,Map<String,List<TileVo>>> getByRegionVisitsData(VisitsFilter cf);
 	
@@ -31,5 +32,7 @@ public interface VisitsDao {
 	public VisitDetails getVisitDetailsForOneIndustryOneVisit(long industryId,long visitId);
 	
 	public List<Visits> getVisitDetailsForOneIndustry(long industryId);
+	
+	public Map<String,List<VisitsByComplianceVo>> getVisitsByCompliance(String region, String subRegion);
 	
 }

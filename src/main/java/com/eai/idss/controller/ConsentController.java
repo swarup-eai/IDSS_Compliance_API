@@ -81,10 +81,11 @@ public class ConsentController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.GET, value = "/concent-dashboard/upcoming-renewal", produces = "application/json")
-	public ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>> getConcentDashboardUpcomingRenewalData() throws IOException {
+	public ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>> getConcentDashboardUpcomingRenewalData(@RequestHeader String userName) throws IOException {
     	Map<String,Map<String,Map<String,List<TileVo>>>> ct = new HashMap<String,Map<String, Map<String,List<TileVo>>>>();
 	    try {
-	    	ct.put("upcomingRenewal",cd.getUpcomingRenewalConcentData());
+	    	User u = userRepository.findByUserName(userName);
+	    	ct.put("upcomingRenewal",cd.getUpcomingRenewalConcentData(u.getRegion(), u.getSubRegion()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /concent-dashboard/upcoming-renewal", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -94,10 +95,11 @@ public class ConsentController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.POST, value = "/concent-dashboard/pending-request",  produces = "application/json")
-	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getConcentDashboardPendingData(@RequestBody ConcentFilter cf) throws IOException {
+	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getConcentDashboardPendingData(@RequestHeader String userName,@RequestBody ConcentFilter cf) throws IOException {
     	Map<String,Map<String,List<TileVo>>> ct = new HashMap<String, Map<String,List<TileVo>>>();
 	    try {
-	    	ct.put("pendingRequest",cd.getPendingRequestConcentData(cf));
+	    	User u = userRepository.findByUserName(userName);
+	    	ct.put("pendingRequest",cd.getPendingRequestConcentData(cf,u.getRegion(), u.getSubRegion()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /concent-dashboard/pending-request", HttpStatus.INTERNAL_SERVER_ERROR);

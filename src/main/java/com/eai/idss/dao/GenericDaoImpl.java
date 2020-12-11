@@ -209,7 +209,7 @@ public class GenericDaoImpl implements GenericDao {
 		if(null!=dbr && StringUtils.hasText(dbr.getType()) && !"All".equalsIgnoreCase(dbr.getType())) 
 			matchDoc.append("type", dbr.getType());
 		if(null!=dbr && StringUtils.hasText(dbr.getCategory()) && !"All".equalsIgnoreCase(dbr.getCategory())) 
-			matchDoc.append("region", dbr.getCategory());
+			matchDoc.append("category", dbr.getCategory());
 	}
 
 	public Map<String,List<TileVo>> getVisitsTileData(DashboardRequest dbr){

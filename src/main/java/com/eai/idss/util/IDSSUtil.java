@@ -148,6 +148,19 @@ public class IDSSUtil {
 		return daysMap;
 	}
 	
+	public static Map<String, String> get3090120PastDaysMap() {
+		LocalDateTime currentTime = LocalDateTime.now();
+		String date30DaysBack = currentTime.minusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String date90DaysBack = currentTime.minusDays(90).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String date120DaysBack = currentTime.minusDays(120).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		
+		Map<String,String> daysMap = new LinkedHashMap<String, String>();
+		daysMap.put(date30DaysBack, "_30Days");
+		daysMap.put(date90DaysBack, "_90Days");
+		daysMap.put(date120DaysBack, "_120Days");
+		return daysMap;
+	}
+	
 	public static Map<String, List<String>> getPastAndFutureDaysMap() {
 		LocalDateTime currentTime = LocalDateTime.now();
 		String date30DaysBack = currentTime.minusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -350,5 +363,113 @@ public class IDSSUtil {
 		daysMap.put("_120ToAllDays",days);
 		
 		return daysMap;
+	}
+	
+	public static Map<String, String> getPastDaysMapForPollutionScoreCard() {
+		LocalDateTime currentTime = LocalDateTime.now();
+		String date1yearDaysBack = currentTime.minusDays(365).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String date2yearBack = currentTime.minusDays(730).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String date3yearBack = currentTime.minusDays(1095).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String date4yearBack = currentTime.minusDays(1460).format(DateTimeFormatter.ISO_LOCAL_DATE);
+
+		Map<String, String> daysMap = new LinkedHashMap<String, String>();
+		daysMap.put(date1yearDaysBack, "1_Year");
+		daysMap.put(date2yearBack, "2_Years");
+		daysMap.put(date3yearBack, "3_Years");
+		daysMap.put(date4yearBack, "4_Years");
+		daysMap.put("1970-01-01", "_allDays");
+		return daysMap;
+	}
+
+	public static List<String> getConsentedESRAirParam() {
+		List<String> consentedESRAirParamList = new ArrayList<String>();
+		consentedESRAirParamList.add("SO2");
+		consentedESRAirParamList.add("NO2");
+		consentedESRAirParamList.add("PM");
+
+		return consentedESRAirParamList;
+	}
+
+	public static List<String> getConsentedESRWaterParam() {
+		List<String> consentedESRWaterParamList = new ArrayList<String>();
+		consentedESRWaterParamList.add("treatedEffluentBod");
+		consentedESRWaterParamList.add("treatedEffluentCod");
+		consentedESRWaterParamList.add("EFFLUENT");
+		consentedESRWaterParamList.add("CHEMICAL SLUDGE");
+		consentedESRWaterParamList.add("BOD");
+		consentedESRWaterParamList.add("COD");
+		consentedESRWaterParamList.add("TDS");
+		consentedESRWaterParamList.add("TSS");
+		consentedESRWaterParamList.add("SS");
+		consentedESRWaterParamList.add("CHLORIDES");
+
+		return consentedESRWaterParamList;
+	}
+
+	public static List<String> getConsentedESRStackParam() {
+		List<String> consentedESRStackParamList = new ArrayList<String>();
+		consentedESRStackParamList.add("Stack");
+
+		return consentedESRStackParamList;
+	}
+
+	public static List<String> getConsentedESRFuelParam() {
+		List<String> consentedESRFuelParamList = new ArrayList<String>();
+		consentedESRFuelParamList.add("Electricity");
+		consentedESRFuelParamList.add("PNG");
+		consentedESRFuelParamList.add("HSD");
+		consentedESRFuelParamList.add("Petrol");
+		consentedESRFuelParamList.add("Coal");
+
+		return consentedESRFuelParamList;
+	}
+
+	public static List<String> getConsentedESRHWParam() {
+		List<String> consentedESRHWParamList = new ArrayList<String>();
+		consentedESRHWParamList.add("28.1 Residues and wastes*");
+		consentedESRHWParamList.add("34.3 Chemical sludge from waste water treatment");
+		consentedESRHWParamList.add("1.9 ETP sludge containing hazardous constituent");
+		consentedESRHWParamList.add("12.1 Acid residue");
+
+		return consentedESRHWParamList;
+	}
+
+	public static List<String> getConsentedESRResourcesParam() {
+		List<String> consentedESRResourceParamList = new ArrayList<String>();
+		consentedESRResourceParamList.add("M.S INGOTS,BILLETS,SCRAP, M.S SPONGE IRON");
+		consentedESRResourceParamList.add("MS PLATE");
+		consentedESRResourceParamList.add("NITRO BENZENE, IMPORTED MATERIAL, AMINO ACID POWDER");
+		consentedESRResourceParamList.add("MS PIPE");
+		consentedESRResourceParamList.add("MS ANGEL");
+
+		return consentedESRResourceParamList;
+	}
+
+	public static List<String> getConsentedESRSkuParam() {
+		List<String> consentedESRSkuParamList = new ArrayList<String>();
+		consentedESRSkuParamList.add("M.S. TMT BARS &,ROUND BARS, CTD BARS ,M.S. INGOT, BILLETS, RUNNERS, RI...");
+		consentedESRSkuParamList.add("MICRONUTRIENTS & BIO FERTILIZERS");
+		consentedESRSkuParamList.add("FABRICATION JOB");
+		consentedESRSkuParamList.add("STONE CRUSHED");
+		consentedESRSkuParamList.add("AUTOMOBILE COMPONENT, CAST COMPONENT, GENERAL FABRICATION");
+		consentedESRSkuParamList.add("PRIMER");
+		consentedESRSkuParamList.add("EMULSION PAINT");
+		consentedESRSkuParamList.add("ACRYLIC DISTEMPER");
+		consentedESRSkuParamList.add("CEMENT BASED PUTTY");
+		consentedESRSkuParamList.add("BRASS,COPPER CIRCLE/SHEET/UTENSIL ,RODS AND PIPES");
+		consentedESRSkuParamList.add("GRILL, GATE & OTHER FABRICATION");
+		consentedESRSkuParamList.add("S.S. UTENCILS");
+		consentedESRSkuParamList.add("ENGINEERING & FABRICATION JOB WORK");
+		consentedESRSkuParamList.add("SUGAR");
+		
+		
+		return consentedESRSkuParamList;
+	}
+	public static List<String> getOCEMSParam() {
+		List<String> ocemsParamList = new ArrayList<String>();
+		ocemsParamList.add("Flow");
+		ocemsParamList.add("PM");
+
+		return ocemsParamList;
 	}
 }

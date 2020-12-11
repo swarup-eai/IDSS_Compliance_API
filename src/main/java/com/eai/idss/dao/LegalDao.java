@@ -12,9 +12,9 @@ import com.eai.idss.vo.TileVo;
 
 public interface LegalDao {
 
-	public Map<String,List<TileVo>> getPendingLegalActionsData();
+	public Map<String,List<TileVo>> getPendingLegalActionsData(String region,String subRegion);
 	
-	public Map<String,Map<String,List<TileVo>>> getLegalActionsByIndustryScaleCategoryData();
+	public Map<String,Map<String,List<TileVo>>> getLegalActionsByIndustryScaleCategoryData(String region,String subRegion);
 	
 	public Map<String,Map<String,List<TileVo>>> getByRegionLegalData(LegalFilter cf);
 	

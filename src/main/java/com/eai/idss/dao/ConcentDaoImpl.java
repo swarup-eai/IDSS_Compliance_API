@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +49,7 @@ public class ConcentDaoImpl implements ConcentDao {
 	@Autowired
 	MongoClient mongoClient;
 
-	public Map<String,List<TileVo>> getPendingRequestConcentData(ConcentFilter cf){
+	public Map<String,List<TileVo>> getPendingRequestConcentData(ConcentFilter cf,String region,String subRegion){
 		try {
 			logger.info("getPendingRequestConcentData");
 			Map<String, String> daysMap = IDSSUtil.getPastDaysMap();
@@ -63,7 +62,7 @@ public class ConcentDaoImpl implements ConcentDao {
             
             for(String days : daysMap.keySet()) {
             	logger.info("getPendingRequestConcentData : "+days);
-	            List<? extends Bson> pipeline = getPendingRequestConcentPipeline(days,cf);
+	            List<? extends Bson> pipeline = getPendingRequestConcentPipeline(days,cf,region,subRegion);
 	            
 	            List<TileVo> tVoList = new ArrayList<TileVo>();
 	            collection.aggregate(pipeline)
@@ -95,7 +94,7 @@ public class ConcentDaoImpl implements ConcentDao {
 		return null;
 	}
 	
-	private List<? extends Bson> getPendingRequestConcentPipeline(String days,ConcentFilter cf) throws ParseException {
+	private List<? extends Bson> getPendingRequestConcentPipeline(String days,ConcentFilter cf,String region,String subRegion) throws ParseException {
 		Document matchDoc = new Document();
 		
 		matchDoc.append("created", new Document().append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000")));
@@ -103,6 +102,10 @@ public class ConcentDaoImpl implements ConcentDao {
 			matchDoc.append("category", new Document().append("$in", cf.getPendingCategoryList()));
 		if(null!=cf && null!=cf.getPendingScaleList() ) 
 			matchDoc.append("scale", new Document().append("$in", cf.getPendingScaleList()));
+		if(!"ALL".equalsIgnoreCase(region))
+			matchDoc.append("region",region);
+		if(!"ALL".equalsIgnoreCase(subRegion))
+			matchDoc.append("subRegion",subRegion);
 		
 		List<? extends Bson> pipeline = Arrays.asList(
 				new Document().append("$match", matchDoc),  
@@ -123,7 +126,7 @@ public class ConcentDaoImpl implements ConcentDao {
 		return pipeline;
 	}
 	
-	public Map<String,Map<String,List<TileVo>>> getUpcomingRenewalConcentData(){
+	public Map<String,Map<String,List<TileVo>>> getUpcomingRenewalConcentData(String region,String subRegion){
 		try {
 			logger.info("getUpcomingRenewalConcentData");
 			Map<String, String> daysMap = IDSSUtil.getFutureDaysMap();
@@ -134,9 +137,9 @@ public class ConcentDaoImpl implements ConcentDao {
             
             Map<String,Map<String,List<TileVo>>> tileMap = new LinkedHashMap<String,Map<String, List<TileVo>>>();
             
-            tileMap.put("scale", getConsentRenewalData( daysMap, collection,"scale"));
+            tileMap.put("scale", getConsentRenewalData( daysMap, collection,"scale", region, subRegion));
             
-            tileMap.put("category", getConsentRenewalData( daysMap, collection,"category"));
+            tileMap.put("category", getConsentRenewalData( daysMap, collection,"category", region, subRegion));
             return tileMap;
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -144,11 +147,11 @@ public class ConcentDaoImpl implements ConcentDao {
 		return null;
 	}
 
-	private Map<String,List<TileVo>> getConsentRenewalData( Map<String, String> daysMap, MongoCollection<Document> collection,String aggregateBy) throws ParseException {
+	private Map<String,List<TileVo>> getConsentRenewalData( Map<String, String> daysMap, MongoCollection<Document> collection,String aggregateBy,String region,String subRegion) throws ParseException {
 		Map<String,List<TileVo>> daysConsentMap = new LinkedHashMap<String, List<TileVo>>();
 		for(String days : daysMap.keySet()) {
 			logger.info("getUpcomingRenewalConcentData : "+days);
-		    List<? extends Bson> pipeline = getUpcomingRenewalConcentPipeline(days,aggregateBy);
+		    List<? extends Bson> pipeline = getUpcomingRenewalConcentPipeline(days,aggregateBy, region, subRegion);
 		    
 		    List<TileVo> tVoList = new ArrayList<TileVo>();
 		    collection.aggregate(pipeline)
@@ -176,7 +179,7 @@ public class ConcentDaoImpl implements ConcentDao {
 		return daysConsentMap;
 	}
 	
-	private List<? extends Bson> getUpcomingRenewalConcentPipeline(String days,String aggregateBy) throws ParseException {
+	private List<? extends Bson> getUpcomingRenewalConcentPipeline(String days,String aggregateBy,String region,String subRegion) throws ParseException {
 		LocalDateTime currentTime = LocalDateTime.now();
 		String currentDay = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
 		
@@ -199,6 +202,11 @@ public class ConcentDaoImpl implements ConcentDao {
 		                    		.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(currentDay+" 00:00:00.000+0000")))
 		                    );
 		}
+		
+		if(!"ALL".equalsIgnoreCase(region))
+			matchDoc.append("region",region);
+		if(!"ALL".equalsIgnoreCase(subRegion))
+			matchDoc.append("subRegion",subRegion);
 		
 		List<? extends Bson> pipeline = Arrays.asList(
 

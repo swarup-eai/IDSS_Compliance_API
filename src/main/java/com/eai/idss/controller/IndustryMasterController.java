@@ -2,6 +2,7 @@ package com.eai.idss.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -16,10 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eai.idss.dao.IndustryMasterDao;
 import com.eai.idss.model.IndustryMaster;
+import com.eai.idss.model.LegalDataMaster;
 import com.eai.idss.model.User_Filters;
 import com.eai.idss.repository.UserFiltersRepository;
 import com.eai.idss.repository.UserRepository;
+import com.eai.idss.vo.ComlianceScoreFilter;
 import com.eai.idss.vo.IndustryMasterRequest;
+import com.eai.idss.vo.PollutionScoreFilter;
+import com.eai.idss.vo.PollutionScoreResponseVo;
 
 
 @RestController
@@ -105,4 +110,61 @@ public class IndustryMasterController {
 	    return new ResponseEntity<List<IndustryMaster>>(iml,HttpStatus.OK);
 	}
     
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+   	@RequestMapping(method = RequestMethod.POST, value = "/industry-master-score-card/compliance-score",  produces = "application/json")
+   	public ResponseEntity <Map<String,List<LegalDataMaster>>> getComplianceScoreDatabyDate(@RequestBody ComlianceScoreFilter imr,Pageable pageable) throws IOException {
+       	Map<String,List<LegalDataMaster>> iml = null;
+       	try {
+   	    	iml=imd.getByIndustryNameComplianceScoreData(imr,pageable);
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   			return new ResponseEntity("Exception in /industry-master-score-card/compliance-score", HttpStatus.INTERNAL_SERVER_ERROR);
+   		}
+        return new ResponseEntity<Map<String,List<LegalDataMaster>>>(iml,HttpStatus.OK);
+        
+    }
+   
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+   	@RequestMapping(method = RequestMethod.POST, value = "/industry-master-score-card/customFilter/compliance-score",  produces = "application/json")
+   	public ResponseEntity <List<LegalDataMaster>>getCustomFilterData(@RequestBody ComlianceScoreFilter imr,Pageable pageable) throws IOException {
+       	List<LegalDataMaster> iml = null;
+       	try {
+   	    	iml=imd.getDataBetweenDuration(imr,pageable);
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   			return new ResponseEntity("Exception in /industry-master-score-card/compliance-score", HttpStatus.INTERNAL_SERVER_ERROR);
+   		}
+        return new ResponseEntity<List<LegalDataMaster>>(iml,HttpStatus.OK);
+        
+    }
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @RequestMapping(method = RequestMethod.POST, value = "/industry-master-score-card/pollution-score",  produces = "application/json")
+   	public ResponseEntity  <Map<String,Map<String,List<PollutionScoreResponseVo>>>> getPollutionScoreCardDatabyDate(@RequestBody PollutionScoreFilter imr,Pageable pageable) throws IOException {
+    	Map<String,Map<String,List<PollutionScoreResponseVo>>> iml = null;
+       	try {
+   	    	iml=imd.getByIndustryNamePollutionScoreData(imr,pageable);
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   			
+   			return new ResponseEntity("Exception in /industry-master-score-card/pollution-score", HttpStatus.INTERNAL_SERVER_ERROR);
+   		}
+        return new ResponseEntity<Map<String,Map<String,List<PollutionScoreResponseVo>>>>(iml,HttpStatus.OK);
+        
+    }
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @RequestMapping(method = RequestMethod.GET, value = "/industry-master-score-card/comparison",  produces = "application/json")
+   	public ResponseEntity  <Map<String,List<PollutionScoreResponseVo>>> getComparisonData() throws IOException {
+    	Map<String,List<PollutionScoreResponseVo>> iml = null;
+       	try {
+   	    	iml=imd.getComparisonData();
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   			
+   			return new ResponseEntity("Exception in /industry-master-score-card/comparison", HttpStatus.INTERNAL_SERVER_ERROR);
+   		}
+        return new ResponseEntity<Map<String,List<PollutionScoreResponseVo>>>(iml,HttpStatus.OK);
+        
+    }
 }

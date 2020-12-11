@@ -51,7 +51,7 @@ public class LegalDaoImpl implements LegalDao {
 	@Autowired
 	MongoClient mongoClient;
 
-	public Map<String,List<TileVo>> getPendingLegalActionsData(){
+	public Map<String,List<TileVo>> getPendingLegalActionsData(String region,String subRegion){
 		try {
 			logger.info("getPendingLegalActionsData");
 			Map<String, List<String>> daysMap = IDSSUtil.getDaysMapForLegal();
@@ -63,7 +63,7 @@ public class LegalDaoImpl implements LegalDao {
             
             for(String days : daysMap.keySet()) {
             	logger.info("getPendingLegalActionsData : "+days);
-	            List<? extends Bson> pipeline = getPendingLegalActionsPipeline(daysMap.get(days));
+	            List<? extends Bson> pipeline = getPendingLegalActionsPipeline(daysMap.get(days),region,subRegion);
 	            
 	            List<TileVo> tVoList = new ArrayList<TileVo>();
 	            collection.aggregate(pipeline)
@@ -95,7 +95,7 @@ public class LegalDaoImpl implements LegalDao {
 		return null;
 	}
 	
-	private List<? extends Bson> getPendingLegalActionsPipeline(List<String> days) throws ParseException {
+	private List<? extends Bson> getPendingLegalActionsPipeline(List<String> days,String region,String subRegion) throws ParseException {
 		
 		Document matchDoc = new Document();
 		
@@ -104,6 +104,11 @@ public class LegalDaoImpl implements LegalDao {
 							.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))
 						);
 		matchDoc.append("legalDirection", new Document().append("$in", IDSSUtil.getLegalActionsList()));
+		
+		if(!"ALL".equalsIgnoreCase(region))
+			matchDoc.append("region",region);
+		if(!"ALL".equalsIgnoreCase(subRegion))
+			matchDoc.append("subRegion",subRegion);
 		
 		List<? extends Bson> pipeline = Arrays.asList(
 				new Document().append("$match", matchDoc),  
@@ -124,7 +129,7 @@ public class LegalDaoImpl implements LegalDao {
 		return pipeline;
 	}
 	
-	public Map<String,Map<String,List<TileVo>>> getLegalActionsByIndustryScaleCategoryData(){
+	public Map<String,Map<String,List<TileVo>>> getLegalActionsByIndustryScaleCategoryData(String region,String subRegion){
 		try {
 			logger.info("getLegalActionsByIndustryScaleTypeData");
 			
@@ -134,9 +139,9 @@ public class LegalDaoImpl implements LegalDao {
             
             Map<String,Map<String,List<TileVo>>> tileMap = new LinkedHashMap<String,Map<String, List<TileVo>>>();
             
-            tileMap.put("scale", getDataByIndustryScaleCategoryData(  collection,"scale"));
+            tileMap.put("scale", getDataByIndustryScaleCategoryData(  collection,"scale",region,subRegion));
             
-            tileMap.put("category", getDataByIndustryScaleCategoryData(  collection,"category"));
+            tileMap.put("category", getDataByIndustryScaleCategoryData(  collection,"category",region,subRegion));
             return tileMap;
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -144,10 +149,10 @@ public class LegalDaoImpl implements LegalDao {
 		return null;
 	}
 
-	private Map<String,List<TileVo>> getDataByIndustryScaleCategoryData(MongoCollection<Document> collection,String aggregateBy) throws ParseException {
+	private Map<String,List<TileVo>> getDataByIndustryScaleCategoryData(MongoCollection<Document> collection,String aggregateBy,String region,String subRegion) throws ParseException {
 			Map<String,List<TileVo>> legalMap = new LinkedHashMap<String, List<TileVo>>();
 			logger.info("getDataByIndustryScaleCategoryData : "+aggregateBy);
-		    List<? extends Bson> pipeline = getLegalActionsByCategoryScalePipeline(aggregateBy);
+		    List<? extends Bson> pipeline = getLegalActionsByCategoryScalePipeline(aggregateBy,region,subRegion);
 		    
 		    collection.aggregate(pipeline)
 		            .allowDiskUse(false)
@@ -177,7 +182,7 @@ public class LegalDaoImpl implements LegalDao {
 		return legalMap;
 	}
 	
-	private List<? extends Bson> getLegalActionsByCategoryScalePipeline(String aggregateBy) throws ParseException {
+	private List<? extends Bson> getLegalActionsByCategoryScalePipeline(String aggregateBy,String region,String subRegion) throws ParseException {
 		List<String> legalActionsList = IDSSUtil.getLegalActionsList();
 		Document matchDoc = null;
 		Document groupDoc = null;
@@ -219,6 +224,11 @@ public class LegalDaoImpl implements LegalDao {
 	                        )
 	                );
 		}
+		
+		if(!"ALL".equalsIgnoreCase(region))
+			matchDoc.append("region",region);
+		if(!"ALL".equalsIgnoreCase(subRegion))
+			matchDoc.append("subRegion",subRegion);
 		
 		List<? extends Bson> pipeline = Arrays.asList(
 				 matchDoc,

@@ -25,6 +25,7 @@ import com.eai.idss.repository.LeaveScheduleRepository;
 import com.eai.idss.repository.UserRepository;
 import com.eai.idss.vo.TileVo;
 import com.eai.idss.vo.VisitDetails;
+import com.eai.idss.vo.VisitsByComplianceVo;
 import com.eai.idss.vo.VisitsDetailsRequest;
 import com.eai.idss.vo.VisitsFilter;
 import com.eai.idss.vo.VisitsScheduleDetailsRequest;
@@ -59,10 +60,11 @@ public class VisitsController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.POST, value = "/visits-dashboard/pending-visits",  produces = "application/json")
-	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getVisitsDashboardPendingData(@RequestBody VisitsFilter vf) throws IOException {
+	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getVisitsDashboardPendingData(@RequestHeader String userName,@RequestBody VisitsFilter vf) throws IOException {
     	Map<String,Map<String,List<TileVo>>> ct = new LinkedHashMap<String, Map<String,List<TileVo>>>();
 	    try {
-	    	ct.put("pendingRequest",cd.getPendingVisitsData(vf));
+	    	User u = userRepository.findByUserName(userName);
+	    	ct.put("pendingRequest",cd.getPendingVisitsData(vf,u.getRegion(),u.getSubRegion()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /visits-dashboard/pending-legal-actions", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -161,5 +163,19 @@ public class VisitsController {
    			return new ResponseEntity("Exception in /visits-schedule-current-month", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
    	    return new ResponseEntity<List<Visits>>(vd,HttpStatus.OK);
+   	}
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+   	@RequestMapping(method = RequestMethod.GET, value = "/visits-details/visits-by-compliance", produces = "application/json")
+   	public ResponseEntity<Map<String,List<VisitsByComplianceVo>>> getVisitsByCompliance(@RequestHeader String userName) throws IOException {
+    	Map<String,List<VisitsByComplianceVo>> vd = null;
+   	    try {
+   	    	User u = userRepository.findByUserName(userName);
+   	    	vd = cd.getVisitsByCompliance(u.getRegion(), u.getSubRegion());
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   			return new ResponseEntity("Exception in /visits-schedule-current-month", HttpStatus.INTERNAL_SERVER_ERROR);
+   		}
+   	    return new ResponseEntity<Map<String,List<VisitsByComplianceVo>>>(vd,HttpStatus.OK);
    	}
 }

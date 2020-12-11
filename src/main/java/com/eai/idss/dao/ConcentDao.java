@@ -12,9 +12,9 @@ import com.eai.idss.vo.TileVo;
 
 public interface ConcentDao {
 
-	public Map<String,List<TileVo>> getPendingRequestConcentData(ConcentFilter cf);
+	public Map<String,List<TileVo>> getPendingRequestConcentData(ConcentFilter cf,String region,String subRegion);
 	
-	public Map<String,Map<String,List<TileVo>>> getUpcomingRenewalConcentData();
+	public Map<String,Map<String,List<TileVo>>> getUpcomingRenewalConcentData(String region,String subRegion);
 	
 	public Map<String,Map<String,List<TileVo>>> getByRegionConcentData(ConcentFilter cf);
 	

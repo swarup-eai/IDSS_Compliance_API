@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Legal {
 
 	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date visitDate;
+	private Date visitedDate;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date issuedOn;
 	private String industryName;
@@ -21,13 +21,13 @@ public class Legal {
 	private String type;
 	private String category;
 	private String subRegion;
-	public Date getVisitDate() {
-		return visitDate;
-	}
-	public void setVisitDate(Date visitDate) {
-		this.visitDate = visitDate;
-	}
 	
+	public Date getVisitedDate() {
+		return visitedDate;
+	}
+	public void setVisitedDate(Date visitedDate) {
+		this.visitedDate = visitedDate;
+	}
 	public Date getIssuedOn() {
 		return issuedOn;
 	}
