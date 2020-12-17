@@ -37,6 +37,7 @@ com\eai\idss\vo\DashboardResponse.class
 com\eai\idss\dao\LegalDaoImpl.class
 com\eai\idss\repository\LeaveScheduleRepository.class
 com\eai\idss\model\User_Filters.class
+com\eai\idss\vo\ComplianceScoreResponseVo.class
 com\eai\idss\dao\LegalDaoImpl$5.class
 com\eai\idss\dao\VisitsDaoImpl$2.class
 com\eai\idss\dao\GenericDaoImpl$2.class
@@ -60,6 +61,7 @@ com\eai\idss\model\Consent_WATER_comparison.class
 com\eai\idss\dao\ConcentDaoImpl.class
 com\eai\idss\dao\LegalDaoImpl$3.class
 com\eai\idss\vo\VisitsScheduleDetailsRequest.class
+com\eai\idss\model\CScoreMaster.class
 com\eai\idss\IDSSApiApplication.class
 com\eai\idss\model\Consent.class
 com\eai\idss\vo\PollutionScoreFilter.class

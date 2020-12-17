@@ -1,7 +1,11 @@
 package com.eai.idss.model;
 
+import java.time.LocalDate;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Document(collection = "consent_FUEL_comparison")
 public class Consent_FUEL_comparison {
@@ -13,6 +17,12 @@ public class Consent_FUEL_comparison {
 	private String fuelName;
 	private Double uom;
 	private String name;
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private LocalDate applicationCreatedOn;
+	
+	public LocalDate getApplicationCreatedOn() {
+		return applicationCreatedOn;
+	}
 
 	public Consent_FUEL_comparison() {
 
@@ -27,7 +37,7 @@ public class Consent_FUEL_comparison {
 		this.uom = uom;
 		this.name = name;
 	}
-
+	
 	public String get_id() {
 		return _id;
 	}

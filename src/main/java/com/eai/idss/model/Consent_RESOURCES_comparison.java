@@ -1,7 +1,11 @@
 package com.eai.idss.model;
 
+import java.time.LocalDate;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Document(collection = "consent_RESOURCES_comparison")
 public class Consent_RESOURCES_comparison {
@@ -13,13 +17,23 @@ public class Consent_RESOURCES_comparison {
 	private String rawMaterialName;
 	private Double uom;
 	private String name;
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private LocalDate applicationCreatedOn;
+	
+	public LocalDate getApplicationCreatedOn() {
+		return applicationCreatedOn;
+	}
+
+	public void setApplicationCreatedOn(LocalDate applicationCreatedOn) {
+		this.applicationCreatedOn = applicationCreatedOn;
+	}
 
 	public Consent_RESOURCES_comparison() {
 
 	}
 
 	public Consent_RESOURCES_comparison(String _id, Double industryId, String industryName, String rawMaterialName,
-			Double uom, String name) {
+			Double uom, String name,LocalDate applicationCreatedOn) {
 		super();
 		this._id = _id;
 		this.industryId = industryId;
@@ -27,7 +41,9 @@ public class Consent_RESOURCES_comparison {
 		this.rawMaterialName = rawMaterialName;
 		this.uom = uom;
 		this.name = name;
+		this.applicationCreatedOn = applicationCreatedOn;
 	}
+	
 
 	public String get_id() {
 		return _id;

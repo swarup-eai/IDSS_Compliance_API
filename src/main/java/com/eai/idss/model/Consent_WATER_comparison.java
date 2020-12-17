@@ -1,7 +1,11 @@
 package com.eai.idss.model;
 
+import java.time.LocalDate;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Document(collection = "consent_WATER_comparison")
 public class Consent_WATER_comparison {
@@ -18,6 +22,12 @@ public class Consent_WATER_comparison {
 	private Double treatedEffluentSs;
 	private Double treatedEffluentTds;
 	private Double treatedEffluentPh;
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private LocalDate applicationCreatedOn;
+	
+	public LocalDate getApplicationCreatedOn() {
+		return applicationCreatedOn;
+	}
 	
 	public Consent_WATER_comparison() {
 

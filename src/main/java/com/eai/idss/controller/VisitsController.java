@@ -32,7 +32,7 @@ import com.eai.idss.vo.VisitsScheduleDetailsRequest;
 
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 public class VisitsController {
 
 	@Autowired

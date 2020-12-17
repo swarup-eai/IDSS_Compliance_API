@@ -1,7 +1,11 @@
 package com.eai.idss.model;
 
+import java.time.LocalDate;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Document(collection = "consent_SKU_comparison")
 public class Consent_SKU_comparison {
@@ -16,7 +20,13 @@ public class Consent_SKU_comparison {
 	private String productname;
 	private Double uom;
 	private String name;
-
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private LocalDate applicationCreatedOn;
+	
+	public LocalDate getApplicationCreatedOn() {
+		return applicationCreatedOn;
+	}
+	
 	public Consent_SKU_comparison() {
 
 	}

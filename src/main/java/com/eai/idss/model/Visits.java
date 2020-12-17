@@ -1,7 +1,6 @@
 package com.eai.idss.model;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 

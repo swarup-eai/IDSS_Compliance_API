@@ -27,7 +27,7 @@ import com.eai.idss.vo.TileVo;
 
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 public class ConsentController {
 
 	@Autowired

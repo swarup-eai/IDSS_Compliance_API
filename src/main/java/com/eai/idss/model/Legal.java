@@ -21,7 +21,14 @@ public class Legal {
 	private String type;
 	private String category;
 	private String subRegion;
+	private double totalLegalActionsCreated;
 	
+	public double getTotalLegalActionsCreated() {
+		return totalLegalActionsCreated;
+	}
+	public void setTotalLegalActionsCreated(double totalLegalActionsCreated) {
+		this.totalLegalActionsCreated = totalLegalActionsCreated;
+	}
 	public Date getVisitedDate() {
 		return visitedDate;
 	}

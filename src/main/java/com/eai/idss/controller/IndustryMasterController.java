@@ -17,26 +17,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eai.idss.dao.IndustryMasterDao;
 import com.eai.idss.model.IndustryMaster;
-import com.eai.idss.model.LegalDataMaster;
 import com.eai.idss.model.User_Filters;
 import com.eai.idss.repository.UserFiltersRepository;
-import com.eai.idss.repository.UserRepository;
 import com.eai.idss.vo.ComlianceScoreFilter;
+import com.eai.idss.vo.ComplianceScoreResponseVo;
 import com.eai.idss.vo.IndustryMasterRequest;
 import com.eai.idss.vo.PollutionScoreFilter;
 import com.eai.idss.vo.PollutionScoreResponseVo;
 
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 public class IndustryMasterController {
 
 	@Autowired
 	private IndustryMasterDao imd;
 	
-    @Autowired
-    private UserRepository userRepository;
-    
     @Autowired
     private UserFiltersRepository ufr;
 
@@ -112,38 +108,24 @@ public class IndustryMasterController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
    	@RequestMapping(method = RequestMethod.POST, value = "/industry-master-score-card/compliance-score",  produces = "application/json")
-   	public ResponseEntity <Map<String,List<LegalDataMaster>>> getComplianceScoreDatabyDate(@RequestBody ComlianceScoreFilter imr,Pageable pageable) throws IOException {
-       	Map<String,List<LegalDataMaster>> iml = null;
+   	public ResponseEntity <List<ComplianceScoreResponseVo>> getComplianceScoreDatabyDate(@RequestBody ComlianceScoreFilter imr) throws IOException {
+    	List<ComplianceScoreResponseVo> iml = null;
        	try {
-   	    	iml=imd.getByIndustryNameComplianceScoreData(imr,pageable);
+   	    	iml=imd.getByIndustryIdComplianceScoreData(imr);
    		} catch (Exception e) {
    			e.printStackTrace();
    			return new ResponseEntity("Exception in /industry-master-score-card/compliance-score", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
-        return new ResponseEntity<Map<String,List<LegalDataMaster>>>(iml,HttpStatus.OK);
+        return new ResponseEntity<List<ComplianceScoreResponseVo>>(iml,HttpStatus.OK);
         
     }
    
     @SuppressWarnings({ "rawtypes", "unchecked" })
-   	@RequestMapping(method = RequestMethod.POST, value = "/industry-master-score-card/customFilter/compliance-score",  produces = "application/json")
-   	public ResponseEntity <List<LegalDataMaster>>getCustomFilterData(@RequestBody ComlianceScoreFilter imr,Pageable pageable) throws IOException {
-       	List<LegalDataMaster> iml = null;
-       	try {
-   	    	iml=imd.getDataBetweenDuration(imr,pageable);
-   		} catch (Exception e) {
-   			e.printStackTrace();
-   			return new ResponseEntity("Exception in /industry-master-score-card/compliance-score", HttpStatus.INTERNAL_SERVER_ERROR);
-   		}
-        return new ResponseEntity<List<LegalDataMaster>>(iml,HttpStatus.OK);
-        
-    }
-    
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(method = RequestMethod.POST, value = "/industry-master-score-card/pollution-score",  produces = "application/json")
-   	public ResponseEntity  <Map<String,Map<String,List<PollutionScoreResponseVo>>>> getPollutionScoreCardDatabyDate(@RequestBody PollutionScoreFilter imr,Pageable pageable) throws IOException {
+   	public ResponseEntity  <Map<String,Map<String,List<PollutionScoreResponseVo>>>> getPollutionScoreCardDatabyDate(@RequestBody PollutionScoreFilter imr) throws IOException {
     	Map<String,Map<String,List<PollutionScoreResponseVo>>> iml = null;
        	try {
-   	    	iml=imd.getByIndustryNamePollutionScoreData(imr,pageable);
+   	    	iml=imd.getByIndustryNamePollutionScoreData(imr);
    		} catch (Exception e) {
    			e.printStackTrace();
    			
@@ -154,11 +136,11 @@ public class IndustryMasterController {
     }
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    @RequestMapping(method = RequestMethod.GET, value = "/industry-master-score-card/comparison",  produces = "application/json")
-   	public ResponseEntity  <Map<String,List<PollutionScoreResponseVo>>> getComparisonData() throws IOException {
+    @RequestMapping(method = RequestMethod.GET, value = "/industry-master-score-card/comparison/{industryId}",  produces = "application/json")
+   	public ResponseEntity  <Map<String,List<PollutionScoreResponseVo>>> getComparisonData(long industryId) throws IOException {
     	Map<String,List<PollutionScoreResponseVo>> iml = null;
        	try {
-   	    	iml=imd.getComparisonData();
+   	    	iml=imd.getComparisonData(industryId);
    		} catch (Exception e) {
    			e.printStackTrace();
    			

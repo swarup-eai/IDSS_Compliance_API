@@ -16,11 +16,13 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\co
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\IndustryMaster.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\configuration\MongoDBConfig.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\User_Filters.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\CScoreMaster.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\VisitsScheduleDetailsRequest.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ConsentDetailsRequest.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\controller\UserController.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Consent.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\GenericDao.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ComplianceScoreResponseVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ConcentFilter.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\ESR_SKU_comparison.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\LegalDetailsRequest.java

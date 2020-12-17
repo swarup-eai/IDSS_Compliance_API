@@ -4,7 +4,9 @@ public class ComlianceScoreFilter {
 
 	private long industryId;
 	
-	private String duration;
+	private String fromDate;
+	
+	private String toDate;
 	
 	public long getIndustryId() {
 		return industryId;
@@ -14,14 +16,21 @@ public class ComlianceScoreFilter {
 		this.industryId = industryId;
 	}
 
-	public String getDuration() {
-		return duration;
+	public String getFromDate() {
+		return fromDate;
 	}
 
-	public void setDuration(String duration) {
-		this.duration = duration;
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
 	}
 
-	
+	public String getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
+
 	
 }
