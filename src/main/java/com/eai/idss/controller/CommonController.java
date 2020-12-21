@@ -66,7 +66,7 @@ public class CommonController {
     	if(u!=null & (u.getDesignation().equalsIgnoreCase("MS") || u.getDesignation().equalsIgnoreCase("HOD")))
     		dd.put("regionList", IDSSUtil.getRegionList());
     	else
-    		dd.put("regionList", new ArrayList<String>(Arrays.asList(u.getRegion())));
+    		dd.put("regionList", IDSSUtil.getSubReasonByReason(u.getRegion()));
     	dd.put("categoryList", IDSSUtil.getCategoryList());
     	dd.put("scaleList", IDSSUtil.getScaleList());
     	dd.put("typeList", IDSSUtil.getTypeList());

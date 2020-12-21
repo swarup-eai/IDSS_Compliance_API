@@ -472,4 +472,79 @@ public class IDSSUtil {
 
 		return ocemsParamList;
 	}
+	/** Get Sub Reason By Reason*/
+	public static List<String> getSubReasonByReason(String reason){
+		List<String> subRegionList = new ArrayList<String>();
+
+		switch(reason) {
+			case "Mumbai":
+				subRegionList.add("Mumbai I");
+				subRegionList.add("Mumbai II");
+				subRegionList.add("Mumbai III");
+				subRegionList.add("Mumbai IV");
+				break;
+			case "Kalyan":
+				subRegionList.add("Kalyan I");
+				subRegionList.add("Kalyan II");
+				subRegionList.add("Kalyan III");
+				subRegionList.add("Bhiwandi");
+				break;
+			case "Kolhapur":
+				subRegionList.add("Kolhapur");
+				subRegionList.add("Sangli");
+				subRegionList.add("Ratnagiri");
+				subRegionList.add("Chiplun");
+				break;
+			case "Nagpur":
+				subRegionList.add("Nagpur I");
+				subRegionList.add("Nagpur II");
+				subRegionList.add("Bhandara");
+				break;
+			case "Aurangabad":
+				subRegionList.add("Aurangabad I");
+				subRegionList.add("Jalna");
+				subRegionList.add("Latur");
+				subRegionList.add("Nanded");
+				subRegionList.add("Parbhani");
+				break;
+			case "Nashik":
+				subRegionList.add("Nashik");
+				subRegionList.add("Jalgaon");
+				subRegionList.add("Dhule");
+				subRegionList.add("Ahmednagar");
+				break;
+			case "Navi Mumbai":
+				subRegionList.add("Navi Mumbai I");
+				subRegionList.add("Navi Mumbai II");
+				subRegionList.add("Taloja");
+				break;
+			case "Pune":
+				subRegionList.add("Pune I");
+				subRegionList.add("Pune II");
+				subRegionList.add("Pimpri-Chichwad");
+				subRegionList.add("Satara");
+				subRegionList.add("Solapur");
+				break;
+			case "Raigad":
+				subRegionList.add("Raigad I");
+				subRegionList.add("Raigad II");
+				subRegionList.add("Mahad");
+				break;
+			case "Thane":
+				subRegionList.add("Thane I");
+				subRegionList.add("Thane II");
+				subRegionList.add("Tarapur");
+				subRegionList.add("Tarapur II");
+				break;
+			case "Chandrapur":
+				subRegionList.add("Chandrapur-I");
+				break;
+			case "Amravati":
+				subRegionList.add("Amravati I");
+				subRegionList.add("Amravati II");
+				subRegionList.add("Akola");
+				break;
+		}
+		return subRegionList;
+	}
 }
