@@ -473,10 +473,10 @@ public class IDSSUtil {
 		return ocemsParamList;
 	}
 	/** Get Sub Region*/
-	public static List<String> getSubRegion(String reason){
+	public static List<String> getSubRegion(String region){
 		List<String> subRegionList = new ArrayList<String>();
 
-		switch(reason) {
+		switch(region) {
 			case "Mumbai":
 				subRegionList.add("Mumbai I");
 				subRegionList.add("Mumbai II");
