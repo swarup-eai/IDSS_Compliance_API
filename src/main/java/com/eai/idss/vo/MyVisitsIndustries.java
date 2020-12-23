@@ -1,7 +1,7 @@
 package com.eai.idss.vo;
 
 public class MyVisitsIndustries {
-
+	private int industryId;
 	private String industryName;
 	private int cScore;
 	public String getIndustryName() {
@@ -16,5 +16,11 @@ public class MyVisitsIndustries {
 	public void setcScore(int cScore) {
 		this.cScore = cScore;
 	}
-	
+	public int getIndustryId() {
+		return industryId;
+	}
+	public void setIndustryId(int industryId) {
+		this.industryId = industryId;
+	}
+
 }

@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.eai.idss.vo.MyVisits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,9 +49,9 @@ public class CommonController {
 	    	dashboardMap.put("concentTile", gd.getConcentTileData(dbr));
 	    	dashboardMap.put("legalTile", gd.getLegalTileData(dbr));
 	    	dashboardMap.put("visitTile", gd.getVisitsTileData(dbr));
-	    	dashboardMap.put("myVisits", gd.getMyVisitsData(userName));
 	    	User u = userRepository.findByUserName(userName);
 	    	dr.setTopPerformers(gd.getTopPerformer(u.getRegion()));
+	    	dr.setMyVisits(gd.getMyVisitsData(userName));
 	    	dr.setDashboardMap(dashboardMap);
 		} catch (Exception e) {
 			e.printStackTrace();
