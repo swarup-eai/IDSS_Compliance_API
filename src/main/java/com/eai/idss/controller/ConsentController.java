@@ -2,6 +2,7 @@ package com.eai.idss.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -109,8 +110,8 @@ public class ConsentController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.POST, value = "/concent-dashboard/request-by-sub-region",  produces = "application/json")
-	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getConcentDashboardBySubRegionData(@RequestHeader String userName, @RequestBody ConcentFilter cf) throws IOException {
-    	Map<String,Map<String,List<TileVo>>> ct = new HashMap<String, Map<String,List<TileVo>>>();
+	public ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>> getConcentDashboardBySubRegionData(@RequestHeader String userName, @RequestBody ConcentFilter cf) throws IOException {
+		Map<String,Map<String,Map<String,List<TileVo>>>> ct = new LinkedHashMap<String, Map<String,Map<String,List<TileVo>>>>();
 	    try {
 	    	User u = userRepository.findByUserName(userName);
 	    	ct.put("bySubRegionRequest",cd.getBySubRegionConcentData(u.getRegion(), cf));
@@ -118,7 +119,7 @@ public class ConsentController {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /concent-dashboard/pending-request", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	    return new ResponseEntity<Map<String,Map<String,List<TileVo>>>>(ct,HttpStatus.OK);
+	    return new ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>>(ct,HttpStatus.OK);
 	}
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -127,7 +128,7 @@ public class ConsentController {
     	Map<String,Map<String,Map<String,List<TileVo>>>> ct = new HashMap<String, Map<String,Map<String,List<TileVo>>>>();
 	    try {
 	    	User u = userRepository.findByUserName(userName);
-	    	ct.put("bySubRegionRequest",cd.getByTeamConcentData(cf,u.getRegion()));
+	    	ct.put("pendingByTeamConcentData",cd.getByTeamConcentData(cf,u.getRegion()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /concent-dashboard/pending-request", HttpStatus.INTERNAL_SERVER_ERROR);
