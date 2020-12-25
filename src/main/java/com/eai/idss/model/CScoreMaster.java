@@ -9,28 +9,29 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Document(collection = "cscoreMaster")
 public class CScoreMaster {
 
-	private long industryid;
+	private long industryId;
 	private double cscore;
 	@JsonFormat(pattern="yyyy-MM-dd")
-	private LocalDate calculateddate;
+	private LocalDate calculatedDate;
 	
-	public long getIndustryid() {
-		return industryid;
-	}
-	public void setIndustryid(long industryid) {
-		this.industryid = industryid;
-	}
+	
 	public double getCscore() {
 		return cscore;
 	}
 	public void setCscore(double cscore) {
 		this.cscore = cscore;
 	}
-	public LocalDate getCalculateddate() {
-		return calculateddate;
+	public long getIndustryId() {
+		return industryId;
 	}
-	public void setCalculateddate(LocalDate calculateddate) {
-		this.calculateddate = calculateddate;
+	public void setIndustryId(long industryId) {
+		this.industryId = industryId;
+	}
+	public LocalDate getCalculatedDate() {
+		return calculatedDate;
+	}
+	public void setCalculatedDate(LocalDate calculatedDate) {
+		this.calculatedDate = calculatedDate;
 	}
 	
 }

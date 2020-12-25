@@ -6,11 +6,9 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,24 +22,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.eai.idss.model.CScoreMaster;
-import com.eai.idss.model.Consent_FUEL_comparison;
-import com.eai.idss.model.Consent_HW_Comparison;
-import com.eai.idss.model.Consent_RESOURCES_comparison;
-import com.eai.idss.model.Consent_SKU_comparison;
-import com.eai.idss.model.Consent_STACK_comparison;
-import com.eai.idss.model.Consent_WATER_comparison;
-import com.eai.idss.model.Consented_Air_Pollution_Comparison;
-import com.eai.idss.model.ESR_Air_Pollution_Comparison;
-import com.eai.idss.model.ESR_FUEL_comparison;
-import com.eai.idss.model.ESR_RESOURCES_comparison;
-import com.eai.idss.model.ESR_SKU_comparison;
-import com.eai.idss.model.ESR_WATER_comparison;
-import com.eai.idss.model.Esr_HW_Comparison;
 import com.eai.idss.model.IndustryMaster;
 import com.eai.idss.model.Legal;
-import com.eai.idss.model.OCEMS_data;
 import com.eai.idss.model.Visits;
-import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.ComlianceScoreFilter;
 import com.eai.idss.vo.ComplianceScoreResponseVo;
 import com.eai.idss.vo.IndustryMasterRequest;
@@ -98,20 +81,20 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 					Query query = new Query();
 
-					query.addCriteria(Criteria.where("calculateddate")
+					query.addCriteria(Criteria.where("calculatedDate")
 							.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(cf.getFromDate() + " 00:00:00.000+0000"))
 							.lt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(cf.getToDate() + " 00:00:00.000+0000")));
 
-					query.addCriteria(Criteria.where("industryid").is(cf.getIndustryId()));
+					query.addCriteria(Criteria.where("industryId").is(cf.getIndustryId()));
 
 					List<CScoreMaster> csList = mongoTemplate.find(query, CScoreMaster.class);
 					
 					for(CScoreMaster csm : csList) {
 						ComplianceScoreResponseVo csrVo = new ComplianceScoreResponseVo();
-						csrVo.setCalculateddate(csm.getCalculateddate());
+						csrVo.setCalculateddate(csm.getCalculatedDate());
 						csrVo.setcScore((int)csm.getCscore());
-						csrVo.setIndustryId(csm.getIndustryid());
-						YearMonth ym = YearMonth.of(csm.getCalculateddate().getYear(),csm.getCalculateddate().getMonth());
+						csrVo.setIndustryId(csm.getIndustryId());
+						YearMonth ym = YearMonth.of(csm.getCalculatedDate().getYear(),csm.getCalculatedDate().getMonth());
 						DateTimeFormatter f = DateTimeFormatter.ofPattern( "MMM-uuuu" ) ;
 						csrVo.setMonthYear(ym.format( f )) ;
 						
@@ -121,7 +104,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 							csrVo.setVisitDate(vList.get(0).getVisitedDate());
 						}
 						
-						List<Legal> lList = getLegalActionDetails(csm.getIndustryid(), csm.getCalculateddate());
+						List<Legal> lList = getLegalActionDetails(csm.getIndustryId(), csm.getCalculatedDate());
 						if(null!=lList && !lList.isEmpty()) 
 							csrVo.setLegalActionsCnt((int)lList.get(0).getTotalLegalActionsCreated());
 						
@@ -137,8 +120,8 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	}
 
 	private List<Visits> getVisitDetails(ComlianceScoreFilter cf, CScoreMaster csm) throws ParseException {
-		LocalDate fd = csm.getCalculateddate().withDayOfMonth(1);
-		LocalDate ld = csm.getCalculateddate().withDayOfMonth(csm.getCalculateddate().lengthOfMonth());
+		LocalDate fd = csm.getCalculatedDate().withDayOfMonth(1);
+		LocalDate ld = csm.getCalculatedDate().withDayOfMonth(csm.getCalculatedDate().lengthOfMonth());
 		Query queryVisits = new Query();
 
 		queryVisits.addCriteria(Criteria.where("visitedDate")
