@@ -18,7 +18,7 @@ public interface ConcentDao {
 	
 	public Map<String,Map<String,List<TileVo>>> getByRegionConcentData(ConcentFilter cf);
 	
-	public Map<String,List<TileVo>> getBySubRegionConcentData(String region,ConcentFilter cf);
+	public Map<String,Map<String,List<TileVo>>> getBySubRegionConcentData(String region,ConcentFilter cf);
 	
 	public Map<String,Map<String,List<TileVo>>> getByTeamConcentData(ConcentFilter cf,String region);
 	

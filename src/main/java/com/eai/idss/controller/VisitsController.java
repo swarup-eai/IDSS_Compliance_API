@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eai.idss.dao.VisitsDao;
 import com.eai.idss.model.LeaveSchedule;
 import com.eai.idss.model.User;
+import com.eai.idss.model.VisitProcessEfficiency;
 import com.eai.idss.model.Visits;
 import com.eai.idss.repository.LeaveScheduleRepository;
 import com.eai.idss.repository.UserRepository;
+import com.eai.idss.vo.LegalFilter;
 import com.eai.idss.vo.TileVo;
 import com.eai.idss.vo.VisitDetails;
 import com.eai.idss.vo.VisitsByComplianceVo;
@@ -78,7 +80,7 @@ public class VisitsController {
     	Map<String,Map<String,Map<String,List<TileVo>>>> ct = new LinkedHashMap<String, Map<String,Map<String,List<TileVo>>>>();
 	    try {
 	    	User u = userRepository.findByUserName(userName);
-	    	ct.put("bySubRegionRequest",cd.getByTeamVisitsData(vf,u.getRegion()));
+	    	ct.put("visitsByTeam",cd.getByTeamVisitsData(vf,u.getRegion()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /visits-dashboard/pending-by-team", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -174,8 +176,36 @@ public class VisitsController {
    	    	vd = cd.getVisitsByCompliance(u.getRegion(), u.getSubRegion());
    		} catch (Exception e) {
    			e.printStackTrace();
-   			return new ResponseEntity("Exception in /visits-schedule-current-month", HttpStatus.INTERNAL_SERVER_ERROR);
+   			return new ResponseEntity("Exception in /visits-details/visits-by-compliance", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
    	    return new ResponseEntity<Map<String,List<VisitsByComplianceVo>>>(vd,HttpStatus.OK);
    	}
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+   	@RequestMapping(method = RequestMethod.GET, value = "/visits-dashboard/visits-process-efficiency", produces = "application/json")
+   	public ResponseEntity<VisitProcessEfficiency> getVisitsProcessEfficiency(@RequestHeader String userName) throws IOException {
+    	VisitProcessEfficiency vd = null;
+   	    try {
+   	    	User u = userRepository.findByUserName(userName);
+   	    	vd = cd.getVisitProcessEfficiency(u.getRegion());
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   			return new ResponseEntity("Exception in /visits-details/visits-process-efficiency", HttpStatus.INTERNAL_SERVER_ERROR);
+   		}
+   	    return new ResponseEntity<VisitProcessEfficiency>(vd,HttpStatus.OK);
+   	}
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(method = RequestMethod.POST, value = "/visits-dashboard/request-by-sub-region",  produces = "application/json")
+	public ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>> getVisitDataBySubRegionData(@RequestHeader String userName,@RequestBody VisitsFilter vf) throws IOException {
+    	Map<String,Map<String,Map<String,List<TileVo>>>> ct = new LinkedHashMap<String, Map<String,Map<String,List<TileVo>>>>();
+	    try {
+	    	User u = userRepository.findByUserName(userName);
+	    	ct.put("bySubRegionRequest",cd.getBySubRegionVisitsData(u.getRegion(), vf));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity("Exception in /visits-dashboard/request-by-sub-region", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	    return new ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>>(ct,HttpStatus.OK);
+	}
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
 
+import com.eai.idss.model.VisitProcessEfficiency;
 import com.eai.idss.model.Visits;
 import com.eai.idss.vo.TileVo;
 import com.eai.idss.vo.VisitDetails;
@@ -34,5 +35,7 @@ public interface VisitsDao {
 	public List<Visits> getVisitDetailsForOneIndustry(long industryId);
 	
 	public Map<String,List<VisitsByComplianceVo>> getVisitsByCompliance(String region, String subRegion);
+	
+	public VisitProcessEfficiency getVisitProcessEfficiency(String region);
 	
 }

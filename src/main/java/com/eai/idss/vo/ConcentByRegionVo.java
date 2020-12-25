@@ -3,6 +3,7 @@ package com.eai.idss.vo;
 public class ConcentByRegionVo {
 
 	private String region;
+	private String subRegion;
 	private String status;
 	private int count;
 	public String getRegion() {
@@ -22,6 +23,12 @@ public class ConcentByRegionVo {
 	}
 	public void setCount(int count) {
 		this.count = count;
+	}
+	public String getSubRegion() {
+		return subRegion;
+	}
+	public void setSubRegion(String subRegion) {
+		this.subRegion = subRegion;
 	}
 	
 }

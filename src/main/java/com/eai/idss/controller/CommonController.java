@@ -1,8 +1,6 @@
 package com.eai.idss.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -48,9 +46,9 @@ public class CommonController {
 	    	dashboardMap.put("concentTile", gd.getConcentTileData(dbr));
 	    	dashboardMap.put("legalTile", gd.getLegalTileData(dbr));
 	    	dashboardMap.put("visitTile", gd.getVisitsTileData(dbr));
-	    	dashboardMap.put("myVisits", gd.getMyVisitsData(userName));
 	    	User u = userRepository.findByUserName(userName);
 	    	dr.setTopPerformers(gd.getTopPerformer(u.getRegion()));
+	    	dr.setMyVisits(gd.getMyVisitsData(userName));
 	    	dr.setDashboardMap(dashboardMap);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,7 +64,7 @@ public class CommonController {
     	if(u!=null & (u.getDesignation().equalsIgnoreCase("MS") || u.getDesignation().equalsIgnoreCase("HOD")))
     		dd.put("regionList", IDSSUtil.getRegionList());
     	else
-    		dd.put("regionList", new ArrayList<String>(Arrays.asList(u.getRegion())));
+    		dd.put("regionList", IDSSUtil.getSubRegion(u.getRegion()));
     	dd.put("categoryList", IDSSUtil.getCategoryList());
     	dd.put("scaleList", IDSSUtil.getScaleList());
     	dd.put("typeList", IDSSUtil.getTypeList());

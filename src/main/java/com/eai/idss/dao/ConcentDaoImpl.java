@@ -317,31 +317,37 @@ public class ConcentDaoImpl implements ConcentDao {
 	}
 	
 	
-	public Map<String,List<TileVo>> getBySubRegionConcentData(String region, ConcentFilter cf){
+	public Map<String,Map<String,List<TileVo>>> getBySubRegionConcentData(String region, ConcentFilter cf){
 		try {
 			logger.info("getPendingRequestConcentData");
 			Map<String, String> daysMap = IDSSUtil.getPastDaysMap();
 			
 		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
             MongoCollection<Document> collection = database.getCollection("Consent");
-            
-            
-            Map<String,List<TileVo>> tileMap = new LinkedHashMap<String, List<TileVo>>();
+
+
+			Map<String,Map<String,List<TileVo>>> tileMap = new LinkedHashMap<String, Map<String,List<TileVo>>>();
             
             for(String days : daysMap.keySet()) {
             	logger.info("getPendingRequestConcentData : "+days);
 	            List<? extends Bson> pipeline = getBySubRegionConcentPipeline(region,days,cf);
-	            
-	            List<TileVo> tVoList = new ArrayList<TileVo>();
-	            collection.aggregate(pipeline)
+
+//	            List<TileVo> tVoList = new ArrayList<TileVo>();
+				Map<String,List<TileVo>> subRegionMap = new LinkedHashMap<String, List<TileVo>>();
+
+				collection.aggregate(pipeline)
 	                    .allowDiskUse(false)
 	                    .forEach(new Consumer<Document>() {
 		    	                @Override
 		    	                public void accept(Document document) {
 		    	                    logger.info(document.toJson());
 									try {
-										TileVo tVo = new ObjectMapper().readValue(document.toJson(), TileVo.class);
-										tVoList.add(tVo);
+										ConcentByRegionVo cVo = new ObjectMapper().readValue(document.toJson(), ConcentByRegionVo.class);
+										List<TileVo> tVoList = subRegionMap.get(cVo.getSubRegion());
+										if(null==tVoList)
+											tVoList = new ArrayList<TileVo>();
+										tVoList.add(new TileVo(cVo.getStatus(),cVo.getCount()));
+										subRegionMap.put(cVo.getSubRegion(),tVoList);
 									
 									} catch (JsonMappingException e) {
 										e.printStackTrace();
@@ -352,7 +358,7 @@ public class ConcentDaoImpl implements ConcentDao {
 		    	                }
 		    	            }
 	                    );
-	            tileMap.put(daysMap.get(days), tVoList);
+	            tileMap.put(daysMap.get(days), subRegionMap);
             
             }
             return tileMap;
@@ -376,7 +382,11 @@ public class ConcentDaoImpl implements ConcentDao {
 				new Document().append("$match", matchDoc),  
 		        new Document()
 		                .append("$group", new Document()
-		                        .append("_id", "$consentStatus")
+//		                        .append("_id", "$consentStatus")
+								.append("_id", new Document()
+										.append("consentStatus", "$consentStatus")
+										.append("subRegion", "$subRegion")
+								)
 		                        .append("caseCount", new Document()
 		                                .append("$sum", 1)
 		                        )
@@ -384,8 +394,9 @@ public class ConcentDaoImpl implements ConcentDao {
 		        new Document()
 		            .append("$project", new Document()
 		                    .append("_id", false)
-		                    .append("caseType", "$_id")
-		                    .append("caseCount", "$caseCount")
+		                    .append("status", "$_id.consentStatus")
+							.append("subRegion", "$_id.subRegion")
+							.append("count", "$caseCount")
 		            )
 				);
 		return pipeline;
@@ -453,7 +464,7 @@ public class ConcentDaoImpl implements ConcentDao {
                 new Document()
                         .append("$group", new Document()
                                 .append("_id", new Document()
-                                        .append("team", "$adminOffice")
+                                        .append("subRegion", "$subRegion")
                                         .append("designation", "$adminDesignation")
                                         .append("status", "$status")
                                 )
@@ -464,7 +475,7 @@ public class ConcentDaoImpl implements ConcentDao {
                 new Document()
                         .append("$project", new Document()
                                 .append("_id", false)
-                                .append("subRegion", "$_id.team")
+                                .append("subRegion", "$_id.subRegion")
                                 .append("designation", "$_id.designation")
                                 .append("status", "$_id.status")
                                 .append("count", "$count")

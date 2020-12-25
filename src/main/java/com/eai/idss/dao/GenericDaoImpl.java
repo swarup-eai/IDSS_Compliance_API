@@ -15,9 +15,14 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import com.eai.idss.model.CScoreMaster;
 import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.DashboardRequest;
 import com.eai.idss.vo.LegalTileVo;
@@ -39,6 +44,9 @@ public class GenericDaoImpl implements GenericDao {
 	
 	@Autowired
 	MongoClient mongoClient;
+
+	@Autowired
+	MongoTemplate mongoTemplate;
 
 	public Map<String,List<TileVo>> getConcentTileData(DashboardRequest dbr){
 		try {
@@ -352,13 +360,13 @@ public class GenericDaoImpl implements GenericDao {
 		return pipeline;
 	}
 	
-	public Map<String,List<TileVo>> getMyVisitsData(String userName){
+	public List<MyVisits> getMyVisitsData(String userName){
 			logger.info("getMyVisitsData");
 			try {
 		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
 	        MongoCollection<Document> collection = database.getCollection("Visit_master");
-	        
-	        Map<String,List<TileVo>> tileMap = new LinkedHashMap<String, List<TileVo>>();
+
+				List<MyVisits> tileMap =  new ArrayList<MyVisits>();
 	        
 	        LocalDateTime currentTime = LocalDateTime.now();
 			String date7DaysBack = currentTime.minusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -379,7 +387,7 @@ public class GenericDaoImpl implements GenericDao {
 		return null;
 	}
 
-	private void extractVisitsData(MongoCollection<Document> collection, Map<String, List<TileVo>> tileMap,
+	private void extractVisitsData(MongoCollection<Document> collection, List<MyVisits> tileMap,
 			List<? extends Bson> pipeline) {
 		collection.aggregate(pipeline)
 		        .allowDiskUse(false)
@@ -389,11 +397,17 @@ public class GenericDaoImpl implements GenericDao {
 		                    logger.info(document.toJson());
 							try {
 								MyVisits mvVo= new ObjectMapper().readValue(document.toJson(), MyVisits.class);
-								List<TileVo> tVoList = new ArrayList<TileVo>();
+								MyVisits myVisitsData=new MyVisits();
+								List<MyVisitsIndustries> tVoList = new ArrayList<MyVisitsIndustries>();
 								for(MyVisitsIndustries industries : mvVo.getIndustries()) {
-									tVoList.add(new TileVo(industries.getIndustryName(), industries.getcScore()));
+									MyVisitsIndustries myVisitsIndustries = new MyVisitsIndustries();
+									myVisitsIndustries.setIndustryName(industries.getIndustryName());
+									myVisitsIndustries.setcScore((int)getCscore(industries.getIndustryId()));
+									tVoList.add(myVisitsIndustries);
 								}
-								tileMap.put(mvVo.getDate(), tVoList);
+								myVisitsData.setDate(mvVo.getDate());
+								myVisitsData.setIndustries(tVoList);
+								tileMap.add(myVisitsData);
 							} catch (JsonMappingException e) {
 								e.printStackTrace();
 							} catch (JsonProcessingException e) {
@@ -404,7 +418,15 @@ public class GenericDaoImpl implements GenericDao {
 		            }
 		        );
 	}
+	public double getCscore(int industryId){
 
+		Query query = new Query();
+		query.limit(1);
+		query.with(Sort.by(Sort.Direction.DESC,"_id"));
+		query.addCriteria(Criteria.where("industryId").is(industryId));
+		List<CScoreMaster> cScoreMasters = mongoTemplate.find(query, CScoreMaster.class);
+		return cScoreMasters.get(0).getCscore();
+	}
 	private List<? extends Bson> getMyvisitsPipeline(String userName, String date, boolean pastVisits)
 			throws ParseException {
 		Document matchDoc = null;
@@ -424,7 +446,7 @@ public class GenericDaoImpl implements GenericDao {
 	                .append("industries", new Document()
 	                        .append("$push", new Document()
 	                                .append("industryName", "$industryName")
-	                                .append("cScore", "0")
+	                                .append("industryId", "$industryId")
 	                        )
 	                )
 	        );
@@ -444,7 +466,7 @@ public class GenericDaoImpl implements GenericDao {
 			                .append("industries", new Document()
 			                        .append("$push", new Document()
 			                                .append("industryName", "$industryName")
-			                                .append("cScore", "0")
+											.append("industryId", "$industryId")
 			                        )
 			                )
 			);

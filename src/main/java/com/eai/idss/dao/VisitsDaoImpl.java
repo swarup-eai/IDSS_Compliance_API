@@ -27,6 +27,7 @@ import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import com.eai.idss.model.VisitProcessEfficiency;
 import com.eai.idss.model.Visits;
 import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.ConcentByRegionVo;
@@ -958,5 +959,21 @@ public class VisitsDaoImpl implements VisitsDao {
 		
 		return pipeline;
 	}
-	
+
+	public VisitProcessEfficiency getVisitProcessEfficiency(String region) {
+		try {
+			Query query = new Query();
+			
+			query.addCriteria(Criteria.where("region").is(region));
+			
+			List<VisitProcessEfficiency> visitProcessEfficiencyList= mongoTemplate.find(query, VisitProcessEfficiency.class);
+			
+			return visitProcessEfficiencyList.get(0);
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
