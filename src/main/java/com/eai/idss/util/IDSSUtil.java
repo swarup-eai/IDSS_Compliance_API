@@ -33,6 +33,9 @@ public class IDSSUtil {
 		List<String> subRegionList = new ArrayList<String>();
 
 		switch(region) {
+			case "ALL" :
+				getAllSubRegions(subRegionList);
+				break;
 			case "Mumbai":
 				subRegionList.add("Mumbai I");
 				subRegionList.add("Mumbai II");
@@ -100,8 +103,57 @@ public class IDSSUtil {
 				subRegionList.add("Amravati II");
 				subRegionList.add("Akola");
 				break;
+			default:
+				getAllSubRegions(subRegionList);
+				break;
 		}
 		return subRegionList;
+	}
+
+	private static void getAllSubRegions(List<String> subRegionList) {
+		subRegionList.add("Mumbai I");
+		subRegionList.add("Mumbai II");
+		subRegionList.add("Mumbai III");
+		subRegionList.add("Mumbai IV");
+		subRegionList.add("Kalyan I");
+		subRegionList.add("Kalyan II");
+		subRegionList.add("Kalyan III");
+		subRegionList.add("Bhiwandi");
+		subRegionList.add("Kolhapur");
+		subRegionList.add("Sangli");
+		subRegionList.add("Ratnagiri");
+		subRegionList.add("Chiplun");
+		subRegionList.add("Nagpur I");
+		subRegionList.add("Nagpur II");
+		subRegionList.add("Bhandara");
+		subRegionList.add("Aurangabad I");
+		subRegionList.add("Jalna");
+		subRegionList.add("Latur");
+		subRegionList.add("Nanded");
+		subRegionList.add("Parbhani");
+		subRegionList.add("Nashik");
+		subRegionList.add("Jalgaon");
+		subRegionList.add("Dhule");
+		subRegionList.add("Ahmednagar");
+		subRegionList.add("Navi Mumbai I");
+		subRegionList.add("Navi Mumbai II");
+		subRegionList.add("Taloja");
+		subRegionList.add("Pune I");
+		subRegionList.add("Pune II");
+		subRegionList.add("Pimpri-Chichwad");
+		subRegionList.add("Satara");
+		subRegionList.add("Solapur");
+		subRegionList.add("Raigad I");
+		subRegionList.add("Raigad II");
+		subRegionList.add("Mahad");
+		subRegionList.add("Thane I");
+		subRegionList.add("Thane II");
+		subRegionList.add("Tarapur");
+		subRegionList.add("Tarapur II");
+		subRegionList.add("Chandrapur-I");
+		subRegionList.add("Amravati I");
+		subRegionList.add("Amravati II");
+		subRegionList.add("Akola");
 	}
 	
 	public static List<String> getRegionListForJson(){

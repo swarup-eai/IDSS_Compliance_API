@@ -1,6 +1,7 @@
 package com.eai.idss.controller;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -61,10 +62,16 @@ public class CommonController {
 	public ResponseEntity<Map<String,List<String>>> getDropDownData(@RequestHeader(value="userName") String userName) throws IOException {
     	User u = userRepository.findByUserName(userName);
     	Map<String,List<String>> dd = new HashMap<String, List<String>>();
-    	if(u!=null & (u.getDesignation().equalsIgnoreCase("MS") || u.getDesignation().equalsIgnoreCase("HOD")))
+    	if(u!=null & (u.getDesignation().equalsIgnoreCase("MS") 
+    			|| u.getDesignation().equalsIgnoreCase("HOD"))
+    			|| u.getDesignation().equalsIgnoreCase("ADMIN")) {
     		dd.put("regionList", IDSSUtil.getRegionList());
-    	else
-    		dd.put("regionList", IDSSUtil.getSubRegion(u.getRegion()));
+    		dd.put("subRegionList", IDSSUtil.getSubRegion(u.getRegion().toUpperCase()));
+    	}
+    	else {
+    		dd.put("regionList", Arrays.asList(u.getRegion()));
+    		dd.put("subRegionList", IDSSUtil.getSubRegion(u.getRegion()));
+    	}
     	dd.put("categoryList", IDSSUtil.getCategoryList());
     	dd.put("scaleList", IDSSUtil.getScaleList());
     	dd.put("typeList", IDSSUtil.getTypeList());
