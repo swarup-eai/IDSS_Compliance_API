@@ -3,6 +3,7 @@ package com.eai.idss.vo;
 public class IndustryMasterRequest {
 
 	private String region;
+	private String subRegion;
 	private String scale;
 	private String type;
 	private String category;
@@ -10,6 +11,12 @@ public class IndustryMasterRequest {
 	private String pendingCases;
 	private String legalActions;
 	
+	public String getSubRegion() {
+		return subRegion;
+	}
+	public void setSubRegion(String subRegion) {
+		this.subRegion = subRegion;
+	}
 	public Integer getComplianceScore() {
 		return complianceScore;
 	}

@@ -47,6 +47,8 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		if(null!=imr) {
 			if(StringUtils.hasText(imr.getRegion()) && !"All".equalsIgnoreCase(imr.getRegion()))
 				query.addCriteria(Criteria.where("region").is(imr.getRegion()));
+			if(StringUtils.hasText(imr.getSubRegion()) && !"All".equalsIgnoreCase(imr.getSubRegion()))
+				query.addCriteria(Criteria.where("subRegion").is(imr.getSubRegion()));
 			if(StringUtils.hasText(imr.getCategory()) && !"All".equalsIgnoreCase(imr.getCategory()))
 				query.addCriteria(Criteria.where("category").is(imr.getCategory()));
 			if(StringUtils.hasText(imr.getScale()) && !"All".equalsIgnoreCase(imr.getScale()))

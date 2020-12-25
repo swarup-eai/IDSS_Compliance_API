@@ -11,6 +11,7 @@ public class IndustryMaster {
 	@Id
 	private String _id;
 	private String region;
+	private String subRegion;
 	private String industryName;
 	private String category;
 	private String scale;
@@ -22,6 +23,12 @@ public class IndustryMaster {
 	private int legalActionsPending;
 	private Date lastVisited;
 	
+	public String getSubRegion() {
+		return subRegion;
+	}
+	public void setSubRegion(String subRegion) {
+		this.subRegion = subRegion;
+	}
 	public String get_id() {
 		return _id;
 	}
