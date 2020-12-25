@@ -183,24 +183,21 @@ public class ConcentDaoImpl implements ConcentDao {
 		LocalDateTime currentTime = LocalDateTime.now();
 		String currentDay = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
 		
-		Document matchDoc = null;
+		Document matchDoc = new Document();
 		
 		if(currentDay.equalsIgnoreCase(days)) {
-			matchDoc = new Document()
-            .append("$match", new Document()
-                    .append("status", "Approved")
-                    .append("created", new Document()
+			matchDoc
+            .append("status", "Approved")
+            .append("created", new Document()
                             .append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(currentDay+" 00:00:00.000+0000"))
-                    )
             ); 
 		}else {
-			matchDoc = new Document()
-		            .append("$match", new Document()
-		                    .append("consentStatus", "Renewal")
-		                    .append("consentValidityDate", new Document()
-		                    		.append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
-		                    		.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(currentDay+" 00:00:00.000+0000")))
-		                    );
+			matchDoc 
+                .append("consentStatus", "Renewal")
+                .append("consentValidityDate", new Document()
+                		.append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
+                		.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(currentDay+" 00:00:00.000+0000"))
+                );
 		}
 		
 		if(!"ALL".equalsIgnoreCase(region))
@@ -210,7 +207,7 @@ public class ConcentDaoImpl implements ConcentDao {
 		
 		List<? extends Bson> pipeline = Arrays.asList(
 
-				matchDoc,
+				new Document().append("$match", matchDoc),
 		        new Document()
 		                .append("$group", new Document()
 		                        .append("_id", "$"+aggregateBy)

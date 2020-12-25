@@ -24,7 +24,6 @@ import com.eai.idss.model.VisitProcessEfficiency;
 import com.eai.idss.model.Visits;
 import com.eai.idss.repository.LeaveScheduleRepository;
 import com.eai.idss.repository.UserRepository;
-import com.eai.idss.vo.LegalFilter;
 import com.eai.idss.vo.TileVo;
 import com.eai.idss.vo.VisitDetails;
 import com.eai.idss.vo.VisitsByComplianceVo;
@@ -195,11 +194,12 @@ public class VisitsController {
    	}
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping(method = RequestMethod.POST, value = "/visits-dashboard/request-by-sub-region/{region}",  produces = "application/json")
-	public ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>> getVisitDataBySubRegionData(@PathVariable("region") String region,@RequestBody VisitsFilter vf) throws IOException {
+	@RequestMapping(method = RequestMethod.POST, value = "/visits-dashboard/request-by-sub-region",  produces = "application/json")
+	public ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>> getVisitDataBySubRegionData(@RequestHeader String userName,@RequestBody VisitsFilter vf) throws IOException {
     	Map<String,Map<String,Map<String,List<TileVo>>>> ct = new LinkedHashMap<String, Map<String,Map<String,List<TileVo>>>>();
 	    try {
-	    	ct.put("bySubRegionRequest",cd.getBySubRegionVisitsData(region, vf));
+	    	User u = userRepository.findByUserName(userName);
+	    	ct.put("bySubRegionRequest",cd.getBySubRegionVisitsData(u.getRegion(), vf));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /visits-dashboard/request-by-sub-region", HttpStatus.INTERNAL_SERVER_ERROR);

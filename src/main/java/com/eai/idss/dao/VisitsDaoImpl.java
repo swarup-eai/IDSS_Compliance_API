@@ -325,12 +325,12 @@ public class VisitsDaoImpl implements VisitsDao {
 		    	                public void accept(Document document) {
 		    	                    logger.info(document.toJson());
 									try {
-										LegalSubRegionVo lsVo = new ObjectMapper().readValue(document.toJson(), LegalSubRegionVo.class);
-										List<TileVo> tVoList = subRegionMap.get(lsVo.getSubRegion());
+										VisitsSubRegionVo vsrVo = new ObjectMapper().readValue(document.toJson(), VisitsSubRegionVo.class);
+										List<TileVo> tVoList = subRegionMap.get(vsrVo.getSubRegion());
 										if(null==tVoList)
 											tVoList = new ArrayList<TileVo>();
-										tVoList.add(new TileVo(lsVo.getLegalDirection(),lsVo.getCount()));
-										subRegionMap.put(lsVo.getSubRegion(),tVoList);
+										tVoList.add(new TileVo(vsrVo.getSubRegion(),vsrVo.getCount()));
+										subRegionMap.put(vsrVo.getSubRegion(),tVoList);
 									} catch (JsonMappingException e) {
 										e.printStackTrace();
 									} catch (JsonProcessingException e) {
@@ -353,12 +353,12 @@ public class VisitsDaoImpl implements VisitsDao {
 	private List<? extends Bson> getBySubRegionVisitsPipeline(String region,String days,VisitsFilter cf) throws ParseException {
 		Document matchDoc = new Document();
 		
-		matchDoc.append("issuedOn", new Document()
+		matchDoc.append("visitedDate", new Document()
 				.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
 			);
 		matchDoc.append("region",region);
 		
-		matchDoc.append("legalDirection", new Document().append("$in", IDSSUtil.getLegalActionsList()));
+		matchDoc.append("visitStatus", "Visited");
 		
 		if(null!=cf && null!=cf.getSubRegionWiseCategoryList() ) 
 			matchDoc.append("category", new Document().append("$in", cf.getSubRegionWiseCategoryList()));
@@ -370,7 +370,6 @@ public class VisitsDaoImpl implements VisitsDao {
 		        new Document()
 		                .append("$group", new Document()
 		                		.append("_id", new Document()
-                                        .append("legalDirection", "$legalDirection")
                                         .append("subRegion", "$subRegion")
                                 )
 		                        .append("caseCount", new Document()
@@ -380,7 +379,6 @@ public class VisitsDaoImpl implements VisitsDao {
 		        new Document()
 		            .append("$project", new Document()
 		                    .append("_id", false)
-		                    .append("legalDirection", "$_id.legalDirection")
 		                    .append("subRegion", "$_id.subRegion")
 		                    .append("count", "$caseCount")
 		            )
