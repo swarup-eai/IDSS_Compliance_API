@@ -399,14 +399,14 @@ public class GenericDaoImpl implements GenericDao {
 								MyVisits mvVo= new ObjectMapper().readValue(document.toJson(), MyVisits.class);
 								MyVisits myVisitsData=new MyVisits();
 								List<MyVisitsIndustries> tVoList = new ArrayList<MyVisitsIndustries>();
-								for(MyVisitsIndustries industries : mvVo.getIndustries()) {
+								for(MyVisitsIndustries industries : mvVo.getVisitDetail()) {
 									MyVisitsIndustries myVisitsIndustries = new MyVisitsIndustries();
 									myVisitsIndustries.setIndustryName(industries.getIndustryName());
 									myVisitsIndustries.setcScore((int)getCscore(industries.getIndustryId()));
 									tVoList.add(myVisitsIndustries);
 								}
-								myVisitsData.setDate(mvVo.getDate());
-								myVisitsData.setIndustries(tVoList);
+								myVisitsData.setDateView(mvVo.getDateView());
+								myVisitsData.setVisitDetail(tVoList);
 								tileMap.add(myVisitsData);
 							} catch (JsonMappingException e) {
 								e.printStackTrace();
@@ -436,7 +436,7 @@ public class GenericDaoImpl implements GenericDao {
 	        .append("$match", new Document()
 	                .append("visitedDate", new Document()
 	                		.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE)+" 00:00:00.000+0000"))
-	                        .append("$gt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(date+" 00:00:00.000+0000"))
+	                        .append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(date+" 00:00:00.000+0000"))
 	                )
 	                .append("userId", userName)
 	        );
@@ -455,8 +455,8 @@ public class GenericDaoImpl implements GenericDao {
 			matchDoc = new Document()
 			        .append("$match", new Document()
 			                .append("schduledOn", new Document()
-			                		.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(date+" 00:00:00.000+0000"))
-			                        .append("$gt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE)+" 00:00:00.000+0000"))
+			                		.append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(date+" 00:00:00.000+0000"))
+			                        .append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE)+" 00:00:00.000+0000"))
 			                )
 			                .append("userId", userName)
 			);
@@ -478,13 +478,13 @@ public class GenericDaoImpl implements GenericDao {
 		        new Document()
 		        .append("$project", new Document()
 		                .append("_id", false)
-		                .append("date", new Document()
+		                .append("dateView", new Document()
 		                        .append("$dateToString", new Document()
-		                                .append("format", "%Y-%m-%d")
+		                                .append("format", "%d")
 		                                .append("date", "$_id")
 		                        )
 		                )
-		                .append("industries", "$industries")
+		                .append("visitDetail", "$industries")
 		        )
 		);
 		return pipeline;

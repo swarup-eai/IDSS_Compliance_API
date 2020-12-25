@@ -3,20 +3,19 @@ package com.eai.idss.vo;
 import java.util.List;
 
 public class MyVisits {
-	private String date;
-	private List<MyVisitsIndustries> industries;
-	
-	public List<MyVisitsIndustries> getIndustries() {
-		return industries;
+	private String dateView;
+	private List<MyVisitsIndustries> visitDetail;
+	public String getDateView() {
+		return dateView;
 	}
-	public void setIndustries(List<MyVisitsIndustries> industries) {
-		this.industries = industries;
+	public void setDateView(String dateView) {
+		this.dateView = dateView;
 	}
-	public String getDate() {
-		return date;
+	public List<MyVisitsIndustries> getVisitDetail() {
+		return visitDetail;
 	}
-	public void setDate(String date) {
-		this.date = date;
+	public void setVisitDetail(List<MyVisitsIndustries> visitDetail) {
+		this.visitDetail = visitDetail;
 	}
 	
 }
