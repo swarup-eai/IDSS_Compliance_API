@@ -182,12 +182,11 @@ public class VisitsController {
    	}
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
-   	@RequestMapping(method = RequestMethod.GET, value = "/visits-dashboard/visits-process-efficiency", produces = "application/json")
-   	public ResponseEntity<VisitProcessEfficiency> getVisitsProcessEfficiency(@RequestHeader String userName) throws IOException {
+   	@RequestMapping(method = RequestMethod.GET, value = "/visits-dashboard/visits-process-efficiency/{region}", produces = "application/json")
+   	public ResponseEntity<VisitProcessEfficiency> getVisitsProcessEfficiency(@PathVariable("region") String region) throws IOException {
     	VisitProcessEfficiency vd = null;
    	    try {
-   	    	User u = userRepository.findByUserName(userName);
-   	    	vd = cd.getVisitProcessEfficiency(u.getRegion());
+   	    	vd = cd.getVisitProcessEfficiency(region);
    		} catch (Exception e) {
    			e.printStackTrace();
    			return new ResponseEntity("Exception in /visits-details/visits-process-efficiency", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -196,12 +195,11 @@ public class VisitsController {
    	}
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping(method = RequestMethod.POST, value = "/visits-dashboard/request-by-sub-region",  produces = "application/json")
-	public ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>> getVisitDataBySubRegionData(@RequestHeader String userName,@RequestBody VisitsFilter vf) throws IOException {
+	@RequestMapping(method = RequestMethod.POST, value = "/visits-dashboard/request-by-sub-region/{region}",  produces = "application/json")
+	public ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>> getVisitDataBySubRegionData(@PathVariable("region") String region,@RequestBody VisitsFilter vf) throws IOException {
     	Map<String,Map<String,Map<String,List<TileVo>>>> ct = new LinkedHashMap<String, Map<String,Map<String,List<TileVo>>>>();
 	    try {
-	    	User u = userRepository.findByUserName(userName);
-	    	ct.put("bySubRegionRequest",cd.getBySubRegionVisitsData(u.getRegion(), vf));
+	    	ct.put("bySubRegionRequest",cd.getBySubRegionVisitsData(region, vf));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /visits-dashboard/request-by-sub-region", HttpStatus.INTERNAL_SERVER_ERROR);

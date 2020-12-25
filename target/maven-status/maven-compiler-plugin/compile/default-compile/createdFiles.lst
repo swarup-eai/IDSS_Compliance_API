@@ -85,6 +85,7 @@ com\eai\idss\dao\LegalDaoImpl$2.class
 com\eai\idss\dao\LegalDao.class
 com\eai\idss\configuration\WebSecurityConfiguration.class
 com\eai\idss\model\Esr_HW_Comparison.class
+com\eai\idss\model\VisitProcessEfficiency.class
 com\eai\idss\model\IndustryMaster.class
 com\eai\idss\vo\LegalDetailsRequest.class
 com\eai\idss\vo\ConsentDetailsRequest.class
