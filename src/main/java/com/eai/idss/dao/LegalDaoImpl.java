@@ -184,15 +184,14 @@ public class LegalDaoImpl implements LegalDao {
 	
 	private List<? extends Bson> getLegalActionsByCategoryScalePipeline(String aggregateBy,String region,String subRegion) throws ParseException {
 		List<String> legalActionsList = IDSSUtil.getLegalActionsList();
-		Document matchDoc = null;
+		Document matchDoc = new Document();
 		Document groupDoc = null;
 		
 		if("scale".equalsIgnoreCase(aggregateBy)) {
-			matchDoc = new Document()
-		            .append("$match", new Document()
-		            		.append("legalDirection", new Document().append("$in", legalActionsList))
-		                    .append("scale", new Document().append("$in", IDSSUtil.getScaleList())
-		                    )
+			matchDoc 
+            		.append("legalDirection", new Document().append("$in", legalActionsList))
+                    .append("scale", new Document().append("$in", IDSSUtil.getScaleList())
+                    
 		            );
 			groupDoc = new Document()
 			        .append("$group", new Document()
@@ -206,11 +205,10 @@ public class LegalDaoImpl implements LegalDao {
 	                );
 		}
 		else if("category".equalsIgnoreCase(aggregateBy)) {
-			matchDoc = new Document()
-		            .append("$match", new Document()
-		            		.append("legalDirection", new Document().append("$in", legalActionsList))
-		                    .append("category", new Document().append("$in", IDSSUtil.getCategoryList())
-		                    )
+			matchDoc 
+	            	.append("legalDirection", new Document().append("$in", legalActionsList))
+	                .append("category", new Document().append("$in", IDSSUtil.getCategoryList())
+	                    
 		            );
 			
 			groupDoc = new Document()
@@ -231,7 +229,7 @@ public class LegalDaoImpl implements LegalDao {
 			matchDoc.append("subRegion",subRegion);
 		
 		List<? extends Bson> pipeline = Arrays.asList(
-				 matchDoc,
+				new Document().append("$match", matchDoc),
 				 groupDoc,
 		        new Document()
 		            .append("$project", new Document()

@@ -798,8 +798,8 @@ public class VisitsDaoImpl implements VisitsDao {
 	}
 	
 	private List<? extends Bson> getVisitsByCompliancePipeline(String days,String region, String subRegion) throws ParseException {
-		Document matchDoc = new Document().append("$match",	new Document().append("lastVisit", new Document()
-				.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))));
+		Document matchDoc = new Document().append("lastVisit", new Document()
+				.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000")));
 		
 		if(!"ALL".equalsIgnoreCase(region))
 			matchDoc.append("region",region);
@@ -807,7 +807,7 @@ public class VisitsDaoImpl implements VisitsDao {
 			matchDoc.append("subRegion",subRegion);
 		
 		List<? extends Bson> pipeline = Arrays.asList(
-				matchDoc,
+				new Document().append("$match", matchDoc),
                 new Document()
                         .append("$project", new Document()
                                 .append("_id", false)
