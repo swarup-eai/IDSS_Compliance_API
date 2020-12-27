@@ -515,7 +515,7 @@ public class LegalDaoImpl implements LegalDao {
 		try {
 			Query query = new Query().with(page);
 			if(null!=cdr) {
-				String[] d = cdr.getDuration().split("-");
+				String[] d = cdr.getDuration().split("_");
 				
 				LocalDateTime currentTime = LocalDateTime.now();
 				LocalDateTime fromDate = currentTime.minusDays(Integer.parseInt(d[0]));
