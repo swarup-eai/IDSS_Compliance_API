@@ -515,19 +515,21 @@ public class LegalDaoImpl implements LegalDao {
 		try {
 			Query query = new Query().with(page);
 			if(null!=cdr) {
-				String[] d = cdr.getDuration().split("_");
-				
-				LocalDateTime currentTime = LocalDateTime.now();
-				LocalDateTime fromDate = currentTime.minusDays(Integer.parseInt(d[0]));
-				String fromDay = fromDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
-				
-				LocalDateTime toDate = currentTime.minusDays(Integer.parseInt(d[1]));
-				String toDay = toDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
-				
-				
-				query.addCriteria(Criteria.where("issuedOn")
-												.gt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(toDay+" 00:00:00.000+0000"))
-												.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fromDay+" 00:00:00.000+0000")));
+				if(StringUtils.hasText(cdr.getDuration())) {
+					String[] d = cdr.getDuration().split("_");
+					
+					LocalDateTime currentTime = LocalDateTime.now();
+					LocalDateTime fromDate = currentTime.minusDays(Integer.parseInt(d[0]));
+					String fromDay = fromDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+					
+					LocalDateTime toDate = currentTime.minusDays(Integer.parseInt(d[1]));
+					String toDay = toDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+					
+					
+					query.addCriteria(Criteria.where("issuedOn")
+													.gt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(toDay+" 00:00:00.000+0000"))
+													.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fromDay+" 00:00:00.000+0000")));
+				}
 				if(StringUtils.hasText(cdr.getRegion()))
 						query.addCriteria(Criteria.where("region").is(cdr.getRegion()));
 				if(StringUtils.hasText(cdr.getCategory()))
