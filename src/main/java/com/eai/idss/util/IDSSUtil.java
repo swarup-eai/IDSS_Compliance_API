@@ -218,10 +218,10 @@ public class IDSSUtil {
 	
 	public static List<String> getComplianceScoreList(){
 		List<String> complianceScoreList = new ArrayList<String>();
-		complianceScoreList.add("10");
-		complianceScoreList.add("20");
-		complianceScoreList.add("30");
-		complianceScoreList.add("40");
+		complianceScoreList.add("0-25");
+		complianceScoreList.add("26-50");
+		complianceScoreList.add("51-75");
+		complianceScoreList.add("76-100");
 		return complianceScoreList;
 	}
 	

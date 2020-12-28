@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.eai.idss.model.CScoreMaster;
+import com.eai.idss.model.IndustryTypes;
 import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.DashboardRequest;
 import com.eai.idss.vo.LegalTileVo;
@@ -534,5 +536,22 @@ public class GenericDaoImpl implements GenericDao {
 			e.printStackTrace();
 		}
 		return tVoList;
+	}
+	
+	public List<String> getIndustryTypes() {
+		try {
+			Query query = new Query();
+			
+			List<IndustryTypes> IndustryTypesList= mongoTemplate.find(query, IndustryTypes.class);
+			
+			List<String> industryTypes = IndustryTypesList.stream().map(IndustryTypes::getIndustryType).collect(Collectors.toList());
+			
+			return industryTypes;
+			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

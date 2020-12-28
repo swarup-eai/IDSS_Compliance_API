@@ -3,6 +3,7 @@ package com.eai.idss.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.eai.idss.model.IndustryTypes;
 import com.eai.idss.vo.DashboardRequest;
 import com.eai.idss.vo.MyVisits;
 import com.eai.idss.vo.TileVo;
@@ -19,4 +20,6 @@ public interface GenericDao {
 	public List<MyVisits> getMyVisitsData(String userName);
 	
 	public List<TopPerfVo> getTopPerformer(String region);
+	
+	public List<String> getIndustryTypes() ;
 }

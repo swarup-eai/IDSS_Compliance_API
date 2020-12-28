@@ -74,7 +74,7 @@ public class CommonController {
     	}
     	dd.put("categoryList", IDSSUtil.getCategoryList());
     	dd.put("scaleList", IDSSUtil.getScaleList());
-    	dd.put("typeList", IDSSUtil.getTypeList());
+    	dd.put("typeList", gd.getIndustryTypes());
     	dd.put("complianceScoreList", IDSSUtil.getComplianceScoreList());
     	dd.put("legalActionsList", IDSSUtil.getLegalActionsDropdownList());
     	dd.put("pendingCasesList", IDSSUtil.getPendingCasesList());
