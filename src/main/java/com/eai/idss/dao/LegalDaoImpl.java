@@ -524,7 +524,7 @@ public class LegalDaoImpl implements LegalDao {
 				LocalDateTime toDate = currentTime.minusDays(Integer.parseInt(d[1]));
 				String toDay = toDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
 				
-				query.addCriteria(Criteria.where("legalDirection").in(IDSSUtil.getLegalActionsList()));
+				
 				query.addCriteria(Criteria.where("issuedOn")
 												.gt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(toDay+" 00:00:00.000+0000"))
 												.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fromDay+" 00:00:00.000+0000")));
@@ -532,12 +532,14 @@ public class LegalDaoImpl implements LegalDao {
 						query.addCriteria(Criteria.where("region").is(cdr.getRegion()));
 				if(StringUtils.hasText(cdr.getCategory()))
 						query.addCriteria(Criteria.where("category").is(cdr.getCategory()));
-				if(StringUtils.hasText(cdr.getAction()))
-						query.addCriteria(Criteria.where("legalDirection").is(cdr.getAction()));
 				if(StringUtils.hasText(cdr.getSubRegion()))
 						query.addCriteria(Criteria.where("adminOffice").is(cdr.getSubRegion()));
 				if(StringUtils.hasText(cdr.getScale()))
 					query.addCriteria(Criteria.where("scale").is(cdr.getScale()));
+				if(StringUtils.hasText(cdr.getAction()))
+					query.addCriteria(Criteria.where("legalDirection").is(cdr.getAction()));
+				else
+					query.addCriteria(Criteria.where("legalDirection").in(IDSSUtil.getLegalActionsList()));
 			}
 			
 	
