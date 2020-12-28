@@ -76,7 +76,8 @@ public class GenericDaoImpl implements GenericDao {
 										TileVo tVo = new ObjectMapper().readValue(document.toJson(), TileVo.class);
 										if(!"Operate".equalsIgnoreCase(tVo.getCaseType()) && !"New".equalsIgnoreCase(tVo.getCaseType()) )
 											tVoList.add(tVo);
-										tNewVo.setCaseCount(tNewVo.getCaseCount() + tVo.getCaseCount());
+										else
+											tNewVo.setCaseCount(tNewVo.getCaseCount() + tVo.getCaseCount());
 									} catch (JsonMappingException e) {
 										e.printStackTrace();
 									} catch (JsonProcessingException e) {
@@ -477,6 +478,10 @@ public class GenericDaoImpl implements GenericDao {
 		List<? extends Bson> pipeline = Arrays.asList(
 				matchDoc,    
 				groupDoc,
+				new Document()
+                .append("$sort", new Document()
+                        .append("_id", 1.0)
+                ),
 		        new Document()
 		        .append("$project", new Document()
 		                .append("_id", false)
