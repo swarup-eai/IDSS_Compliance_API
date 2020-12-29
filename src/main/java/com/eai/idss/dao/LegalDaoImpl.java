@@ -521,10 +521,13 @@ public class LegalDaoImpl implements LegalDao {
 					LocalDateTime currentTime = LocalDateTime.now();
 					LocalDateTime fromDate = currentTime.minusDays(Integer.parseInt(d[0]));
 					String fromDay = fromDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
-					
-					LocalDateTime toDate = currentTime.minusDays(Integer.parseInt(d[1]));
-					String toDay = toDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
-					
+					String toDay = null;
+					if("ALL".equalsIgnoreCase(d[1])) {
+						toDay = "1970-01-01";
+					}else {
+						LocalDateTime toDate = currentTime.minusDays(Integer.parseInt(d[1]));
+						toDay = toDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+					}
 					
 					query.addCriteria(Criteria.where("issuedOn")
 													.gt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(toDay+" 00:00:00.000+0000"))

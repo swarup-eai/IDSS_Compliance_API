@@ -486,9 +486,13 @@ public class VisitsDaoImpl implements VisitsDao {
 						LocalDateTime fromDate = currentTime.minusDays(Integer.parseInt(d[0]));
 						String fromDay = fromDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
 						days.add(fromDay);
-						LocalDateTime toDate = currentTime.minusDays(Integer.parseInt(d[1]));
-						String toDay = toDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
-						days.add(toDay);
+						if("ALL".equalsIgnoreCase(d[1])) {
+							days.add("1970-01-01");
+						}else {
+							LocalDateTime toDate = currentTime.minusDays(Integer.parseInt(d[1]));
+							String toDay = toDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+							days.add(toDay);
+						}
 					}
 					
 				}
