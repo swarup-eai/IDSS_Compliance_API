@@ -2,15 +2,9 @@ package com.eai.idss.vo;
 
 public class VisitsSubRegionVo {
 
-	private String designation;
 	private String subRegion;
 	private int count;
-	public String getDesignation() {
-		return designation;
-	}
-	public void setDesignation(String designation) {
-		this.designation = designation;
-	}
+	
 	public String getSubRegion() {
 		return subRegion;
 	}

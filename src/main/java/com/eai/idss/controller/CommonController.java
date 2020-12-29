@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,10 +75,20 @@ public class CommonController {
     	}
     	dd.put("categoryList", IDSSUtil.getCategoryList());
     	dd.put("scaleList", IDSSUtil.getScaleList());
-    	dd.put("typeList", gd.getIndustryTypes());
+    	dd.put("typeList", gd.getIndustryTypes(null));
     	dd.put("complianceScoreList", IDSSUtil.getComplianceScoreList());
     	dd.put("legalActionsList", IDSSUtil.getLegalActionsDropdownList());
     	dd.put("pendingCasesList", IDSSUtil.getPendingCasesList());
 	    return new ResponseEntity<Map<String,List<String>>>(dd,HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/sub-regions/{region}", produces = "application/json")
+	public ResponseEntity<List<String>> getSubRegions(@PathVariable("region") String region) throws IOException {
+	    return new ResponseEntity<List<String>>(IDSSUtil.getSubRegion(region),HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/industry-types/{category}", produces = "application/json")
+	public ResponseEntity<List<String>> getIndustryType(@PathVariable("category") String category) throws IOException {
+	    return new ResponseEntity<List<String>>(gd.getIndustryTypes(category),HttpStatus.OK);
 	}
 }

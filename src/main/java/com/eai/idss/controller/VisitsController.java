@@ -194,7 +194,7 @@ public class VisitsController {
    	}
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping(method = RequestMethod.POST, value = "/visits-dashboard/request-by-sub-region",  produces = "application/json")
+	@RequestMapping(method = RequestMethod.POST, value = "/visits-dashboard/visits-by-sub-region",  produces = "application/json")
 	public ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>> getVisitDataBySubRegionData(@RequestHeader String userName,@RequestBody VisitsFilter vf) throws IOException {
     	Map<String,Map<String,Map<String,List<TileVo>>>> ct = new LinkedHashMap<String, Map<String,Map<String,List<TileVo>>>>();
 	    try {

@@ -31,7 +31,6 @@ import com.eai.idss.model.VisitProcessEfficiency;
 import com.eai.idss.model.Visits;
 import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.ConcentByRegionVo;
-import com.eai.idss.vo.LegalSubRegionVo;
 import com.eai.idss.vo.TileVo;
 import com.eai.idss.vo.VisitDetails;
 import com.eai.idss.vo.VisitsByComplianceVo;
@@ -40,6 +39,7 @@ import com.eai.idss.vo.VisitsDetailsRequest;
 import com.eai.idss.vo.VisitsFilter;
 import com.eai.idss.vo.VisitsScheduleDetailsRequest;
 import com.eai.idss.vo.VisitsSubRegionVo;
+import com.eai.idss.vo.VisitsTeamVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,6 +59,8 @@ public class VisitsDaoImpl implements VisitsDao {
 	private static final String TEAM_WISE = "TeamWise";
 
 	private static final String REGION_WISE = "RegionWise";
+	
+	private static final String SUB_REGION_WISE = "SubRegionWise";
 
 	private static final String LEGAL_NOTICES = "legalNotices";
 
@@ -218,12 +220,19 @@ public class VisitsDaoImpl implements VisitsDao {
 									concentStatusList.add(tVo);
 									regionVisitMap.put(type, concentStatusList);
 								}else if(TEAM_WISE.equalsIgnoreCase(extractType)) {
-									VisitsSubRegionVo crVo = new ObjectMapper().readValue(document.toJson(), VisitsSubRegionVo.class);
+									VisitsTeamVo crVo = new ObjectMapper().readValue(document.toJson(), VisitsTeamVo.class);
 									TileVo tVo = new TileVo(type,crVo.getCount());
-									List<TileVo> concentStatusList = regionVisitMap.get(crVo.getSubRegion()+"~"+crVo.getDesignation());
+									List<TileVo> concentStatusList = regionVisitMap.get(crVo.getName()+"~"+crVo.getDesignation());
 									if(null==concentStatusList) concentStatusList = new ArrayList<TileVo>();
 									concentStatusList.add(tVo);
-									regionVisitMap.put(crVo.getSubRegion()+"~"+crVo.getDesignation(), concentStatusList);
+									regionVisitMap.put(crVo.getName()+"~"+crVo.getDesignation(), concentStatusList);
+								}else if(SUB_REGION_WISE.equalsIgnoreCase(extractType)) {
+									VisitsSubRegionVo crVo = new ObjectMapper().readValue(document.toJson(), VisitsSubRegionVo.class);
+									TileVo tVo = new TileVo(type,crVo.getCount());
+									List<TileVo> concentStatusList = regionVisitMap.get(crVo.getSubRegion());
+									if(null==concentStatusList) concentStatusList = new ArrayList<TileVo>();
+									concentStatusList.add(tVo);
+									regionVisitMap.put(crVo.getSubRegion(), concentStatusList);
 								}
 							} catch (JsonMappingException e) {
 								e.printStackTrace();
@@ -305,60 +314,52 @@ public class VisitsDaoImpl implements VisitsDao {
 	
 	public  Map<String,Map<String,List<TileVo>>> getBySubRegionVisitsData(String region, VisitsFilter cf){
 		try {
-			logger.info("getBySubRegionVisitsData");
-			Map<String, String> daysMap = IDSSUtil.getPastDaysMapForLegal();
+			logger.info("getBySubRegionVisitData");
+			Map<String, List<String>> daysMap = IDSSUtil.getPastAndFutureDaysMap();
 			
 		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
             MongoCollection<Document> collection = database.getCollection("Visit_master");
             
-            Map<String,Map<String,List<TileVo>>> tileMap = new LinkedHashMap<String, Map<String,List<TileVo>>>();
-            
+            Map<String,Map<String,List<TileVo>>> byRegionMap = new LinkedHashMap<String, Map<String,List<TileVo>>>(); 
             
             for(String days : daysMap.keySet()) {
             	logger.info("getBySubRegionVisitsData : "+days);
-	            List<? extends Bson> pipeline = getBySubRegionVisitsPipeline(region,days,cf);
-	            Map<String,List<TileVo>> subRegionMap = new LinkedHashMap<String, List<TileVo>>();
-	            collection.aggregate(pipeline)
-	                    .allowDiskUse(false)
-	                    .forEach(new Consumer<Document>() {
-		    	                @Override
-		    	                public void accept(Document document) {
-		    	                    logger.info(document.toJson());
-									try {
-										VisitsSubRegionVo vsrVo = new ObjectMapper().readValue(document.toJson(), VisitsSubRegionVo.class);
-										List<TileVo> tVoList = subRegionMap.get(vsrVo.getSubRegion());
-										if(null==tVoList)
-											tVoList = new ArrayList<TileVo>();
-										tVoList.add(new TileVo(vsrVo.getSubRegion(),vsrVo.getCount()));
-										subRegionMap.put(vsrVo.getSubRegion(),tVoList);
-									} catch (JsonMappingException e) {
-										e.printStackTrace();
-									} catch (JsonProcessingException e) {
-										e.printStackTrace();
-									}
-		    	                    
-		    	                }
-		    	            }
-	                    );
-	            tileMap.put(daysMap.get(days), subRegionMap);
+            	Map<String,List<TileVo>> regionVisitMap = new LinkedHashMap<String, List<TileVo>>();
+            	
+            	List<? extends Bson> pipeline = getSubRegionVisitsPipeline(PENDING,daysMap.get(days).get(0),cf,region);
+	            
+	            extractData(collection, regionVisitMap, pipeline,PENDING,SUB_REGION_WISE);
+            
+	            pipeline = getSubRegionVisitsPipeline(SCHEDULED,daysMap.get(days).get(1),cf,region);
+	            
+	            extractData(collection, regionVisitMap, pipeline,SCHEDULED,SUB_REGION_WISE);
+	            
+	            pipeline = getSubRegionVisitsPipeline(LEGAL_NOTICES,daysMap.get(days).get(0),cf,region);
+	            
+	            extractData(collection, regionVisitMap, pipeline,LEGAL_NOTICES,SUB_REGION_WISE);
+
+	            pipeline = getSubRegionVisitsPipeline(COMPLETED,daysMap.get(days).get(0),cf,region);
+	            
+	            extractData(collection, regionVisitMap, pipeline,COMPLETED,SUB_REGION_WISE);
+	            
+	            byRegionMap.put(days,regionVisitMap);
             
             }
-            return tileMap;
+            return byRegionMap;
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	private List<? extends Bson> getBySubRegionVisitsPipeline(String region,String days,VisitsFilter cf) throws ParseException {
+	private List<? extends Bson> getSubRegionVisitsPipeline(String caseType,String days,VisitsFilter cf,String region) throws ParseException {
+		
 		Document matchDoc = new Document();
 		
-		matchDoc.append("visitedDate", new Document()
-				.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
-			);
-		matchDoc.append("region",region);
+		applyMatchFilter(caseType, days, matchDoc);
 		
-		matchDoc.append("visitStatus", "Visited");
+		if(!"ALL".equalsIgnoreCase(region))
+			matchDoc.append("region",region);
 		
 		if(null!=cf && null!=cf.getSubRegionWiseCategoryList() ) 
 			matchDoc.append("category", new Document().append("$in", cf.getSubRegionWiseCategoryList()));
@@ -367,22 +368,24 @@ public class VisitsDaoImpl implements VisitsDao {
 		
 		List<? extends Bson> pipeline = Arrays.asList(
 				new Document().append("$match", matchDoc),  
-		        new Document()
+                new Document()
 		                .append("$group", new Document()
-		                		.append("_id", new Document()
-                                        .append("subRegion", "$subRegion")
-                                )
-		                        .append("caseCount", new Document()
+		                        .append("_id", "$subRegion")
+		                        .append("count", new Document()
 		                                .append("$sum", 1)
 		                        )
-		                ),
-		        new Document()
-		            .append("$project", new Document()
-		                    .append("_id", false)
-		                    .append("subRegion", "$_id.subRegion")
-		                    .append("count", "$caseCount")
-		            )
-				);
+		                ), 
+                new Document()
+                        .append("$project", new Document()
+                                .append("_id", false)
+                                .append("subRegion", "$_id")
+                                .append("count", "$count")
+                        ), 
+                new Document()
+                        .append("$sort", new Document()
+                                .append("subRegion", 1.0)
+                        )
+        );
 		return pipeline;
 	}
 	
@@ -469,16 +472,28 @@ public class VisitsDaoImpl implements VisitsDao {
 		try {
 			Query query = new Query().with(page);
 			if(null!=cdr) {
-				
+				List<String> days = new ArrayList<String>(); 
 				LocalDateTime currentTime = LocalDateTime.now();
-				LocalDateTime date = null;
-				if(SCHEDULED.equalsIgnoreCase(cdr.getVisitStatus()))
-					date = currentTime.plusDays(cdr.getDuration());
-				else
-					date = currentTime.minusDays(cdr.getDuration());
-				String day = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
 				
-				addCriteriaFilter(cdr.getVisitStatus(), day, query);
+				if(SCHEDULED.equalsIgnoreCase(cdr.getVisitStatus())) {
+					days.add(currentTime.plusDays(Integer.parseInt(cdr.getDuration())).format(DateTimeFormatter.ISO_LOCAL_DATE));
+					days.add(currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
+				}
+				else {
+					if(StringUtils.hasText(cdr.getDuration())) {
+						String[] d = cdr.getDuration().split("_");
+						
+						LocalDateTime fromDate = currentTime.minusDays(Integer.parseInt(d[0]));
+						String fromDay = fromDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+						days.add(fromDay);
+						LocalDateTime toDate = currentTime.minusDays(Integer.parseInt(d[1]));
+						String toDay = toDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+						days.add(toDay);
+					}
+					
+				}
+				
+				addCriteriaFilter(cdr.getVisitStatus(), days, query);
 				
 				if(StringUtils.hasText(cdr.getRegion()))
 					query.addCriteria(Criteria.where("region").is(cdr.getRegion()));
@@ -509,27 +524,25 @@ public class VisitsDaoImpl implements VisitsDao {
 		return null;
 	}
 	
-	private void addCriteriaFilter(String caseType, String days, Query query) throws ParseException {
+	private void addCriteriaFilter(String caseType, List<String> days, Query query) throws ParseException {
 		
-		LocalDateTime currentTime = LocalDateTime.now();
-		String dateToday = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
 		
 		if(SCHEDULED.equalsIgnoreCase(caseType)) {
 			query.addCriteria(Criteria.where("schduledOn")
-					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
-					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(dateToday+" 00:00:00.000+0000")));
+					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
+					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000")));
 		}
 		if(PENDING.equalsIgnoreCase(caseType)) {
 			query.addCriteria(Criteria.where("schduledOn")
-					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(dateToday+" 00:00:00.000+0000"))
-					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000")));
+					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
+					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000")));
 			
 			query.addCriteria(Criteria.where("visitStatus").is(NOT_VISITED));
 		}
 		
 		if(COMPLETED.equalsIgnoreCase(caseType)) {
 			query.addCriteria(Criteria.where("visitedDate")
-					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000")));
+					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000")));
 			
 			query.addCriteria(Criteria.where("visitStatus").is(VISITED));
 		}
@@ -537,7 +550,7 @@ public class VisitsDaoImpl implements VisitsDao {
 		if(LEGAL_NOTICES.equalsIgnoreCase(caseType)) {
 			
 			query.addCriteria(Criteria.where("legalDirectionIssuedOn")
-					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000")));
+					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000")));
 			
 			query.addCriteria(Criteria.where("legalDirection").ne(NA));
 		}

@@ -16,7 +16,7 @@ public class IndustryMaster {
 	private String category;
 	private String scale;
 	private String type;
-	private int complianceScore;
+	private int cscore;
 	private Date establishedSince;
 	private Date concentValidity;
 	private int totalLegalActions;
@@ -65,11 +65,11 @@ public class IndustryMaster {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public int getComplianceScore() {
-		return complianceScore;
+	public int getCscore() {
+		return cscore;
 	}
-	public void setComplianceScore(int complianceScore) {
-		this.complianceScore = complianceScore;
+	public void setCscore(int cscore) {
+		this.cscore = cscore;
 	}
 	public Date getEstablishedSince() {
 		return establishedSince;

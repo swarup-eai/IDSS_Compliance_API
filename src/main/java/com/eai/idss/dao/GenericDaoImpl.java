@@ -543,9 +543,14 @@ public class GenericDaoImpl implements GenericDao {
 		return tVoList;
 	}
 	
-	public List<String> getIndustryTypes() {
+	public List<String> getIndustryTypes(String category) {
 		try {
 			Query query = new Query();
+			
+			if(StringUtils.hasText(category)) {
+				String catPrefix = category.substring(0, 1).toUpperCase();
+				query.addCriteria(Criteria.where("industryType").regex(catPrefix));
+			}
 			
 			List<IndustryTypes> IndustryTypesList= mongoTemplate.find(query, IndustryTypes.class);
 			

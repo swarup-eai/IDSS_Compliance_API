@@ -510,19 +510,20 @@ public class ConcentDaoImpl implements ConcentDao {
 					query.addCriteria(Criteria.where("created")
 													.gt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(pastOrFutureDay+" 00:00:00.000+0000"))
 													.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(today+" 00:00:00.000+0000")));
-					if(StringUtils.hasText(cdr.getRegion()))
-						query.addCriteria(Criteria.where("region").is(cdr.getRegion()));
-					if(StringUtils.hasText(cdr.getCategory()))
-						query.addCriteria(Criteria.where("category").is(cdr.getCategory()));
-					if(StringUtils.hasText(cdr.getScale()))
-						query.addCriteria(Criteria.where("scale").is(cdr.getScale()));
-					if(StringUtils.hasText(cdr.getStatus()))
-						query.addCriteria(Criteria.where("status").is(cdr.getStatus()));
-					if(StringUtils.hasText(cdr.getConsentStatus()))
-						query.addCriteria(Criteria.where("consentStatus").is(cdr.getConsentStatus()));
-					if(StringUtils.hasText(cdr.getSubRegion()))
-						query.addCriteria(Criteria.where("adminOffice").is(cdr.getSubRegion()));
 				}
+				
+				if(StringUtils.hasText(cdr.getRegion()))
+					query.addCriteria(Criteria.where("region").is(cdr.getRegion()));
+				if(StringUtils.hasText(cdr.getCategory()))
+					query.addCriteria(Criteria.where("category").is(cdr.getCategory()));
+				if(StringUtils.hasText(cdr.getScale()))
+					query.addCriteria(Criteria.where("scale").is(cdr.getScale()));
+				if(StringUtils.hasText(cdr.getStatus()))
+					query.addCriteria(Criteria.where("status").is(cdr.getStatus()));
+				if(StringUtils.hasText(cdr.getConsentStatus()))
+					query.addCriteria(Criteria.where("consentStatus").is(cdr.getConsentStatus()));
+				if(StringUtils.hasText(cdr.getSubRegion()))
+					query.addCriteria(Criteria.where("adminOffice").is(cdr.getSubRegion()));
 			}
 			
 	

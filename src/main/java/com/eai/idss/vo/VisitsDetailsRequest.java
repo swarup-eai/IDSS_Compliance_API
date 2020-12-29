@@ -3,7 +3,7 @@ package com.eai.idss.vo;
 public class VisitsDetailsRequest {
 
 	String visitStatus; // scheduled, pending, completed, legal actions
-	Integer duration;
+	String duration;
 	String scale;
 	String category;
 	String subRegion;
@@ -15,10 +15,10 @@ public class VisitsDetailsRequest {
 	public void setVisitStatus(String visitStatus) {
 		this.visitStatus = visitStatus;
 	}
-	public Integer getDuration() {
+	public String getDuration() {
 		return duration;
 	}
-	public void setDuration(Integer duration) {
+	public void setDuration(String duration) {
 		this.duration = duration;
 	}
 	public String getScale() {

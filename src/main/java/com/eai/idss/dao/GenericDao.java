@@ -21,5 +21,5 @@ public interface GenericDao {
 	
 	public List<TopPerfVo> getTopPerformer(String region);
 	
-	public List<String> getIndustryTypes() ;
+	public List<String> getIndustryTypes(String category) ;
 }
