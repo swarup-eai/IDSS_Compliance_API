@@ -3,16 +3,9 @@ package com.eai.idss.vo;
 public class LegalByTeamVo {
 
 	private String name;
-	private String action;
 	private String designation;
 	private int count;
 	
-	public String getAction() {
-		return action;
-	}
-	public void setAction(String action) {
-		this.action = action;
-	}
 	public String getDesignation() {
 		return designation;
 	}

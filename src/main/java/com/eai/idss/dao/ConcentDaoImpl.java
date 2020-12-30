@@ -423,11 +423,13 @@ public class ConcentDaoImpl implements ConcentDao {
 		    	                    logger.info(document.toJson());
 									try {
 										ConcentByTeamVo crVo = new ObjectMapper().readValue(document.toJson(), ConcentByTeamVo.class);
-										TileVo tVo = new TileVo(crVo.getName(),crVo.getCount());
-										List<TileVo> concentStatusList = subRegionConcentMap.get(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getStatus());
+										if("In Process".equalsIgnoreCase(crVo.getStatus()))
+											crVo.setStatus("Pending");
+										TileVo tVo = new TileVo(crVo.getStatus(),crVo.getCount());
+										List<TileVo> concentStatusList = subRegionConcentMap.get(crVo.getName()+"~"+crVo.getDesignation());
 										if(null==concentStatusList) concentStatusList = new ArrayList<TileVo>();
 										concentStatusList.add(tVo);
-										subRegionConcentMap.put(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getStatus(), concentStatusList);
+										subRegionConcentMap.put(crVo.getName()+"~"+crVo.getDesignation(), concentStatusList);
 									
 									} catch (JsonMappingException e) {
 										e.printStackTrace();

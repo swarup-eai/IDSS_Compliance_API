@@ -446,10 +446,10 @@ public class LegalDaoImpl implements LegalDao {
 										
 										TileVo tVo = new TileVo(days,crVo.getCount());
 										
-										List<TileVo> lbtList = byTeamMap.get(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getAction());
+										List<TileVo> lbtList = byTeamMap.get(crVo.getName()+"~"+crVo.getDesignation());
 										if(null==lbtList) lbtList = new ArrayList<TileVo>();
 										lbtList.add(tVo);
-										byTeamMap.put(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getAction(), lbtList);
+										byTeamMap.put(crVo.getName()+"~"+crVo.getDesignation(), lbtList);
 									
 									} catch (JsonMappingException e) {
 										e.printStackTrace();
@@ -495,7 +495,6 @@ public class LegalDaoImpl implements LegalDao {
                     		.append("$group", new Document()
     		                		.append("_id", new Document()
                                             .append("name", "$sroName")
-                                            .append("action", "$legalDirection")
                                     )
                                 .append("count", new Document()
                                         .append("$sum", 1.0)
@@ -505,7 +504,6 @@ public class LegalDaoImpl implements LegalDao {
                         .append("$project", new Document()
                                 .append("_id", false)
                                 .append("name", "$_id.name")
-                                .append("action", "$_id.action")
                                 .append("designation", "SRO")
                                 .append("count", "$count")
                         ), 
