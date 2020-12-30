@@ -1,18 +1,17 @@
 package com.eai.idss.vo;
 
-public class ConcentByStatusVo {
+public class ConcentByTeamVo {
 
-
-		private String subRegion;
-		private String designation;
+		private String name;
 		private String status;
+		private String designation;
 		private int count;
 		
-		public String getSubRegion() {
-			return subRegion;
+		public String getStatus() {
+			return status;
 		}
-		public void setSubRegion(String subRegion) {
-			this.subRegion = subRegion;
+		public void setStatus(String status) {
+			this.status = status;
 		}
 		public String getDesignation() {
 			return designation;
@@ -20,11 +19,11 @@ public class ConcentByStatusVo {
 		public void setDesignation(String designation) {
 			this.designation = designation;
 		}
-		public String getStatus() {
-			return status;
+		public String getName() {
+			return name;
 		}
-		public void setStatus(String status) {
-			this.status = status;
+		public void setName(String name) {
+			this.name = name;
 		}
 		public int getCount() {
 			return count;

@@ -2,21 +2,28 @@ package com.eai.idss.vo;
 
 public class LegalByTeamVo {
 
+	private String name;
+	private String action;
 	private String designation;
-	private String subRegion;
 	private int count;
 	
+	public String getAction() {
+		return action;
+	}
+	public void setAction(String action) {
+		this.action = action;
+	}
 	public String getDesignation() {
 		return designation;
 	}
 	public void setDesignation(String designation) {
 		this.designation = designation;
 	}
-	public String getSubRegion() {
-		return subRegion;
+	public String getName() {
+		return name;
 	}
-	public void setSubRegion(String subRegion) {
-		this.subRegion = subRegion;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public int getCount() {
 		return count;

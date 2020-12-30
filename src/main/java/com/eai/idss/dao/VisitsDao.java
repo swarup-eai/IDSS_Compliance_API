@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
 
+import com.eai.idss.model.User;
 import com.eai.idss.model.VisitProcessEfficiency;
 import com.eai.idss.model.Visits;
 import com.eai.idss.vo.TileVo;
@@ -22,7 +23,7 @@ public interface VisitsDao {
 	
 	public Map<String,Map<String,List<TileVo>>> getBySubRegionVisitsData(String region,VisitsFilter cf);
 	
-	public Map<String,Map<String,List<TileVo>>> getByTeamVisitsData(VisitsFilter cf,String region);
+	public Map<String,Map<String,List<TileVo>>> getByTeamVisitsData(VisitsFilter cf,User u);
 	
 	public List<Visits> getVisitsPaginatedRecords(VisitsDetailsRequest cdr, Pageable pageable);
 	

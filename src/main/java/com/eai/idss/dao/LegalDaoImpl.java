@@ -25,6 +25,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.eai.idss.model.Legal;
+import com.eai.idss.model.User;
 import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.ConcentByRegionVo;
 import com.eai.idss.vo.LegalByTeamVo;
@@ -420,7 +421,7 @@ public class LegalDaoImpl implements LegalDao {
 		return pipeline;
 	}
 	
-	public Map<String,List<TileVo>> getByTeamLegalData(LegalFilter cf,String region){
+	public Map<String,List<TileVo>> getByTeamLegalData(LegalFilter cf,User u){
 		try {
 			logger.info("getByTeamLegalData");
 			Map<String, List<String>> daysMap = IDSSUtil.getDaysMapForLegal();
@@ -432,7 +433,7 @@ public class LegalDaoImpl implements LegalDao {
             
             for(String days : daysMap.keySet()) {
             	logger.info("getByTeamLegalData : "+days);
-	            List<? extends Bson> pipeline = getByTeamLegalPipeline(daysMap.get(days),cf,region);
+	            List<? extends Bson> pipeline = getByTeamLegalPipeline(daysMap.get(days),cf,u);
 	            
 	            collection.aggregate(pipeline)
 	                    .allowDiskUse(false)
@@ -445,10 +446,10 @@ public class LegalDaoImpl implements LegalDao {
 										
 										TileVo tVo = new TileVo(days,crVo.getCount());
 										
-										List<TileVo> lbtList = byTeamMap.get(crVo.getSubRegion()+"~"+crVo.getDesignation());
+										List<TileVo> lbtList = byTeamMap.get(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getAction());
 										if(null==lbtList) lbtList = new ArrayList<TileVo>();
 										lbtList.add(tVo);
-										byTeamMap.put(crVo.getSubRegion()+"~"+crVo.getDesignation(), lbtList);
+										byTeamMap.put(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getAction(), lbtList);
 									
 									} catch (JsonMappingException e) {
 										e.printStackTrace();
@@ -467,7 +468,7 @@ public class LegalDaoImpl implements LegalDao {
 		return null;
 	}
 	
-	private List<? extends Bson> getByTeamLegalPipeline(List<String> days,LegalFilter cf,String region) throws ParseException {
+	private List<? extends Bson> getByTeamLegalPipeline(List<String> days,LegalFilter cf,User u) throws ParseException {
 		
 		Document matchDoc = new Document();
 		
@@ -475,7 +476,6 @@ public class LegalDaoImpl implements LegalDao {
 							.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
 							.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))
 						);
-		matchDoc.append("region",region);
 		
 		if(null!=cf && null!=cf.getPendingByTeamCategoryList() ) 
 			matchDoc.append("category", new Document().append("$in", cf.getPendingByTeamCategoryList()));
@@ -484,14 +484,19 @@ public class LegalDaoImpl implements LegalDao {
 		else
 			matchDoc.append("legalDirection", new Document().append("$in", IDSSUtil.getLegalActionsList()));
 		
+		if("RO".equalsIgnoreCase(u.getDesignation()))
+			matchDoc.append("reportingToUserId",u.getUserName());
+		else
+			matchDoc.append("region",u.getRegion());
+		
 		List<? extends Bson> pipeline = Arrays.asList(
 				new Document().append("$match", matchDoc),  
                 new Document()
-                        .append("$group", new Document()
-                                .append("_id", new Document()
-                                        .append("team", "$subRegion")
-                                        .append("designation", "$reportingToDesignation")
-                                )
+                    		.append("$group", new Document()
+    		                		.append("_id", new Document()
+                                            .append("name", "$sroName")
+                                            .append("action", "$legalDirection")
+                                    )
                                 .append("count", new Document()
                                         .append("$sum", 1.0)
                                 )
@@ -499,13 +504,14 @@ public class LegalDaoImpl implements LegalDao {
                 new Document()
                         .append("$project", new Document()
                                 .append("_id", false)
-                                .append("subRegion", "$_id.team")
-                                .append("designation", "$_id.designation")
+                                .append("name", "$_id.name")
+                                .append("action", "$_id.action")
+                                .append("designation", "SRO")
                                 .append("count", "$count")
                         ), 
                 new Document()
                         .append("$sort", new Document()
-                                .append("subRegion", 1.0)
+                                .append("name", 1.0)
                         )
         );
 		return pipeline;

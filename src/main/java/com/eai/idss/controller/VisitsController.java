@@ -79,7 +79,7 @@ public class VisitsController {
     	Map<String,Map<String,Map<String,List<TileVo>>>> ct = new LinkedHashMap<String, Map<String,Map<String,List<TileVo>>>>();
 	    try {
 	    	User u = userRepository.findByUserName(userName);
-	    	ct.put("visitsByTeam",cd.getByTeamVisitsData(vf,u.getRegion()));
+	    	ct.put("visitsByTeam",cd.getByTeamVisitsData(vf,u));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /visits-dashboard/pending-by-team", HttpStatus.INTERNAL_SERVER_ERROR);

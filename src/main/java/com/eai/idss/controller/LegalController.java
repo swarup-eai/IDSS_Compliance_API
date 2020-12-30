@@ -99,7 +99,7 @@ public class LegalController {
     	Map<String,Map<String,List<TileVo>>> ct = new LinkedHashMap<String, Map<String,List<TileVo>>>();
 	    try {
 	    	User u = userRepository.findByUserName(userName);
-	    	ct.put("pendingByTeamLegalData",cd.getByTeamLegalData(cf,u.getRegion()));
+	    	ct.put("pendingByTeamLegalData",cd.getByTeamLegalData(cf,u));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /legal-dashboard/pending-by-team", HttpStatus.INTERNAL_SERVER_ERROR);

@@ -25,9 +25,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.eai.idss.model.Consent;
+import com.eai.idss.model.User;
 import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.ConcentByRegionVo;
-import com.eai.idss.vo.ConcentByStatusVo;
+import com.eai.idss.vo.ConcentByTeamVo;
 import com.eai.idss.vo.ConcentFilter;
 import com.eai.idss.vo.ConsentDetailsRequest;
 import com.eai.idss.vo.TileVo;
@@ -399,7 +400,7 @@ public class ConcentDaoImpl implements ConcentDao {
 		return pipeline;
 	}
 	
-	public Map<String,Map<String,List<TileVo>>> getByTeamConcentData(ConcentFilter cf,String region){
+	public Map<String,Map<String,List<TileVo>>> getByTeamConcentData(ConcentFilter cf,User u){
 		try {
 			logger.info("getByTeamConcentData");
 			Map<String, String> daysMap = IDSSUtil.getPastDaysMap();
@@ -412,7 +413,7 @@ public class ConcentDaoImpl implements ConcentDao {
             for(String days : daysMap.keySet()) {
             	logger.info("getByTeamConcentData : "+days);
             	Map<String,List<TileVo>> subRegionConcentMap = new LinkedHashMap<String, List<TileVo>>();
-	            List<? extends Bson> pipeline = getByTeamConcentPipeline(days,cf,region);
+	            List<? extends Bson> pipeline = getByTeamConcentPipeline(days,cf,u);
 	            
 	            collection.aggregate(pipeline)
 	                    .allowDiskUse(false)
@@ -421,12 +422,12 @@ public class ConcentDaoImpl implements ConcentDao {
 		    	                public void accept(Document document) {
 		    	                    logger.info(document.toJson());
 									try {
-										ConcentByStatusVo crVo = new ObjectMapper().readValue(document.toJson(), ConcentByStatusVo.class);
-										TileVo tVo = new TileVo(crVo.getStatus(),crVo.getCount());
-										List<TileVo> concentStatusList = subRegionConcentMap.get(crVo.getSubRegion()+"~"+crVo.getDesignation());
+										ConcentByTeamVo crVo = new ObjectMapper().readValue(document.toJson(), ConcentByTeamVo.class);
+										TileVo tVo = new TileVo(crVo.getName(),crVo.getCount());
+										List<TileVo> concentStatusList = subRegionConcentMap.get(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getStatus());
 										if(null==concentStatusList) concentStatusList = new ArrayList<TileVo>();
 										concentStatusList.add(tVo);
-										subRegionConcentMap.put(crVo.getSubRegion()+"~"+crVo.getDesignation(), concentStatusList);
+										subRegionConcentMap.put(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getStatus(), concentStatusList);
 									
 									} catch (JsonMappingException e) {
 										e.printStackTrace();
@@ -446,7 +447,7 @@ public class ConcentDaoImpl implements ConcentDao {
 		return null;
 	}
 	
-	private List<? extends Bson> getByTeamConcentPipeline(String days,ConcentFilter cf,String region) throws ParseException {
+	private List<? extends Bson> getByTeamConcentPipeline(String days,ConcentFilter cf,User u) throws ParseException {
 		
 		Document matchDoc = new Document();
 		
@@ -455,16 +456,20 @@ public class ConcentDaoImpl implements ConcentDao {
 			matchDoc.append("category", new Document().append("$in", cf.getPendingByTeamCategoryList()));
 		if(null!=cf && null!=cf.getPendingByTeamScaleList() ) 
 			matchDoc.append("scale", new Document().append("$in", cf.getPendingByTeamScaleList()));
-		matchDoc.append("region",region);
+		
+		if("RO".equalsIgnoreCase(u.getDesignation()))
+			matchDoc.append("reportingToUserId",u.getUserName());
+		else
+			matchDoc.append("region",u.getRegion());
+		
 		List<? extends Bson> pipeline = Arrays.asList(
 				new Document().append("$match", matchDoc),  
                 new Document()
                         .append("$group", new Document()
-                                .append("_id", new Document()
-                                        .append("subRegion", "$subRegion")
-                                        .append("designation", "$adminDesignation")
-                                        .append("status", "$status")
-                                )
+                        		.append("_id", new Document()
+										.append("name", "$adminName")
+										.append("status", "$status")
+								)
                                 .append("count", new Document()
                                         .append("$sum", 1.0)
                                 )
@@ -472,14 +477,14 @@ public class ConcentDaoImpl implements ConcentDao {
                 new Document()
                         .append("$project", new Document()
                                 .append("_id", false)
-                                .append("subRegion", "$_id.subRegion")
-                                .append("designation", "$_id.designation")
+                                .append("name", "$_id.name")
                                 .append("status", "$_id.status")
+                                .append("designation", "SRO")
                                 .append("count", "$count")
                         ), 
                 new Document()
                         .append("$sort", new Document()
-                                .append("subRegion", 1.0)
+                                .append("name", 1.0)
                         )
         );
 		return pipeline;

@@ -314,8 +314,8 @@ public class GenericDaoImpl implements GenericDao {
 	private List<? extends Bson> getVisitsPlannedTilePipeline(List<String> days,DashboardRequest dbr) throws ParseException {
 		Document matchDoc = new Document();
 		matchDoc.append("schduledOn", new Document()
-                        .append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
-                        .append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))
+                        .append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
+                        .append("$gt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))
                 		);
 		applyGenericFilter(dbr, matchDoc);
 		

@@ -27,6 +27,7 @@ import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import com.eai.idss.model.User;
 import com.eai.idss.model.VisitProcessEfficiency;
 import com.eai.idss.model.Visits;
 import com.eai.idss.util.IDSSUtil;
@@ -389,7 +390,7 @@ public class VisitsDaoImpl implements VisitsDao {
 		return pipeline;
 	}
 	
-	public Map<String,Map<String,List<TileVo>>> getByTeamVisitsData(VisitsFilter cf,String region){
+	public Map<String,Map<String,List<TileVo>>> getByTeamVisitsData(VisitsFilter cf,User u){
 		try {
 			logger.info("getByTeamVisitsData");
 			Map<String, List<String>> daysMap = IDSSUtil.getPastAndFutureDaysMap();
@@ -403,19 +404,19 @@ public class VisitsDaoImpl implements VisitsDao {
             	logger.info("getByTeamVisitsData : "+days);
             	Map<String,List<TileVo>> regionVisitMap = new LinkedHashMap<String, List<TileVo>>();
             	
-            	List<? extends Bson> pipeline = getByTeamVisitsPipeline(PENDING,daysMap.get(days).get(0),cf,region);
+            	List<? extends Bson> pipeline = getByTeamVisitsPipeline(PENDING,daysMap.get(days).get(0),cf,u);
 	            
 	            extractData(collection, regionVisitMap, pipeline,PENDING,TEAM_WISE);
             
-	            pipeline = getByTeamVisitsPipeline(SCHEDULED,daysMap.get(days).get(1),cf,region);
+	            pipeline = getByTeamVisitsPipeline(SCHEDULED,daysMap.get(days).get(1),cf,u);
 	            
 	            extractData(collection, regionVisitMap, pipeline,SCHEDULED,TEAM_WISE);
 	            
-	            pipeline = getByTeamVisitsPipeline(LEGAL_NOTICES,daysMap.get(days).get(0),cf,region);
+	            pipeline = getByTeamVisitsPipeline(LEGAL_NOTICES,daysMap.get(days).get(0),cf,u);
 	            
 	            extractData(collection, regionVisitMap, pipeline,LEGAL_NOTICES,TEAM_WISE);
 
-	            pipeline = getByTeamVisitsPipeline(COMPLETED,daysMap.get(days).get(0),cf,region);
+	            pipeline = getByTeamVisitsPipeline(COMPLETED,daysMap.get(days).get(0),cf,u);
 	            
 	            extractData(collection, regionVisitMap, pipeline,COMPLETED,TEAM_WISE);
 	            
@@ -429,34 +430,58 @@ public class VisitsDaoImpl implements VisitsDao {
 		return null;
 	}
 	
-	private List<? extends Bson> getByTeamVisitsPipeline(String caseType,String days,VisitsFilter cf,String region) throws ParseException {
+	private List<? extends Bson> getByTeamVisitsPipeline(String caseType,String days,VisitsFilter cf,User u) throws ParseException {
 		
 		Document matchDoc = new Document();
+		Document groupDoc = new Document();
 		
 		applyMatchFilter(caseType, days, matchDoc);
 		
-		if(!"ALL".equalsIgnoreCase(region))
-			matchDoc.append("region",region);
+		if("RO".equalsIgnoreCase(u.getDesignation())) {
+			matchDoc.append("roUserId",u.getUserName());
+			groupDoc
+                    .append("_id", new Document()
+                            .append("name", "$reportingToName")
+                            .append("designation", "SRO")
+                    )
+                    .append("count", new Document()
+                            .append("$sum", 1.0)
+                    );
+		}
+		else if("SRO".equalsIgnoreCase(u.getDesignation())) {
+			matchDoc.append("reportingToUserId",u.getUserName());
+			groupDoc
+                    .append("_id", new Document()
+                            .append("name", "$adminName")
+                            .append("designation", "FO")
+                    )
+                    .append("count", new Document()
+                            .append("$sum", 1.0)
+                    );
+		}
+		else {
+			matchDoc.append("region",u.getRegion());
+			matchDoc.append("subRegion",u.getSubRegion());
+			groupDoc
+                    .append("_id", new Document()
+                            .append("name", "$adminName")
+                            .append("designation", "FO")
+                    )
+                    .append("count", new Document()
+                            .append("$sum", 1.0)
+                    );
+		}
 		
 		if(null!=cf && null!=cf.getPendingByTeamCategoryList() ) 
 			matchDoc.append("category", new Document().append("$in", cf.getPendingByTeamCategoryList()));
 		
 		List<? extends Bson> pipeline = Arrays.asList(
 				new Document().append("$match", matchDoc),  
-                new Document()
-                        .append("$group", new Document()
-                                .append("_id", new Document()
-                                        .append("team", "$subregion")
-                                        .append("designation", "$adminDesignation")
-                                )
-                                .append("count", new Document()
-                                        .append("$sum", 1.0)
-                                )
-                        ), 
+				new Document().append("$group", groupDoc), 
                 new Document()
                         .append("$project", new Document()
                                 .append("_id", false)
-                                .append("subRegion", "$_id.team")
+                                .append("name", "$_id.name")
                                 .append("designation", "$_id.designation")
                                 .append("count", "$count")
                         ), 
