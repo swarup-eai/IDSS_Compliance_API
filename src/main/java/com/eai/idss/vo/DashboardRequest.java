@@ -3,6 +3,7 @@ package com.eai.idss.vo;
 public class DashboardRequest {
 
 	private String region;
+	private String subRegion;
 	private String scale;
 	private String type;
 	private String category;
@@ -30,5 +31,10 @@ public class DashboardRequest {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	
+	public String getSubRegion() {
+		return subRegion;
+	}
+	public void setSubRegion(String subRegion) {
+		this.subRegion = subRegion;
+	}
 }

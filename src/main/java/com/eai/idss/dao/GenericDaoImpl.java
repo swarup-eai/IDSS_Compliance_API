@@ -215,6 +215,8 @@ public class GenericDaoImpl implements GenericDao {
 	private void applyGenericFilter(DashboardRequest dbr, Document matchDoc) {
 		if(null!=dbr && StringUtils.hasText(dbr.getRegion()) && !"All".equalsIgnoreCase(dbr.getRegion())) 
 			matchDoc.append("region", dbr.getRegion());
+		if(null!=dbr && StringUtils.hasText(dbr.getSubRegion()) && !"All".equalsIgnoreCase(dbr.getSubRegion())) 
+			matchDoc.append("subRegion", dbr.getSubRegion());
 		if(null!=dbr && StringUtils.hasText(dbr.getScale()) && !"All".equalsIgnoreCase(dbr.getScale())) 
 			matchDoc.append("scale", dbr.getScale());
 		if(null!=dbr && StringUtils.hasText(dbr.getType()) && !"All".equalsIgnoreCase(dbr.getType())) 

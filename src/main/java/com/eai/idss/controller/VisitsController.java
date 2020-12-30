@@ -148,7 +148,7 @@ public class VisitsController {
    	    	vd = cd.getVisitDetailsForOneIndustryOneVisit(industryId,visitId);
    		} catch (Exception e) {
    			e.printStackTrace();
-   			return new ResponseEntity("Exception in /visits-schedule-current-month", HttpStatus.INTERNAL_SERVER_ERROR);
+   			return new ResponseEntity("Exception in /visits-details/{industryId}/{visitId}", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
    	    return new ResponseEntity<VisitDetails>(vd,HttpStatus.OK);
    	}
@@ -161,7 +161,7 @@ public class VisitsController {
    	    	vd = cd.getVisitDetailsForOneIndustry(industryId);
    		} catch (Exception e) {
    			e.printStackTrace();
-   			return new ResponseEntity("Exception in /visits-schedule-current-month", HttpStatus.INTERNAL_SERVER_ERROR);
+   			return new ResponseEntity("Exception in /visits-details/{industryId}", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
    	    return new ResponseEntity<List<Visits>>(vd,HttpStatus.OK);
    	}
