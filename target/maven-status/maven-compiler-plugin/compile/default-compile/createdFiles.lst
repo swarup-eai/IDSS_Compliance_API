@@ -7,7 +7,6 @@ com\eai\idss\vo\MyVisitsIndustries.class
 com\eai\idss\dao\GenericDaoImpl$3.class
 com\eai\idss\dao\LegalDaoImpl$4.class
 com\eai\idss\dao\ConcentDao.class
-com\eai\idss\dao\VisitsDaoImpl$5.class
 com\eai\idss\vo\ComlianceScoreFilter.class
 com\eai\idss\model\Consent_FUEL_comparison.class
 com\eai\idss\dao\ConcentDaoImpl$3.class
@@ -42,6 +41,7 @@ com\eai\idss\dao\LegalDaoImpl$5.class
 com\eai\idss\dao\VisitsDaoImpl$2.class
 com\eai\idss\dao\GenericDaoImpl$2.class
 com\eai\idss\vo\VisitsByScaleCategory.class
+com\eai\idss\vo\VisitsTeamVo.class
 com\eai\idss\dao\ConcentDaoImpl$5.class
 com\eai\idss\model\Consented_Air_Pollution_Comparison.class
 com\eai\idss\dao\IndustryMasterDao.class

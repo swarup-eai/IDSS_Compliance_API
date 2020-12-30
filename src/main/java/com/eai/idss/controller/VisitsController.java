@@ -102,10 +102,10 @@ public class VisitsController {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
    	@RequestMapping(method = RequestMethod.POST, value = "/visits-schedule-details", produces = "application/json")
-   	public ResponseEntity<List<Visits>> getVisitsScheduleDetailsData(@RequestBody VisitsScheduleDetailsRequest vdr, Pageable pageable) throws IOException {
+   	public ResponseEntity<List<Visits>> getVisitsScheduleDetailsData(@RequestHeader String userName,@RequestBody VisitsScheduleDetailsRequest vdr, Pageable pageable) throws IOException {
        	List<Visits> cl = null;
    	    try {
-   	    	cl =  cd.getVisitsSchedulePaginatedRecords(vdr,pageable);
+   	    	cl =  cd.getVisitsSchedulePaginatedRecords(vdr,pageable,userName);
    		} catch (Exception e) {
    			e.printStackTrace();
    			return new ResponseEntity("Exception in /visits-schedule-details", HttpStatus.INTERNAL_SERVER_ERROR);

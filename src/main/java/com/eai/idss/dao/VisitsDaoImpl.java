@@ -560,7 +560,7 @@ public class VisitsDaoImpl implements VisitsDao {
 		}
 	}
 	
-	public List<Visits> getVisitsSchedulePaginatedRecords(VisitsScheduleDetailsRequest cdr, Pageable pageable){
+	public List<Visits> getVisitsSchedulePaginatedRecords(VisitsScheduleDetailsRequest cdr, Pageable pageable,String userName){
 		try {
 			Query query = new Query().with(pageable);
 			if(null!=cdr) {
@@ -589,17 +589,19 @@ public class VisitsDaoImpl implements VisitsDao {
 				}
 			}
 				
-//			if(StringUtils.hasText(cdr.getCompliance())) {
-//				String[] op = cdr.getCompliance().split("-");
-//				query.addCriteria(Criteria.where("cScore").gte(Integer.parseInt(op[0])).lte(Integer.parseInt(op[1])));
-//			}
+			if(StringUtils.hasText(cdr.getCompliance()) && !"ALL".equalsIgnoreCase(cdr.getCompliance())) {
+				String[] op = cdr.getCompliance().split("-");
+				query.addCriteria(Criteria.where("cscore").gte(Integer.parseInt(op[0])).lte(Integer.parseInt(op[1])));
+			}
 			
-			if(StringUtils.hasText(cdr.getStatus())) {
+			if(StringUtils.hasText(cdr.getStatus()) && !"ALL".equalsIgnoreCase(cdr.getStatus())) {
 				if("Pending".equalsIgnoreCase(cdr.getStatus()) || "Scheduled".equalsIgnoreCase(cdr.getStatus()))
 					query.addCriteria(Criteria.where("visitStatus").is(NOT_VISITED));
 				if(VISITED.equalsIgnoreCase(cdr.getStatus()))
 					query.addCriteria(Criteria.where("visitStatus").is(VISITED));
 			}
+			
+			query.addCriteria(Criteria.where("userId").is(userName));
 	
 			logger.info(mongoTemplate.count(query, Visits.class));
 			
