@@ -4,6 +4,7 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\mo
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\MyVisits.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\IDSSApiApplication.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\service\LoginUserDetailsService.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ConcentByTeamVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\IndustryMasterDaoImpl.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Consent_HW_Comparison.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ComlianceScoreFilter.java
@@ -45,7 +46,6 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\mo
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\ESR_WATER_comparison.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Legal.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\configuration\SecurityConfiguration.java
-E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ConcentByStatusVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\VisitsSubRegionVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\IndustryMasterDao.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ConcentByRegionVo.java

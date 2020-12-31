@@ -440,6 +440,11 @@ public class ConcentDaoImpl implements ConcentDao {
 		    	                }
 		    	            }
 	                    );
+	            for(String key : subRegionConcentMap.keySet()) {
+	            	List<TileVo> concentStatusList = subRegionConcentMap.get(key);
+	            	concentStatusList.add(new TileVo("Applied",concentStatusList.stream().mapToInt(p -> p.getCaseCount()).sum()));
+	            	subRegionConcentMap.put(key, concentStatusList);
+	            }
 	            byTeamMap.put(daysMap.get(days),subRegionConcentMap);
             }
             return byTeamMap;

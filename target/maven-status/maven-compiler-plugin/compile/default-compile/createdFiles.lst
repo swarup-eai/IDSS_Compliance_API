@@ -27,13 +27,13 @@ com\eai\idss\vo\LegalFilter.class
 com\eai\idss\dao\GenericDaoImpl$1.class
 com\eai\idss\vo\VisitDetails.class
 com\eai\idss\dao\VisitsDao.class
-com\eai\idss\vo\ConcentByStatusVo.class
 com\eai\idss\vo\LegalByTeamVo.class
 com\eai\idss\dao\VisitsDaoImpl$3.class
 com\eai\idss\model\ESR_RESOURCES_comparison.class
 com\eai\idss\vo\TileVo.class
 com\eai\idss\vo\DashboardResponse.class
 com\eai\idss\dao\LegalDaoImpl.class
+com\eai\idss\vo\ConcentByTeamVo.class
 com\eai\idss\repository\LeaveScheduleRepository.class
 com\eai\idss\model\User_Filters.class
 com\eai\idss\vo\ComplianceScoreResponseVo.class
