@@ -51,6 +51,8 @@ import com.mongodb.client.MongoDatabase;
 @Repository
 public class VisitsDaoImpl implements VisitsDao {
 	
+	private static final String REPORTS = "Reports";
+
 	private static final String NA = "NA";
 
 	private static final String VISITED = "Visited";
@@ -310,6 +312,12 @@ public class VisitsDaoImpl implements VisitsDao {
 				);
 			matchDoc.append("legalDirection", new Document().append("$ne", NA));
 		}
+		
+		if(REPORTS.equalsIgnoreCase(caseType)) {
+			matchDoc.append("reportCreatedOn", new Document()
+					.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
+				);
+		}
 	}
 	
 	
@@ -420,6 +428,10 @@ public class VisitsDaoImpl implements VisitsDao {
 	            
 	            extractData(collection, regionVisitMap, pipeline,COMPLETED,TEAM_WISE);
 	            
+	            pipeline = getByTeamVisitsPipeline(REPORTS,daysMap.get(days).get(0),cf,u);
+	            
+	            extractData(collection, regionVisitMap, pipeline,REPORTS,TEAM_WISE);
+	            
 	            byRegionMap.put(days,regionVisitMap);
             
             }
@@ -438,7 +450,9 @@ public class VisitsDaoImpl implements VisitsDao {
 		applyMatchFilter(caseType, days, matchDoc);
 		
 		if("RO".equalsIgnoreCase(u.getDesignation())) {
-			matchDoc.append("roUserId",u.getUserName());
+			matchDoc.append("finalReportingToUserId",u.getUserName());
+			matchDoc.append("finalReportingToDesignation","RO");
+			
 			groupDoc
                     .append("_id", new Document()
                             .append("name", "$reportingToName")
@@ -450,6 +464,8 @@ public class VisitsDaoImpl implements VisitsDao {
 		}
 		else if("SRO".equalsIgnoreCase(u.getDesignation())) {
 			matchDoc.append("reportingToUserId",u.getUserName());
+			matchDoc.append("reportingToDesignation","SRO");
+			
 			groupDoc
                     .append("_id", new Document()
                             .append("name", "$adminName")

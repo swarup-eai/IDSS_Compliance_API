@@ -242,6 +242,8 @@ public class GenericDaoImpl implements GenericDao {
             
             populateVisitsPlanned(dbr, futureVisitsMap, collection, tileMap);
             
+            populateVisitsReports(dbr, futureVisitsMap, collection, tileMap);
+            
             return tileMap;
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -359,6 +361,65 @@ public class GenericDaoImpl implements GenericDao {
             .append("$project", new Document()
                     .append("_id", false)
                     .append("caseType", "visited")
+                    .append("caseCount", "$caseCount")
+            )
+		);
+		return pipeline;
+	}
+	
+	private void populateVisitsReports(DashboardRequest dbr, Map<String, List<String>> daysMap, MongoCollection<Document> collection, Map<String, List<TileVo>> tileMap) throws ParseException {
+		for(String days : daysMap.keySet()) {
+			logger.info("getVisitsTileData : "+days);
+		    List<? extends Bson> pipeline = getVisitsReportsTilePipeline(daysMap.get(days),dbr);
+		    
+		    List<TileVo> tVoList = new ArrayList<TileVo>();
+		    collection.aggregate(pipeline)
+		            .allowDiskUse(false)
+		            .forEach(new Consumer<Document>() {
+			                @Override
+			                public void accept(Document document) {
+			                    logger.info(document.toJson());
+								try {
+									TileVo tVo = new ObjectMapper().readValue(document.toJson(), TileVo.class);
+									tVoList.add(tVo);
+								
+								} catch (JsonMappingException e) {
+									e.printStackTrace();
+								} catch (JsonProcessingException e) {
+									e.printStackTrace();
+								}
+			                    
+			                }
+			            }
+		            );
+		    List<TileVo> existingTileVoList = tileMap.get(days);
+		    existingTileVoList.addAll(tVoList);
+		    tileMap.put(days, existingTileVoList);
+		
+		}
+	}
+	
+	private List<? extends Bson> getVisitsReportsTilePipeline(List<String> days,DashboardRequest dbr) throws ParseException {
+		Document matchDoc = new Document();
+		matchDoc.append("reportCreatedOn", new Document()
+                        .append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
+                        .append("$gt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))
+                		);
+		applyGenericFilter(dbr, matchDoc);
+		
+		List<? extends Bson> pipeline = Arrays.asList(
+				new Document().append("$match", matchDoc),    
+				new Document()
+                .append("$group", new Document()
+                        .append("_id", "null")
+                        .append("caseCount", new Document()
+                                .append("$sum", 1)
+                        )
+                ),
+        new Document()
+            .append("$project", new Document()
+                    .append("_id", false)
+                    .append("caseType", "Reports")
                     .append("caseCount", "$caseCount")
             )
 		);
