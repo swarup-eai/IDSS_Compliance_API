@@ -155,10 +155,10 @@ public class VisitsController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
    	@RequestMapping(method = RequestMethod.GET, value = "/visits-details/{industryId}", produces = "application/json")
-   	public ResponseEntity<List<Visits>> getVisitsDetailsForIndustry(@PathVariable("industryId") Long industryId) throws IOException {
+   	public ResponseEntity<List<Visits>> getVisitsDetailsForIndustry(@PathVariable("industryId") Long industryId,String fromDate,String toDate) throws IOException {
     	List<Visits> vd = null;
    	    try {
-   	    	vd = cd.getVisitDetailsForOneIndustry(industryId);
+   	    	vd = cd.getVisitDetailsForOneIndustry(industryId,fromDate,toDate);
    		} catch (Exception e) {
    			e.printStackTrace();
    			return new ResponseEntity("Exception in /visits-details/{industryId}", HttpStatus.INTERNAL_SERVER_ERROR);

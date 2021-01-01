@@ -830,13 +830,19 @@ public class VisitsDaoImpl implements VisitsDao {
 		return ltvo;
 	}
 	
-	public List<Visits> getVisitDetailsForOneIndustry(long industryId) {
+	public List<Visits> getVisitDetailsForOneIndustry(long industryId,String fromDate,String toDate) {
 		try {
 			Query query = new Query();
 			
 			query.addCriteria(Criteria.where("industryId").is(industryId));
 			
 			query.addCriteria(Criteria.where("visitStatus").is(VISITED));
+			
+			if(StringUtils.hasText(fromDate) && StringUtils.hasText(fromDate)) {
+				query.addCriteria(Criteria.where("visitedDate")
+						.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(toDate+" 00:00:00.000+0000"))
+						.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fromDate+" 00:00:00.000+0000")));
+			}
 			
 			List<Visits> industryVisitsList= mongoTemplate.find(query, Visits.class);
 			

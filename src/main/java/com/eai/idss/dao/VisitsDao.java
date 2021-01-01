@@ -33,7 +33,7 @@ public interface VisitsDao {
 	
 	public VisitDetails getVisitDetailsForOneIndustryOneVisit(long industryId,long visitId);
 	
-	public List<Visits> getVisitDetailsForOneIndustry(long industryId);
+	public List<Visits> getVisitDetailsForOneIndustry(long industryId,String fromDate,String toDate);
 	
 	public Map<String,List<VisitsByComplianceVo>> getVisitsByCompliance(String region, String subRegion);
 	
