@@ -51,6 +51,10 @@ import com.mongodb.client.MongoDatabase;
 @Repository
 public class VisitsDaoImpl implements VisitsDao {
 	
+	private static final String LEGAL_ACTION = "legalAction";
+
+	private static final String REPORT_FILED = "reportFiled";
+
 	private static final String REPORTS = "Reports";
 
 	private static final String NA = "NA";
@@ -792,15 +796,15 @@ public class VisitsDaoImpl implements VisitsDao {
 			
 			Map<String, List<TileVo>> visitStatusDaysMap = new LinkedHashMap<String, List<TileVo>>();
 			
-			visitStatusDaysMap.put("reportFiled", getVisitStats(vd, industryVisitsList));
+			visitStatusDaysMap.put(REPORT_FILED, getVisitStats(vd, industryVisitsList, REPORT_FILED));
 			
-			visitStatusDaysMap.put("sampleSubmitted", getVisitStats());
+			visitStatusDaysMap.put("sampleSubmitted", null);
 			
-			visitStatusDaysMap.put("sampleAnalyzed", getVisitStats());
+			visitStatusDaysMap.put("sampleAnalyzed", null);
 			
-			visitStatusDaysMap.put("reviewCompleted", getVisitStats());
+			visitStatusDaysMap.put("reviewCompleted", null);
 			
-			visitStatusDaysMap.put("legalAction", getVisitStats());
+			visitStatusDaysMap.put(LEGAL_ACTION, getVisitStats(vd, industryVisitsList, LEGAL_ACTION));
 			
 			vd.setVisitSteps(visitStatusDaysMap);
 		}
@@ -810,23 +814,23 @@ public class VisitsDaoImpl implements VisitsDao {
 		return vd;
 	}
 
-	private List<TileVo> getVisitStats(VisitDetails vd, List<Visits> industryVisitsList) {
+	private List<TileVo> getVisitStats(VisitDetails vd, List<Visits> industryVisitsList,String type) {
 		List<TileVo> ltvo = new ArrayList<TileVo>();
 		
-		ltvo.add(new TileVo("actual",(int)ChronoUnit.DAYS.between(vd.getVisit().getReportSubmittedOn(),vd.getVisit().getVisitedDate())));
-		ltvo.add(new TileVo("defined",2));
-		ltvo.add(new TileVo("average",(int)industryVisitsList.stream()
-				.filter(v -> v.getVisitStatus().equalsIgnoreCase(VISITED))
-				.mapToLong(v -> ChronoUnit.DAYS.between(v.getReportSubmittedOn(),v.getVisitedDate())).average().getAsDouble()));
-		return ltvo;
-	}
-	
-	private List<TileVo> getVisitStats() {
-		List<TileVo> ltvo = new ArrayList<TileVo>();
-		
-		ltvo.add(new TileVo("actual",0));
-		ltvo.add(new TileVo("defined",2));
-		ltvo.add(new TileVo("average",0));
+		if(REPORT_FILED.equalsIgnoreCase(type)) {
+			ltvo.add(new TileVo("actual",(int)ChronoUnit.DAYS.between(vd.getVisit().getVisitedDate(),vd.getVisit().getReportCreatedOn())));
+			ltvo.add(new TileVo("defined",2));
+			ltvo.add(new TileVo("average",(int)industryVisitsList.stream()
+					.filter(v -> v.getVisitStatus().equalsIgnoreCase(VISITED))
+					.mapToLong(v -> ChronoUnit.DAYS.between(v.getVisitedDate(),v.getReportCreatedOn())).average().getAsDouble()));
+		}
+		if(LEGAL_ACTION.equalsIgnoreCase(type)) {
+			ltvo.add(new TileVo("actual",(int)ChronoUnit.DAYS.between(vd.getVisit().getVisitedDate(),vd.getVisit().getLegalDirectionIssuedOn())));
+			ltvo.add(new TileVo("defined",2));
+			ltvo.add(new TileVo("average",(int)industryVisitsList.stream()
+					.filter(v -> v.getVisitStatus().equalsIgnoreCase(VISITED))
+					.mapToLong(v -> ChronoUnit.DAYS.between(v.getVisitedDate(),v.getLegalDirectionIssuedOn())).average().getAsDouble()));
+		}
 		return ltvo;
 	}
 	

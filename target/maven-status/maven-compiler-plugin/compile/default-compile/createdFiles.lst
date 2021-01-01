@@ -94,6 +94,7 @@ com\eai\idss\repository\ConcentRepository.class
 com\eai\idss\repository\UserFiltersRepository.class
 com\eai\idss\dao\GenericDao.class
 com\eai\idss\dao\LegalDaoImpl$1.class
+com\eai\idss\vo\IndustryVisit.class
 com\eai\idss\model\ESR_FUEL_comparison.class
 com\eai\idss\model\IndustryTypes.class
 com\eai\idss\dao\GenericDaoImpl$5.class

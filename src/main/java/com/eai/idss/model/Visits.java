@@ -24,7 +24,7 @@ public class Visits {
 	private String category;
 	private int cScore;
 	@JsonFormat(pattern="yyyy-MM-dd")
-	private LocalDate reportSubmittedOn;
+	private LocalDate reportCreatedOn;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate legalDirectionIssuedOn;
 	
@@ -40,11 +40,11 @@ public class Visits {
 	public void setVisitId(long visitId) {
 		this.visitId = visitId;
 	}
-	public LocalDate getReportSubmittedOn() {
-		return reportSubmittedOn;
+	public LocalDate getReportCreatedOn() {
+		return reportCreatedOn;
 	}
-	public void setReportSubmittedOn(LocalDate reportSubmittedOn) {
-		this.reportSubmittedOn = reportSubmittedOn;
+	public void setReportCreatedOn(LocalDate reportCreatedOn) {
+		this.reportCreatedOn = reportCreatedOn;
 	}
 	public LocalDate getLegalDirectionIssuedOn() {
 		return legalDirectionIssuedOn;
