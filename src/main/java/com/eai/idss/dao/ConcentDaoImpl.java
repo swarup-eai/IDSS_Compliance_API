@@ -535,7 +535,7 @@ public class ConcentDaoImpl implements ConcentDao {
 				if(StringUtils.hasText(cdr.getConsentStatus()))
 					query.addCriteria(Criteria.where("consentStatus").is(cdr.getConsentStatus()));
 				if(StringUtils.hasText(cdr.getSubRegion()))
-					query.addCriteria(Criteria.where("adminOffice").is(cdr.getSubRegion()));
+					query.addCriteria(Criteria.where("subRegion").is(cdr.getSubRegion()));
 			}
 			
 	

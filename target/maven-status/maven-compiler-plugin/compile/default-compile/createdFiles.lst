@@ -64,6 +64,7 @@ com\eai\idss\vo\VisitsScheduleDetailsRequest.class
 com\eai\idss\model\CScoreMaster.class
 com\eai\idss\IDSSApiApplication.class
 com\eai\idss\model\Consent.class
+com\eai\idss\dao\GenericDaoImpl$7.class
 com\eai\idss\vo\PollutionScoreFilter.class
 com\eai\idss\dao\VisitsDaoImpl$4.class
 com\eai\idss\vo\MyVisits.class
