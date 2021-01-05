@@ -513,6 +513,8 @@ public class VisitsDaoImpl implements VisitsDao {
 		}
 		else {
 			matchDoc.append("region",u.getRegion());
+			matchDoc.append("adminDesignation","FO");
+			
 			if(!"ALL".equalsIgnoreCase(u.getSubRegion()))
 				matchDoc.append("subRegion",u.getSubRegion());
 			groupDoc
