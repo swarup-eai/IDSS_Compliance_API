@@ -437,12 +437,13 @@ public class GenericDaoImpl implements GenericDao {
 	        LocalDateTime currentTime = LocalDateTime.now();
 			String date7DaysBack = currentTime.minusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
 			String date7DaysAhead = currentTime.plusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
-	        
-			List<? extends Bson> pipeline = getMyvisitsPipeline(userName, date7DaysBack, true);
+			String today = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
+			
+			List<? extends Bson> pipeline = getMyvisitsPipeline(userName, date7DaysBack,today, true);
 			
 		    extractVisitsData(collection, tileMap, pipeline);
 		    
-		    pipeline = getMyvisitsPipeline(userName, date7DaysAhead, false);
+		    pipeline = getMyvisitsPipeline(userName, date7DaysBack,date7DaysAhead, false);
 			
 		    extractVisitsData(collection, tileMap, pipeline);
 		    
@@ -467,7 +468,9 @@ public class GenericDaoImpl implements GenericDao {
 								List<MyVisitsIndustries> tVoList = new ArrayList<MyVisitsIndustries>();
 								for(MyVisitsIndustries industries : mvVo.getVisitDetail()) {
 									MyVisitsIndustries myVisitsIndustries = new MyVisitsIndustries();
+									myVisitsIndustries.setIndustryId(industries.getIndustryId());
 									myVisitsIndustries.setIndustryName(industries.getIndustryName());
+									myVisitsIndustries.setVisitStatus(industries.getVisitStatus());
 									myVisitsIndustries.setcScore((int)getCscore(industries.getIndustryId()));
 									tVoList.add(myVisitsIndustries);
 								}
@@ -491,18 +494,19 @@ public class GenericDaoImpl implements GenericDao {
 		query.with(Sort.by(Sort.Direction.DESC,"_id"));
 		query.addCriteria(Criteria.where("industryId").is(industryId));
 		List<CScoreMaster> cScoreMasters = mongoTemplate.find(query, CScoreMaster.class);
+		if(null==cScoreMasters || cScoreMasters.isEmpty()) return 0;
 		return cScoreMasters.get(0).getCscore();
 	}
-	private List<? extends Bson> getMyvisitsPipeline(String userName, String date, boolean pastVisits)
+	private List<? extends Bson> getMyvisitsPipeline(String userName, String fromDate, String toDate, boolean visited)
 			throws ParseException {
 		Document matchDoc = null;
 		Document groupDoc = null;
-		if(pastVisits) {
+		if(visited) {
 			matchDoc = new Document()
 	        .append("$match", new Document()
 	                .append("visitedDate", new Document()
-	                		.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE)+" 00:00:00.000+0000"))
-	                        .append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(date+" 00:00:00.000+0000"))
+	                		.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(toDate+" 00:00:00.000+0000"))
+	                        .append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fromDate+" 00:00:00.000+0000"))
 	                )
 	                .append("userId", userName)
 	        );
@@ -513,6 +517,7 @@ public class GenericDaoImpl implements GenericDao {
 	                        .append("$push", new Document()
 	                                .append("industryName", "$industryName")
 	                                .append("industryId", "$industryId")
+	                                .append("visitStatus", "$visitStatus")
 	                        )
 	                )
 	        );
@@ -521,8 +526,8 @@ public class GenericDaoImpl implements GenericDao {
 			matchDoc = new Document()
 			        .append("$match", new Document()
 			                .append("schduledOn", new Document()
-			                		.append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(date+" 00:00:00.000+0000"))
-			                        .append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE)+" 00:00:00.000+0000"))
+			                		.append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(toDate+" 00:00:00.000+0000"))
+			                        .append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fromDate+" 00:00:00.000+0000"))
 			                )
 			                .append("userId", userName)
 			);
@@ -533,6 +538,7 @@ public class GenericDaoImpl implements GenericDao {
 			                        .append("$push", new Document()
 			                                .append("industryName", "$industryName")
 											.append("industryId", "$industryId")
+											.append("visitStatus", "$visitStatus")
 			                        )
 			                )
 			);
