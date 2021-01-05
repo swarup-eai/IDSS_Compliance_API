@@ -73,9 +73,9 @@ public class VisitsDaoImpl implements VisitsDao {
 
 	private static final String COMPLETED = "completed";
 
-	private static final String PENDING = "pending";
+	private static final String PENDING = "Pending";
 
-	private static final String SCHEDULED = "scheduled";
+	private static final String SCHEDULED = "Scheduled";
 
 	public static final Logger logger = Logger.getLogger(VisitsDaoImpl.class);
 	
@@ -137,7 +137,7 @@ public class VisitsDaoImpl implements VisitsDao {
 							.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
 							.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))
 						);
-		matchDoc.append("visitStatus", NOT_VISITED);
+		matchDoc.append("visitStatus", PENDING);
 
 		if(!"ALL".equalsIgnoreCase(region))
 			matchDoc.append("region",region);
@@ -300,7 +300,7 @@ public class VisitsDaoImpl implements VisitsDao {
 					.append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(dateToday+" 00:00:00.000+0000"))
 					.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
 				);
-			matchDoc.append("visitStatus", NOT_VISITED);
+			matchDoc.append("visitStatus", PENDING);
 		}
 		
 		if(COMPLETED.equalsIgnoreCase(caseType)) {
@@ -619,7 +619,7 @@ public class VisitsDaoImpl implements VisitsDao {
 					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
 					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000")));
 			
-			query.addCriteria(Criteria.where("visitStatus").is(NOT_VISITED));
+			query.addCriteria(Criteria.where("visitStatus").is(PENDING));
 		}
 		
 		if(COMPLETED.equalsIgnoreCase(caseType)) {
@@ -674,7 +674,7 @@ public class VisitsDaoImpl implements VisitsDao {
 			
 			if(StringUtils.hasText(cdr.getStatus()) && !"ALL".equalsIgnoreCase(cdr.getStatus())) {
 				if("Pending".equalsIgnoreCase(cdr.getStatus()) || "Scheduled".equalsIgnoreCase(cdr.getStatus()))
-					query.addCriteria(Criteria.where("visitStatus").is(NOT_VISITED));
+					query.addCriteria(Criteria.where("visitStatus").is(PENDING));
 				if(VISITED.equalsIgnoreCase(cdr.getStatus()))
 					query.addCriteria(Criteria.where("visitStatus").is(VISITED));
 			}
