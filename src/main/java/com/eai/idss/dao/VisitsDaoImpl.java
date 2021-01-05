@@ -618,7 +618,7 @@ public class VisitsDaoImpl implements VisitsDao {
 		}
 		if(PENDING.equalsIgnoreCase(caseType)) {
 			query.addCriteria(Criteria.where("schduledOn")
-					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
+					.lt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
 					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000")));
 			
 			query.addCriteria(Criteria.where("visitStatus").is(PENDING));
