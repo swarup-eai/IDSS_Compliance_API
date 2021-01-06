@@ -61,8 +61,6 @@ public class VisitsDaoImpl implements VisitsDao {
 
 	private static final String VISITED = "Visited";
 
-	private static final String NOT_VISITED = "Not_visited";
-
 	private static final String TEAM_WISE = "TeamWise";
 
 	private static final String REGION_WISE = "RegionWise";
@@ -422,52 +420,11 @@ public class VisitsDaoImpl implements VisitsDao {
             for(String days : daysMap.keySet()) {
             	logger.info("getByTeamVisitsData : "+days);
             	Map<String,List<TileVo>> regionVisitMap = new LinkedHashMap<String, List<TileVo>>();
-            	
-            	List<? extends Bson> pipeline = getByTeamVisitsPipeline(PENDING,daysMap.get(days).get(0),cf,u,u.getDesignation());
-	            
-	            extractData(collection, regionVisitMap, pipeline,PENDING,TEAM_WISE);
-	            
-	            if("RO".equalsIgnoreCase(u.getDesignation())) {
-	            	pipeline = getByTeamVisitsPipeline(PENDING,daysMap.get(days).get(0),cf,u,"FO");
-	            	extractData(collection, regionVisitMap, pipeline,PENDING,TEAM_WISE);
-	            }
-            
-	            pipeline = getByTeamVisitsPipeline(SCHEDULED,daysMap.get(days).get(1),cf,u,u.getDesignation());
-	            
-	            extractData(collection, regionVisitMap, pipeline,SCHEDULED,TEAM_WISE);
-	            
-	            if("RO".equalsIgnoreCase(u.getDesignation())) {
-	            	pipeline = getByTeamVisitsPipeline(SCHEDULED,daysMap.get(days).get(0),cf,u,"FO");
-	            	extractData(collection, regionVisitMap, pipeline,SCHEDULED,TEAM_WISE);
-	            }
-	            
-	            pipeline = getByTeamVisitsPipeline(LEGAL_NOTICES,daysMap.get(days).get(0),cf,u,u.getDesignation());
-	            
-	            extractData(collection, regionVisitMap, pipeline,LEGAL_NOTICES,TEAM_WISE);
-	            
-	            if("RO".equalsIgnoreCase(u.getDesignation())) {
-	            	pipeline = getByTeamVisitsPipeline(LEGAL_NOTICES,daysMap.get(days).get(0),cf,u,"FO");
-	            	extractData(collection, regionVisitMap, pipeline,LEGAL_NOTICES,TEAM_WISE);
-	            }
-
-	            pipeline = getByTeamVisitsPipeline(VISITED,daysMap.get(days).get(0),cf,u,u.getDesignation());
-	            
-	            extractData(collection, regionVisitMap, pipeline,VISITED,TEAM_WISE);
-	            
-	            if("RO".equalsIgnoreCase(u.getDesignation())) {
-	            	pipeline = getByTeamVisitsPipeline(VISITED,daysMap.get(days).get(0),cf,u,"FO");
-	            	extractData(collection, regionVisitMap, pipeline,VISITED,TEAM_WISE);
-	            }
-	            
-	            pipeline = getByTeamVisitsPipeline(REPORTS,daysMap.get(days).get(0),cf,u,u.getDesignation());
-	            
-	            extractData(collection, regionVisitMap, pipeline,REPORTS,TEAM_WISE);
-	            
-	            if("RO".equalsIgnoreCase(u.getDesignation())) {
-	            	pipeline = getByTeamVisitsPipeline(REPORTS,daysMap.get(days).get(0),cf,u,"FO");
-	            	extractData(collection, regionVisitMap, pipeline,REPORTS,TEAM_WISE);
-	            }
-	            
+            	if("RO".equalsIgnoreCase(u.getDesignation())) {
+            		getROTeamDetails(cf, u, daysMap, collection, days, regionVisitMap);
+            	}else {
+	            	getSROFOTeamDetails(cf, u, daysMap, collection, days, regionVisitMap);
+            	}
 	            byRegionMap.put(days,regionVisitMap);
             
             }
@@ -477,6 +434,71 @@ public class VisitsDaoImpl implements VisitsDao {
 		}
 		return null;
 	}
+
+	private void getSROFOTeamDetails(VisitsFilter cf, User u, Map<String, List<String>> daysMap,
+			MongoCollection<Document> collection, String days, Map<String, List<TileVo>> regionVisitMap)
+			throws ParseException {
+		List<? extends Bson> pipeline;
+		pipeline = getByTeamVisitsPipeline(PENDING,daysMap.get(days).get(0),cf,u,u.getDesignation());
+		
+		extractData(collection, regionVisitMap, pipeline,PENDING,TEAM_WISE);
+         
+		pipeline = getByTeamVisitsPipeline(SCHEDULED,daysMap.get(days).get(1),cf,u,u.getDesignation());
+		
+		extractData(collection, regionVisitMap, pipeline,SCHEDULED,TEAM_WISE);
+		
+		pipeline = getByTeamVisitsPipeline(LEGAL_NOTICES,daysMap.get(days).get(0),cf,u,u.getDesignation());
+		
+		extractData(collection, regionVisitMap, pipeline,LEGAL_NOTICES,TEAM_WISE);
+		
+		pipeline = getByTeamVisitsPipeline(VISITED,daysMap.get(days).get(0),cf,u,u.getDesignation());
+		
+		extractData(collection, regionVisitMap, pipeline,VISITED,TEAM_WISE);
+		
+		pipeline = getByTeamVisitsPipeline(REPORTS,daysMap.get(days).get(0),cf,u,u.getDesignation());
+		
+		extractData(collection, regionVisitMap, pipeline,REPORTS,TEAM_WISE);
+	}
+
+	private void getROTeamDetails(VisitsFilter cf, User u, Map<String, List<String>> daysMap,
+			MongoCollection<Document> collection, String days, Map<String, List<TileVo>> regionVisitMap)
+			throws ParseException {
+		List<? extends Bson> pipeline;
+		pipeline = getByTeamVisitsPipeline(PENDING,daysMap.get(days).get(0),cf,u,"RO~SRO");
+		
+		extractData(collection, regionVisitMap, pipeline,PENDING,TEAM_WISE);
+		
+			pipeline = getByTeamVisitsPipeline(PENDING,daysMap.get(days).get(0),cf,u,"RO~FO");
+			extractData(collection, regionVisitMap, pipeline,PENDING,TEAM_WISE);
+            
+		pipeline = getByTeamVisitsPipeline(SCHEDULED,daysMap.get(days).get(1),cf,u,"RO~SRO");
+		
+		extractData(collection, regionVisitMap, pipeline,SCHEDULED,TEAM_WISE);
+		
+			pipeline = getByTeamVisitsPipeline(SCHEDULED,daysMap.get(days).get(0),cf,u,"RO~FO");
+			extractData(collection, regionVisitMap, pipeline,SCHEDULED,TEAM_WISE);
+		
+		pipeline = getByTeamVisitsPipeline(LEGAL_NOTICES,daysMap.get(days).get(0),cf,u,"RO~SRO");
+		
+		extractData(collection, regionVisitMap, pipeline,LEGAL_NOTICES,TEAM_WISE);
+		
+			pipeline = getByTeamVisitsPipeline(LEGAL_NOTICES,daysMap.get(days).get(0),cf,u,"RO~FO");
+			extractData(collection, regionVisitMap, pipeline,LEGAL_NOTICES,TEAM_WISE);
+
+		pipeline = getByTeamVisitsPipeline(VISITED,daysMap.get(days).get(0),cf,u,"RO~SRO");
+		
+		extractData(collection, regionVisitMap, pipeline,VISITED,TEAM_WISE);
+		
+			pipeline = getByTeamVisitsPipeline(VISITED,daysMap.get(days).get(0),cf,u,"RO~FO");
+			extractData(collection, regionVisitMap, pipeline,VISITED,TEAM_WISE);
+		
+		pipeline = getByTeamVisitsPipeline(REPORTS,daysMap.get(days).get(0),cf,u,"RO~SRO");
+		
+		extractData(collection, regionVisitMap, pipeline,REPORTS,TEAM_WISE);
+		
+			pipeline = getByTeamVisitsPipeline(REPORTS,daysMap.get(days).get(0),cf,u,"RO~FO");
+			extractData(collection, regionVisitMap, pipeline,REPORTS,TEAM_WISE);
+	}
 	
 	private List<? extends Bson> getByTeamVisitsPipeline(String caseType,String days,VisitsFilter cf,User u,String dataLeval) throws ParseException {
 		
@@ -485,13 +507,26 @@ public class VisitsDaoImpl implements VisitsDao {
 		
 		applyMatchFilter(caseType, days, matchDoc);
 		
-		if("RO".equalsIgnoreCase(dataLeval)) {
+		if("RO~FO".equalsIgnoreCase(dataLeval)) {
 			matchDoc.append("finalReportingToUserId",u.getUserName());
 			matchDoc.append("finalReportingToDesignation","RO");
 			
 			groupDoc
                     .append("_id", new Document()
                             .append("name", "$reportingToName")
+                            .append("designation", "FO")
+                    )
+                    .append("count", new Document()
+                            .append("$sum", 1.0)
+                    );
+		}
+		else if("RO~SRO".equalsIgnoreCase(dataLeval)) {
+			matchDoc.append("reportingToUserId",u.getUserName());
+			matchDoc.append("reportingToDesignation","RO");
+			
+			groupDoc
+                    .append("_id", new Document()
+                            .append("name", "$adminName")
                             .append("designation", "SRO")
                     )
                     .append("count", new Document()
