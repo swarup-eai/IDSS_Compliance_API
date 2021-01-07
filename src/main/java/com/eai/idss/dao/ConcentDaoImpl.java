@@ -3,6 +3,7 @@ package com.eai.idss.dao;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -181,7 +182,7 @@ public class ConcentDaoImpl implements ConcentDao {
 	}
 	
 	private List<? extends Bson> getUpcomingRenewalConcentPipeline(String days,String aggregateBy,String region,String subRegion) throws ParseException {
-		LocalDateTime currentTime = LocalDateTime.now();
+		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		String currentDay = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
 		
 		Document matchDoc = new Document();
@@ -501,7 +502,7 @@ public class ConcentDaoImpl implements ConcentDao {
 		try {
 			Query query = new Query().with(page);
 			if(null!=cdr) {
-				LocalDateTime currentTime = LocalDateTime.now();
+				LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 				String today = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
 				LocalDateTime futuredate = currentTime.plusDays(cdr.getDuration());
 				String pastOrFutureDay = futuredate.format(DateTimeFormatter.ISO_LOCAL_DATE);

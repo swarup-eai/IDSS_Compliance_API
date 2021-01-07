@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -285,7 +286,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	}
 
 	private void applyMatchFilter(String caseType, String days, Document matchDoc) throws ParseException {
-		LocalDateTime currentTime = LocalDateTime.now();
+		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		String dateToday = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
 		if(SCHEDULED.equalsIgnoreCase(caseType)) {
 			matchDoc.append("schduledOn", new Document()
@@ -588,7 +589,7 @@ public class VisitsDaoImpl implements VisitsDao {
 			Query query = new Query().with(page);
 			if(null!=cdr) {
 				List<String> days = new ArrayList<String>(); 
-				LocalDateTime currentTime = LocalDateTime.now();
+				LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 				
 				if(SCHEDULED.equalsIgnoreCase(cdr.getVisitStatus())) {
 					days.add(currentTime.plusDays(Integer.parseInt(cdr.getDuration())).format(DateTimeFormatter.ISO_LOCAL_DATE));

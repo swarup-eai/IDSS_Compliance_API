@@ -1,6 +1,7 @@
 package com.eai.idss.util;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -244,7 +245,7 @@ public class IDSSUtil {
 	}
 	
 	public static Map<String, String> getFutureDaysMap() {
-		LocalDateTime currentTime = LocalDateTime.now();
+		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		String currentDay = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date30DaysBack = currentTime.plusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date60DaysBack = currentTime.plusDays(60).format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -261,7 +262,7 @@ public class IDSSUtil {
 	}
 
 	public static Map<String, String> getPastDaysMap() {
-		LocalDateTime currentTime = LocalDateTime.now();
+		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		String date30DaysBack = currentTime.minusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date60DaysBack = currentTime.minusDays(60).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date90DaysBack = currentTime.minusDays(90).format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -276,7 +277,7 @@ public class IDSSUtil {
 	}
 	
 	public static Map<String, String> get3090120PastDaysMap() {
-		LocalDateTime currentTime = LocalDateTime.now();
+		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		String date30DaysBack = currentTime.minusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date90DaysBack = currentTime.minusDays(90).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date120DaysBack = currentTime.minusDays(120).format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -289,7 +290,7 @@ public class IDSSUtil {
 	}
 	
 	public static Map<String, List<String>> getPastAndFutureDaysMap() {
-		LocalDateTime currentTime = LocalDateTime.now();
+		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		String date30DaysBack = currentTime.minusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date90DaysBack = currentTime.minusDays(90).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date120DaysBack = currentTime.minusDays(120).format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -307,7 +308,7 @@ public class IDSSUtil {
 	}
 	
 	public static Map<String, String> getPastDaysMapForLegal() {
-		LocalDateTime currentTime = LocalDateTime.now();
+		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		String date30DaysBack = currentTime.minusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date90DaysBack = currentTime.minusDays(90).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date120DaysBack = currentTime.minusDays(120).format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -321,7 +322,7 @@ public class IDSSUtil {
 	}
 	
 	public static Map<String, List<String>> getFutureDaysMapForVisits() {
-		LocalDateTime currentTime = LocalDateTime.now();
+		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		String dateToday = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date7Days = currentTime.plusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date14Days= currentTime.plusDays(14).format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -363,7 +364,7 @@ public class IDSSUtil {
 	}
 	
 	public static Map<String, List<String>> getDaysMapForDashboard() {
-		LocalDateTime currentTime = LocalDateTime.now();
+		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		String dateToday = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date7DaysBack = currentTime.minusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date14DaysBack = currentTime.minusDays(14).format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -404,8 +405,9 @@ public class IDSSUtil {
 		return daysMap;
 	}
 	
+	
 	public static Map<String, List<String>> getDaysMapForLegal() {
-		LocalDateTime currentTime = LocalDateTime.now();
+		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		String dateToday = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date5DaysBack = currentTime.minusDays(5).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date15DaysBack = currentTime.minusDays(15).format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -449,7 +451,7 @@ public class IDSSUtil {
 	}
 	
 	public static Map<String, List<String>> getDaysMapForVisits() {
-		LocalDateTime currentTime = LocalDateTime.now();
+		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		String dateToday = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date7DaysBack = currentTime.minusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date15DaysBack = currentTime.minusDays(15).format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -493,7 +495,7 @@ public class IDSSUtil {
 	}
 	
 	public static Map<String, String> getPastDaysMapForPollutionScoreCard() {
-		LocalDateTime currentTime = LocalDateTime.now();
+		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		String date1yearDaysBack = currentTime.minusDays(365).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date2yearBack = currentTime.minusDays(730).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date3yearBack = currentTime.minusDays(1095).format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -598,5 +600,12 @@ public class IDSSUtil {
 		ocemsParamList.add("PM");
 
 		return ocemsParamList;
+	}
+	
+	public static void main(String[] ss) {
+		LocalDateTime currentTimeIST = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
+		System.out.println(currentTimeIST);
+		LocalDateTime currentTime = LocalDateTime.now();
+		System.out.println();
 	}
 }

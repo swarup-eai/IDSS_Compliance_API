@@ -3,6 +3,7 @@ package com.eai.idss.dao;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -522,7 +523,7 @@ public class LegalDaoImpl implements LegalDao {
 				if(StringUtils.hasText(cdr.getDuration())) {
 					String[] d = cdr.getDuration().split("_");
 					
-					LocalDateTime currentTime = LocalDateTime.now();
+					LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 					LocalDateTime fromDate = currentTime.minusDays(Integer.parseInt(d[0]));
 					String fromDay = fromDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
 					String toDay = null;

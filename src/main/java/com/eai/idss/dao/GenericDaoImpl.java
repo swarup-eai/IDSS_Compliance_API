@@ -3,6 +3,7 @@ package com.eai.idss.dao;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -434,7 +435,7 @@ public class GenericDaoImpl implements GenericDao {
 
 				List<MyVisits> tileMap =  new ArrayList<MyVisits>();
 	        
-	        LocalDateTime currentTime = LocalDateTime.now();
+	        LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 			String date7DaysBack = currentTime.minusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
 			String date7DaysAhead = currentTime.plusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
 			String today = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
