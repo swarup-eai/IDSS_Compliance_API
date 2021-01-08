@@ -63,9 +63,24 @@ public class IndustryMasterController {
 	    	ufr.save(uf);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity("Exception in saving industry-master-filter.", HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity("Exception in deleting industry-master-filter.", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	    return new ResponseEntity<String>("Saved filter.",HttpStatus.OK);
+	}
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(method = RequestMethod.DELETE, value = "/industry-master-filter", produces = "application/json")
+	public ResponseEntity<String> deleteIndustryMasterFilter(@RequestHeader(value="userName") String userName, String filterName) throws IOException {
+	    try {
+	    	User_Filters existingFilter = ufr.findByUserNameAndFilterName(userName, filterName);
+	    	if(null==existingFilter)
+	    		return new ResponseEntity("Filter Not exist for user.", HttpStatus.INTERNAL_SERVER_ERROR);
+	    	ufr.delete(existingFilter);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity("Exception in saving industry-master-filter.", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	    return new ResponseEntity<String>("Removed filter.",HttpStatus.OK);
 	}
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
