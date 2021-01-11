@@ -22,7 +22,14 @@ public class Legal {
 	private String category;
 	private String subRegion;
 	private double totalLegalActionsCreated;
+	private int totalDirections;
 	
+	public int getTotalDirections() {
+		return totalDirections;
+	}
+	public void setTotalDirections(int totalDirections) {
+		this.totalDirections = totalDirections;
+	}
 	public double getTotalLegalActionsCreated() {
 		return totalLegalActionsCreated;
 	}

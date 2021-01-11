@@ -228,19 +228,23 @@ public class IDSSUtil {
 	
 	public static List<String> getLegalActionsDropdownList(){
 		List<String> legalActionsList = new ArrayList<String>();
-		legalActionsList.add("10-20");
+		legalActionsList.add("0-10");
+		legalActionsList.add("11-20");
 		legalActionsList.add("21-30");
 		legalActionsList.add("31-40");
 		legalActionsList.add("41-50");
+		legalActionsList.add("Above 50");
 		return legalActionsList;
 	}
 	
 	public static List<String> getPendingCasesList(){
 		List<String> pendingCasesList = new ArrayList<String>();
-		pendingCasesList.add("1-10");
+		pendingCasesList.add("0-10");
 		pendingCasesList.add("11-20");
 		pendingCasesList.add("21-30");
 		pendingCasesList.add("31-40");
+		pendingCasesList.add("41-50");
+		pendingCasesList.add("Above 50");
 		return pendingCasesList;
 	}
 	

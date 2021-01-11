@@ -7,7 +7,7 @@ public class IndustryMasterRequest {
 	private String scale;
 	private String type;
 	private String category;
-	private Integer complianceScore;
+	private String complianceScore;
 	private String pendingCases;
 	private String legalActions;
 	
@@ -17,10 +17,10 @@ public class IndustryMasterRequest {
 	public void setSubRegion(String subRegion) {
 		this.subRegion = subRegion;
 	}
-	public Integer getComplianceScore() {
+	public String getComplianceScore() {
 		return complianceScore;
 	}
-	public void setComplianceScore(Integer complianceScore) {
+	public void setComplianceScore(String complianceScore) {
 		this.complianceScore = complianceScore;
 	}
 	public String getPendingCases() {

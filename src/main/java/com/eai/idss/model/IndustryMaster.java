@@ -1,15 +1,19 @@
 package com.eai.idss.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Document(collection = "industryMaster")
 public class IndustryMaster {
 
 	@Id
 	private String _id;
+	private int industryId;
 	private String region;
 	private String subRegion;
 	private String industryName;
@@ -17,12 +21,21 @@ public class IndustryMaster {
 	private String scale;
 	private String type;
 	private int cscore;
-	private Date establishedSince;
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private Date commissioningDate;
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date concentValidity;
 	private int totalLegalActions;
 	private int legalActionsPending;
-	private Date lastVisited;
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private LocalDate lastVisited;
 	
+	public int getIndustryId() {
+		return industryId;
+	}
+	public void setIndustryId(int industryId) {
+		this.industryId = industryId;
+	}
 	public String getSubRegion() {
 		return subRegion;
 	}
@@ -71,11 +84,12 @@ public class IndustryMaster {
 	public void setCscore(int cscore) {
 		this.cscore = cscore;
 	}
-	public Date getEstablishedSince() {
-		return establishedSince;
+
+	public Date getCommissioningDate() {
+		return commissioningDate;
 	}
-	public void setEstablishedSince(Date establishedSince) {
-		this.establishedSince = establishedSince;
+	public void setCommissioningDate(Date commissioningDate) {
+		this.commissioningDate = commissioningDate;
 	}
 	public Date getConcentValidity() {
 		return concentValidity;
@@ -95,10 +109,10 @@ public class IndustryMaster {
 	public void setLegalActionsPending(int legalActionsPending) {
 		this.legalActionsPending = legalActionsPending;
 	}
-	public Date getLastVisited() {
+	public LocalDate getLastVisited() {
 		return lastVisited;
 	}
-	public void setLastVisited(Date lastVisited) {
+	public void setLastVisited(LocalDate lastVisited) {
 		this.lastVisited = lastVisited;
 	}
 	

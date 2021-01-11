@@ -14,6 +14,7 @@ import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -55,20 +56,61 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 				query.addCriteria(Criteria.where("scale").is(imr.getScale()));
 			if(StringUtils.hasText(imr.getType()) && !"All".equalsIgnoreCase(imr.getType()))
 				query.addCriteria(Criteria.where("type").is(imr.getType()));
-			if(null!=imr.getComplianceScore() )
-				query.addCriteria(Criteria.where("complianceScore").is(imr.getComplianceScore()));
-			if(StringUtils.hasText(imr.getLegalActions()) && !"All".equalsIgnoreCase(imr.getLegalActions()))
-				query.addCriteria(Criteria.where("legalActions").is(imr.getLegalActions()));
+			if(null!=imr.getComplianceScore() && !"All".equalsIgnoreCase(imr.getComplianceScore())) {
+				if("-".equalsIgnoreCase(imr.getComplianceScore())) {
+					String[] csString = imr.getComplianceScore().split("-");
+					query.addCriteria(Criteria.where("complianceScore")
+							.gte(csString[0])
+							.lte(csString[1]));
+				}
+			}
+			if(StringUtils.hasText(imr.getLegalActions()) && !"All".equalsIgnoreCase(imr.getLegalActions())) {
+				if("-".equalsIgnoreCase(imr.getLegalActions())) {
+					String[] csString = imr.getLegalActions().split("-");
+					query.addCriteria(Criteria.where("legalActions")
+							.gte(csString[0])
+							.lte(csString[1]));
+				}else if("Above".equalsIgnoreCase(imr.getLegalActions())) {
+					query.addCriteria(Criteria.where("legalActions").gt(50));
+				}
+			}
 			if(StringUtils.hasText(imr.getPendingCases()) && !"All".equalsIgnoreCase(imr.getPendingCases()))
 				query.addCriteria(Criteria.where("pendingCases").is(imr.getPendingCases()));
+			
+				if("-".equalsIgnoreCase(imr.getPendingCases())) {
+					String[] csString = imr.getPendingCases().split("-");
+					query.addCriteria(Criteria.where("pendingCases")
+							.gte(csString[0])
+							.lte(csString[1]));
+				}else if("Above".equalsIgnoreCase(imr.getPendingCases())) {
+					query.addCriteria(Criteria.where("pendingCases").gt(50));
+				}
 		}
 		
 
 		System.out.println(mongoTemplate.count(query, IndustryMaster.class));
 		
 		List<IndustryMaster> filteredIndustryMaster = mongoTemplate.find(query, IndustryMaster.class);
+		
 		Page<IndustryMaster> imPage = PageableExecutionUtils.getPage(filteredIndustryMaster, page,
 		        () -> mongoTemplate.count(query, IndustryMaster.class));
+		
+		for(IndustryMaster im : imPage) {
+			Query queryLDM = new Query();
+			queryLDM.addCriteria(Criteria.where("industryId").is(im.getIndustryId()));
+			List<Legal> ldmObj = mongoTemplate.find(queryLDM, Legal.class);
+			if(null!=ldmObj && ldmObj.size()>0) {
+				int lap = (int)(ldmObj.get(0).getTotalLegalActionsCreated()-ldmObj.get(0).getTotalDirections());
+				im.setLegalActionsPending(lap>0?lap:0);
+			}
+			
+			Query queryVisit = new Query();
+			queryVisit.addCriteria(Criteria.where("industryId").is(im.getIndustryId()));
+			queryVisit.with(Sort.by(Sort.Direction.DESC,"visitId"));
+			List<Visits> visitObj = mongoTemplate.find(queryLDM, Visits.class);
+			if(null!=visitObj && visitObj.size()>0)
+				im.setLastVisited(visitObj.get(0).getVisitedDate());
+		}
 		
 		return imPage.toList();
 	}
