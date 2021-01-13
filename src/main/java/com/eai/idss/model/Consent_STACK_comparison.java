@@ -22,7 +22,20 @@ public class Consent_STACK_comparison {
 	private String fuelQtyUom;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate applicationCreatedOn;
+	private String stackNatureOfPollutants;
 	
+	public String getStackNatureOfPollutants() {
+		return stackNatureOfPollutants;
+	}
+
+	public void setStackNatureOfPollutants(String stackNatureOfPollutants) {
+		this.stackNatureOfPollutants = stackNatureOfPollutants;
+	}
+
+	public void setApplicationCreatedOn(LocalDate applicationCreatedOn) {
+		this.applicationCreatedOn = applicationCreatedOn;
+	}
+
 	public LocalDate getApplicationCreatedOn() {
 		return applicationCreatedOn;
 	}	

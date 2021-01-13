@@ -14,7 +14,25 @@ public class ESR_FUEL_comparison {
 	private String name;
 	private int finantialYear;
 	private double fuelQuantityActual;
+	private double hwQuantityNow;
+	private String newUom;
 	
+	public double getHwQuantityNow() {
+		return hwQuantityNow;
+	}
+
+	public void setHwQuantityNow(double hwQuantityNow) {
+		this.hwQuantityNow = hwQuantityNow;
+	}
+
+	public String getNewUom() {
+		return newUom;
+	}
+
+	public void setNewUom(String newUom) {
+		this.newUom = newUom;
+	}
+
 	public ESR_FUEL_comparison() {
 
 	}

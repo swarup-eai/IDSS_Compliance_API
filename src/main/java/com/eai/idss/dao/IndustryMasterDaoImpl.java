@@ -23,16 +23,21 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.eai.idss.model.CScoreMaster;
+import com.eai.idss.model.Consent_EFFLUENT_Comparison;
 import com.eai.idss.model.Consent_FUEL_comparison;
+import com.eai.idss.model.Consent_HW_Comparison;
 import com.eai.idss.model.Consent_RESOURCES_comparison;
 import com.eai.idss.model.Consent_SKU_comparison;
+import com.eai.idss.model.Consent_STACK_comparison;
 import com.eai.idss.model.Consent_WATER_comparison;
 import com.eai.idss.model.Consented_Air_Pollution_Comparison;
 import com.eai.idss.model.ESR_Air_Pollution_Comparison;
+import com.eai.idss.model.ESR_EFFLUENT_Comparison;
 import com.eai.idss.model.ESR_FUEL_comparison;
 import com.eai.idss.model.ESR_RESOURCES_comparison;
 import com.eai.idss.model.ESR_SKU_comparison;
 import com.eai.idss.model.ESR_WATER_comparison;
+import com.eai.idss.model.EWasteAnnualReturns;
 import com.eai.idss.model.IndustryMaster;
 import com.eai.idss.model.Legal;
 import com.eai.idss.model.Visits;
@@ -1221,10 +1226,40 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		mapPGVo.put("production",getProductionComparisonData(industryId,consentYear,esrYear));
 		mapPGVo.put("resources",getResourcesComparisonData(industryId,consentYear,esrYear));
 		mapPGVo.put("pollution",getPollutionComparisonData(industryId,consentYear,esrYear));
+		mapPGVo.put("stack",getStackComparisonData(industryId,consentYear,esrYear));
 		
 		psrVo.setPollutionScore(mapPGVo);
 		return psrVo;
 	}
+	
+	private List<PollutionParamGroupVo> getStackComparisonData(long industryId,int consentYear,int esrYear) {
+
+		List<PollutionParamGroupVo> ppgVoList = new ArrayList<PollutionParamGroupVo>();
+		ppgVoList.add(getStackData(industryId,consentYear,esrYear));
+		return ppgVoList;
+	}
+	
+	private PollutionParamGroupVo getStackData(long industryId,int consentYear,int esrYear) {
+		
+		List<Consent_STACK_comparison> cscList = mongoTemplate.find(getQueryObj(industryId, consentYear), Consent_STACK_comparison.class);
+		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
+		ppgVo.setParam("stack");
+		List<SKU> cSKUList = new ArrayList<SKU>();
+		for(Consent_STACK_comparison csc : cscList) {
+			SKU sku1 = new SKU("Stack Number",csc.getStackNumber(),"");
+			cSKUList.add(sku1);
+			SKU sku2 = new SKU("Stack Fuel",csc.getStackFuelType(),"");
+			cSKUList.add(sku2);
+			SKU sku3 = new SKU("Stack Attached To",csc.getStackAttachedTo(),"");
+			cSKUList.add(sku3);
+			SKU sku4 = new SKU("Stack Pollutants",csc.getStackNatureOfPollutants(),"");
+			cSKUList.add(sku4);
+		}
+		ppgVo.setConsentSKU(cSKUList);
+		
+		return ppgVo;
+	}
+
 
 	private List<PollutionParamGroupVo> getPollutionComparisonData(long industryId,int consentYear,int esrYear) {
 
@@ -1236,7 +1271,74 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		
 		ppgVoList.add(getFuelData(industryId,consentYear,esrYear));
 		
+		ppgVoList.add(getHazWasteData(industryId,consentYear,esrYear));
+		
+		ppgVoList.add(geteWasteData(industryId,consentYear,esrYear));
+		
+		ppgVoList.add(getEffluentData(industryId,consentYear,esrYear));
+		
 		return ppgVoList;
+	}
+	
+	private PollutionParamGroupVo getEffluentData(long industryId,int consentYear,int esrYear) {
+		
+		List<Consent_EFFLUENT_Comparison> cscList = mongoTemplate.find(getQueryObj(industryId, consentYear), Consent_EFFLUENT_Comparison.class);
+		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
+		ppgVo.setParam("effluent");
+		List<SKU> cSKUList = new ArrayList<SKU>();
+		for(Consent_EFFLUENT_Comparison csc : cscList) {
+			SKU skuE = new SKU("ETP",String.valueOf(csc.getCapacityOfEtp()),csc.getName());
+			cSKUList.add(skuE);
+			SKU skuS = new SKU("STP",String.valueOf(csc.getCapacityOfStp()),csc.getName());
+			cSKUList.add(skuS);
+		}
+		ppgVo.setConsentSKU(cSKUList);
+		
+		List<ESR_EFFLUENT_Comparison> escList = mongoTemplate.find(getQueryObj(industryId, esrYear), ESR_EFFLUENT_Comparison.class);
+		List<SKU> eSKUList = new ArrayList<SKU>();
+		for(ESR_EFFLUENT_Comparison esc : escList) {
+			SKU sku = new SKU(esc.getEffluentParticulars(),String.valueOf(esc.getEffluentParticularsQuantityActual()),esc.getEffluentUom());
+			eSKUList.add(sku);
+		}
+		ppgVo.setEsrSKU(eSKUList);
+		return ppgVo;
+	}
+	
+	private PollutionParamGroupVo geteWasteData(long industryId,int consentYear,int esrYear) {
+		
+		List<EWasteAnnualReturns> cscList = mongoTemplate.find(getQueryObj(industryId, consentYear), EWasteAnnualReturns.class);
+		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
+		ppgVo.setParam("eWaste");
+		List<SKU> cSKUList = new ArrayList<SKU>();
+		for(EWasteAnnualReturns csc : cscList) {
+			SKU sku = new SKU(csc.geteWasteNameProducer(),String.valueOf(csc.geteWasteQtyProducer()),"");
+			cSKUList.add(sku);
+		}
+		ppgVo.setConsentSKU(cSKUList);
+		
+		return ppgVo;
+	}
+	
+	private PollutionParamGroupVo getHazWasteData(long industryId,int consentYear,int esrYear) {
+		
+		List<Consent_HW_Comparison> cscList = mongoTemplate.find(getQueryObj(industryId, consentYear), Consent_HW_Comparison.class);
+		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
+		ppgVo.setParam("hazWaste");
+		List<SKU> cSKUList = new ArrayList<SKU>();
+		for(Consent_HW_Comparison csc : cscList) {
+			SKU sku = new SKU(csc.getName(),String.valueOf(csc.getQuantity()),csc.getNewUom());
+			cSKUList.add(sku);
+		}
+		ppgVo.setConsentSKU(cSKUList);
+		
+		List<ESR_FUEL_comparison> escList = mongoTemplate.find(getQueryObj(industryId, esrYear), ESR_FUEL_comparison.class);
+		List<SKU> eSKUList = new ArrayList<SKU>();
+		for(ESR_FUEL_comparison esc : escList) {
+			SKU sku = new SKU(esc.getName(),String.valueOf(esc.getHwQuantityNow()),esc.getNewUom());
+			eSKUList.add(sku);
+		}
+		ppgVo.setEsrSKU(eSKUList);
+		return ppgVo;
 	}
 	
 	private PollutionParamGroupVo getFuelData(long industryId,int consentYear,int esrYear) {
@@ -1246,7 +1348,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		ppgVo.setParam("fuel");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_FUEL_comparison csc : cscList) {
-			SKU sku = new SKU(csc.getFuelName(),csc.getFuelConsumptions(),csc.getName());
+			SKU sku = new SKU(csc.getFuelType(),String.valueOf(csc.getFuelConsumptions()),csc.getName());
 			cSKUList.add(sku);
 		}
 		ppgVo.setConsentSKU(cSKUList);
@@ -1254,7 +1356,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		List<ESR_FUEL_comparison> escList = mongoTemplate.find(getQueryObj(industryId, esrYear), ESR_FUEL_comparison.class);
 		List<SKU> eSKUList = new ArrayList<SKU>();
 		for(ESR_FUEL_comparison esc : escList) {
-			SKU sku = new SKU(esc.getFuelName(),esc.getFuelQuantityActual(),esc.getName());
+			SKU sku = new SKU(esc.getFuelName(),String.valueOf(esc.getFuelQuantityActual()),esc.getName());
 			eSKUList.add(sku);
 		}
 		ppgVo.setEsrSKU(eSKUList);
@@ -1284,15 +1386,15 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		ppgVo.setParam("water");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_WATER_comparison csc : cscList) {
-			SKU skuBod = new SKU("BOD",csc.getTreatedEffluentBod(),csc.getName());
+			SKU skuBod = new SKU("BOD",String.valueOf(csc.getTreatedEffluentBod()),csc.getName());
 			cSKUList.add(skuBod);
-			SKU skuCOD = new SKU("COD",csc.getTreatedEffluentCod(),csc.getName());
+			SKU skuCOD = new SKU("COD",String.valueOf(csc.getTreatedEffluentCod()),csc.getName());
 			cSKUList.add(skuCOD);
-			SKU skuSS = new SKU("SS",csc.getTreatedEffluentSs(),csc.getName());
+			SKU skuSS = new SKU("SS",String.valueOf(csc.getTreatedEffluentSs()),csc.getName());
 			cSKUList.add(skuSS);
-			SKU skuTds = new SKU("TDS",csc.getTreatedEffluentTds(),csc.getName());
+			SKU skuTds = new SKU("TDS",String.valueOf(csc.getTreatedEffluentTds()),csc.getName());
 			cSKUList.add(skuTds);
-			SKU skuPh = new SKU("PH",csc.getTreatedEffluentPh(),csc.getName());
+			SKU skuPh = new SKU("PH",String.valueOf(csc.getTreatedEffluentPh()),csc.getName());
 			cSKUList.add(skuPh);
 		}
 		ppgVo.setConsentSKU(cSKUList);
@@ -1300,7 +1402,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		List<ESR_WATER_comparison> escList = mongoTemplate.find(getQueryObj(industryId, esrYear), ESR_WATER_comparison.class);
 		List<SKU> eSKUList = new ArrayList<SKU>();
 		for(ESR_WATER_comparison esc : escList) {
-			SKU sku = new SKU(esc.getWaterPollutants(),esc.getWaterPollutantConcentration(),esc.getUomName());
+			SKU sku = new SKU(esc.getWaterPollutants(),String.valueOf(esc.getWaterPollutantConcentration()),esc.getUomName());
 			eSKUList.add(sku);
 		}
 		ppgVo.setEsrSKU(eSKUList);
@@ -1313,7 +1415,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		ppgVo.setParam("air");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consented_Air_Pollution_Comparison csc : cscList) {
-			SKU sku = new SKU(csc.getParameter(),csc.getConcentration(),csc.getConcentrationUom());
+			SKU sku = new SKU(csc.getParameter(),String.valueOf(csc.getConcentration()),csc.getConcentrationUom());
 			cSKUList.add(sku);
 		}
 		ppgVo.setConsentSKU(cSKUList);
@@ -1321,7 +1423,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		List<ESR_Air_Pollution_Comparison> escList = mongoTemplate.find(getQueryObj(industryId, esrYear), ESR_Air_Pollution_Comparison.class);
 		List<SKU> eSKUList = new ArrayList<SKU>();
 		for(ESR_Air_Pollution_Comparison esc : escList) {
-			SKU sku = new SKU(esc.getAirPollutants(),esc.getAirPollutantConcentration(),esc.getConcentrationUom());
+			SKU sku = new SKU(esc.getAirPollutants(),String.valueOf(esc.getAirPollutantConcentration()),esc.getConcentrationUom());
 			eSKUList.add(sku);
 		}
 		ppgVo.setEsrSKU(eSKUList);
@@ -1339,7 +1441,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		ppgVo.setParam("SKU");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_SKU_comparison csc : cscList) {
-			SKU sku = new SKU(csc.getProductname(),csc.getTotal(),csc.getName());
+			SKU sku = new SKU(csc.getProductname(),String.valueOf(csc.getTotal()),csc.getName());
 			cSKUList.add(sku);
 		}
 		ppgVo.setConsentSKU(cSKUList);
@@ -1347,7 +1449,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		List<ESR_SKU_comparison> escList = mongoTemplate.find(query, ESR_SKU_comparison.class);
 		List<SKU> eSKUList = new ArrayList<SKU>();
 		for(ESR_SKU_comparison esc : escList) {
-			SKU sku = new SKU(esc.getProductname(),esc.getProductQty(),esc.getName());
+			SKU sku = new SKU(esc.getProductname(),String.valueOf(esc.getProductQty()),esc.getName());
 			eSKUList.add(sku);
 		}
 		ppgVo.setEsrSKU(eSKUList);
@@ -1367,7 +1469,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		ppgVoRaw.setParam("raw");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_RESOURCES_comparison csc : cscList) {
-			SKU sku = new SKU(csc.getRawMaterialName(),csc.getQty(),csc.getName());
+			SKU sku = new SKU(csc.getRawMaterialName(),String.valueOf(csc.getQty()),csc.getName());
 			cSKUList.add(sku);
 		}
 		ppgVoRaw.setConsentSKU(cSKUList);
@@ -1375,7 +1477,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		List<ESR_RESOURCES_comparison> escList = mongoTemplate.find(query, ESR_RESOURCES_comparison.class);
 		List<SKU> eSKUList = new ArrayList<SKU>();
 		for(ESR_RESOURCES_comparison esc : escList) {
-			SKU sku = new SKU(esc.getRawMaterialName(),esc.getRawMaterialQty(),esc.getName());
+			SKU sku = new SKU(esc.getRawMaterialName(),String.valueOf(esc.getRawMaterialQty()),esc.getName());
 			eSKUList.add(sku);
 		}
 		ppgVoRaw.setEsrSKU(eSKUList);
@@ -1388,9 +1490,9 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		List<SKU> wcSKUList = new ArrayList<SKU>();
 		List<SKU> infracSKUList = new ArrayList<SKU>();
 		for(Consent_RESOURCES_comparison csc : cscList) {
-			SKU skuW = new SKU("Water consumption",csc.getWaterConsumption(),"");
+			SKU skuW = new SKU("Water consumption",String.valueOf(csc.getWaterConsumption()),"");
 			wcSKUList.add(skuW);
-			SKU skuI = new SKU("Gross capital",csc.getGrossCapital(),"");
+			SKU skuI = new SKU("Capital Investment",String.valueOf(csc.getGrossCapital()),"Lakhs");
 			infracSKUList.add(skuI);
 			break;
 		}
@@ -1399,9 +1501,9 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		List<SKU> weSKUList = new ArrayList<SKU>();
 		List<SKU> infraeSKUList = new ArrayList<SKU>();
 		for(ESR_RESOURCES_comparison esc : escList) {
-			SKU skuW = new SKU("Water consumption",esc.getWaterConsumptionTotalQuantityActual(),"");
+			SKU skuW = new SKU("Water consumption",String.valueOf(esc.getWaterConsumptionTotalQuantityActual()),"");
 			wcSKUList.add(skuW);
-			SKU skuI = new SKU("Gross capital",esc.getCapitalInvestment(),"");
+			SKU skuI = new SKU("Capital Investment",String.valueOf(esc.getCapitalInvestment()),"Lakhs");
 			infracSKUList.add(skuI);
 			break;
 		}
