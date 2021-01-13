@@ -3,17 +3,12 @@ package com.eai.idss.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.eai.idss.vo.*;
 import org.springframework.data.domain.Pageable;
 
 import com.eai.idss.model.User;
 import com.eai.idss.model.VisitProcessEfficiency;
 import com.eai.idss.model.Visits;
-import com.eai.idss.vo.TileVo;
-import com.eai.idss.vo.VisitDetails;
-import com.eai.idss.vo.VisitsByComplianceVo;
-import com.eai.idss.vo.VisitsDetailsRequest;
-import com.eai.idss.vo.VisitsFilter;
-import com.eai.idss.vo.VisitsScheduleDetailsRequest;
 
 public interface VisitsDao {
 
@@ -29,7 +24,7 @@ public interface VisitsDao {
 	
 	public List<Visits> getVisitsSchedulePaginatedRecords(VisitsScheduleDetailsRequest cdr, Pageable pageable,String userName);
 	
-	public Map<String,List<TileVo>> getVisitsScheduleByScaleCategory(String userName);
+	public List<VisitScheduleCurrentMonthResponseVo> getVisitsScheduleByUserName(String userName);
 	
 	public VisitDetails getVisitDetailsForOneIndustryOneVisit(long industryId,long visitId);
 	

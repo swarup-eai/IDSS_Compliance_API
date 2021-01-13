@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.eai.idss.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -24,12 +25,6 @@ import com.eai.idss.model.VisitProcessEfficiency;
 import com.eai.idss.model.Visits;
 import com.eai.idss.repository.LeaveScheduleRepository;
 import com.eai.idss.repository.UserRepository;
-import com.eai.idss.vo.TileVo;
-import com.eai.idss.vo.VisitDetails;
-import com.eai.idss.vo.VisitsByComplianceVo;
-import com.eai.idss.vo.VisitsDetailsRequest;
-import com.eai.idss.vo.VisitsFilter;
-import com.eai.idss.vo.VisitsScheduleDetailsRequest;
 
 
 @RestController
@@ -115,15 +110,15 @@ public class VisitsController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
    	@RequestMapping(method = RequestMethod.GET, value = "/visits-schedule-current-month", produces = "application/json")
-   	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getVisitsScheduleByScaleCategory(@RequestHeader String userName) throws IOException {
-    	Map<String,Map<String,List<TileVo>>> cl =  new LinkedHashMap<String, Map<String,List<TileVo>>>();
+   	public ResponseEntity<Map<String,List<VisitScheduleCurrentMonthResponseVo>>> getVisitsScheduleByScaleCategory(@RequestHeader String userName) throws IOException {
+    	Map<String,List<VisitScheduleCurrentMonthResponseVo>> cl =  new LinkedHashMap<String,List<VisitScheduleCurrentMonthResponseVo>>();
    	    try {
-   	    	cl.put("visitsForCurrentMonth",cd.getVisitsScheduleByScaleCategory(userName));
-   		} catch (Exception e) {
+   	    	cl.put("visitsForCurrentMonth",cd.getVisitsScheduleByUserName(userName));
+		} catch (Exception e) {
    			e.printStackTrace();
    			return new ResponseEntity("Exception in /visits-schedule-current-month", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
-   	    return new ResponseEntity<Map<String,Map<String,List<TileVo>>>>(cl,HttpStatus.OK);
+   	    return new ResponseEntity<Map<String,List<VisitScheduleCurrentMonthResponseVo>>>(cl,HttpStatus.OK);
    	}
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
