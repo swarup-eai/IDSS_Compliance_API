@@ -1,5 +1,6 @@
 package com.eai.idss.dao;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -15,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import com.eai.idss.model.*;
+import com.eai.idss.vo.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.jboss.logging.Logger;
@@ -28,20 +31,7 @@ import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
-import com.eai.idss.model.User;
-import com.eai.idss.model.VisitProcessEfficiency;
-import com.eai.idss.model.Visits;
 import com.eai.idss.util.IDSSUtil;
-import com.eai.idss.vo.ConcentByRegionVo;
-import com.eai.idss.vo.TileVo;
-import com.eai.idss.vo.VisitDetails;
-import com.eai.idss.vo.VisitsByComplianceVo;
-import com.eai.idss.vo.VisitsByScaleCategory;
-import com.eai.idss.vo.VisitsDetailsRequest;
-import com.eai.idss.vo.VisitsFilter;
-import com.eai.idss.vo.VisitsScheduleDetailsRequest;
-import com.eai.idss.vo.VisitsSubRegionVo;
-import com.eai.idss.vo.VisitsTeamVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -735,7 +725,43 @@ public class VisitsDaoImpl implements VisitsDao {
 		}
 		return null;
 	}
-	
+
+	@Override
+	public List<VisitScheduleCurrentMonthResponseVo> getVisitsScheduleByUserName(String userName) {
+		try {
+			List<VisitScheduleCurrentMonthResponseVo> visitScheduleList = new ArrayList<VisitScheduleCurrentMonthResponseVo>();
+			LocalDate d = LocalDate.now();
+			LocalDate fd = d.withDayOfMonth(1);
+			LocalDate ld = d.withDayOfMonth(d.lengthOfMonth());
+			Query query = new Query();
+
+			query.addCriteria(Criteria.where("userId").is(userName));
+
+
+			query.addCriteria(Criteria.where("schduledOn")
+					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fd+" 00:00:00.000+0000"))
+					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(ld+" 00:00:00.000+0000")));
+
+
+			List<Visits> visitScheduleCurrentMonthResponseVoList= mongoTemplate.find(query, Visits.class);
+			for(Visits vsd : visitScheduleCurrentMonthResponseVoList) {
+				VisitScheduleCurrentMonthResponseVo visitScheduleVo = new VisitScheduleCurrentMonthResponseVo();
+				visitScheduleVo.setIndustryName(vsd.getIndustryName());
+				visitScheduleVo.setScale(vsd.getScale());
+				visitScheduleVo.setType(vsd.getType());
+				visitScheduleVo.setCategory(vsd.getCategory());
+				visitScheduleVo.setScheduledOn(vsd.getSchduledOn());
+
+				visitScheduleList.add(visitScheduleVo);
+			}
+			return visitScheduleList;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public Map<String,List<TileVo>> getVisitsScheduleByScaleCategory(String userName){
 		try {
 			logger.info("getVisitsScheduleByScaleCategory");
