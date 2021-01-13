@@ -15,6 +15,7 @@ public class IDSSUtil {
 
 	public static List<String> getRegionList(){
 		List<String> regionList = new ArrayList<String>();
+		regionList.add("ALL");
 		regionList.add("Mumbai");
 		regionList.add("Kalyan");
 		regionList.add("Kolhapur");

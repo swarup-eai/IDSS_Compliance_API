@@ -10,6 +10,7 @@ import com.eai.idss.model.VisitProcessEfficiency;
 import com.eai.idss.model.Visits;
 import com.eai.idss.vo.TileVo;
 import com.eai.idss.vo.VisitDetails;
+import com.eai.idss.vo.VisitScheduleCurrentMonthResponseVo;
 import com.eai.idss.vo.VisitsByComplianceVo;
 import com.eai.idss.vo.VisitsDetailsRequest;
 import com.eai.idss.vo.VisitsFilter;
@@ -38,5 +39,7 @@ public interface VisitsDao {
 	public Map<String,List<VisitsByComplianceVo>> getVisitsByCompliance(String region, String subRegion);
 	
 	public VisitProcessEfficiency getVisitProcessEfficiency(String region);
+	
+	public List<VisitScheduleCurrentMonthResponseVo> getVisitsScheduleByUserName(String userName);
 	
 }

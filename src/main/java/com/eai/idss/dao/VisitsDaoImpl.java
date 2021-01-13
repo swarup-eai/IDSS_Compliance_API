@@ -35,6 +35,7 @@ import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.ConcentByRegionVo;
 import com.eai.idss.vo.TileVo;
 import com.eai.idss.vo.VisitDetails;
+import com.eai.idss.vo.VisitScheduleCurrentMonthResponseVo;
 import com.eai.idss.vo.VisitsByComplianceVo;
 import com.eai.idss.vo.VisitsByScaleCategory;
 import com.eai.idss.vo.VisitsDetailsRequest;
@@ -620,7 +621,7 @@ public class VisitsDaoImpl implements VisitsDao {
 				if(StringUtils.hasText(cdr.getCategory()))
 					query.addCriteria(Criteria.where("category").is(cdr.getCategory()));
 				if(StringUtils.hasText(cdr.getSubRegion()))
-					query.addCriteria(Criteria.where("subregion").is(cdr.getSubRegion()));
+					query.addCriteria(Criteria.where("subRegion").is(cdr.getSubRegion()));
 				if(StringUtils.hasText(cdr.getScale()))
 					query.addCriteria(Criteria.where("scale").is(cdr.getScale()));
 			}
@@ -1109,6 +1110,42 @@ public class VisitsDaoImpl implements VisitsDao {
 			
 			return visitProcessEfficiencyList.get(0);
 			
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public List<VisitScheduleCurrentMonthResponseVo> getVisitsScheduleByUserName(String userName) {
+		try {
+			List<VisitScheduleCurrentMonthResponseVo> visitScheduleList = new ArrayList<VisitScheduleCurrentMonthResponseVo>();
+			LocalDate d = LocalDate.now();
+			LocalDate fd = d.withDayOfMonth(1);
+			LocalDate ld = d.withDayOfMonth(d.lengthOfMonth());
+			Query query = new Query();
+
+			query.addCriteria(Criteria.where("userId").is(userName));
+
+
+			query.addCriteria(Criteria.where("schduledOn")
+					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fd+" 00:00:00.000+0000"))
+					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(ld+" 00:00:00.000+0000")));
+
+
+			List<Visits> visitScheduleCurrentMonthResponseVoList= mongoTemplate.find(query, Visits.class);
+			for(Visits vsd : visitScheduleCurrentMonthResponseVoList) {
+				VisitScheduleCurrentMonthResponseVo visitScheduleVo = new VisitScheduleCurrentMonthResponseVo();
+				visitScheduleVo.setIndustryName(vsd.getIndustryName());
+				visitScheduleVo.setScale(vsd.getScale());
+				visitScheduleVo.setType(vsd.getType());
+				visitScheduleVo.setCategory(vsd.getCategory());
+				visitScheduleVo.setScheduledOn(vsd.getSchduledOn());
+
+				visitScheduleList.add(visitScheduleVo);
+			}
+			return visitScheduleList;
 		}
 		catch(Exception e) {
 			e.printStackTrace();

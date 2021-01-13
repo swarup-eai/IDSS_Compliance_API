@@ -26,6 +26,7 @@ import com.eai.idss.repository.LeaveScheduleRepository;
 import com.eai.idss.repository.UserRepository;
 import com.eai.idss.vo.TileVo;
 import com.eai.idss.vo.VisitDetails;
+import com.eai.idss.vo.VisitScheduleCurrentMonthResponseVo;
 import com.eai.idss.vo.VisitsByComplianceVo;
 import com.eai.idss.vo.VisitsDetailsRequest;
 import com.eai.idss.vo.VisitsFilter;
@@ -115,15 +116,15 @@ public class VisitsController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
    	@RequestMapping(method = RequestMethod.GET, value = "/visits-schedule-current-month", produces = "application/json")
-   	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getVisitsScheduleByScaleCategory(@RequestHeader String userName) throws IOException {
-    	Map<String,Map<String,List<TileVo>>> cl =  new LinkedHashMap<String, Map<String,List<TileVo>>>();
+    public ResponseEntity<Map<String,List<VisitScheduleCurrentMonthResponseVo>>> getVisitsScheduleByScaleCategory(@RequestHeader String userName) throws IOException {
+    	Map<String,List<VisitScheduleCurrentMonthResponseVo>> cl =  new LinkedHashMap<String,List<VisitScheduleCurrentMonthResponseVo>>();
    	    try {
-   	    	cl.put("visitsForCurrentMonth",cd.getVisitsScheduleByScaleCategory(userName));
+   	    	cl.put("visitsForCurrentMonth",cd.getVisitsScheduleByUserName(userName));
    		} catch (Exception e) {
    			e.printStackTrace();
    			return new ResponseEntity("Exception in /visits-schedule-current-month", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
-   	    return new ResponseEntity<Map<String,Map<String,List<TileVo>>>>(cl,HttpStatus.OK);
+   	    return new ResponseEntity<Map<String,List<VisitScheduleCurrentMonthResponseVo>>>(cl,HttpStatus.OK);
    	}
     
     @SuppressWarnings({ "rawtypes", "unchecked" })

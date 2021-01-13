@@ -190,8 +190,9 @@ public class ConcentDaoImpl implements ConcentDao {
 		if(currentDay.equalsIgnoreCase(days)) {
 			matchDoc
             .append("status", "Approved")
-            .append("created", new Document()
+            .append("consentValidityDate", new Document()
                             .append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(currentDay+" 00:00:00.000+0000"))
+                            .append("$gt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse("1970-01-01 00:00:00.000+0000"))
             ); 
 		}else {
 			matchDoc 
@@ -512,7 +513,8 @@ public class ConcentDaoImpl implements ConcentDao {
 					if(cdr.getDuration().intValue() ==0) // Past Due from current day
 					{
 						query.addCriteria(Criteria.where("consentValidityDate")
-													.lt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(today+" 00:00:00.000+0000")));
+													.lt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(today+" 00:00:00.000+0000"))
+													.gt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse("1970-01-01 00:00:00.000+0000")));
 					}else { // 30/60/90 days in future
 						
 						query.addCriteria(Criteria.where("consentValidityDate")
@@ -533,7 +535,7 @@ public class ConcentDaoImpl implements ConcentDao {
 					query.addCriteria(Criteria.where("scale").is(cdr.getScale()));
 				if(StringUtils.hasText(cdr.getStatus()))
 					query.addCriteria(Criteria.where("status").is(cdr.getStatus()));
-				if(StringUtils.hasText(cdr.getConsentStatus()))
+				if(StringUtils.hasText(cdr.getConsentStatus()) && !"Renewal".equalsIgnoreCase(cdr.getConsentStatus()))
 					query.addCriteria(Criteria.where("consentStatus").is(cdr.getConsentStatus()));
 				if(StringUtils.hasText(cdr.getSubRegion()))
 					query.addCriteria(Criteria.where("subRegion").is(cdr.getSubRegion()));
