@@ -19,7 +19,20 @@ public class Consent_FUEL_comparison {
 	private String name;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate applicationCreatedOn;
+	private double fuelConsumptions;
 	
+	public double getFuelConsumptions() {
+		return fuelConsumptions;
+	}
+
+	public void setFuelConsumptions(double fuelConsumptions) {
+		this.fuelConsumptions = fuelConsumptions;
+	}
+
+	public void setApplicationCreatedOn(LocalDate applicationCreatedOn) {
+		this.applicationCreatedOn = applicationCreatedOn;
+	}
+
 	public LocalDate getApplicationCreatedOn() {
 		return applicationCreatedOn;
 	}

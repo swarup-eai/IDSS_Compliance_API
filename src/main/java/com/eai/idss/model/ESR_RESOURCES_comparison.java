@@ -13,7 +13,26 @@ public class ESR_RESOURCES_comparison {
 	private String rawMaterialName;
 	private String name;
 	private int finantialYear;
+	private double rawMaterialQty;
+	private double waterConsumptionTotalQuantityActual;
+	private double capitalInvestment;
 	
+	public double getWaterConsumptionTotalQuantityActual() {
+		return waterConsumptionTotalQuantityActual;
+	}
+
+	public void setWaterConsumptionTotalQuantityActual(double waterConsumptionTotalQuantityActual) {
+		this.waterConsumptionTotalQuantityActual = waterConsumptionTotalQuantityActual;
+	}
+
+	public double getCapitalInvestment() {
+		return capitalInvestment;
+	}
+
+	public void setCapitalInvestment(double capitalInvestment) {
+		this.capitalInvestment = capitalInvestment;
+	}
+
 	public ESR_RESOURCES_comparison() {
 
 	}
@@ -28,6 +47,30 @@ public class ESR_RESOURCES_comparison {
 		this.rawMaterialName = rawMaterialName;
 		this.name = name;
 		this.finantialYear=finantialYear;
+	}
+	
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public int getFinantialYear() {
+		return finantialYear;
+	}
+
+	public void setFinantialYear(int finantialYear) {
+		this.finantialYear = finantialYear;
+	}
+
+	public double getRawMaterialQty() {
+		return rawMaterialQty;
+	}
+
+	public void setRawMaterialQty(double rawMaterialQty) {
+		this.rawMaterialQty = rawMaterialQty;
 	}
 
 	public String get_id() {

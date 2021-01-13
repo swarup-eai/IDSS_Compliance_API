@@ -20,6 +20,7 @@ public class Consent_SKU_comparison {
 	private String productname;
 	private Double uom;
 	private String name;
+	private double total;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate applicationCreatedOn;
 	
@@ -51,6 +52,18 @@ public class Consent_SKU_comparison {
 
 	public void set_id(String _id) {
 		this._id = _id;
+	}
+
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
+	}
+
+	public void setApplicationCreatedOn(LocalDate applicationCreatedOn) {
+		this.applicationCreatedOn = applicationCreatedOn;
 	}
 
 	public Double getIndustryId() {

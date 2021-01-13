@@ -134,9 +134,22 @@ public class VisitsController {
    	    	lsr.save(ls);
    		} catch (Exception e) {
    			e.printStackTrace();
-   			return new ResponseEntity("Exception in /leave-calender", HttpStatus.INTERNAL_SERVER_ERROR);
+   			return new ResponseEntity("Exception in POST/leave-calender", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
    	    return new ResponseEntity<>("Leave schedule updated.",HttpStatus.OK);
+   	}
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+   	@RequestMapping(method = RequestMethod.GET, value = "/leave-calender", produces = "application/json")
+   	public ResponseEntity<LeaveSchedule> getLeaveCalender(@RequestBody LeaveSchedule ls) throws IOException {
+    	LeaveSchedule existingVS  = null;
+   	    try {
+   	    	existingVS = lsr.findByUserNameAndMonthYear(ls.getUserName(), ls.getMonthYear());
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   			return new ResponseEntity("Exception in GET/leave-calender", HttpStatus.INTERNAL_SERVER_ERROR);
+   		}
+   	    return new ResponseEntity<LeaveSchedule>(existingVS,HttpStatus.OK);
    	}
     
     @SuppressWarnings({ "rawtypes", "unchecked" })

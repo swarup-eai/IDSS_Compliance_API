@@ -23,14 +23,26 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.eai.idss.model.CScoreMaster;
+import com.eai.idss.model.Consent_FUEL_comparison;
+import com.eai.idss.model.Consent_RESOURCES_comparison;
+import com.eai.idss.model.Consent_SKU_comparison;
+import com.eai.idss.model.Consent_WATER_comparison;
+import com.eai.idss.model.Consented_Air_Pollution_Comparison;
+import com.eai.idss.model.ESR_Air_Pollution_Comparison;
+import com.eai.idss.model.ESR_FUEL_comparison;
+import com.eai.idss.model.ESR_RESOURCES_comparison;
+import com.eai.idss.model.ESR_SKU_comparison;
+import com.eai.idss.model.ESR_WATER_comparison;
 import com.eai.idss.model.IndustryMaster;
 import com.eai.idss.model.Legal;
 import com.eai.idss.model.Visits;
 import com.eai.idss.vo.ComlianceScoreFilter;
 import com.eai.idss.vo.ComplianceScoreResponseVo;
 import com.eai.idss.vo.IndustryMasterRequest;
+import com.eai.idss.vo.PollutionParamGroupVo;
 import com.eai.idss.vo.PollutionScoreFilter;
 import com.eai.idss.vo.PollutionScoreResponseVo;
+import com.eai.idss.vo.SKU;
 
 @Repository
 public class IndustryMasterDaoImpl implements IndustryMasterDao {
@@ -38,8 +50,6 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	@Autowired
 	MongoTemplate mongoTemplate;
 	public static final Logger logger = Logger.getLogger(IndustryMasterDaoImpl.class);
-	public static List<PollutionScoreResponseVo> consentedComparisonList = new ArrayList<PollutionScoreResponseVo>();
-	public static List<PollutionScoreResponseVo> esrComparisonList = new ArrayList<PollutionScoreResponseVo>();
 	
 	public List<IndustryMaster> getIndustryMasterPaginatedRecords(IndustryMasterRequest imr ,Pageable page){
 		
@@ -1202,18 +1212,211 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	}
 
 	@Override
-	public Map<String, List<PollutionScoreResponseVo>> getComparisonData(long industryId) {
+	public PollutionScoreResponseVo getComparisonData(long industryId,int consentYear,int esrYear) {
 
-		logger.info("getComparisonData...");
-		// Map<String, Map<String, List<PollutionScoreResponseVo>>> responseMap = new
-		// LinkedHashMap<String, Map<String, List<PollutionScoreResponseVo>>>();
+		logger.info("getComparisonData..."+industryId+", consentYear: "+consentYear+", esrYear: "+esrYear);
+		PollutionScoreResponseVo psrVo = new PollutionScoreResponseVo();
+		Map<String,List<PollutionParamGroupVo>> mapPGVo = new LinkedHashMap<String, List<PollutionParamGroupVo>>();
+		
+		mapPGVo.put("production",getProductionComparisonData(industryId,consentYear,esrYear));
+		mapPGVo.put("resources",getResourcesComparisonData(industryId,consentYear,esrYear));
+		mapPGVo.put("pollution",getPollutionComparisonData(industryId,consentYear,esrYear));
+		
+		psrVo.setPollutionScore(mapPGVo);
+		return psrVo;
+	}
 
-		Map<String, List<PollutionScoreResponseVo>> resMap = new LinkedHashMap<String, List<PollutionScoreResponseVo>>();
+	private List<PollutionParamGroupVo> getPollutionComparisonData(long industryId,int consentYear,int esrYear) {
 
-		resMap.put("ConsentedData", consentedComparisonList);
-		resMap.put("ESRData", esrComparisonList);
+		List<PollutionParamGroupVo> ppgVoList = new ArrayList<PollutionParamGroupVo>();
+		
+		ppgVoList.add(getAirData(industryId,consentYear,esrYear));
+		
+		ppgVoList.add(getWaterData(industryId,consentYear,esrYear));
+		
+		ppgVoList.add(getFuelData(industryId,consentYear,esrYear));
+		
+		return ppgVoList;
+	}
+	
+	private PollutionParamGroupVo getFuelData(long industryId,int consentYear,int esrYear) {
+		
+		List<Consent_FUEL_comparison> cscList = mongoTemplate.find(getQueryObj(industryId, consentYear), Consent_FUEL_comparison.class);
+		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
+		ppgVo.setParam("fuel");
+		List<SKU> cSKUList = new ArrayList<SKU>();
+		for(Consent_FUEL_comparison csc : cscList) {
+			SKU sku = new SKU(csc.getFuelName(),csc.getFuelConsumptions(),csc.getName());
+			cSKUList.add(sku);
+		}
+		ppgVo.setConsentSKU(cSKUList);
+		
+		List<ESR_FUEL_comparison> escList = mongoTemplate.find(getQueryObj(industryId, esrYear), ESR_FUEL_comparison.class);
+		List<SKU> eSKUList = new ArrayList<SKU>();
+		for(ESR_FUEL_comparison esc : escList) {
+			SKU sku = new SKU(esc.getFuelName(),esc.getFuelQuantityActual(),esc.getName());
+			eSKUList.add(sku);
+		}
+		ppgVo.setEsrSKU(eSKUList);
+		return ppgVo;
+	}
 
-		return resMap;
+	private Query getQueryObj(long industryId, int year) {
+		try {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("industryId").is(industryId));
+		String yms = LocalDate.of(year, 1,1).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String yme = LocalDate.of(year, 12,31).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		
+		query.addCriteria(Criteria.where("envStmtCreated")
+				.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(yms + " 00:00:00.000+0000"))
+				.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(yme + " 23:59:59.000+0000")));
+		return query;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private PollutionParamGroupVo getWaterData(long industryId,int consentYear,int esrYear) {
+		List<Consent_WATER_comparison> cscList = mongoTemplate.find(getQueryObj(industryId, consentYear), Consent_WATER_comparison.class);
+		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
+		ppgVo.setParam("water");
+		List<SKU> cSKUList = new ArrayList<SKU>();
+		for(Consent_WATER_comparison csc : cscList) {
+			SKU skuBod = new SKU("BOD",csc.getTreatedEffluentBod(),csc.getName());
+			cSKUList.add(skuBod);
+			SKU skuCOD = new SKU("COD",csc.getTreatedEffluentCod(),csc.getName());
+			cSKUList.add(skuCOD);
+			SKU skuSS = new SKU("SS",csc.getTreatedEffluentSs(),csc.getName());
+			cSKUList.add(skuSS);
+			SKU skuTds = new SKU("TDS",csc.getTreatedEffluentTds(),csc.getName());
+			cSKUList.add(skuTds);
+			SKU skuPh = new SKU("PH",csc.getTreatedEffluentPh(),csc.getName());
+			cSKUList.add(skuPh);
+		}
+		ppgVo.setConsentSKU(cSKUList);
+		
+		List<ESR_WATER_comparison> escList = mongoTemplate.find(getQueryObj(industryId, esrYear), ESR_WATER_comparison.class);
+		List<SKU> eSKUList = new ArrayList<SKU>();
+		for(ESR_WATER_comparison esc : escList) {
+			SKU sku = new SKU(esc.getWaterPollutants(),esc.getWaterPollutantConcentration(),esc.getUomName());
+			eSKUList.add(sku);
+		}
+		ppgVo.setEsrSKU(eSKUList);
+		return ppgVo;
+	}
+
+	private PollutionParamGroupVo getAirData(long industryId,int consentYear,int esrYear) {
+		List<Consented_Air_Pollution_Comparison> cscList = mongoTemplate.find(getQueryObj(industryId, consentYear), Consented_Air_Pollution_Comparison.class);
+		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
+		ppgVo.setParam("air");
+		List<SKU> cSKUList = new ArrayList<SKU>();
+		for(Consented_Air_Pollution_Comparison csc : cscList) {
+			SKU sku = new SKU(csc.getParameter(),csc.getConcentration(),csc.getConcentrationUom());
+			cSKUList.add(sku);
+		}
+		ppgVo.setConsentSKU(cSKUList);
+		
+		List<ESR_Air_Pollution_Comparison> escList = mongoTemplate.find(getQueryObj(industryId, esrYear), ESR_Air_Pollution_Comparison.class);
+		List<SKU> eSKUList = new ArrayList<SKU>();
+		for(ESR_Air_Pollution_Comparison esc : escList) {
+			SKU sku = new SKU(esc.getAirPollutants(),esc.getAirPollutantConcentration(),esc.getConcentrationUom());
+			eSKUList.add(sku);
+		}
+		ppgVo.setEsrSKU(eSKUList);
+		return ppgVo;
+	}
+	
+	private List<PollutionParamGroupVo> getProductionComparisonData(long industryId,int consentYear,int esrYear) {
+
+		Query query = new Query();
+		query.addCriteria(Criteria.where("industryId").is(industryId));
+		
+		List<Consent_SKU_comparison> cscList = mongoTemplate.find(query, Consent_SKU_comparison.class);
+		List<PollutionParamGroupVo> ppgVoList = new ArrayList<PollutionParamGroupVo>();
+		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
+		ppgVo.setParam("SKU");
+		List<SKU> cSKUList = new ArrayList<SKU>();
+		for(Consent_SKU_comparison csc : cscList) {
+			SKU sku = new SKU(csc.getProductname(),csc.getTotal(),csc.getName());
+			cSKUList.add(sku);
+		}
+		ppgVo.setConsentSKU(cSKUList);
+		
+		List<ESR_SKU_comparison> escList = mongoTemplate.find(query, ESR_SKU_comparison.class);
+		List<SKU> eSKUList = new ArrayList<SKU>();
+		for(ESR_SKU_comparison esc : escList) {
+			SKU sku = new SKU(esc.getProductname(),esc.getProductQty(),esc.getName());
+			eSKUList.add(sku);
+		}
+		ppgVo.setEsrSKU(eSKUList);
+		ppgVoList.add(ppgVo);
+		return ppgVoList;
+	}
+	
+	private List<PollutionParamGroupVo> getResourcesComparisonData(long industryId,int consentYear,int esrYear) {
+
+		List<PollutionParamGroupVo> ppgVoList = new ArrayList<PollutionParamGroupVo>();
+		
+		Query query = new Query();
+		query.addCriteria(Criteria.where("industryId").is(industryId));
+		
+		PollutionParamGroupVo ppgVoRaw = new PollutionParamGroupVo();
+		List<Consent_RESOURCES_comparison> cscList = mongoTemplate.find(query, Consent_RESOURCES_comparison.class);
+		ppgVoRaw.setParam("raw");
+		List<SKU> cSKUList = new ArrayList<SKU>();
+		for(Consent_RESOURCES_comparison csc : cscList) {
+			SKU sku = new SKU(csc.getRawMaterialName(),csc.getQty(),csc.getName());
+			cSKUList.add(sku);
+		}
+		ppgVoRaw.setConsentSKU(cSKUList);
+		
+		List<ESR_RESOURCES_comparison> escList = mongoTemplate.find(query, ESR_RESOURCES_comparison.class);
+		List<SKU> eSKUList = new ArrayList<SKU>();
+		for(ESR_RESOURCES_comparison esc : escList) {
+			SKU sku = new SKU(esc.getRawMaterialName(),esc.getRawMaterialQty(),esc.getName());
+			eSKUList.add(sku);
+		}
+		ppgVoRaw.setEsrSKU(eSKUList);
+		
+		ppgVoList.add(ppgVoRaw);
+		//////////////////////////////////
+		
+		PollutionParamGroupVo ppgVoWater = new PollutionParamGroupVo();
+		ppgVoRaw.setParam("water");
+		List<SKU> wcSKUList = new ArrayList<SKU>();
+		List<SKU> infracSKUList = new ArrayList<SKU>();
+		for(Consent_RESOURCES_comparison csc : cscList) {
+			SKU skuW = new SKU("Water consumption",csc.getWaterConsumption(),"");
+			wcSKUList.add(skuW);
+			SKU skuI = new SKU("Gross capital",csc.getGrossCapital(),"");
+			infracSKUList.add(skuI);
+			break;
+		}
+		ppgVoWater.setConsentSKU(wcSKUList);
+		
+		List<SKU> weSKUList = new ArrayList<SKU>();
+		List<SKU> infraeSKUList = new ArrayList<SKU>();
+		for(ESR_RESOURCES_comparison esc : escList) {
+			SKU skuW = new SKU("Water consumption",esc.getWaterConsumptionTotalQuantityActual(),"");
+			wcSKUList.add(skuW);
+			SKU skuI = new SKU("Gross capital",esc.getCapitalInvestment(),"");
+			infracSKUList.add(skuI);
+			break;
+		}
+		ppgVoWater.setEsrSKU(weSKUList);
+		
+		ppgVoList.add(ppgVoWater);
+		
+		PollutionParamGroupVo ppgVoInfra = new PollutionParamGroupVo();
+		ppgVoInfra.setParam("infra");
+		ppgVoInfra.setConsentSKU(infracSKUList);
+		ppgVoInfra.setEsrSKU(infraeSKUList);
+		ppgVoList.add(ppgVoInfra);
+		////////////////////////////////////////////
+		
+		return ppgVoList;
 	}
 
 }

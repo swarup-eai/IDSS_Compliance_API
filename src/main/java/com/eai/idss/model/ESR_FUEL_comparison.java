@@ -13,12 +13,11 @@ public class ESR_FUEL_comparison {
 	private int fuelUom;
 	private String name;
 	private int finantialYear;
-
+	private double fuelQuantityActual;
+	
 	public ESR_FUEL_comparison() {
 
 	}
-	
-	
 
 	public ESR_FUEL_comparison(String _id, Double industryId, String fuelName, int fuelUom, String name,
 			int finantialYear) {
@@ -30,8 +29,14 @@ public class ESR_FUEL_comparison {
 		this.name = name;
 		this.finantialYear = finantialYear;
 	}
+	
+	public double getFuelQuantityActual() {
+		return fuelQuantityActual;
+	}
 
-
+	public void setFuelQuantityActual(double fuelQuantityActual) {
+		this.fuelQuantityActual = fuelQuantityActual;
+	}
 
 	public String get_id() {
 		return _id;

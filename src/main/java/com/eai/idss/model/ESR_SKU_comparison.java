@@ -13,6 +13,7 @@ public class ESR_SKU_comparison {
 	private String productname;
 	private Double uom;
 	private String name;
+	private double productQty;
 	private int finantialYear;
 	
 	public ESR_SKU_comparison() {
@@ -29,6 +30,14 @@ public class ESR_SKU_comparison {
 		this.uom = uom;
 		this.name = name;
 		this.finantialYear = finantialYear;
+	}
+	
+	public double getProductQty() {
+		return productQty;
+	}
+
+	public void setProductQty(double productQty) {
+		this.productQty = productQty;
 	}
 
 	public String get_id() {

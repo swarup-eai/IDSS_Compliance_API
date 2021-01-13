@@ -152,16 +152,16 @@ public class IndustryMasterController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(method = RequestMethod.GET, value = "/industry-master-score-card/comparison/{industryId}",  produces = "application/json")
-   	public ResponseEntity  <Map<String,List<PollutionScoreResponseVo>>> getComparisonData(long industryId) throws IOException {
-    	Map<String,List<PollutionScoreResponseVo>> iml = null;
+   	public ResponseEntity<PollutionScoreResponseVo> getComparisonData(long industryId,int consentYear, int esrYear) throws IOException {
+    	PollutionScoreResponseVo iml = null;
        	try {
-   	    	iml=imd.getComparisonData(industryId);
+   	    	iml=imd.getComparisonData(industryId,consentYear,esrYear);
    		} catch (Exception e) {
    			e.printStackTrace();
    			
    			return new ResponseEntity("Exception in /industry-master-score-card/comparison", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
-        return new ResponseEntity<Map<String,List<PollutionScoreResponseVo>>>(iml,HttpStatus.OK);
+        return new ResponseEntity<PollutionScoreResponseVo>(iml,HttpStatus.OK);
         
     }
 }

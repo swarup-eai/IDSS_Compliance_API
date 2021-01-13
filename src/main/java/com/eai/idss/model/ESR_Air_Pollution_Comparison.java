@@ -17,6 +17,33 @@ public class ESR_Air_Pollution_Comparison {
 	private String airpollutantquantity;
 	private String qtyuom;
 	private int finantialyear;
+	private String airPollutants;
+	private double airPollutantConcentration;
+	private String concentrationUom;
+	
+	public String getAirPollutants() {
+		return airPollutants;
+	}
+
+	public void setAirPollutants(String airPollutants) {
+		this.airPollutants = airPollutants;
+	}
+
+	public double getAirPollutantConcentration() {
+		return airPollutantConcentration;
+	}
+
+	public void setAirPollutantConcentration(double airPollutantConcentration) {
+		this.airPollutantConcentration = airPollutantConcentration;
+	}
+
+	public String getConcentrationUom() {
+		return concentrationUom;
+	}
+
+	public void setConcentrationUom(String concentrationUom) {
+		this.concentrationUom = concentrationUom;
+	}
 
 	public ESR_Air_Pollution_Comparison() {
 

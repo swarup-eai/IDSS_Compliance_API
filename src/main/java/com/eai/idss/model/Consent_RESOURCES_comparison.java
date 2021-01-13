@@ -19,7 +19,26 @@ public class Consent_RESOURCES_comparison {
 	private String name;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate applicationCreatedOn;
+	private double qty;
+	private double waterConsumption;
+	private double grossCapital;
 	
+	public double getWaterConsumption() {
+		return waterConsumption;
+	}
+
+	public void setWaterConsumption(double waterConsumption) {
+		this.waterConsumption = waterConsumption;
+	}
+
+	public double getGrossCapital() {
+		return grossCapital;
+	}
+
+	public void setGrossCapital(double grossCapital) {
+		this.grossCapital = grossCapital;
+	}
+
 	public LocalDate getApplicationCreatedOn() {
 		return applicationCreatedOn;
 	}
@@ -44,6 +63,13 @@ public class Consent_RESOURCES_comparison {
 		this.applicationCreatedOn = applicationCreatedOn;
 	}
 	
+	public double getQty() {
+		return qty;
+	}
+
+	public void setQty(double qty) {
+		this.qty = qty;
+	}
 
 	public String get_id() {
 		return _id;

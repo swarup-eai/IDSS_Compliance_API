@@ -13,6 +13,7 @@ public class ESR_WATER_comparison {
 	private Double waterPollutantQuantity;
 	private String uomName;
 	private int finantialyear;
+	private double waterPollutantConcentration;
 
 	
 	public ESR_WATER_comparison() {
@@ -30,6 +31,36 @@ public class ESR_WATER_comparison {
 		this.waterPollutantQuantity = waterPollutantQuantity;
 		this.uomName = uomName;
 		this.finantialyear = finantialyear;
+	}
+
+	
+	public Double getIndustryId() {
+		return industryId;
+	}
+
+
+	public void setIndustryId(Double industryId) {
+		this.industryId = industryId;
+	}
+
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+
+	public double getWaterPollutantConcentration() {
+		return waterPollutantConcentration;
+	}
+
+
+	public void setWaterPollutantConcentration(double waterPollutantConcentration) {
+		this.waterPollutantConcentration = waterPollutantConcentration;
 	}
 
 

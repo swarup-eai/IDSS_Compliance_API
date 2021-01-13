@@ -17,7 +17,18 @@ public class Consent_HW_Comparison {
 	private String UOM_name;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private String consentApprovalDate;
+	private double quantity;
 	
+	public double getQuantity() {
+		return quantity;
+	}
+
+
+	public void setQuantity(double quantity) {
+		this.quantity = quantity;
+	}
+
+
 	public Consent_HW_Comparison() {
 		
 	}
