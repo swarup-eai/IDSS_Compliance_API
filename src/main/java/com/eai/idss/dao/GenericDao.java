@@ -4,10 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.eai.idss.model.IndustryTypes;
-import com.eai.idss.vo.DashboardRequest;
-import com.eai.idss.vo.MyVisits;
-import com.eai.idss.vo.TileVo;
-import com.eai.idss.vo.TopPerfVo;
+import com.eai.idss.vo.*;
 
 public interface GenericDao {
 
@@ -22,4 +19,6 @@ public interface GenericDao {
 	public List<TopPerfVo> getTopPerformer(String region);
 	
 	public List<String> getIndustryTypes(String category) ;
+
+	public Map<String,List<HeatmapResponseVo>> getHeatmapData(DashboardRequest dbr);
 }

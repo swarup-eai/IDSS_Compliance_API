@@ -8,7 +8,7 @@ public class DashboardResponse {
 	private Map<String,Map<String,List<TileVo>>> dashboardMap;
 	private List<TopPerfVo> topPerformers;
 	private List<MyVisits> myVisits;
-
+	private Map<String,List<HeatmapResponseVo>> heatmapResponseList;
 	
 	public Map<String, Map<String, List<TileVo>>> getDashboardMap() {
 		return dashboardMap;
@@ -27,6 +27,12 @@ public class DashboardResponse {
 	}
 	public void setMyVisits(List<MyVisits> myVisits) {
 		this.myVisits = myVisits;
+	}
+	public Map<String,List<HeatmapResponseVo>> getHeatmapResponseList() {
+		return heatmapResponseList;
+	}
+	public void setHeatmapResponseList(Map<String,List<HeatmapResponseVo>> heatmapResponse) {
+		this.heatmapResponseList = heatmapResponse;
 	}
 
 }
