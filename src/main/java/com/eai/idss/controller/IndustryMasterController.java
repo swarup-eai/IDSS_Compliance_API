@@ -152,10 +152,10 @@ public class IndustryMasterController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(method = RequestMethod.GET, value = "/industry-master-score-card/comparison/{industryId}",  produces = "application/json")
-   	public ResponseEntity<PollutionScoreResponseVo> getComparisonData(long industryId,int consentYear, int esrYear) throws IOException {
+   	public ResponseEntity<PollutionScoreResponseVo> getComparisonData(long industryId,int consentYear, int esrYear,int form4Year) throws IOException {
     	PollutionScoreResponseVo iml = null;
        	try {
-   	    	iml=imd.getComparisonData(industryId,consentYear,esrYear);
+   	    	iml=imd.getComparisonData(industryId,consentYear,esrYear,form4Year);
    		} catch (Exception e) {
    			e.printStackTrace();
    			

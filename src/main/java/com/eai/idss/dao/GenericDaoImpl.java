@@ -243,7 +243,7 @@ public class GenericDaoImpl implements GenericDao {
             
             populateVisitsPlanned(dbr, futureVisitsMap, collection, tileMap);
             
-            populateVisitsReports(dbr, futureVisitsMap, collection, tileMap);
+            populateVisitsReports(dbr, daysMap, collection, tileMap);
             
             return tileMap;
 		}catch(Exception e) {
