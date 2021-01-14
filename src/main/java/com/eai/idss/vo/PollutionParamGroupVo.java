@@ -7,6 +7,7 @@ public class PollutionParamGroupVo {
 	private String param;
 	private List<SKU> consentSKU;
 	private List<SKU> esrSKU;
+	private List<SKU> form4SKU;
 	
 	public String getParam() {
 		return param;
@@ -26,5 +27,10 @@ public class PollutionParamGroupVo {
 	public void setEsrSKU(List<SKU> esrSKU) {
 		this.esrSKU = esrSKU;
 	}
-	
+	public List<SKU> getForm4SKU() {
+		return form4SKU;
+	}
+	public void setForm4SKU(List<SKU> form4sku) {
+		form4SKU = form4sku;
+	}
 }

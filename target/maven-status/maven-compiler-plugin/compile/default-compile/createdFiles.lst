@@ -1,9 +1,11 @@
 com\eai\idss\vo\TopPerfVo.class
 com\eai\idss\vo\PollutionScoreResponseVo.class
+com\eai\idss\model\Consent_EFFLUENT_Comparison.class
 com\eai\idss\util\IDSSUtil.class
 com\eai\idss\vo\LegalGroupByVo.class
 com\eai\idss\dao\GenericDaoImpl$6.class
 com\eai\idss\vo\MyVisitsIndustries.class
+com\eai\idss\vo\PollutionParamGroupVo.class
 com\eai\idss\dao\GenericDaoImpl$3.class
 com\eai\idss\dao\LegalDaoImpl$4.class
 com\eai\idss\dao\ConcentDao.class
@@ -18,6 +20,7 @@ com\eai\idss\vo\VisitsByComplianceVo.class
 com\eai\idss\vo\ConcentByRegionVo.class
 com\eai\idss\configuration\WebSecurityConfiguration$1.class
 com\eai\idss\model\Consent_HW_Comparison.class
+com\eai\idss\model\ESR_EFFLUENT_Comparison.class
 com\eai\idss\vo\VisitsFilter.class
 com\eai\idss\model\ESR_Air_Pollution_Comparison.class
 com\eai\idss\controller\CommonController.class
@@ -30,6 +33,7 @@ com\eai\idss\dao\VisitsDao.class
 com\eai\idss\vo\LegalByTeamVo.class
 com\eai\idss\dao\VisitsDaoImpl$3.class
 com\eai\idss\model\ESR_RESOURCES_comparison.class
+com\eai\idss\vo\VisitScheduleCurrentMonthResponseVo.class
 com\eai\idss\vo\TileVo.class
 com\eai\idss\vo\DashboardResponse.class
 com\eai\idss\dao\LegalDaoImpl.class
@@ -72,6 +76,7 @@ com\eai\idss\vo\DashboardRequest.class
 com\eai\idss\model\ESR_WATER_comparison.class
 com\eai\idss\configuration\SecurityConfiguration.class
 com\eai\idss\model\ESR_SKU_comparison.class
+com\eai\idss\model\EWasteAnnualReturns.class
 com\eai\idss\vo\VisitsDetailsRequest.class
 com\eai\idss\model\User.class
 com\eai\idss\dao\GenericDaoImpl.class
@@ -80,6 +85,7 @@ com\eai\idss\controller\ConsentController.class
 com\eai\idss\dao\GenericDaoImpl$4.class
 com\eai\idss\model\Visits.class
 com\eai\idss\configuration\SwaggerConfig.class
+com\eai\idss\vo\SKU.class
 com\eai\idss\vo\VisitsSubRegionVo.class
 com\eai\idss\service\LoginUserDetailsService.class
 com\eai\idss\dao\LegalDaoImpl$2.class

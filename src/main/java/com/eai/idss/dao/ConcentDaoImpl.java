@@ -196,7 +196,7 @@ public class ConcentDaoImpl implements ConcentDao {
             ); 
 		}else {
 			matchDoc 
-                .append("consentStatus", "Renewal")
+                //.append("consentStatus", "Renewal")
                 .append("consentValidityDate", new Document()
                 		.append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
                 		.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(currentDay+" 00:00:00.000+0000"))

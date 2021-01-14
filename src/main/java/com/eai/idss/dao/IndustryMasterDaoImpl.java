@@ -22,6 +22,7 @@ import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import com.eai.idss.model.Annual_Returns_HW_Comparison;
 import com.eai.idss.model.CScoreMaster;
 import com.eai.idss.model.Consent_EFFLUENT_Comparison;
 import com.eai.idss.model.Consent_FUEL_comparison;
@@ -37,7 +38,6 @@ import com.eai.idss.model.ESR_FUEL_comparison;
 import com.eai.idss.model.ESR_RESOURCES_comparison;
 import com.eai.idss.model.ESR_SKU_comparison;
 import com.eai.idss.model.ESR_WATER_comparison;
-import com.eai.idss.model.EWasteAnnualReturns;
 import com.eai.idss.model.IndustryMaster;
 import com.eai.idss.model.Legal;
 import com.eai.idss.model.Visits;
@@ -1217,13 +1217,13 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	}
 
 	@Override
-	public PollutionScoreResponseVo getComparisonData(long industryId,int consentYear,int esrYear) {
+	public PollutionScoreResponseVo getComparisonData(long industryId,int consentYear,int esrYear,int form4Year) {
 
 		logger.info("getComparisonData..."+industryId+", consentYear: "+consentYear+", esrYear: "+esrYear);
 		PollutionScoreResponseVo psrVo = new PollutionScoreResponseVo();
 		Map<String,List<PollutionParamGroupVo>> mapPGVo = new LinkedHashMap<String, List<PollutionParamGroupVo>>();
 		
-		mapPGVo.put("production",getProductionComparisonData(industryId,consentYear,esrYear));
+		mapPGVo.put("production",getProductionComparisonData(industryId,consentYear,esrYear, form4Year));
 		mapPGVo.put("resources",getResourcesComparisonData(industryId,consentYear,esrYear));
 		mapPGVo.put("pollution",getPollutionComparisonData(industryId,consentYear,esrYear));
 		mapPGVo.put("stack",getStackComparisonData(industryId,consentYear,esrYear));
@@ -1241,7 +1241,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	
 	private PollutionParamGroupVo getStackData(long industryId,int consentYear,int esrYear) {
 		
-		List<Consent_STACK_comparison> cscList = mongoTemplate.find(getQueryObj(industryId, consentYear), Consent_STACK_comparison.class);
+		List<Consent_STACK_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_STACK_comparison.class);
 		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
 		ppgVo.setParam("stack");
 		List<SKU> cSKUList = new ArrayList<SKU>();
@@ -1273,7 +1273,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		
 		ppgVoList.add(getHazWasteData(industryId,consentYear,esrYear));
 		
-		ppgVoList.add(geteWasteData(industryId,consentYear,esrYear));
+//		ppgVoList.add(geteWasteData(industryId,consentYear,esrYear));
 		
 		ppgVoList.add(getEffluentData(industryId,consentYear,esrYear));
 		
@@ -1282,7 +1282,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	
 	private PollutionParamGroupVo getEffluentData(long industryId,int consentYear,int esrYear) {
 		
-		List<Consent_EFFLUENT_Comparison> cscList = mongoTemplate.find(getQueryObj(industryId, consentYear), Consent_EFFLUENT_Comparison.class);
+		List<Consent_EFFLUENT_Comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_EFFLUENT_Comparison.class);
 		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
 		ppgVo.setParam("effluent");
 		List<SKU> cSKUList = new ArrayList<SKU>();
@@ -1294,7 +1294,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		}
 		ppgVo.setConsentSKU(cSKUList);
 		
-		List<ESR_EFFLUENT_Comparison> escList = mongoTemplate.find(getQueryObj(industryId, esrYear), ESR_EFFLUENT_Comparison.class);
+		List<ESR_EFFLUENT_Comparison> escList = mongoTemplate.find(getESRQueryObj(industryId, esrYear), ESR_EFFLUENT_Comparison.class);
 		List<SKU> eSKUList = new ArrayList<SKU>();
 		for(ESR_EFFLUENT_Comparison esc : escList) {
 			SKU sku = new SKU(esc.getEffluentParticulars(),String.valueOf(esc.getEffluentParticularsQuantityActual()),esc.getEffluentUom());
@@ -1304,24 +1304,24 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return ppgVo;
 	}
 	
-	private PollutionParamGroupVo geteWasteData(long industryId,int consentYear,int esrYear) {
-		
-		List<EWasteAnnualReturns> cscList = mongoTemplate.find(getQueryObj(industryId, consentYear), EWasteAnnualReturns.class);
-		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
-		ppgVo.setParam("eWaste");
-		List<SKU> cSKUList = new ArrayList<SKU>();
-		for(EWasteAnnualReturns csc : cscList) {
-			SKU sku = new SKU(csc.geteWasteNameProducer(),String.valueOf(csc.geteWasteQtyProducer()),"");
-			cSKUList.add(sku);
-		}
-		ppgVo.setConsentSKU(cSKUList);
-		
-		return ppgVo;
-	}
+//	private PollutionParamGroupVo geteWasteData(long industryId,int consentYear,int esrYear) {
+//		
+//		List<EWasteAnnualReturns> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), EWasteAnnualReturns.class);
+//		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
+//		ppgVo.setParam("eWaste");
+//		List<SKU> cSKUList = new ArrayList<SKU>();
+//		for(EWasteAnnualReturns csc : cscList) {
+//			SKU sku = new SKU(csc.geteWasteNameProducer(),String.valueOf(csc.geteWasteQtyProducer()),"");
+//			cSKUList.add(sku);
+//		}
+//		ppgVo.setConsentSKU(cSKUList);
+//		
+//		return ppgVo;
+//	}
 	
 	private PollutionParamGroupVo getHazWasteData(long industryId,int consentYear,int esrYear) {
 		
-		List<Consent_HW_Comparison> cscList = mongoTemplate.find(getQueryObj(industryId, consentYear), Consent_HW_Comparison.class);
+		List<Consent_HW_Comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_HW_Comparison.class);
 		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
 		ppgVo.setParam("hazWaste");
 		List<SKU> cSKUList = new ArrayList<SKU>();
@@ -1331,7 +1331,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		}
 		ppgVo.setConsentSKU(cSKUList);
 		
-		List<ESR_FUEL_comparison> escList = mongoTemplate.find(getQueryObj(industryId, esrYear), ESR_FUEL_comparison.class);
+		List<ESR_FUEL_comparison> escList = mongoTemplate.find(getESRQueryObj(industryId, esrYear), ESR_FUEL_comparison.class);
 		List<SKU> eSKUList = new ArrayList<SKU>();
 		for(ESR_FUEL_comparison esc : escList) {
 			SKU sku = new SKU(esc.getName(),String.valueOf(esc.getHwQuantityNow()),esc.getNewUom());
@@ -1343,7 +1343,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	
 	private PollutionParamGroupVo getFuelData(long industryId,int consentYear,int esrYear) {
 		
-		List<Consent_FUEL_comparison> cscList = mongoTemplate.find(getQueryObj(industryId, consentYear), Consent_FUEL_comparison.class);
+		List<Consent_FUEL_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_FUEL_comparison.class);
 		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
 		ppgVo.setParam("fuel");
 		List<SKU> cSKUList = new ArrayList<SKU>();
@@ -1353,7 +1353,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		}
 		ppgVo.setConsentSKU(cSKUList);
 		
-		List<ESR_FUEL_comparison> escList = mongoTemplate.find(getQueryObj(industryId, esrYear), ESR_FUEL_comparison.class);
+		List<ESR_FUEL_comparison> escList = mongoTemplate.find(getESRQueryObj(industryId, esrYear), ESR_FUEL_comparison.class);
 		List<SKU> eSKUList = new ArrayList<SKU>();
 		for(ESR_FUEL_comparison esc : escList) {
 			SKU sku = new SKU(esc.getFuelName(),String.valueOf(esc.getFuelQuantityActual()),esc.getName());
@@ -1363,7 +1363,41 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return ppgVo;
 	}
 
-	private Query getQueryObj(long industryId, int year) {
+	private Query getConsentQueryObj(long industryId, int year) {
+		try {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("industryId").is(industryId));
+		String yms = LocalDate.of(year, 1,1).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String yme = LocalDate.of(year, 12,31).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		
+		query.addCriteria(Criteria.where("applicationCreatedOn")
+				.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(yms + " 00:00:00.000+0000"))
+				.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(yme + " 23:59:59.000+0000")));
+		return query;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private Query getForm4QueryObj(long industryId, int year) {
+		try {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("industryId").is(industryId));
+		String yms = LocalDate.of(year, 1,1).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String yme = LocalDate.of(year, 12,31).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		
+		query.addCriteria(Criteria.where("createdTime")
+				.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(yms + " 00:00:00.000+0000"))
+				.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(yme + " 23:59:59.000+0000")));
+		return query;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private Query getESRQueryObj(long industryId, int year) {
 		try {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("industryId").is(industryId));
@@ -1381,7 +1415,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	}
 
 	private PollutionParamGroupVo getWaterData(long industryId,int consentYear,int esrYear) {
-		List<Consent_WATER_comparison> cscList = mongoTemplate.find(getQueryObj(industryId, consentYear), Consent_WATER_comparison.class);
+		List<Consent_WATER_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_WATER_comparison.class);
 		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
 		ppgVo.setParam("water");
 		List<SKU> cSKUList = new ArrayList<SKU>();
@@ -1399,7 +1433,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		}
 		ppgVo.setConsentSKU(cSKUList);
 		
-		List<ESR_WATER_comparison> escList = mongoTemplate.find(getQueryObj(industryId, esrYear), ESR_WATER_comparison.class);
+		List<ESR_WATER_comparison> escList = mongoTemplate.find(getESRQueryObj(industryId, esrYear), ESR_WATER_comparison.class);
 		List<SKU> eSKUList = new ArrayList<SKU>();
 		for(ESR_WATER_comparison esc : escList) {
 			SKU sku = new SKU(esc.getWaterPollutants(),String.valueOf(esc.getWaterPollutantConcentration()),esc.getUomName());
@@ -1410,7 +1444,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	}
 
 	private PollutionParamGroupVo getAirData(long industryId,int consentYear,int esrYear) {
-		List<Consented_Air_Pollution_Comparison> cscList = mongoTemplate.find(getQueryObj(industryId, consentYear), Consented_Air_Pollution_Comparison.class);
+		List<Consented_Air_Pollution_Comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consented_Air_Pollution_Comparison.class);
 		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
 		ppgVo.setParam("air");
 		List<SKU> cSKUList = new ArrayList<SKU>();
@@ -1420,7 +1454,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		}
 		ppgVo.setConsentSKU(cSKUList);
 		
-		List<ESR_Air_Pollution_Comparison> escList = mongoTemplate.find(getQueryObj(industryId, esrYear), ESR_Air_Pollution_Comparison.class);
+		List<ESR_Air_Pollution_Comparison> escList = mongoTemplate.find(getESRQueryObj(industryId, esrYear), ESR_Air_Pollution_Comparison.class);
 		List<SKU> eSKUList = new ArrayList<SKU>();
 		for(ESR_Air_Pollution_Comparison esc : escList) {
 			SKU sku = new SKU(esc.getAirPollutants(),String.valueOf(esc.getAirPollutantConcentration()),esc.getConcentrationUom());
@@ -1430,12 +1464,9 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return ppgVo;
 	}
 	
-	private List<PollutionParamGroupVo> getProductionComparisonData(long industryId,int consentYear,int esrYear) {
+	private List<PollutionParamGroupVo> getProductionComparisonData(long industryId,int consentYear,int esrYear,int form4Year) {
 
-		Query query = new Query();
-		query.addCriteria(Criteria.where("industryId").is(industryId));
-		
-		List<Consent_SKU_comparison> cscList = mongoTemplate.find(query, Consent_SKU_comparison.class);
+		List<Consent_SKU_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_SKU_comparison.class);
 		List<PollutionParamGroupVo> ppgVoList = new ArrayList<PollutionParamGroupVo>();
 		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
 		ppgVo.setParam("SKU");
@@ -1446,13 +1477,23 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		}
 		ppgVo.setConsentSKU(cSKUList);
 		
-		List<ESR_SKU_comparison> escList = mongoTemplate.find(query, ESR_SKU_comparison.class);
+		List<ESR_SKU_comparison> escList = mongoTemplate.find(getESRQueryObj(industryId, esrYear), ESR_SKU_comparison.class);
 		List<SKU> eSKUList = new ArrayList<SKU>();
 		for(ESR_SKU_comparison esc : escList) {
 			SKU sku = new SKU(esc.getProductname(),String.valueOf(esc.getProductQty()),esc.getName());
 			eSKUList.add(sku);
 		}
 		ppgVo.setEsrSKU(eSKUList);
+		
+		
+		List<Annual_Returns_HW_Comparison> f4List = mongoTemplate.find(getForm4QueryObj(industryId, form4Year), Annual_Returns_HW_Comparison.class);
+		List<SKU> form4List = new ArrayList<SKU>();
+		for(Annual_Returns_HW_Comparison esc : f4List) {
+			SKU sku = new SKU(esc.getName(),String.valueOf(esc.getQuantity()),"");
+			form4List.add(sku);
+		}
+		ppgVo.setForm4SKU(form4List);
+		
 		ppgVoList.add(ppgVo);
 		return ppgVoList;
 	}
@@ -1461,11 +1502,8 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 		List<PollutionParamGroupVo> ppgVoList = new ArrayList<PollutionParamGroupVo>();
 		
-		Query query = new Query();
-		query.addCriteria(Criteria.where("industryId").is(industryId));
-		
 		PollutionParamGroupVo ppgVoRaw = new PollutionParamGroupVo();
-		List<Consent_RESOURCES_comparison> cscList = mongoTemplate.find(query, Consent_RESOURCES_comparison.class);
+		List<Consent_RESOURCES_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_RESOURCES_comparison.class);
 		ppgVoRaw.setParam("raw");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_RESOURCES_comparison csc : cscList) {
@@ -1474,7 +1512,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		}
 		ppgVoRaw.setConsentSKU(cSKUList);
 		
-		List<ESR_RESOURCES_comparison> escList = mongoTemplate.find(query, ESR_RESOURCES_comparison.class);
+		List<ESR_RESOURCES_comparison> escList = mongoTemplate.find(getESRQueryObj(industryId, esrYear), ESR_RESOURCES_comparison.class);
 		List<SKU> eSKUList = new ArrayList<SKU>();
 		for(ESR_RESOURCES_comparison esc : escList) {
 			SKU sku = new SKU(esc.getRawMaterialName(),String.valueOf(esc.getRawMaterialQty()),esc.getName());
