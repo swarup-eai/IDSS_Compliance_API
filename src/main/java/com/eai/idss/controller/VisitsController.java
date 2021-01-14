@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eai.idss.dao.VisitsDao;
@@ -142,10 +143,10 @@ public class VisitsController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
    	@RequestMapping(method = RequestMethod.GET, value = "/leave-calender", produces = "application/json")
-   	public ResponseEntity<LeaveSchedule> getLeaveCalender(@RequestBody LeaveSchedule ls) throws IOException {
+   	public ResponseEntity<LeaveSchedule> getLeaveCalender(@RequestParam(required = true) String userName,@RequestParam(required = true) String monthYear) throws IOException {
     	LeaveSchedule existingVS  = null;
    	    try {
-   	    	existingVS = lsr.findByUserNameAndMonthYear(ls.getUserName(), ls.getMonthYear());
+   	    	existingVS = lsr.findByUserNameAndMonthYear(userName, monthYear);
    		} catch (Exception e) {
    			e.printStackTrace();
    			return new ResponseEntity("Exception in GET/leave-calender", HttpStatus.INTERNAL_SERVER_ERROR);

@@ -28,6 +28,7 @@ import com.eai.idss.model.CScoreMaster;
 import com.eai.idss.model.IndustryTypes;
 import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.DashboardRequest;
+import com.eai.idss.vo.HeatmapResponseVo;
 import com.eai.idss.vo.LegalTileVo;
 import com.eai.idss.vo.MyVisits;
 import com.eai.idss.vo.MyVisitsIndustries;
@@ -633,5 +634,71 @@ public class GenericDaoImpl implements GenericDao {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	@Override
+	public Map<String,List<HeatmapResponseVo>> getHeatmapData(DashboardRequest dbr) {
+		try {
+			logger.info("getHeatmapData");
+			Map<String, List<String>> daysMap = IDSSUtil.getDaysMapForDashboard();
+
+
+			MongoDatabase database = mongoClient.getDatabase("IDSS");
+			MongoCollection<Document> collection = database.getCollection("industryMaster");
+			Map<String,List<HeatmapResponseVo>> heatmapData = new LinkedHashMap<String, List<HeatmapResponseVo>>();
+
+			for(String days : daysMap.keySet()) {
+				logger.info("getConcentTileData : " + days);
+				List<? extends Bson> pipeline = getHeatmapPipline(daysMap.get(days), dbr);
+
+				List<HeatmapResponseVo> heatmapResponseList = new ArrayList<HeatmapResponseVo>();
+
+				collection.aggregate(pipeline)
+						.allowDiskUse(false)
+						.forEach(new Consumer<Document>() {
+									 @Override
+									 public void accept(Document document) {
+										 try {
+											 ObjectMapper mapper = new ObjectMapper();
+
+											 HeatmapResponseVo tVo = mapper.readValue(document.toJson(), HeatmapResponseVo.class);
+
+											 heatmapResponseList.add(tVo);
+										 } catch (JsonMappingException e) {
+											 e.printStackTrace();
+										 } catch (JsonProcessingException e) {
+											 e.printStackTrace();
+										 }
+									 }
+								 }
+						);
+				if(heatmapResponseList.size()>0)
+					heatmapData.put(days, heatmapResponseList);
+			}
+			return heatmapData;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private List<? extends Bson> getHeatmapPipline(List<String> days,DashboardRequest dbr) throws ParseException {
+		Document matchDoc = new Document();
+		matchDoc.append("applicationCreatedOn", new Document()
+				.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
+				.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))
+		);
+		applyGenericFilter(dbr, matchDoc);
+		List<? extends Bson> pipeline = Arrays.asList(
+				new Document().append("$match", matchDoc),
+				new Document()
+						.append("$project", new Document()
+								.append("_id", false)
+								.append("industryName", "$industryName")
+								.append("latitude", "$latitudeDegree")
+								.append("longitude", "$longitudeDegree")
+						)
+		);
+		return pipeline;
 	}
 }
