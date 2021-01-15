@@ -38,11 +38,14 @@ import com.eai.idss.model.ESR_FUEL_comparison;
 import com.eai.idss.model.ESR_RESOURCES_comparison;
 import com.eai.idss.model.ESR_SKU_comparison;
 import com.eai.idss.model.ESR_WATER_comparison;
+import com.eai.idss.model.EWasteAnnualAuthorization;
 import com.eai.idss.model.IndustryMaster;
 import com.eai.idss.model.Legal;
 import com.eai.idss.model.Visits;
 import com.eai.idss.vo.ComlianceScoreFilter;
 import com.eai.idss.vo.ComplianceScoreResponseVo;
+import com.eai.idss.vo.EWasteVo;
+import com.eai.idss.vo.Form1AVo;
 import com.eai.idss.vo.IndustryMasterRequest;
 import com.eai.idss.vo.MandatoryReportsResponseVo;
 import com.eai.idss.vo.PollutionParamGroupVo;
@@ -1561,8 +1564,54 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	}
 
 	public Map<String,MandatoryReportsResponseVo> getMandatoryReportsData(long industryId,int year) {
-		Map<String,MandatoryReportsResponseVo> mrVo = new LinkedHashMap<String, MandatoryReportsResponseVo>();
+		Map<String,MandatoryReportsResponseVo> mrMap = new LinkedHashMap<String, MandatoryReportsResponseVo>();
 		
-		return mrVo;
+		MandatoryReportsResponseVo mrVOeWaste = new MandatoryReportsResponseVo();
+
+		mrVOeWaste.seteWaste(getEWasteVo(industryId, year));
+		
+		
+		
+		return mrMap;
+	}
+
+	private EWasteVo getEWasteVo(long industryId, int year) {
+		EWasteVo ewVo = new EWasteVo();
+		
+		List<EWasteAnnualAuthorization> cscList = mongoTemplate.find(getMandatoryReportQueryObj(industryId, year,false), EWasteAnnualAuthorization.class);
+		Form1AVo f1AVo = new Form1AVo();
+		for(EWasteAnnualAuthorization csc : cscList) {
+			f1AVo.setEwasteQtyDisposal(csc.geteWasteQtyDisposal());
+			f1AVo.setEwasteQtyGenerated(csc.geteWasteQtyGenerated());
+			f1AVo.setEwasteQtyRecycling(csc.geteWasteQtyRecycling());
+			f1AVo.setEwasteQtyRefurbushing(csc.geteWasteQtyRefurbishing());
+			break;
+		}
+		ewVo.setForm1AVo(f1AVo);
+		
+		return ewVo;
+	}
+	
+	private Query getMandatoryReportQueryObj(long industryId, int year,boolean applicationCreatedOnColumn) {
+		try {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("industryId").is(industryId));
+		String yms = LocalDate.of(year, 1,1).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String yme = LocalDate.of(year, 12,31).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		
+		if(applicationCreatedOnColumn) {
+			query.addCriteria(Criteria.where("applicationCreatedOn")
+					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(yms + " 00:00:00.000+0000"))
+					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(yme + " 23:59:59.000+0000")));
+		}else {
+			query.addCriteria(Criteria.where("createdTime")
+					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(yms + " 00:00:00.000+0000"))
+					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(yme + " 23:59:59.000+0000")));
+		}
+		return query;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

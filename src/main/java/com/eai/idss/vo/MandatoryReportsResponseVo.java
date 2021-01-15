@@ -1,22 +1,35 @@
 package com.eai.idss.vo;
 
-import java.util.List;
-
 public class MandatoryReportsResponseVo {
 
-	private String reportName;
-	private List<SKU> data;
-	public String getReportName() {
-		return reportName;
+	private EWasteVo eWaste;
+	private BatteryVo battery;
+	private PlasticVo plastic;
+	private BioMedWasteVo bioMedWaste;
+	public EWasteVo geteWaste() {
+		return eWaste;
 	}
-	public void setReportName(String reportName) {
-		this.reportName = reportName;
+	public void seteWaste(EWasteVo eWaste) {
+		this.eWaste = eWaste;
 	}
-	public List<SKU> getData() {
-		return data;
+	public BatteryVo getBattery() {
+		return battery;
 	}
-	public void setData(List<SKU> data) {
-		this.data = data;
+	public void setBattery(BatteryVo battery) {
+		this.battery = battery;
 	}
+	public PlasticVo getPlastic() {
+		return plastic;
+	}
+	public void setPlastic(PlasticVo plastic) {
+		this.plastic = plastic;
+	}
+	public BioMedWasteVo getBioMedWaste() {
+		return bioMedWaste;
+	}
+	public void setBioMedWaste(BioMedWasteVo bioMedWaste) {
+		this.bioMedWaste = bioMedWaste;
+	}
+	
 	
 }

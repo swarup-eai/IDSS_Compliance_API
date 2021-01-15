@@ -4,10 +4,12 @@ com\eai\idss\model\Consent_EFFLUENT_Comparison.class
 com\eai\idss\util\IDSSUtil.class
 com\eai\idss\vo\LegalGroupByVo.class
 com\eai\idss\dao\GenericDaoImpl$6.class
+com\eai\idss\model\BMW_Authorization_Comparison.class
 com\eai\idss\vo\MyVisitsIndustries.class
 com\eai\idss\vo\PollutionParamGroupVo.class
 com\eai\idss\dao\GenericDaoImpl$3.class
 com\eai\idss\dao\LegalDaoImpl$4.class
+com\eai\idss\model\Plastic_Annual_Report_Recycling_Facility_Form_IV.class
 com\eai\idss\dao\ConcentDao.class
 com\eai\idss\vo\ComlianceScoreFilter.class
 com\eai\idss\model\Consent_FUEL_comparison.class
@@ -19,11 +21,13 @@ com\eai\idss\repository\UserRepository.class
 com\eai\idss\vo\VisitsByComplianceVo.class
 com\eai\idss\vo\ConcentByRegionVo.class
 com\eai\idss\configuration\WebSecurityConfiguration$1.class
+com\eai\idss\model\Plastic_Annual_Report_Local_Body_Form_V.class
 com\eai\idss\model\Consent_HW_Comparison.class
 com\eai\idss\model\ESR_EFFLUENT_Comparison.class
 com\eai\idss\vo\VisitsFilter.class
 com\eai\idss\model\ESR_Air_Pollution_Comparison.class
 com\eai\idss\controller\CommonController.class
+com\eai\idss\model\BMW_Annual_Return_Comparison.class
 com\eai\idss\vo\LegalTileVo.class
 com\eai\idss\model\Legal.class
 com\eai\idss\vo\LegalFilter.class
@@ -31,6 +35,7 @@ com\eai\idss\dao\GenericDaoImpl$1.class
 com\eai\idss\dao\GenericDaoImpl$8.class
 com\eai\idss\vo\VisitDetails.class
 com\eai\idss\dao\VisitsDao.class
+com\eai\idss\model\EWasteAnnualAuthorization.class
 com\eai\idss\vo\LegalByTeamVo.class
 com\eai\idss\dao\VisitsDaoImpl$3.class
 com\eai\idss\model\ESR_RESOURCES_comparison.class
@@ -51,6 +56,7 @@ com\eai\idss\dao\ConcentDaoImpl$5.class
 com\eai\idss\model\Consented_Air_Pollution_Comparison.class
 com\eai\idss\dao\IndustryMasterDao.class
 com\eai\idss\model\Consent_SKU_comparison.class
+com\eai\idss\vo\MandatoryReportsResponseVo.class
 com\eai\idss\model\LegalDataMaster.class
 com\eai\idss\model\Consent_STACK_comparison.class
 com\eai\idss\vo\LegalSubRegionVo.class
@@ -67,6 +73,7 @@ com\eai\idss\model\Consent_RESOURCES_comparison.class
 com\eai\idss\model\Consent_WATER_comparison.class
 com\eai\idss\dao\ConcentDaoImpl.class
 com\eai\idss\dao\LegalDaoImpl$3.class
+com\eai\idss\model\Plastic_Producer_Authorization.class
 com\eai\idss\vo\VisitsScheduleDetailsRequest.class
 com\eai\idss\model\CScoreMaster.class
 com\eai\idss\IDSSApiApplication.class
@@ -81,6 +88,7 @@ com\eai\idss\configuration\SecurityConfiguration.class
 com\eai\idss\model\ESR_SKU_comparison.class
 com\eai\idss\model\EWasteAnnualReturns.class
 com\eai\idss\vo\VisitsDetailsRequest.class
+com\eai\idss\model\Plastic_Brand_Owner_Authorization.class
 com\eai\idss\model\User.class
 com\eai\idss\dao\GenericDaoImpl.class
 com\eai\idss\controller\IndustryMasterController.class
@@ -88,11 +96,14 @@ com\eai\idss\controller\ConsentController.class
 com\eai\idss\dao\GenericDaoImpl$4.class
 com\eai\idss\model\Visits.class
 com\eai\idss\configuration\SwaggerConfig.class
+com\eai\idss\model\Battery_Dealer_Annual_return_Form_V.class
 com\eai\idss\vo\SKU.class
 com\eai\idss\vo\VisitsSubRegionVo.class
 com\eai\idss\service\LoginUserDetailsService.class
 com\eai\idss\dao\LegalDaoImpl$2.class
 com\eai\idss\dao\LegalDao.class
+com\eai\idss\model\Plastic_Raw_Material_Manufacturer_Authorization.class
+com\eai\idss\model\Plastic_Recycler_Authorization.class
 com\eai\idss\configuration\WebSecurityConfiguration.class
 com\eai\idss\model\Esr_HW_Comparison.class
 com\eai\idss\model\VisitProcessEfficiency.class
