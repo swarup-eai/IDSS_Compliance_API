@@ -169,8 +169,8 @@ public class IndustryMasterController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(method = RequestMethod.GET, value = "/industry-master-score-card/mandatory-reports/{industryId}",  produces = "application/json")
-   	public ResponseEntity<Map<String,MandatoryReportsResponseVo>> getMandatoryReportsData(@PathVariable("industryId") long industryId,int year) throws IOException {
-    	Map<String,MandatoryReportsResponseVo> iml = null;
+   	public ResponseEntity<MandatoryReportsResponseVo> getMandatoryReportsData(@PathVariable("industryId") long industryId,int year) throws IOException {
+    	MandatoryReportsResponseVo iml = null;
        	try {
    	    	iml=imd.getMandatoryReportsData(industryId,year);
    		} catch (Exception e) {
@@ -178,7 +178,7 @@ public class IndustryMasterController {
    			
    			return new ResponseEntity("Exception in /industry-master-score-card/comparison", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
-        return new ResponseEntity<Map<String,MandatoryReportsResponseVo>>(iml,HttpStatus.OK);
+        return new ResponseEntity<MandatoryReportsResponseVo>(iml,HttpStatus.OK);
         
     }
 }

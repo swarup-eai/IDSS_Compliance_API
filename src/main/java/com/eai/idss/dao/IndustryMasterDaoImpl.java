@@ -23,6 +23,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import com.eai.idss.model.Annual_Returns_HW_Comparison;
+import com.eai.idss.model.BMW_Annual_Return_Comparison;
+import com.eai.idss.model.BMW_Authorization_Comparison;
+import com.eai.idss.model.Battery_Dealer_Annual_return_Form_V;
 import com.eai.idss.model.CScoreMaster;
 import com.eai.idss.model.Consent_EFFLUENT_Comparison;
 import com.eai.idss.model.Consent_FUEL_comparison;
@@ -39,15 +42,35 @@ import com.eai.idss.model.ESR_RESOURCES_comparison;
 import com.eai.idss.model.ESR_SKU_comparison;
 import com.eai.idss.model.ESR_WATER_comparison;
 import com.eai.idss.model.EWasteAnnualAuthorization;
+import com.eai.idss.model.EWasteAnnualReturns;
 import com.eai.idss.model.IndustryMaster;
 import com.eai.idss.model.Legal;
+import com.eai.idss.model.Plastic_Annual_Report_Local_Body_Form_V;
+import com.eai.idss.model.Plastic_Annual_Report_Recycling_Facility_Form_IV;
+import com.eai.idss.model.Plastic_Brand_Owner_Authorization;
+import com.eai.idss.model.Plastic_Producer_Authorization;
+import com.eai.idss.model.Plastic_Raw_Material_Manufacturer_Authorization;
+import com.eai.idss.model.Plastic_Recycler_Authorization;
 import com.eai.idss.model.Visits;
+import com.eai.idss.vo.AnnualReturnsVo;
+import com.eai.idss.vo.BatteriesSoldToVo;
+import com.eai.idss.vo.BatteryVo;
+import com.eai.idss.vo.BioMedWasteAuthFormVo;
+import com.eai.idss.vo.BioMedWasteVo;
 import com.eai.idss.vo.ComlianceScoreFilter;
 import com.eai.idss.vo.ComplianceScoreResponseVo;
+import com.eai.idss.vo.EWasteForm4Vo;
 import com.eai.idss.vo.EWasteVo;
 import com.eai.idss.vo.Form1AVo;
+import com.eai.idss.vo.Form3Vo;
+import com.eai.idss.vo.Form5Vo;
 import com.eai.idss.vo.IndustryMasterRequest;
 import com.eai.idss.vo.MandatoryReportsResponseVo;
+import com.eai.idss.vo.NewBatteriesSoldVo;
+import com.eai.idss.vo.OldUsedBatteriesVo;
+import com.eai.idss.vo.PlasticAuthorizationFormVo;
+import com.eai.idss.vo.PlasticForm4Vo;
+import com.eai.idss.vo.PlasticVo;
 import com.eai.idss.vo.PollutionParamGroupVo;
 import com.eai.idss.vo.PollutionScoreFilter;
 import com.eai.idss.vo.PollutionScoreResponseVo;
@@ -1563,16 +1586,133 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return ppgVoList;
 	}
 
-	public Map<String,MandatoryReportsResponseVo> getMandatoryReportsData(long industryId,int year) {
-		Map<String,MandatoryReportsResponseVo> mrMap = new LinkedHashMap<String, MandatoryReportsResponseVo>();
+	public MandatoryReportsResponseVo getMandatoryReportsData(long industryId,int year) {
 		
-		MandatoryReportsResponseVo mrVOeWaste = new MandatoryReportsResponseVo();
+		MandatoryReportsResponseVo mrVO = new MandatoryReportsResponseVo();
 
-		mrVOeWaste.seteWaste(getEWasteVo(industryId, year));
+		mrVO.seteWaste(getEWasteVo(industryId, year));
+		mrVO.setBattery(getBatteryVo(industryId, year));
+		mrVO.setPlastic(getPlasticVo(industryId, year));
+		mrVO.setBioMedWaste(getBioMedWasteVo(industryId, year));
 		
+		return mrVO;
+	}
+	
+	private BioMedWasteVo getBioMedWasteVo(long industryId, int year) {
+		BioMedWasteVo bmwVo = new BioMedWasteVo();
 		
+		AnnualReturnsVo arVo = new AnnualReturnsVo();
+		List<BMW_Annual_Return_Comparison> barList = mongoTemplate.find(getMandatoryReportQueryObj(industryId, year,false), BMW_Annual_Return_Comparison.class);
+		for(BMW_Annual_Return_Comparison bar : barList) {
+			arVo.setBlueCategory(bar.getBlueCategory());
+			arVo.setRedCategory(bar.getRedCategory());
+			arVo.setWhiteCategory(bar.getWhiteCategory());
+			arVo.setYellowCategory(bar.getYellowCategory());
+			break;
+		}
+		bmwVo.setAnnualReturnsVo(arVo);
+		//////////////////////////////////////
 		
-		return mrMap;
+		BioMedWasteAuthFormVo baVo = new BioMedWasteAuthFormVo();
+		List<BMW_Authorization_Comparison> bacList = mongoTemplate.find(getMandatoryReportQueryObj(industryId, year,false), BMW_Authorization_Comparison.class);
+		for(BMW_Authorization_Comparison bac : bacList) {
+			baVo.setBiomedicalWasteName(bac.getBioMedicalWasteName());
+			baVo.setBioMedicalWasteQuantity(bac.getBioMedicalWasteQuantity());
+		}
+		bmwVo.setBioMedWasteAuthFormVo(baVo);
+		
+		return bmwVo;
+	}
+	
+	private PlasticVo getPlasticVo(long industryId, int year) {
+		PlasticVo pVo = new PlasticVo();
+		
+		PlasticAuthorizationFormVo paFormVo = new PlasticAuthorizationFormVo();
+		List<Plastic_Producer_Authorization> ppList = mongoTemplate.find(getMandatoryReportQueryObj(industryId, year,true), Plastic_Producer_Authorization.class);
+		for(Plastic_Producer_Authorization ppa : ppList) {
+			paFormVo.setWasteProducer(ppa.getGenerationTotal());
+			break;
+		}
+		List<Plastic_Brand_Owner_Authorization> pbList = mongoTemplate.find(getMandatoryReportQueryObj(industryId, year,true), Plastic_Brand_Owner_Authorization.class);
+		for(Plastic_Brand_Owner_Authorization pbo : pbList) {
+			paFormVo.setWasteBrandOwner(pbo.getGenerationTotal());
+			break;
+		}
+		List<Plastic_Recycler_Authorization> praList = mongoTemplate.find(getMandatoryReportQueryObj(industryId, year,true), Plastic_Recycler_Authorization.class);
+		for(Plastic_Recycler_Authorization pra : praList) {
+			paFormVo.setWasterRecycledProcessed(pra.getWasteQuantumProcess());
+			break;
+		}
+		List<Plastic_Raw_Material_Manufacturer_Authorization> prmList = mongoTemplate.find(getMandatoryReportQueryObj(industryId, year,true), Plastic_Raw_Material_Manufacturer_Authorization.class);
+		for(Plastic_Raw_Material_Manufacturer_Authorization prm : prmList) {
+			paFormVo.setWasteRawMaterialProduction(prm.getProduceQty());
+			break;
+		}
+		pVo.setPlasticAuthorizationFormVo(paFormVo);
+		/////////////////////////////
+		
+		PlasticForm4Vo pf4Vo = new PlasticForm4Vo();
+		List<Plastic_Annual_Report_Recycling_Facility_Form_IV> pf4List = mongoTemplate.find(getMandatoryReportQueryObj(industryId, year,true), Plastic_Annual_Report_Recycling_Facility_Form_IV.class);
+		for(Plastic_Annual_Report_Recycling_Facility_Form_IV prm : pf4List) {
+			pf4Vo.setQuantityDisposed(prm.getQuantityDisposed());
+			pf4Vo.setQuantityInerts(prm.getQuantityInerts());
+			pf4Vo.setQuantityReceived(prm.getQuantityReceived());
+			pf4Vo.setQuantityRecycled(prm.getQuantityRecycled());
+			break;
+		}
+		pVo.setPlasticForm4Vo(pf4Vo);
+		///////////////////////////////
+		
+		Form5Vo f5Vo = new Form5Vo();
+		List<Plastic_Annual_Report_Local_Body_Form_V> pf5List = mongoTemplate.find(getMandatoryReportQueryObj(industryId, year,true), Plastic_Annual_Report_Local_Body_Form_V.class);
+		for(Plastic_Annual_Report_Local_Body_Form_V prm : pf5List) {
+			f5Vo.setPlasticWasteCollectedQuantity(prm.getPlasticWasteCollectedQuantity());
+			f5Vo.setPlasticWasteGeneratedQuantity(prm.getPlasticWasteGeneratedQuantity());
+			f5Vo.setPlasticWasteProcessedQuantity(prm.getPlasticWasteProcessedQuantity());
+			f5Vo.setPlasticWasteRecycledQuantity(prm.getPlasticWasteRecycledQuantity());
+			f5Vo.setLandPlasticWasteQuantity(prm.getLandPlasticWasteQuantity());
+			break;
+		}
+		pVo.setForm5Vo(f5Vo);
+		
+		return pVo;
+	}
+	
+	private BatteryVo getBatteryVo(long industryId, int year) {
+		BatteryVo bVo = new BatteryVo();
+		
+		List<Battery_Dealer_Annual_return_Form_V> bdList = mongoTemplate.find(getMandatoryReportQueryObj(industryId, year,true), Battery_Dealer_Annual_return_Form_V.class);
+		NewBatteriesSoldVo nbsVo = new NewBatteriesSoldVo();
+		OldUsedBatteriesVo obsVo = new OldUsedBatteriesVo();
+		BatteriesSoldToVo bstVo = new BatteriesSoldToVo();
+		
+		for(Battery_Dealer_Annual_return_Form_V csc : bdList) {
+			nbsVo.setTwoWheeler(csc.getTwoWheelerBaterryCount());
+			nbsVo.setFourWheeler(csc.getFourWheelerBaterryCount());
+			nbsVo.setMotivePower(csc.getMotivePowerCount());
+			nbsVo.setUps(csc.getUpsBatteryCount());
+			nbsVo.setMotivePower(csc.getMotivePowerCount());
+			nbsVo.setOtherInverters(csc.getOthersCount());
+			
+			obsVo.setTwoWheelerOld(csc.getTwoWheelerBaterryCountOld());
+			obsVo.setFourWheelerOld(csc.getFourWheelerBaterryCountOld());
+			obsVo.setMotivePowerOld(csc.getMotivePowerCountOld());
+			obsVo.setStandByOld(csc.getStandByCountOld());
+			obsVo.setUpsOld(csc.getUpsBatteryCountOld());
+			obsVo.setOtherInvertersOld(csc.getOthersCountOld());
+			
+			bstVo.setBulkConsumersBatteryCount(csc.getBulkConsumersBatteryCount());
+			bstVo.setDealersBatteryCount(csc.getDealersBatteryCount());
+			bstVo.setOemBatteryCount(csc.getOemBatteryCount());
+			bstVo.setAnyOtherParty(csc.getAnyOtherParty());
+			
+			break;
+		}
+		bVo.setNewBatteriesSoldVo(nbsVo);
+		bVo.setOldUsedBatteriesVo(obsVo);
+		bVo.setBatteriesSoldToVo(bstVo);
+		
+		return bVo;
 	}
 
 	private EWasteVo getEWasteVo(long industryId, int year) {
@@ -1588,6 +1728,26 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			break;
 		}
 		ewVo.setForm1AVo(f1AVo);
+		
+		/////////////////////
+		EWasteForm4Vo ewf4Vo = new EWasteForm4Vo();
+		ewf4Vo.seteWasterProcessedLast3Years(0);
+		ewf4Vo.setInstalledCapacity(0);
+		ewf4Vo.setWasterGenInProcessWaste(0);
+		ewVo.seteWasteForm4Vo(ewf4Vo);
+		////////////////////
+		
+		List<EWasteAnnualReturns> ewaList = mongoTemplate.find(getMandatoryReportQueryObj(industryId, year,false), EWasteAnnualReturns.class);
+		Form3Vo form3Vo = new Form3Vo();
+		for(EWasteAnnualReturns csc : ewaList) {
+			form3Vo.seteWasteQtyConsumer(csc.geteWasteQtyConsumer());
+			form3Vo.seteWasteQtyDismantlersProcessed(csc.geteWasteQtyDismantlersProcessed());
+			form3Vo.seteWasteQtyDismantlersRecoveredSold(csc.geteWasteQtyDismantlersRecoveredSold());
+			form3Vo.seteWasteQtyDismantlersSentRecyclers(csc.geteWasteQtyDismantlersSentRecyclers());
+			form3Vo.seteWasteQtyRecyclersSentTsdf(csc.geteWasteQtyRecyclersSentTsdf());
+			break;
+		}
+		ewVo.setForm3Vo(form3Vo);
 		
 		return ewVo;
 	}
