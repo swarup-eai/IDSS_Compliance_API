@@ -44,6 +44,7 @@ import com.eai.idss.model.Visits;
 import com.eai.idss.vo.ComlianceScoreFilter;
 import com.eai.idss.vo.ComplianceScoreResponseVo;
 import com.eai.idss.vo.IndustryMasterRequest;
+import com.eai.idss.vo.MandatoryReportsResponseVo;
 import com.eai.idss.vo.PollutionParamGroupVo;
 import com.eai.idss.vo.PollutionScoreFilter;
 import com.eai.idss.vo.PollutionScoreResponseVo;
@@ -1540,9 +1541,9 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		List<SKU> infraeSKUList = new ArrayList<SKU>();
 		for(ESR_RESOURCES_comparison esc : escList) {
 			SKU skuW = new SKU("Water consumption",String.valueOf(esc.getWaterConsumptionTotalQuantityActual()),"");
-			wcSKUList.add(skuW);
+			weSKUList.add(skuW);
 			SKU skuI = new SKU("Capital Investment",String.valueOf(esc.getCapitalInvestment()),"Lakhs");
-			infracSKUList.add(skuI);
+			infraeSKUList.add(skuI);
 			break;
 		}
 		ppgVoWater.setEsrSKU(weSKUList);
@@ -1559,4 +1560,9 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return ppgVoList;
 	}
 
+	public Map<String,MandatoryReportsResponseVo> getMandatoryReportsData(long industryId,int year) {
+		Map<String,MandatoryReportsResponseVo> mrVo = new LinkedHashMap<String, MandatoryReportsResponseVo>();
+		
+		return mrVo;
+	}
 }

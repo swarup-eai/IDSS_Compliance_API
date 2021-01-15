@@ -107,6 +107,8 @@ public class LegalDaoImpl implements LegalDao {
 						);
 		matchDoc.append("legalDirection", new Document().append("$in", IDSSUtil.getLegalActionsList()));
 		
+		matchDoc.append("complied",0);
+		
 		if(!"ALL".equalsIgnoreCase(region))
 			matchDoc.append("region",region);
 		if(!"ALL".equalsIgnoreCase(subRegion))

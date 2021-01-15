@@ -36,6 +36,7 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\ESR_SKU_comparison.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\LegalDetailsRequest.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\controller\LegalController.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\HeatmapResponseVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\PollutionScoreFilter.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\TopPerfVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\LegalDaoImpl.java
@@ -73,6 +74,7 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\LegalTileVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\controller\ConsentController.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Visits.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Annual_Returns_HW_Comparison.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\VisitsFilter.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\LegalDao.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\LeaveSchedule.java
