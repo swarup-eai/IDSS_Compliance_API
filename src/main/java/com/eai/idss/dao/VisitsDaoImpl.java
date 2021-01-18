@@ -325,9 +325,10 @@ public class VisitsDaoImpl implements VisitsDao {
 		}
 		
 		if(REPORTS.equalsIgnoreCase(caseType)) {
-			matchDoc.append("reportCreatedOn", new Document()
+			matchDoc.append("visitedDate", new Document()
 					.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
 				);
+			matchDoc.append("visitReportFile",new Document().append("$ne",null));
 		}
 	}
 	
@@ -1104,11 +1105,29 @@ public class VisitsDaoImpl implements VisitsDao {
 		try {
 			Query query = new Query();
 			
-			query.addCriteria(Criteria.where("region").is(region));
+			if(!"ALL".equalsIgnoreCase(region))
+				query.addCriteria(Criteria.where("region").is(region));
 			
 			List<VisitProcessEfficiency> visitProcessEfficiencyList= mongoTemplate.find(query, VisitProcessEfficiency.class);
 			
-			return visitProcessEfficiencyList.get(0);
+			if(!"ALL".equalsIgnoreCase(region))
+				return visitProcessEfficiencyList.get(0);
+			else {
+				
+				VisitProcessEfficiency vpe = new VisitProcessEfficiency();
+				vpe.setAvg_legal_action(visitProcessEfficiencyList.stream().mapToDouble(v -> v.getAvg_legal_action()).average().getAsDouble());
+				vpe.setAvg_report_filed(visitProcessEfficiencyList.stream().mapToDouble(v -> v.getAvg_report_filed()).average().getAsDouble());
+				vpe.setAvg_review_comp((int)visitProcessEfficiencyList.stream().mapToInt(v -> v.getAvg_review_comp()).average().getAsDouble());
+				vpe.setAvg_samples_analysed((int)visitProcessEfficiencyList.stream().mapToInt(v -> v.getAvg_samples_analysed()).average().getAsDouble());
+				vpe.setAvg_samples_submitted((int)visitProcessEfficiencyList.stream().mapToDouble(v -> v.getAvg_samples_submitted()).average().getAsDouble());
+				
+				vpe.setDefined_legal_action((int)visitProcessEfficiencyList.stream().mapToDouble(v -> v.getDefined_legal_action()).average().getAsDouble());
+				vpe.setDefined_report_filed((int)visitProcessEfficiencyList.stream().mapToDouble(v -> v.getDefined_report_filed()).average().getAsDouble());
+				vpe.setDefined_review_comp((int)visitProcessEfficiencyList.stream().mapToDouble(v -> v.getDefined_review_comp()).average().getAsDouble());
+				vpe.setDefined_samples_analysed((int)visitProcessEfficiencyList.stream().mapToDouble(v -> v.getDefined_samples_analysed()).average().getAsDouble());
+				vpe.setDefined_samples_submitted((int)visitProcessEfficiencyList.stream().mapToDouble(v -> v.getDefined_samples_submitted()).average().getAsDouble());
+				return vpe;
+			}
 			
 		}
 		catch(Exception e) {

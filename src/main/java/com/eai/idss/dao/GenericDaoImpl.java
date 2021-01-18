@@ -403,10 +403,12 @@ public class GenericDaoImpl implements GenericDao {
 	
 	private List<? extends Bson> getVisitsReportsTilePipeline(List<String> days,DashboardRequest dbr) throws ParseException {
 		Document matchDoc = new Document();
-		matchDoc.append("reportCreatedOn", new Document()
-                        .append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
-                        .append("$gt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))
+		matchDoc.append("visitedDate", new Document()
+                        .append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
+                        .append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))
                 		);
+		matchDoc.append("visitReportFile",new Document().append("$ne",null));
+		
 		applyGenericFilter(dbr, matchDoc);
 		
 		List<? extends Bson> pipeline = Arrays.asList(
