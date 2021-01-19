@@ -15,7 +15,7 @@ public class BenchmarkingController {
     @Autowired
     BenchmarkingDao benchmarkingDao;
     @RequestMapping(method = RequestMethod.POST, value = "/benchmarking", produces = "application/json")
-    public ResponseEntity<BenchmarkingResponseVo> getDashboardData(@RequestBody DashboardRequest dbr) throws IOException {
+    public ResponseEntity<BenchmarkingResponseVo> getBenchmarkingData(@RequestBody DashboardRequest dbr) throws IOException {
         BenchmarkingResponseVo dr = new BenchmarkingResponseVo();
         try {
             dr.setSkuDetail(benchmarkingDao.getSkuDetail(dbr));

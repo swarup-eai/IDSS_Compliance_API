@@ -103,20 +103,28 @@ return skuDetailVos;
             logger.info("getAirPollutant");
             Query query = new Query();
             query.addCriteria(Criteria.where("industryType").is(dr.getType()));
-            List<Double> benchmarkingSourceData=mongoTemplate.findDistinct(query,"categoryCode",BenchmarkingSourceData.class,Double.class); // benchmarkingSourceDataRepository.findDistinctCategoryCodeByIndustryType(dr.getType());//mongoTemplate.find(query,BenchmarkingSourceData.class);
+            List<String> benchmarkingSourceData=mongoTemplate.findDistinct(query,"airPollutantsGroup",BenchmarkingSourceData.class,String.class); // benchmarkingSourceDataRepository.findDistinctCategoryCodeByIndustryType(dr.getType());//mongoTemplate.find(query,BenchmarkingSourceData.class);
 
             List<SkuDetailVo> skuDetailVos = benchmarkingSourceData.stream().map(benchmarkingData -> {
-                SkuDetailVo skuDetailVo = new SkuDetailVo();
-                List<BenchmarkingSourceData> benchmarkingSourceDataList=benchmarkingSourceDataRepository.findByCategoryCode(benchmarkingData); //mongoTemplate.find(query,BenchmarkingSourceData.class);
-                double productQty = benchmarkingSourceDataList.stream().mapToDouble(BenchmarkingSourceData::getProductionQty).sum();
+                if(benchmarkingData.equals("NOx") || benchmarkingData.equals("P_M")  || benchmarkingData.equals("SO2") ){
+                    SkuDetailVo skuDetailVo = new SkuDetailVo();
+                List<BenchmarkingSourceData> benchmarkingSourceDataList=benchmarkingSourceDataRepository.findByIndustryTypeAndAirPollutantsGroup(dr.getType(),benchmarkingData);
+                double productQty = benchmarkingSourceDataList.stream().mapToDouble(BenchmarkingSourceData::getConcentration).sum();
                 double average = productQty / benchmarkingSourceDataList.size();
                 skuDetailVo.setProductQuantity(average);
-                skuDetailVo.setProductCategory(benchmarkingSourceDataList.get(0).getProductCategory());
-                List<BenchmarkingDestinationData> benchmarkingDestinationData=benchmarkingDestinationDataRepository.findByCategoryCodeAndIndustryType(benchmarkingData,dr.getType()); //mongoTemplate.find(query,BenchmarkingSourceData.class);
-                double benchmarkingValue =benchmarkingDestinationData.stream().mapToDouble(BenchmarkingDestinationData::getAvgQty).sum();
-                skuDetailVo.setBenchmarkValues(benchmarkingValue);
-                return skuDetailVo;
-            }).collect(Collectors.toList());
+                skuDetailVo.setProductCategory(benchmarkingData);
+                List<BenchmarkingDestinationData> benchmarkingDestinationData=benchmarkingDestinationDataRepository.findByIndustryType(dr.getType()); //mongoTemplate.find(query,BenchmarkingSourceData.class);
+                double avgSo2SumValue =benchmarkingDestinationData.stream().mapToDouble(BenchmarkingDestinationData::getAvgSo2).sum();
+                double avgNoxSumValue =benchmarkingDestinationData.stream().mapToDouble(BenchmarkingDestinationData::getAvgNox).sum();
+                double avgPmSumValue =benchmarkingDestinationData.stream().mapToDouble(BenchmarkingDestinationData::getAvgPm).sum();
+                double totalSum =avgSo2SumValue + avgNoxSumValue + avgPmSumValue;
+                skuDetailVo.setBenchmarkValues(totalSum);
+                    return skuDetailVo;
+                }else {
+                    return null;
+                }
+
+            }).filter(Objects::nonNull).collect(Collectors.toList());
             return skuDetailVos;
         }
         catch(Exception e) {
@@ -131,25 +139,31 @@ return skuDetailVos;
             logger.info("getWaterPollutant");
             Query query = new Query();
             query.addCriteria(Criteria.where("industryType").is(dr.getType()));
-            List<Double> benchmarkingSourceData=mongoTemplate.findDistinct(query,"categoryCode",BenchmarkingSourceData.class,Double.class);
+            List<BenchmarkingSourceData> benchmarkingSourceData=mongoTemplate.find(query,BenchmarkingSourceData.class);
 
-            List<SkuDetailVo> skuDetailVos = benchmarkingSourceData.stream().map(benchmarkingData -> {
-                SkuDetailVo skuDetailVo = new SkuDetailVo();
-                List<BenchmarkingSourceData> benchmarkingSourceDataList = benchmarkingSourceDataRepository.findByCategoryCode(benchmarkingData);
-               if(benchmarkingSourceDataList.size() >0) {
-                   double capacitySum = benchmarkingSourceDataList.get(0).getCapacityOfEtp() + benchmarkingSourceDataList.get(0).getCapacityOfStp();
-                   double average = capacitySum / 2;
-                   skuDetailVo.setProductQuantity(average);
-                   skuDetailVo.setProductCategory(benchmarkingSourceDataList.get(0).getProductCategory());
-               }
-                List<BenchmarkingDestinationData> benchmarkingDestinationData = benchmarkingDestinationDataRepository.findByCategoryCodeAndIndustryType(benchmarkingData, dr.getType());
-                if(benchmarkingDestinationData.size() >0){
-                double benchmarkingValue = benchmarkingDestinationData.get(0).getAvgEtp() + benchmarkingDestinationData.get(0).getAvgStp();
-                skuDetailVo.setBenchmarkValues(benchmarkingValue);
-            }
-                return skuDetailVo;
-            }).collect(Collectors.toList());
-            return skuDetailVos;
+            List<SkuDetailVo> skuDetailVo = new ArrayList<SkuDetailVo>();
+
+            SkuDetailVo skuDetailVo1 = new SkuDetailVo();
+            skuDetailVo1.setProductCategory("ETP");
+            double capacityOfEtpSumValue = benchmarkingSourceData.stream().mapToDouble(BenchmarkingSourceData::getCapacityOfEtp).sum();
+            double capacityOfEtpAvg =capacityOfEtpSumValue / benchmarkingSourceData.size();
+            skuDetailVo1.setProductQuantity(capacityOfEtpAvg);
+            List<BenchmarkingDestinationData> benchmarkingDestinationData=benchmarkingDestinationDataRepository.findByIndustryType(dr.getType()); //mongoTemplate.find(query,BenchmarkingSourceData.class);
+            double avgEtpSumValue =benchmarkingDestinationData.stream().mapToDouble(BenchmarkingDestinationData::getAvgEtp).sum();
+            skuDetailVo1.setBenchmarkValues(avgEtpSumValue);
+            skuDetailVo.add(skuDetailVo1);
+
+            SkuDetailVo skuDetailVo2 = new SkuDetailVo();
+            skuDetailVo2.setProductCategory("STP");
+            double capacityOfStpSumValue = benchmarkingSourceData.stream().mapToDouble(BenchmarkingSourceData::getCapacityOfStp).sum();
+            double capacityOfStpAvg =capacityOfStpSumValue / benchmarkingSourceData.size();
+            skuDetailVo2.setProductQuantity(capacityOfStpAvg);
+            List<BenchmarkingDestinationData> benchmarkingDestinationData1=benchmarkingDestinationDataRepository.findByIndustryType(dr.getType()); //mongoTemplate.find(query,BenchmarkingSourceData.class);
+            double avgStpSumValue =benchmarkingDestinationData1.stream().mapToDouble(BenchmarkingDestinationData::getAvgStp).sum();
+            skuDetailVo2.setBenchmarkValues(avgStpSumValue);
+            skuDetailVo.add(skuDetailVo2);
+
+            return skuDetailVo;
         }
         catch(Exception e) {
             e.printStackTrace();
@@ -163,28 +177,61 @@ return skuDetailVos;
             logger.info("getEffluents");
             Query query = new Query();
             query.addCriteria(Criteria.where("industryType").is(dr.getType()));
-            List<Double> benchmarkingSourceData=mongoTemplate.findDistinct(query,"categoryCode",BenchmarkingSourceData.class,Double.class);
+            List<BenchmarkingSourceData> benchmarkingSourceData=mongoTemplate.find(query,BenchmarkingSourceData.class);
 
-            List<SkuDetailVo> skuDetailVos = benchmarkingSourceData.stream().map(benchmarkingData -> {
-                SkuDetailVo skuDetailVo = new SkuDetailVo();
-                List<BenchmarkingSourceData> benchmarkingSourceDataList=benchmarkingSourceDataRepository.findByCategoryCode(benchmarkingData);
-               if(benchmarkingSourceDataList.size() >0) {
-                   double sum = benchmarkingSourceDataList.get(0).getTreatedEffluentBod() + benchmarkingSourceDataList.get(0).getTreatedEffluentCod() +
-                           benchmarkingSourceDataList.get(0).getTreatedEffluentPh() + benchmarkingSourceDataList.get(0).getTreatedEffluentSs() +
-                           benchmarkingSourceDataList.get(0).getTreatedEffluentTds();
-                   double average = sum / 5;
-                   skuDetailVo.setProductQuantity(average);
-                   skuDetailVo.setProductCategory(benchmarkingSourceDataList.get(0).getProductCategory());
-               }
-                List<BenchmarkingDestinationData> benchmarkingDestinationData=benchmarkingDestinationDataRepository.findByCategoryCodeAndIndustryType(benchmarkingData,dr.getType());
-                if(benchmarkingDestinationData.size() >0) {
-                    double benchmarkingValue = benchmarkingDestinationData.get(0).getAvgBod() + benchmarkingDestinationData.get(0).getAvgCod()+
-                            benchmarkingDestinationData.get(0).getAvgTds() + benchmarkingDestinationData.get(0).getAvgTss();
-                    skuDetailVo.setBenchmarkValues(benchmarkingValue);
-                }
-                return skuDetailVo;
-            }).collect(Collectors.toList());
-            return skuDetailVos;
+            List<SkuDetailVo> skuDetailVo = new ArrayList<SkuDetailVo>();
+
+            SkuDetailVo skuDetailVo1 = new SkuDetailVo();
+            skuDetailVo1.setProductCategory("BOD");
+            double treatedEffluentBodSumValue = benchmarkingSourceData.stream().mapToDouble(BenchmarkingSourceData::getTreatedEffluentBod).sum();
+            double treatedEffluentBodAvg =treatedEffluentBodSumValue / benchmarkingSourceData.size();
+            skuDetailVo1.setProductQuantity(treatedEffluentBodAvg);
+            List<BenchmarkingDestinationData> benchmarkingDestinationData=benchmarkingDestinationDataRepository.findByIndustryType(dr.getType()); //mongoTemplate.find(query,BenchmarkingSourceData.class);
+            double avgBodSumValue =benchmarkingDestinationData.stream().mapToDouble(BenchmarkingDestinationData::getAvgBod).sum();
+            skuDetailVo1.setBenchmarkValues(avgBodSumValue);
+            skuDetailVo.add(skuDetailVo1);
+
+            SkuDetailVo skuDetailVo2 = new SkuDetailVo();
+            skuDetailVo2.setProductCategory("COD");
+            double treatedEffluentCodSumValue = benchmarkingSourceData.stream().mapToDouble(BenchmarkingSourceData::getTreatedEffluentCod).sum();
+            double treatedEffluentCodAvg =treatedEffluentCodSumValue / benchmarkingSourceData.size();
+            skuDetailVo2.setProductQuantity(treatedEffluentCodAvg);
+            List<BenchmarkingDestinationData> benchmarkingDestinationData1=benchmarkingDestinationDataRepository.findByIndustryType(dr.getType());
+            double avgCodSumValue =benchmarkingDestinationData1.stream().mapToDouble(BenchmarkingDestinationData::getAvgCod).sum();
+            skuDetailVo2.setBenchmarkValues(avgCodSumValue);
+            skuDetailVo.add(skuDetailVo2);
+
+            SkuDetailVo skuDetailVo3 = new SkuDetailVo();
+            skuDetailVo3.setProductCategory("TDS");
+            double treatedEffluentTdsSumValue = benchmarkingSourceData.stream().mapToDouble(BenchmarkingSourceData::getTreatedEffluentTds).sum();
+            double treatedEffluentTdsAvg = treatedEffluentTdsSumValue / benchmarkingSourceData.size();
+            skuDetailVo3.setProductQuantity(treatedEffluentTdsAvg);
+            List<BenchmarkingDestinationData> benchmarkingDestinationData2=benchmarkingDestinationDataRepository.findByIndustryType(dr.getType());
+            double avgTdsSumValue =benchmarkingDestinationData2.stream().mapToDouble(BenchmarkingDestinationData::getAvgTds).sum();
+            skuDetailVo3.setBenchmarkValues(avgTdsSumValue);
+            skuDetailVo.add(skuDetailVo3);
+
+            SkuDetailVo skuDetailVo4 = new SkuDetailVo();
+            skuDetailVo4.setProductCategory("TSS");
+            double TreatedEffluentSsSumValue = benchmarkingSourceData.stream().mapToDouble(BenchmarkingSourceData::getTreatedEffluentSs).sum();
+            double treatedEffluentSsAvg = TreatedEffluentSsSumValue / benchmarkingSourceData.size();
+            skuDetailVo4.setProductQuantity(treatedEffluentSsAvg);
+            List<BenchmarkingDestinationData> benchmarkingDestinationData4=benchmarkingDestinationDataRepository.findByIndustryType(dr.getType());
+            double avgTssSumValue =benchmarkingDestinationData4.stream().mapToDouble(BenchmarkingDestinationData::getAvgTss).sum();
+            skuDetailVo4.setBenchmarkValues(avgTssSumValue);
+            skuDetailVo.add(skuDetailVo4);
+
+
+            SkuDetailVo skuDetailVo5 = new SkuDetailVo();
+            skuDetailVo5.setProductCategory("PH");
+            double treatedEffluentPhSumValue = benchmarkingSourceData.stream().mapToDouble(BenchmarkingSourceData::getTreatedEffluentPh).sum();
+            double treatedEffluentPhAvg = treatedEffluentPhSumValue / benchmarkingSourceData.size();
+            skuDetailVo5.setProductQuantity(treatedEffluentPhAvg);
+            BenchmarkingDestinationData benchmarkingDestinationData5=benchmarkingDestinationDataRepository.findTop1ByIndustryTypeOrderByAvgPhDesc(dr.getType());
+            skuDetailVo5.setBenchmarkValues(benchmarkingDestinationData5.getAvgPh());
+            skuDetailVo.add(skuDetailVo5);
+
+            return skuDetailVo;
         }
         catch(Exception e) {
             e.printStackTrace();

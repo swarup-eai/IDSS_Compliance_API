@@ -9,4 +9,8 @@ import java.util.List;
 @Repository
 public interface BenchmarkingDestinationDataRepository extends MongoRepository<BenchmarkingDestinationData, String> {
     List<BenchmarkingDestinationData> findByCategoryCodeAndIndustryType(Double categoryCode,String industryType);
+    List<BenchmarkingDestinationData> findByIndustryType(String industryType);
+
+    BenchmarkingDestinationData findTop1ByIndustryTypeOrderByAvgPhDesc(String industryType);
+
 }
