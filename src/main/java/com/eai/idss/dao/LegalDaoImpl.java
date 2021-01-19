@@ -542,12 +542,12 @@ public class LegalDaoImpl implements LegalDao {
 				}
 				if(StringUtils.hasText(cdr.getRegion()))
 						query.addCriteria(Criteria.where("region").is(cdr.getRegion()));
-				if(StringUtils.hasText(cdr.getCategory()))
-						query.addCriteria(Criteria.where("category").is(cdr.getCategory()));
+				if(null!=cdr.getCategory() && !cdr.getCategory().isEmpty())
+						query.addCriteria(Criteria.where("category").in(cdr.getCategory()));
 				if(StringUtils.hasText(cdr.getSubRegion()))
 						query.addCriteria(Criteria.where("subRegion").is(cdr.getSubRegion()));
-				if(StringUtils.hasText(cdr.getScale()))
-					query.addCriteria(Criteria.where("scale").is(cdr.getScale()));
+				if(null!=cdr.getScale() && !cdr.getScale().isEmpty() )
+					query.addCriteria(Criteria.where("scale").in(cdr.getScale()));
 				if(StringUtils.hasText(cdr.getAction()))
 					query.addCriteria(Criteria.where("legalDirection").is(cdr.getAction()));
 				else

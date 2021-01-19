@@ -1,11 +1,13 @@
 package com.eai.idss.vo;
 
+import java.util.List;
+
 public class ConsentDetailsRequest {
 
 	String status; //applied, approved, pending, rejected
 	Integer duration;
-	String scale;
-	String category;
+	List<String> scale;
+	List<String> category;
 	String subRegion;
 	String region;
 	String consentStatus; //expansion, renewal, operate, establish
@@ -21,16 +23,16 @@ public class ConsentDetailsRequest {
 	public void setDuration(Integer duration) {
 		this.duration = duration;
 	}
-	public String getScale() {
+	public List<String> getScale() {
 		return scale;
 	}
-	public void setScale(String scale) {
+	public void setScale(List<String> scale) {
 		this.scale = scale;
 	}
-	public String getCategory() {
+	public List<String> getCategory() {
 		return category;
 	}
-	public void setCategory(String category) {
+	public void setCategory(List<String> category) {
 		this.category = category;
 	}
 	public String getSubRegion() {

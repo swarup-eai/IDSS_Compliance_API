@@ -1774,4 +1774,26 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		}
 		return null;
 	}
+	
+	public List<String> getPollutionGraphParam(long industryId, String form){
+		List<String> paramList = new ArrayList<String>();
+		if("consent".equalsIgnoreCase(form)) {
+			//List<Consented_Air_Pollution_Comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId), Consented_Air_Pollution_Comparison.class);
+			getConsentQueryObj(industryId);
+		}
+		return paramList;
+		
+	}
+	
+	private Query getConsentQueryObj(long industryId) {
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("industryId").is(industryId));
+			List<String> distValues = mongoTemplate.findDistinct("parameter",Consented_Air_Pollution_Comparison.class, String.class);
+			return query;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

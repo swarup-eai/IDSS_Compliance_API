@@ -153,6 +153,21 @@ public class IndustryMasterController {
     }
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
+    @RequestMapping(method = RequestMethod.GET, value = "/industry-master-score-card/pollution-score/param-list/{industryId}",  produces = "application/json")
+   	public ResponseEntity<List<String>> getPollutionGraphParam(@PathVariable("industryId") long industryId,String form) throws IOException {
+    	List<String> iml = null;
+       	try {
+   	    	iml=imd.getPollutionGraphParam(industryId,form);
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   			
+   			return new ResponseEntity("Exception in /industry-master-score-card/pollution-score/param-list/{industryId}", HttpStatus.INTERNAL_SERVER_ERROR);
+   		}
+        return new ResponseEntity<List<String>>(iml,HttpStatus.OK);
+        
+    }
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(method = RequestMethod.GET, value = "/industry-master-score-card/comparison/{industryId}",  produces = "application/json")
    	public ResponseEntity<PollutionScoreResponseVo> getComparisonData(@PathVariable("industryId") long industryId,int consentYear, int esrYear,int form4Year) throws IOException {
     	PollutionScoreResponseVo iml = null;

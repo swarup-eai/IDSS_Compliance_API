@@ -24,5 +24,7 @@ public interface IndustryMasterDao {
 	public PollutionScoreResponseVo getComparisonData(long industryId,int consentYear,int esrYear,int form4Year);
 	
 	public MandatoryReportsResponseVo getMandatoryReportsData(long industryId,int year);
+	
+	public List<String> getPollutionGraphParam(long industryId, String form);
 
 }

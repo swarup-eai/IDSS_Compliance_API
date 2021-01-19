@@ -1,14 +1,28 @@
 package com.eai.idss.vo;
 
+import java.util.List;
+
 public class VisitsDetailsRequest {
 
 	String visitStatus; // scheduled, pending, completed, legal actions
 	String duration;
-	String scale;
-	String category;
+	List<String> scale;
+	List<String> category;
 	String subRegion;
 	String region;
-	
+
+	public List<String> getScale() {
+		return scale;
+	}
+	public void setScale(List<String> scale) {
+		this.scale = scale;
+	}
+	public List<String> getCategory() {
+		return category;
+	}
+	public void setCategory(List<String> category) {
+		this.category = category;
+	}
 	public String getVisitStatus() {
 		return visitStatus;
 	}
@@ -20,18 +34,6 @@ public class VisitsDetailsRequest {
 	}
 	public void setDuration(String duration) {
 		this.duration = duration;
-	}
-	public String getScale() {
-		return scale;
-	}
-	public void setScale(String scale) {
-		this.scale = scale;
-	}
-	public String getCategory() {
-		return category;
-	}
-	public void setCategory(String category) {
-		this.category = category;
 	}
 	public String getSubRegion() {
 		return subRegion;

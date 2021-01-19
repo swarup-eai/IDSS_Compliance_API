@@ -1,18 +1,26 @@
 package com.eai.idss.vo;
 
+import java.util.List;
+
 public class LegalDetailsRequest {
 
 	String action; //WN, SCN, PD, CD
 	String duration;
-	String category;
+	List<String> category;
 	String subRegion;
 	String region;
-	String scale;
+	List<String> scale;
 	
-	public String getScale() {
+	public List<String> getCategory() {
+		return category;
+	}
+	public void setCategory(List<String> category) {
+		this.category = category;
+	}
+	public List<String> getScale() {
 		return scale;
 	}
-	public void setScale(String scale) {
+	public void setScale(List<String> scale) {
 		this.scale = scale;
 	}
 	public String getAction() {
@@ -27,12 +35,7 @@ public class LegalDetailsRequest {
 	public void setDuration(String duration) {
 		this.duration = duration;
 	}
-	public String getCategory() {
-		return category;
-	}
-	public void setCategory(String category) {
-		this.category = category;
-	}
+	
 	public String getSubRegion() {
 		return subRegion;
 	}
