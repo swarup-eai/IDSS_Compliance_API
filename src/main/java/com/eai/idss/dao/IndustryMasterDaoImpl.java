@@ -6,10 +6,17 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -68,6 +75,7 @@ import com.eai.idss.vo.IndustryMasterRequest;
 import com.eai.idss.vo.MandatoryReportsResponseVo;
 import com.eai.idss.vo.NewBatteriesSoldVo;
 import com.eai.idss.vo.OldUsedBatteriesVo;
+import com.eai.idss.vo.ParameterVo;
 import com.eai.idss.vo.PlasticAuthorizationFormVo;
 import com.eai.idss.vo.PlasticForm4Vo;
 import com.eai.idss.vo.PlasticVo;
@@ -75,12 +83,23 @@ import com.eai.idss.vo.PollutionParamGroupVo;
 import com.eai.idss.vo.PollutionScoreFilter;
 import com.eai.idss.vo.PollutionScoreResponseVo;
 import com.eai.idss.vo.SKU;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
 
 @Repository
 public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	
 	@Autowired
 	MongoTemplate mongoTemplate;
+	
+	@Autowired
+	MongoClient mongoClient;
+	
 	public static final Logger logger = Logger.getLogger(IndustryMasterDaoImpl.class);
 	
 	public List<IndustryMaster> getIndustryMasterPaginatedRecords(IndustryMasterRequest imr ,Pageable page){
@@ -1778,22 +1797,97 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	public List<String> getPollutionGraphParam(long industryId, String form){
 		List<String> paramList = new ArrayList<String>();
 		if("consent".equalsIgnoreCase(form)) {
-			//List<Consented_Air_Pollution_Comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId), Consented_Air_Pollution_Comparison.class);
-			getConsentQueryObj(industryId);
+			paramList.addAll(getDistinctConsentParamList(industryId,"Consent_air_pollution_comparison","parameter"));
+			paramList.addAll(getFixedConsentWaterParamList(industryId));
+			paramList.addAll(getDistinctConsentParamList(industryId,"consent_FUEL_comparison","fuelName"));
+			paramList.addAll(getFixedConsentEFFLUENTParamList(industryId));
+			paramList.addAll(getDistinctConsentParamList(industryId,"Consent_HW_Comparison","name"));
 		}
 		return paramList;
 		
 	}
 	
-	private Query getConsentQueryObj(long industryId) {
-		try {
-			Query query = new Query();
-			query.addCriteria(Criteria.where("industryId").is(industryId));
-			List<String> distValues = mongoTemplate.findDistinct("parameter",Consented_Air_Pollution_Comparison.class, String.class);
-			return query;
-		}catch(Exception e){
-			e.printStackTrace();
+	private List<String> getFixedConsentEFFLUENTParamList(long industryId) {
+		Set<String> paramSet = new LinkedHashSet<String>();
+		Query query = new Query();
+		query.addCriteria(Criteria.where("industryId").is(industryId));
+		List<Consent_EFFLUENT_Comparison> cscList = mongoTemplate.find(query, Consent_EFFLUENT_Comparison.class);
+		for(Consent_EFFLUENT_Comparison cwc : cscList) {
+			if(cwc.getCapacityOfEtp()!=-999999)
+				paramSet.add("Etp");
+			if(cwc.getCapacityOfStp()!=-999999)
+				paramSet.add("Stp");
 		}
-		return null;
+		if(!paramSet.isEmpty())
+			return paramSet.stream().collect(Collectors.toList());
+		else			
+			return null;
+	}
+	
+	private List<String> getFixedConsentWaterParamList(long industryId) {
+		Set<String> paramSet = new LinkedHashSet<String>();
+		Query query = new Query();
+		query.addCriteria(Criteria.where("industryId").is(industryId));
+		List<Consent_WATER_comparison> cscList = mongoTemplate.find(query, Consent_WATER_comparison.class);
+		for(Consent_WATER_comparison cwc : cscList) {
+			if(cwc.getTreatedEffluentBod()!=-999999)
+				paramSet.add("Bod");
+			if(cwc.getTreatedEffluentCod()!=-999999)
+				paramSet.add("Cod");
+			if(cwc.getTreatedEffluentSs()!=-999999)
+				paramSet.add("Ss");
+			if(cwc.getTreatedEffluentTds()!=-999999)
+				paramSet.add("Tds");
+			if(cwc.getTreatedEffluentPh()!=-999999)
+				paramSet.add("Ph");
+		}
+		if(!paramSet.isEmpty())
+			return paramSet.stream().collect(Collectors.toList());
+		else			
+			return new ArrayList<String>();
+	}
+	
+	private List<String> getDistinctConsentParamList(long industryId,String collectionName,String field) {
+		Document matchDoc = new Document();
+		matchDoc.append("industryId", industryId);
+		
+		List<? extends Bson> pipeline = Arrays.asList(
+				new Document().append("$match", matchDoc),  
+		        new Document()
+		                .append("$group", new Document()
+		                        .append("_id", null)
+		                        .append("param",  new Document()
+		                                .append("$addToSet", "$"+field)
+		                )
+		            ),
+		                new Document()
+			            .append("$project", new Document()
+			                    .append("_id", false)
+			                    .append("param", "$param")
+			            )
+				);
+		MongoDatabase database = mongoClient.getDatabase("IDSS");
+        MongoCollection<Document> collection = database.getCollection(collectionName);
+        ParameterVo param = new ParameterVo();
+		collection.aggregate(pipeline)
+        .allowDiskUse(false)
+        .forEach(new Consumer<Document>() {
+                @Override
+                public void accept(Document document) {
+                    logger.info(document.toJson());
+					try {
+						ParameterVo pVo = (new ObjectMapper().readValue(document.toJson(), ParameterVo.class));
+						param.setParam(pVo.getParam());
+					} catch (JsonMappingException e) {
+						e.printStackTrace();
+					} catch (JsonProcessingException e) {
+						e.printStackTrace();
+					}
+                    
+                }
+            }
+        );
+		
+		return param.getParam();
 	}
 }
