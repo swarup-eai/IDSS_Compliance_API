@@ -59,6 +59,7 @@ import com.eai.idss.model.Plastic_Producer_Authorization;
 import com.eai.idss.model.Plastic_Raw_Material_Manufacturer_Authorization;
 import com.eai.idss.model.Plastic_Recycler_Authorization;
 import com.eai.idss.model.Visits;
+import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.AnnualReturnsVo;
 import com.eai.idss.vo.BatteriesSoldToVo;
 import com.eai.idss.vo.BatteryVo;
@@ -1797,12 +1798,32 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	public List<String> getPollutionGraphParam(long industryId, String form){
 		List<String> paramList = new ArrayList<String>();
 		if("consent".equalsIgnoreCase(form)) {
-			paramList.addAll(getDistinctConsentParamList(industryId,"Consent_air_pollution_comparison","parameter"));
+			paramList.addAll(getDistinctParamListIndustryId(industryId,"Consent_air_pollution_comparison","parameter"));
 			paramList.addAll(getFixedConsentWaterParamList(industryId));
-			paramList.addAll(getDistinctConsentParamList(industryId,"consent_FUEL_comparison","fuelName"));
+			paramList.addAll(getDistinctParamListIndustryId(industryId,"consent_FUEL_comparison","fuelName"));
 			paramList.addAll(getFixedConsentEFFLUENTParamList(industryId));
-			paramList.addAll(getDistinctConsentParamList(industryId,"Consent_HW_Comparison","name"));
+			paramList.addAll(getDistinctParamListIndustryId(industryId,"Consent_HW_Comparison","name"));
+		}else if("esr".equalsIgnoreCase(form)) {
+			paramList.addAll(getDistinctParamListIndustryId(industryId,"ESR_air_pollution","airPollutants"));
+			paramList.addAll(getDistinctParamListIndustryId(industryId,"esr_WATER_comparison","waterPollutants"));
+			paramList.addAll(getDistinctParamListIndustryId(industryId,"esr_FUEL_comparison","fuelName"));
+			paramList.addAll(getDistinctParamListIndustryId(industryId,"esr_EFFLUENT_comparison","effluentParticulars"));
+			paramList.addAll(getDistinctParamListIndustryId(industryId,"ESR_HW_Comparison","name"));
+		}else if("HAZ_WASTE".equalsIgnoreCase(form)) {
+			paramList.addAll(getDistinctParamListIndustryId(industryId,"Consent_HW_Comparison","name"));
+			paramList.addAll(getDistinctParamListIndustryId(industryId,"ESR_HW_Comparison","name"));
+		}else if("EWASTE".equalsIgnoreCase(form)) {
+			paramList.addAll(IDSSUtil.getEWasteParams());
+		}else if("Battery".equalsIgnoreCase(form)) {
+			paramList.addAll(IDSSUtil.getBatteryParams());
+		}else if("Plastic".equalsIgnoreCase(form)) {
+			paramList.addAll(IDSSUtil.getPlasticParams());
+		}else if("BioMedWaste".equalsIgnoreCase(form)) {
+			paramList.addAll(IDSSUtil.getBioMedWasteParams());
+		}else if("OCEMS".equalsIgnoreCase(form)) {
+			paramList.addAll(getDistinctParamList("industry_mis_id",industryId,"OCEMS_data","parameter_name"));
 		}
+		
 		return paramList;
 		
 	}
@@ -1847,9 +1868,13 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			return new ArrayList<String>();
 	}
 	
-	private List<String> getDistinctConsentParamList(long industryId,String collectionName,String field) {
+	private List<String> getDistinctParamListIndustryId(long industryId,String collectionName,String field) {
+		return getDistinctParamList("industryId",industryId,collectionName,field);
+	}
+	
+	private List<String> getDistinctParamList(String industryIdentifier, long industryId,String collectionName,String field) {
 		Document matchDoc = new Document();
-		matchDoc.append("industryId", industryId);
+		matchDoc.append(industryIdentifier, industryId);
 		
 		List<? extends Bson> pipeline = Arrays.asList(
 				new Document().append("$match", matchDoc),  

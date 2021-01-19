@@ -607,10 +607,86 @@ public class IDSSUtil {
 		return ocemsParamList;
 	}
 	
-	public static void main(String[] ss) {
-		LocalDateTime currentTimeIST = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
-		System.out.println(currentTimeIST);
-		LocalDateTime currentTime = LocalDateTime.now();
-		System.out.println();
+	public static List<String> getEWasteParams(){
+		List<String> ewasteParamList = new ArrayList<String>();
+		ewasteParamList.add("Form 1A - Qty e-waste generated MT/A");
+		ewasteParamList.add("Form 1A - Qty refurbished MT/A");
+		ewasteParamList.add("Form 1A - Qty sent for recycling MT/A");
+		ewasteParamList.add("Form 1A - Qty sent for disposal MT/A");
+		
+		ewasteParamList.add("Form 4 - Installed capacity in MT/A'");
+		ewasteParamList.add("Form 4 - e-waste processed in the last 3 years");
+		ewasteParamList.add("Form 4 - Waste generation in processing waste MTA");
+		
+		ewasteParamList.add("Form 3 - Qty of waste MT");
+		ewasteParamList.add("Form 3 - Qty of e-waste processed MT");
+		ewasteParamList.add("Form 3 - Qty of materials recovered and sold MT");
+		ewasteParamList.add("Form 3 - Qty sent to Treatment, Storage and Disposal facility");
+		ewasteParamList.add("Form 3 - Qty sent to recycler (for dismantlers only)");
+		return ewasteParamList;
+	}
+	
+	public static List<String> getBatteryParams(){
+		List<String> batteryParamList = new ArrayList<String>();
+		batteryParamList.add("New Batteries Sold - 2 wheerler");
+		batteryParamList.add("New Batteries Sold - 4 wheerler");
+		batteryParamList.add("New Batteries Sold - UPS");
+		batteryParamList.add("New Batteries Sold - Motive Power");
+		batteryParamList.add("New Batteries Sold - Stand By");
+		batteryParamList.add("New Batteries Sold - Others(Inverters)");
+		
+		batteryParamList.add("Old/Used Batteries - 2 wheerler");
+		batteryParamList.add("Old/Used Batteries - 4 wheerler");
+		batteryParamList.add("Old/Used Batteries - UPS");
+		batteryParamList.add("Old/Used Batteries - Motive Power");
+		batteryParamList.add("Old/Used Batteries - Stand By");
+		batteryParamList.add("Old/Used Batteries - Others(Inverters)");
+		
+		batteryParamList.add("Batteries Sold To - Dealers");
+		batteryParamList.add("Batteries Sold To - Bulk Consumers");
+		batteryParamList.add("Batteries Sold To - OEM");
+		batteryParamList.add("Batteries Sold To - Others");
+		return batteryParamList;
+	}
+	
+	public static List<String> getPlasticParams(){
+		List<String> plasticParamList = new ArrayList<String>();
+		plasticParamList.add("Authorization Form - Producer - Waste/year");
+		plasticParamList.add("Authorization Form - BrandOwner - Waste/year");
+		plasticParamList.add("Authorization Form - Recycler - WasteProcessed/year");
+		plasticParamList.add("Authorization Form - Raw Material Production/MTA");
+		
+		plasticParamList.add("Form 4 - Waste Received");
+		plasticParamList.add("Form 4 - Waste Recycled");
+		plasticParamList.add("Form 4 - Waste Disposed");
+		plasticParamList.add("Form 4 - Inert Produced");
+		
+		plasticParamList.add("Form 5 - Waste Gen.");
+		plasticParamList.add("Form 5 - Waste Collected");
+		plasticParamList.add("Form 5 - Waste Recycled");
+		plasticParamList.add("Form 5 - Waste Processed");
+		plasticParamList.add("Form 5 - Waste sent to Landfill");
+		
+		return plasticParamList;
+	}
+	
+	public static List<String> getBioMedWasteParams(){
+		List<String> bioMedWasteParamList = new ArrayList<String>();
+		bioMedWasteParamList.add("Yellow");
+		bioMedWasteParamList.add("Red");
+		bioMedWasteParamList.add("Blue ");
+		bioMedWasteParamList.add("White");
+		
+		bioMedWasteParamList.add("Category 01");
+		bioMedWasteParamList.add("Category 02");
+		bioMedWasteParamList.add("Category 03");
+		bioMedWasteParamList.add("Category 04");
+		bioMedWasteParamList.add("Category 05");
+		bioMedWasteParamList.add("Category 06");
+		bioMedWasteParamList.add("Category 07");
+		bioMedWasteParamList.add("Category 08");
+		bioMedWasteParamList.add("Category 09");
+		bioMedWasteParamList.add("Category 10");
+		return bioMedWasteParamList;
 	}
 }
