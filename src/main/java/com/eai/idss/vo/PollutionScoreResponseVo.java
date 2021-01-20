@@ -1,18 +1,20 @@
 package com.eai.idss.vo;
 
 import java.util.List;
-import java.util.Map;
 
 public class PollutionScoreResponseVo {
-
-	private Map<String,List<PollutionParamGroupVo>> pollutionScore;
-
-	public Map<String, List<PollutionParamGroupVo>> getPollutionScore() {
-		return pollutionScore;
+	private String param;
+	private List<PollutionScoreValueVo> psv;
+	public String getParam() {
+		return param;
 	}
-
-	public void setPollutionScore(Map<String, List<PollutionParamGroupVo>> pollutionScore) {
-		this.pollutionScore = pollutionScore;
+	public void setParam(String param) {
+		this.param = param;
 	}
-
+	public List<PollutionScoreValueVo> getPsv() {
+		return psv;
+	}
+	public void setPsv(List<PollutionScoreValueVo> psv) {
+		this.psv = psv;
+	}
 }

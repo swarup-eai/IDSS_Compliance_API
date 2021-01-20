@@ -21,6 +21,7 @@ import com.eai.idss.model.IndustryMaster;
 import com.eai.idss.model.User_Filters;
 import com.eai.idss.repository.UserFiltersRepository;
 import com.eai.idss.vo.ComlianceScoreFilter;
+import com.eai.idss.vo.ComparisonTableResponseVo;
 import com.eai.idss.vo.ComplianceScoreResponseVo;
 import com.eai.idss.vo.IndustryMasterRequest;
 import com.eai.idss.vo.MandatoryReportsResponseVo;
@@ -139,8 +140,8 @@ public class IndustryMasterController {
    
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(method = RequestMethod.POST, value = "/industry-master-score-card/pollution-score",  produces = "application/json")
-   	public ResponseEntity  <Map<String,Map<String,List<PollutionScoreResponseVo>>>> getPollutionScoreCardDatabyDate(@RequestBody PollutionScoreFilter imr) throws IOException {
-    	Map<String,Map<String,List<PollutionScoreResponseVo>>> iml = null;
+   	public ResponseEntity  <List<PollutionScoreResponseVo>> getPollutionScoreCardDatabyDate(@RequestBody PollutionScoreFilter imr) throws IOException {
+    	List<PollutionScoreResponseVo> iml = null;
        	try {
    	    	iml=imd.getPollutionScoreData(imr);
    		} catch (Exception e) {
@@ -148,14 +149,14 @@ public class IndustryMasterController {
    			
    			return new ResponseEntity("Exception in /industry-master-score-card/pollution-score", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
-        return new ResponseEntity<Map<String,Map<String,List<PollutionScoreResponseVo>>>>(iml,HttpStatus.OK);
+        return new ResponseEntity<List<PollutionScoreResponseVo>>(iml,HttpStatus.OK);
         
     }
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(method = RequestMethod.GET, value = "/industry-master-score-card/pollution-score/param-list/{industryId}",  produces = "application/json")
-   	public ResponseEntity<List<String>> getPollutionGraphParam(@PathVariable("industryId") long industryId,String form) throws IOException {
-    	List<String> iml = null;
+   	public ResponseEntity<Map<String,String>> getPollutionGraphParam(@PathVariable("industryId") long industryId,String form) throws IOException {
+    	Map<String,String> iml = null;
        	try {
    	    	iml=imd.getPollutionGraphParam(industryId,form);
    		} catch (Exception e) {
@@ -163,14 +164,14 @@ public class IndustryMasterController {
    			
    			return new ResponseEntity("Exception in /industry-master-score-card/pollution-score/param-list/{industryId}", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
-        return new ResponseEntity<List<String>>(iml,HttpStatus.OK);
+        return new ResponseEntity<Map<String,String>>(iml,HttpStatus.OK);
         
     }
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(method = RequestMethod.GET, value = "/industry-master-score-card/comparison/{industryId}",  produces = "application/json")
-   	public ResponseEntity<PollutionScoreResponseVo> getComparisonData(@PathVariable("industryId") long industryId,int consentYear, int esrYear,int form4Year) throws IOException {
-    	PollutionScoreResponseVo iml = null;
+   	public ResponseEntity<ComparisonTableResponseVo> getComparisonData(@PathVariable("industryId") long industryId,int consentYear, int esrYear,int form4Year) throws IOException {
+    	ComparisonTableResponseVo iml = null;
        	try {
    	    	iml=imd.getComparisonData(industryId,consentYear,esrYear,form4Year);
    		} catch (Exception e) {
@@ -178,7 +179,7 @@ public class IndustryMasterController {
    			
    			return new ResponseEntity("Exception in /industry-master-score-card/comparison", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
-        return new ResponseEntity<PollutionScoreResponseVo>(iml,HttpStatus.OK);
+        return new ResponseEntity<ComparisonTableResponseVo>(iml,HttpStatus.OK);
         
     }
     

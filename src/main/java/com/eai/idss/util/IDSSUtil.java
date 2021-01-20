@@ -607,86 +607,87 @@ public class IDSSUtil {
 		return ocemsParamList;
 	}
 	
-	public static List<String> getEWasteParams(){
-		List<String> ewasteParamList = new ArrayList<String>();
-		ewasteParamList.add("Form 1A - Qty e-waste generated MT/A");
-		ewasteParamList.add("Form 1A - Qty refurbished MT/A");
-		ewasteParamList.add("Form 1A - Qty sent for recycling MT/A");
-		ewasteParamList.add("Form 1A - Qty sent for disposal MT/A");
+
+	public static Map<String,String> getEWasteParams(){
+		Map<String,String> ewasteParamList = new LinkedHashMap<String, String>();
+		ewasteParamList.put("Form 1A - Qty e-waste generated MT/A","ewaste_annual_authorization~~ewasteQtyGenerated");
+		ewasteParamList.put("Form 1A - Qty refurbished MT/A","ewaste_annual_authorization~~ewasteQtyRefurbushing");
+		ewasteParamList.put("Form 1A - Qty sent for recycling MT/A","ewaste_annual_authorization~~ewasteQtyRecycling");
+		ewasteParamList.put("Form 1A - Qty sent for disposal MT/A","ewaste_annual_authorization~~ewasteQtyDisposal");
 		
-		ewasteParamList.add("Form 4 - Installed capacity in MT/A'");
-		ewasteParamList.add("Form 4 - e-waste processed in the last 3 years");
-		ewasteParamList.add("Form 4 - Waste generation in processing waste MTA");
+		ewasteParamList.put("Form 4 - Installed capacity in MT/A","");
+		ewasteParamList.put("Form 4 - e-waste processed in the last 3 years","");
+		ewasteParamList.put("Form 4 - Waste generation in processing waste MTA","");
 		
-		ewasteParamList.add("Form 3 - Qty of waste MT");
-		ewasteParamList.add("Form 3 - Qty of e-waste processed MT");
-		ewasteParamList.add("Form 3 - Qty of materials recovered and sold MT");
-		ewasteParamList.add("Form 3 - Qty sent to Treatment, Storage and Disposal facility");
-		ewasteParamList.add("Form 3 - Qty sent to recycler (for dismantlers only)");
+		ewasteParamList.put("Form 3 - Qty of waste MT","e_waste_annual_returns~~eWasteQtyConsumer");
+		ewasteParamList.put("Form 3 - Qty of e-waste processed MT","e_waste_annual_returns~~eWasteQtyDismantlersProcessed");
+		ewasteParamList.put("Form 3 - Qty of materials recovered and sold MT","e_waste_annual_returns~~eWasteQtyDismantlersRecoveredSold");
+		ewasteParamList.put("Form 3 - Qty sent to Treatment, Storage and Disposal facility","e_waste_annual_returns~~eWasteQtyRecyclersSentTsdf");
+		ewasteParamList.put("Form 3 - Qty sent to recycler (for dismantlers only)","e_waste_annual_returns~~eWasteQtyDismantlersSentRecyclers");
 		return ewasteParamList;
 	}
 	
-	public static List<String> getBatteryParams(){
-		List<String> batteryParamList = new ArrayList<String>();
-		batteryParamList.add("New Batteries Sold - 2 wheerler");
-		batteryParamList.add("New Batteries Sold - 4 wheerler");
-		batteryParamList.add("New Batteries Sold - UPS");
-		batteryParamList.add("New Batteries Sold - Motive Power");
-		batteryParamList.add("New Batteries Sold - Stand By");
-		batteryParamList.add("New Batteries Sold - Others(Inverters)");
+	public static Map<String,String> getBatteryParams(){
+		Map<String,String> batteryParamList = new LinkedHashMap<String, String>();
+		batteryParamList.put("New Batteries Sold - 2 wheerler","Battery_Dealer_Annual_return_Form_V~~twoWheelerBaterryCount");
+		batteryParamList.put("New Batteries Sold - 4 wheerler","Battery_Dealer_Annual_return_Form_V~~fourWheelerBaterryCount");
+		batteryParamList.put("New Batteries Sold - UPS","Battery_Dealer_Annual_return_Form_V~~upsBatteryCount");
+		batteryParamList.put("New Batteries Sold - Motive Power","Battery_Dealer_Annual_return_Form_V~~motivePowerCount");
+		batteryParamList.put("New Batteries Sold - Stand By","Battery_Dealer_Annual_return_Form_V~~standByCount");
+		batteryParamList.put("New Batteries Sold - Others(Inverters)","Battery_Dealer_Annual_return_Form_V~~othersCount");
 		
-		batteryParamList.add("Old/Used Batteries - 2 wheerler");
-		batteryParamList.add("Old/Used Batteries - 4 wheerler");
-		batteryParamList.add("Old/Used Batteries - UPS");
-		batteryParamList.add("Old/Used Batteries - Motive Power");
-		batteryParamList.add("Old/Used Batteries - Stand By");
-		batteryParamList.add("Old/Used Batteries - Others(Inverters)");
+		batteryParamList.put("Old/Used Batteries - 2 wheerler","Battery_Dealer_Annual_return_Form_V~~twoWheelerBaterryCountOld");
+		batteryParamList.put("Old/Used Batteries - 4 wheerler","Battery_Dealer_Annual_return_Form_V~~fourWheelerBaterryCountOld");
+		batteryParamList.put("Old/Used Batteries - UPS","Battery_Dealer_Annual_return_Form_V~~upsBatteryCountOld");
+		batteryParamList.put("Old/Used Batteries - Motive Power","Battery_Dealer_Annual_return_Form_V~~motivePowerCountOld");
+		batteryParamList.put("Old/Used Batteries - Stand By","Battery_Dealer_Annual_return_Form_V~~standByCountOld");
+		batteryParamList.put("Old/Used Batteries - Others(Inverters)","Battery_Dealer_Annual_return_Form_V~~othersCountOld");
 		
-		batteryParamList.add("Batteries Sold To - Dealers");
-		batteryParamList.add("Batteries Sold To - Bulk Consumers");
-		batteryParamList.add("Batteries Sold To - OEM");
-		batteryParamList.add("Batteries Sold To - Others");
+		batteryParamList.put("Batteries Sold To - Dealers","Battery_Dealer_Annual_return_Form_V~~dealersBatteryCount");
+		batteryParamList.put("Batteries Sold To - Bulk Consumers","Battery_Dealer_Annual_return_Form_V~~bulkConsumersBatteryCount");
+		batteryParamList.put("Batteries Sold To - OEM","Battery_Dealer_Annual_return_Form_V~~oemBatteryCount");
+		batteryParamList.put("Batteries Sold To - Others","Battery_Dealer_Annual_return_Form_V~~anyOtherParty");
 		return batteryParamList;
 	}
 	
-	public static List<String> getPlasticParams(){
-		List<String> plasticParamList = new ArrayList<String>();
-		plasticParamList.add("Authorization Form - Producer - Waste/year");
-		plasticParamList.add("Authorization Form - BrandOwner - Waste/year");
-		plasticParamList.add("Authorization Form - Recycler - WasteProcessed/year");
-		plasticParamList.add("Authorization Form - Raw Material Production/MTA");
+	public static Map<String,String> getPlasticParams(){
+		Map<String,String> plasticParamList = new LinkedHashMap<String, String>();
+		plasticParamList.put("Authorization Form - Producer - Waste/year","Plastic_producer_authorization~~generationTotal");
+		plasticParamList.put("Authorization Form - BrandOwner - Waste/year","Plastic_brand_owner_authorization~~generationTotal");
+		plasticParamList.put("Authorization Form - Recycler - WasteProcessed/year","Plastic_recycler_authorization~~wasteQuantityProcessed");
+		plasticParamList.put("Authorization Form - Raw Material Production/MTA","Plastic_raw_material_manufacturer_authorization~~produceQty");
 		
-		plasticParamList.add("Form 4 - Waste Received");
-		plasticParamList.add("Form 4 - Waste Recycled");
-		plasticParamList.add("Form 4 - Waste Disposed");
-		plasticParamList.add("Form 4 - Inert Produced");
+		plasticParamList.put("Form 4 - Waste Received","Plastic_annual_report_recycling_facility_form_IV~~quantityReceived");
+		plasticParamList.put("Form 4 - Waste Recycled","Plastic_annual_report_recycling_facility_form_IV~~quantityRecycled");
+		plasticParamList.put("Form 4 - Waste Disposed","Plastic_annual_report_recycling_facility_form_IV~~quantityDisposed");
+		plasticParamList.put("Form 4 - Inert Produced","Plastic_annual_report_recycling_facility_form_IV~~quantityInerts");
 		
-		plasticParamList.add("Form 5 - Waste Gen.");
-		plasticParamList.add("Form 5 - Waste Collected");
-		plasticParamList.add("Form 5 - Waste Recycled");
-		plasticParamList.add("Form 5 - Waste Processed");
-		plasticParamList.add("Form 5 - Waste sent to Landfill");
+		plasticParamList.put("Form 5 - Waste Gen.","Plastic_annual_report_local_body_form_V~~plasticWasteGeneratedQuantity");
+		plasticParamList.put("Form 5 - Waste Collected","Plastic_annual_report_local_body_form_V~~plasticWasteCollectedQuantity");
+		plasticParamList.put("Form 5 - Waste Recycled","Plastic_annual_report_local_body_form_V~~plasticWasteRecycledQuantity");
+		plasticParamList.put("Form 5 - Waste Processed","Plastic_annual_report_local_body_form_V~~plasticWasteProcessedQuantity");
+		plasticParamList.put("Form 5 - Waste sent to Landfill","Plastic_annual_report_local_body_form_V~~landPlasticWasteQuantity");
 		
 		return plasticParamList;
 	}
 	
-	public static List<String> getBioMedWasteParams(){
-		List<String> bioMedWasteParamList = new ArrayList<String>();
-		bioMedWasteParamList.add("Yellow");
-		bioMedWasteParamList.add("Red");
-		bioMedWasteParamList.add("Blue ");
-		bioMedWasteParamList.add("White");
+	public static Map<String,String> getBioMedWasteParams(){
+		Map<String,String> bioMedWasteParamList = new LinkedHashMap<String, String>();
+		bioMedWasteParamList.put("Yellow","BMW_Annual_return_Comparison~~yellowCategory");
+		bioMedWasteParamList.put("Red","BMW_Annual_return_Comparison~~redCategory");
+		bioMedWasteParamList.put("Blue ","BMW_Annual_return_Comparison~~blueCategory");
+		bioMedWasteParamList.put("White","BMW_Annual_return_Comparison~~whiteCategory");
 		
-		bioMedWasteParamList.add("Category 01");
-		bioMedWasteParamList.add("Category 02");
-		bioMedWasteParamList.add("Category 03");
-		bioMedWasteParamList.add("Category 04");
-		bioMedWasteParamList.add("Category 05");
-		bioMedWasteParamList.add("Category 06");
-		bioMedWasteParamList.add("Category 07");
-		bioMedWasteParamList.add("Category 08");
-		bioMedWasteParamList.add("Category 09");
-		bioMedWasteParamList.add("Category 10");
+		bioMedWasteParamList.put("Category 01","BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamList.put("Category 02","BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamList.put("Category 03","BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamList.put("Category 04","BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamList.put("Category 05","BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamList.put("Category 06","BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamList.put("Category 07","BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamList.put("Category 08","BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamList.put("Category 09","BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamList.put("Category 10","BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
 		return bioMedWasteParamList;
 	}
 }

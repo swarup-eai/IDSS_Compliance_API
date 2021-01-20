@@ -8,12 +8,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -66,6 +63,8 @@ import com.eai.idss.vo.BatteryVo;
 import com.eai.idss.vo.BioMedWasteAuthFormVo;
 import com.eai.idss.vo.BioMedWasteVo;
 import com.eai.idss.vo.ComlianceScoreFilter;
+import com.eai.idss.vo.ComparisonTableParamGroupVo;
+import com.eai.idss.vo.ComparisonTableResponseVo;
 import com.eai.idss.vo.ComplianceScoreResponseVo;
 import com.eai.idss.vo.EWasteForm4Vo;
 import com.eai.idss.vo.EWasteVo;
@@ -80,7 +79,6 @@ import com.eai.idss.vo.ParameterVo;
 import com.eai.idss.vo.PlasticAuthorizationFormVo;
 import com.eai.idss.vo.PlasticForm4Vo;
 import com.eai.idss.vo.PlasticVo;
-import com.eai.idss.vo.PollutionParamGroupVo;
 import com.eai.idss.vo.PollutionScoreFilter;
 import com.eai.idss.vo.PollutionScoreResponseVo;
 import com.eai.idss.vo.SKU;
@@ -258,41 +256,45 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return lList;
 	}
 
-	public Map<String, Map<String, List<PollutionScoreResponseVo>>> getPollutionScoreData(PollutionScoreFilter cf) {
+	public  List<PollutionScoreResponseVo> getPollutionScoreData(PollutionScoreFilter cf) {
 
-		Map<String, Map<String, List<PollutionScoreResponseVo>>> responseMap = new LinkedHashMap<String, Map<String, List<PollutionScoreResponseVo>>>();
+		List<PollutionScoreResponseVo> responseMap = new ArrayList<PollutionScoreResponseVo>();
 
+		for(String param : cf.getParametersList()) {
+			String[] pa = param.split("~~");
+			
+		}
 
 		return responseMap;
 	}
 
 	@Override
-	public PollutionScoreResponseVo getComparisonData(long industryId,int consentYear,int esrYear,int form4Year) {
+	public ComparisonTableResponseVo getComparisonData(long industryId,int consentYear,int esrYear,int form4Year) {
 
 		logger.info("getComparisonData..."+industryId+", consentYear: "+consentYear+", esrYear: "+esrYear);
-		PollutionScoreResponseVo psrVo = new PollutionScoreResponseVo();
-		Map<String,List<PollutionParamGroupVo>> mapPGVo = new LinkedHashMap<String, List<PollutionParamGroupVo>>();
+		ComparisonTableResponseVo psrVo = new ComparisonTableResponseVo();
+		Map<String,List<ComparisonTableParamGroupVo>> mapPGVo = new LinkedHashMap<String, List<ComparisonTableParamGroupVo>>();
 		
 		mapPGVo.put("production",getProductionComparisonData(industryId,consentYear,esrYear, form4Year));
 		mapPGVo.put("resources",getResourcesComparisonData(industryId,consentYear,esrYear));
 		mapPGVo.put("pollution",getPollutionComparisonData(industryId,consentYear,esrYear));
 		mapPGVo.put("stack",getStackComparisonData(industryId,consentYear,esrYear));
 		
-		psrVo.setPollutionScore(mapPGVo);
+		psrVo.setComparisonTable(mapPGVo);
 		return psrVo;
 	}
 	
-	private List<PollutionParamGroupVo> getStackComparisonData(long industryId,int consentYear,int esrYear) {
+	private List<ComparisonTableParamGroupVo> getStackComparisonData(long industryId,int consentYear,int esrYear) {
 
-		List<PollutionParamGroupVo> ppgVoList = new ArrayList<PollutionParamGroupVo>();
+		List<ComparisonTableParamGroupVo> ppgVoList = new ArrayList<ComparisonTableParamGroupVo>();
 		ppgVoList.add(getStackData(industryId,consentYear,esrYear));
 		return ppgVoList;
 	}
 	
-	private PollutionParamGroupVo getStackData(long industryId,int consentYear,int esrYear) {
+	private ComparisonTableParamGroupVo getStackData(long industryId,int consentYear,int esrYear) {
 		
 		List<Consent_STACK_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_STACK_comparison.class);
-		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
+		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
 		ppgVo.setParam("stack");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_STACK_comparison csc : cscList) {
@@ -311,9 +313,9 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	}
 
 
-	private List<PollutionParamGroupVo> getPollutionComparisonData(long industryId,int consentYear,int esrYear) {
+	private List<ComparisonTableParamGroupVo> getPollutionComparisonData(long industryId,int consentYear,int esrYear) {
 
-		List<PollutionParamGroupVo> ppgVoList = new ArrayList<PollutionParamGroupVo>();
+		List<ComparisonTableParamGroupVo> ppgVoList = new ArrayList<ComparisonTableParamGroupVo>();
 		
 		ppgVoList.add(getAirData(industryId,consentYear,esrYear));
 		
@@ -330,10 +332,10 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return ppgVoList;
 	}
 	
-	private PollutionParamGroupVo getEffluentData(long industryId,int consentYear,int esrYear) {
+	private ComparisonTableParamGroupVo getEffluentData(long industryId,int consentYear,int esrYear) {
 		
 		List<Consent_EFFLUENT_Comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_EFFLUENT_Comparison.class);
-		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
+		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
 		ppgVo.setParam("effluent");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_EFFLUENT_Comparison csc : cscList) {
@@ -369,10 +371,10 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 //		return ppgVo;
 //	}
 	
-	private PollutionParamGroupVo getHazWasteData(long industryId,int consentYear,int esrYear) {
+	private ComparisonTableParamGroupVo getHazWasteData(long industryId,int consentYear,int esrYear) {
 		
 		List<Consent_HW_Comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_HW_Comparison.class);
-		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
+		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
 		ppgVo.setParam("hazWaste");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_HW_Comparison csc : cscList) {
@@ -391,10 +393,10 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return ppgVo;
 	}
 	
-	private PollutionParamGroupVo getFuelData(long industryId,int consentYear,int esrYear) {
+	private ComparisonTableParamGroupVo getFuelData(long industryId,int consentYear,int esrYear) {
 		
 		List<Consent_FUEL_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_FUEL_comparison.class);
-		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
+		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
 		ppgVo.setParam("fuel");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_FUEL_comparison csc : cscList) {
@@ -464,9 +466,9 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return null;
 	}
 
-	private PollutionParamGroupVo getWaterData(long industryId,int consentYear,int esrYear) {
+	private ComparisonTableParamGroupVo getWaterData(long industryId,int consentYear,int esrYear) {
 		List<Consent_WATER_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_WATER_comparison.class);
-		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
+		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
 		ppgVo.setParam("water");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_WATER_comparison csc : cscList) {
@@ -493,9 +495,9 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return ppgVo;
 	}
 
-	private PollutionParamGroupVo getAirData(long industryId,int consentYear,int esrYear) {
+	private ComparisonTableParamGroupVo getAirData(long industryId,int consentYear,int esrYear) {
 		List<Consented_Air_Pollution_Comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consented_Air_Pollution_Comparison.class);
-		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
+		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
 		ppgVo.setParam("air");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consented_Air_Pollution_Comparison csc : cscList) {
@@ -514,11 +516,11 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return ppgVo;
 	}
 	
-	private List<PollutionParamGroupVo> getProductionComparisonData(long industryId,int consentYear,int esrYear,int form4Year) {
+	private List<ComparisonTableParamGroupVo> getProductionComparisonData(long industryId,int consentYear,int esrYear,int form4Year) {
 
 		List<Consent_SKU_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_SKU_comparison.class);
-		List<PollutionParamGroupVo> ppgVoList = new ArrayList<PollutionParamGroupVo>();
-		PollutionParamGroupVo ppgVo = new PollutionParamGroupVo();
+		List<ComparisonTableParamGroupVo> ppgVoList = new ArrayList<ComparisonTableParamGroupVo>();
+		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
 		ppgVo.setParam("SKU");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_SKU_comparison csc : cscList) {
@@ -548,11 +550,11 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return ppgVoList;
 	}
 	
-	private List<PollutionParamGroupVo> getResourcesComparisonData(long industryId,int consentYear,int esrYear) {
+	private List<ComparisonTableParamGroupVo> getResourcesComparisonData(long industryId,int consentYear,int esrYear) {
 
-		List<PollutionParamGroupVo> ppgVoList = new ArrayList<PollutionParamGroupVo>();
+		List<ComparisonTableParamGroupVo> ppgVoList = new ArrayList<ComparisonTableParamGroupVo>();
 		
-		PollutionParamGroupVo ppgVoRaw = new PollutionParamGroupVo();
+		ComparisonTableParamGroupVo ppgVoRaw = new ComparisonTableParamGroupVo();
 		List<Consent_RESOURCES_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_RESOURCES_comparison.class);
 		ppgVoRaw.setParam("raw");
 		List<SKU> cSKUList = new ArrayList<SKU>();
@@ -573,7 +575,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		ppgVoList.add(ppgVoRaw);
 		//////////////////////////////////
 		
-		PollutionParamGroupVo ppgVoWater = new PollutionParamGroupVo();
+		ComparisonTableParamGroupVo ppgVoWater = new ComparisonTableParamGroupVo();
 		ppgVoRaw.setParam("water");
 		List<SKU> wcSKUList = new ArrayList<SKU>();
 		List<SKU> infracSKUList = new ArrayList<SKU>();
@@ -599,7 +601,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		
 		ppgVoList.add(ppgVoWater);
 		
-		PollutionParamGroupVo ppgVoInfra = new PollutionParamGroupVo();
+		ComparisonTableParamGroupVo ppgVoInfra = new ComparisonTableParamGroupVo();
 		ppgVoInfra.setParam("infra");
 		ppgVoInfra.setConsentSKU(infracSKUList);
 		ppgVoInfra.setEsrSKU(infraeSKUList);
@@ -798,83 +800,77 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return null;
 	}
 	
-	public List<String> getPollutionGraphParam(long industryId, String form){
-		List<String> paramList = new ArrayList<String>();
+	public Map<String,String> getPollutionGraphParam(long industryId, String form){
+		Map<String,String> paramList = new LinkedHashMap<String, String>();
 		if("consent".equalsIgnoreCase(form)) {
-			paramList.addAll(getDistinctParamListIndustryId(industryId,"Consent_air_pollution_comparison","parameter"));
-			paramList.addAll(getFixedConsentWaterParamList(industryId));
-			paramList.addAll(getDistinctParamListIndustryId(industryId,"consent_FUEL_comparison","fuelName"));
-			paramList.addAll(getFixedConsentEFFLUENTParamList(industryId));
-			paramList.addAll(getDistinctParamListIndustryId(industryId,"Consent_HW_Comparison","name"));
+			paramList.putAll(getDistinctParamListIndustryId(industryId,"Consent_air_pollution_comparison","parameter","concentration"));
+			paramList.putAll(getFixedConsentWaterParamList(industryId));
+			paramList.putAll(getDistinctParamListIndustryId(industryId,"consent_FUEL_comparison","fuelName","fuelConsumptions"));
+			paramList.putAll(getFixedConsentEFFLUENTParamList(industryId));
+			paramList.putAll(getDistinctParamListIndustryId(industryId,"Consent_HW_Comparison","name","quantity"));
 		}else if("esr".equalsIgnoreCase(form)) {
-			paramList.addAll(getDistinctParamListIndustryId(industryId,"ESR_air_pollution","airPollutants"));
-			paramList.addAll(getDistinctParamListIndustryId(industryId,"esr_WATER_comparison","waterPollutants"));
-			paramList.addAll(getDistinctParamListIndustryId(industryId,"esr_FUEL_comparison","fuelName"));
-			paramList.addAll(getDistinctParamListIndustryId(industryId,"esr_EFFLUENT_comparison","effluentParticulars"));
-			paramList.addAll(getDistinctParamListIndustryId(industryId,"ESR_HW_Comparison","name"));
+			paramList.putAll(getDistinctParamListIndustryId(industryId,"ESR_air_pollution","airPollutants","airPollutantConcentration"));
+			paramList.putAll(getDistinctParamListIndustryId(industryId,"esr_WATER_comparison","waterPollutants","waterPollutantConcentration"));
+			paramList.putAll(getDistinctParamListIndustryId(industryId,"esr_FUEL_comparison","fuelName","fuelQuantityActual"));
+			paramList.putAll(getDistinctParamListIndustryId(industryId,"esr_EFFLUENT_comparison","effluentParticulars","effluentParticularsQuantityActual"));
+			paramList.putAll(getDistinctParamListIndustryId(industryId,"ESR_HW_Comparison","name","hwQuantityNow"));
 		}else if("HAZ_WASTE".equalsIgnoreCase(form)) {
-			paramList.addAll(getDistinctParamListIndustryId(industryId,"Annual_Returns_HW_Comparison","name"));
+			paramList.putAll(getDistinctParamListIndustryId(industryId,"Annual_Returns_HW_Comparison","name","quantity"));
 		}else if("EWASTE".equalsIgnoreCase(form)) {
-			paramList.addAll(IDSSUtil.getEWasteParams());
+			paramList.putAll(IDSSUtil.getEWasteParams());
 		}else if("Battery".equalsIgnoreCase(form)) {
-			paramList.addAll(IDSSUtil.getBatteryParams());
+			paramList.putAll(IDSSUtil.getBatteryParams());
 		}else if("Plastic".equalsIgnoreCase(form)) {
-			paramList.addAll(IDSSUtil.getPlasticParams());
+			paramList.putAll(IDSSUtil.getPlasticParams());
 		}else if("BioMedWaste".equalsIgnoreCase(form)) {
-			paramList.addAll(IDSSUtil.getBioMedWasteParams());
+			paramList.putAll(IDSSUtil.getBioMedWasteParams());
 		}else if("OCEMS".equalsIgnoreCase(form)) {
-			paramList.addAll(getDistinctParamList("industry_mis_id",industryId,"OCEMS_data","parameter_name"));
+			paramList.putAll(getDistinctParamList("industry_mis_id",industryId,"OCEMS_data","parameter_name","value"));
 		}
 		
 		return paramList;
 		
 	}
 	
-	private List<String> getFixedConsentEFFLUENTParamList(long industryId) {
-		Set<String> paramSet = new LinkedHashSet<String>();
+	private Map<String,String> getFixedConsentEFFLUENTParamList(long industryId) {
+		Map<String,String> paramMap = new LinkedHashMap<String, String>();
 		Query query = new Query();
 		query.addCriteria(Criteria.where("industryId").is(industryId));
 		List<Consent_EFFLUENT_Comparison> cscList = mongoTemplate.find(query, Consent_EFFLUENT_Comparison.class);
 		for(Consent_EFFLUENT_Comparison cwc : cscList) {
 			if(cwc.getCapacityOfEtp()!=-999999)
-				paramSet.add("Etp");
+				paramMap.putIfAbsent("Etp","consent_EFFLUENT_comparison~~capacityOfEtp");
 			if(cwc.getCapacityOfStp()!=-999999)
-				paramSet.add("Stp");
+				paramMap.putIfAbsent("Stp","consent_EFFLUENT_comparison~~capacityOfStp");
 		}
-		if(!paramSet.isEmpty())
-			return paramSet.stream().collect(Collectors.toList());
-		else			
-			return null;
+		return paramMap;
 	}
 	
-	private List<String> getFixedConsentWaterParamList(long industryId) {
-		Set<String> paramSet = new LinkedHashSet<String>();
+	private Map<String,String> getFixedConsentWaterParamList(long industryId) {
+		Map<String,String> paramMap = new LinkedHashMap<String, String>();
 		Query query = new Query();
 		query.addCriteria(Criteria.where("industryId").is(industryId));
 		List<Consent_WATER_comparison> cscList = mongoTemplate.find(query, Consent_WATER_comparison.class);
 		for(Consent_WATER_comparison cwc : cscList) {
 			if(cwc.getTreatedEffluentBod()!=-999999)
-				paramSet.add("Bod");
+				paramMap.putIfAbsent("Bod","consent_WATER_comparison~~treatedEffluentBod");
 			if(cwc.getTreatedEffluentCod()!=-999999)
-				paramSet.add("Cod");
+				paramMap.putIfAbsent("Cod","consent_WATER_comparison~~treatedEffluentCod");
 			if(cwc.getTreatedEffluentSs()!=-999999)
-				paramSet.add("Ss");
+				paramMap.putIfAbsent("Ss","consent_WATER_comparison~~treatedEffluentSs");
 			if(cwc.getTreatedEffluentTds()!=-999999)
-				paramSet.add("Tds");
+				paramMap.putIfAbsent("Tds","consent_WATER_comparison~~treatedEffluentTds");
 			if(cwc.getTreatedEffluentPh()!=-999999)
-				paramSet.add("Ph");
+				paramMap.putIfAbsent("Ph","consent_WATER_comparison~~treatedEffluentPh");
 		}
-		if(!paramSet.isEmpty())
-			return paramSet.stream().collect(Collectors.toList());
-		else			
-			return new ArrayList<String>();
+		return paramMap;
 	}
 	
-	private List<String> getDistinctParamListIndustryId(long industryId,String collectionName,String field) {
-		return getDistinctParamList("industryId",industryId,collectionName,field);
+	private Map<String,String> getDistinctParamListIndustryId(long industryId,String collectionName,String paramField,String valueField) {
+		return getDistinctParamList("industryId",industryId,collectionName,paramField,valueField);
 	}
 	
-	private List<String> getDistinctParamList(String industryIdentifier, long industryId,String collectionName,String field) {
+	private Map<String,String> getDistinctParamList(String industryIdentifier, long industryId,String collectionName,String paramField,String valueField) {
 		Document matchDoc = new Document();
 		matchDoc.append(industryIdentifier, industryId);
 		
@@ -884,7 +880,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		                .append("$group", new Document()
 		                        .append("_id", null)
 		                        .append("param",  new Document()
-		                                .append("$addToSet", "$"+field)
+		                                .append("$addToSet", "$"+paramField)
 		                )
 		            ),
 		                new Document()
@@ -914,7 +910,11 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
                 }
             }
         );
+		Map<String,String> paramMap = new LinkedHashMap<String, String>();
+		for(String s : param.getParam()) {
+			paramMap.put(s, collectionName+"~~"+paramField+"~~"+valueField);
+		}
 		
-		return param.getParam();
+		return paramMap;
 	}
 }
