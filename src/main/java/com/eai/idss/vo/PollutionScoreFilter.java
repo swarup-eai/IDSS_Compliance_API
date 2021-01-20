@@ -4,7 +4,7 @@ import java.util.List;
 
 public class PollutionScoreFilter {
 
-	private Double industryId;
+	private long industryId;
 	private String formType;
 	private List<String> parametersList;
 	private String fromDate;
@@ -42,11 +42,11 @@ public class PollutionScoreFilter {
 		this.parametersList = parametersList;
 	}
 
-	public Double getIndustryId() {
+	public long getIndustryId() {
 		return industryId;
 	}
 
-	public void setIndustryId(Double industryId) {
+	public void setIndustryId(long industryId) {
 		this.industryId = industryId;
 	}
 

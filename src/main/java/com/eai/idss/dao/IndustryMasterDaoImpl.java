@@ -81,6 +81,7 @@ import com.eai.idss.vo.PlasticForm4Vo;
 import com.eai.idss.vo.PlasticVo;
 import com.eai.idss.vo.PollutionScoreFilter;
 import com.eai.idss.vo.PollutionScoreResponseVo;
+import com.eai.idss.vo.PollutionScoreValueVo;
 import com.eai.idss.vo.SKU;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -256,16 +257,99 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return lList;
 	}
 
+	@Override
 	public  List<PollutionScoreResponseVo> getPollutionScoreData(PollutionScoreFilter cf) {
 
-		List<PollutionScoreResponseVo> responseMap = new ArrayList<PollutionScoreResponseVo>();
+		logger.info("getPollutionScoreData..."+cf.getIndustryId());
+		List<PollutionScoreResponseVo> responseList = new ArrayList<PollutionScoreResponseVo>();
 
+		
 		for(String param : cf.getParametersList()) {
 			String[] pa = param.split("~~");
+			StringBuilder paramName = null;
+			StringBuilder collectionName = null;
+			StringBuilder paramColumnName = null;
+			StringBuilder valueColumnName = null;
+			if(pa.length==3) {
+				paramName = new StringBuilder(pa[0]);
+				collectionName = new StringBuilder(pa[1]);
+				valueColumnName = new StringBuilder(pa[2]);
+			}else if(pa.length==4) {
+				paramName = new StringBuilder(pa[0]);
+				collectionName = new StringBuilder(pa[1]);
+				paramColumnName = new StringBuilder(pa[2]);
+				valueColumnName = new StringBuilder(pa[3]);
+			}
 			
+			PollutionScoreResponseVo psrVo = new PollutionScoreResponseVo();
+			psrVo.setParam(paramName.toString());
+			List<PollutionScoreValueVo> psvList = new ArrayList<PollutionScoreValueVo>();
+			psvList = getPollutionScoreValue("industryId",cf.getIndustryId(),collectionName.toString(),
+					null!=paramColumnName?paramColumnName.toString():null,paramName.toString(),valueColumnName.toString(),cf.getFromDate(),cf.getToDate());
+			psrVo.setPsv(psvList);
+			
+			responseList.add(psrVo);
 		}
 
-		return responseMap;
+		return responseList;
+	}
+	
+	private List<PollutionScoreValueVo> getPollutionScoreValue(String industryIdentifier, long industryId,String collectionName,
+			String paramField,String paramValue,String valueField,String fromDate,String toDate) {
+		try {
+			String dateColumnName = IDSSUtil.getDateColumnName(paramValue);
+			
+			Document matchDoc = new Document();
+			matchDoc.append(industryIdentifier, industryId);
+			if(StringUtils.hasText(paramField))
+				matchDoc.append(paramField, paramValue);
+			
+			matchDoc.append(dateColumnName, new Document()
+	        		.append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(toDate+" 00:00:00.000+0000"))
+	                .append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fromDate+" 00:00:00.000+0000")));
+	        
+			
+			List<PollutionScoreValueVo> pList = new ArrayList<PollutionScoreValueVo>();
+			List<? extends Bson> pipeline = Arrays.asList(
+						new Document().append("$match", matchDoc),  
+		                new Document()
+			            .append("$project", new Document()
+			                    .append("_id", false)
+			                    .append("monthYear", new Document()
+				                        .append("$dateToString", new Document()
+				                                .append("format", "%Y-%m-%d")
+				                                .append("date", "$"+dateColumnName)
+				                        )
+				                )
+			                    .append("value", "$"+valueField)
+			            )
+					);
+			MongoDatabase database = mongoClient.getDatabase("IDSS");
+	        MongoCollection<Document> collection = database.getCollection(collectionName);
+	
+	        collection.aggregate(pipeline)
+	        .allowDiskUse(false)
+	        .forEach(new Consumer<Document>() {
+	                @Override
+	                public void accept(Document document) {
+	                    logger.info(document.toJson());
+						try {
+							PollutionScoreValueVo pVo = (new ObjectMapper().readValue(document.toJson(), PollutionScoreValueVo.class));
+							pList.add(pVo);
+						} catch (JsonMappingException e) {
+							e.printStackTrace();
+						} catch (JsonProcessingException e) {
+							e.printStackTrace();
+						}
+	                    
+	                }
+	            }
+	        );
+			return pList;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
@@ -839,9 +923,9 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		List<Consent_EFFLUENT_Comparison> cscList = mongoTemplate.find(query, Consent_EFFLUENT_Comparison.class);
 		for(Consent_EFFLUENT_Comparison cwc : cscList) {
 			if(cwc.getCapacityOfEtp()!=-999999)
-				paramMap.putIfAbsent("Etp","consent_EFFLUENT_comparison~~capacityOfEtp");
+				paramMap.putIfAbsent("Etp","Etp~~consent_EFFLUENT_comparison~~capacityOfEtp");
 			if(cwc.getCapacityOfStp()!=-999999)
-				paramMap.putIfAbsent("Stp","consent_EFFLUENT_comparison~~capacityOfStp");
+				paramMap.putIfAbsent("Stp","Stp~~consent_EFFLUENT_comparison~~capacityOfStp");
 		}
 		return paramMap;
 	}
@@ -853,15 +937,15 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		List<Consent_WATER_comparison> cscList = mongoTemplate.find(query, Consent_WATER_comparison.class);
 		for(Consent_WATER_comparison cwc : cscList) {
 			if(cwc.getTreatedEffluentBod()!=-999999)
-				paramMap.putIfAbsent("Bod","consent_WATER_comparison~~treatedEffluentBod");
+				paramMap.putIfAbsent("Bod","Bod~~consent_WATER_comparison~~treatedEffluentBod");
 			if(cwc.getTreatedEffluentCod()!=-999999)
-				paramMap.putIfAbsent("Cod","consent_WATER_comparison~~treatedEffluentCod");
+				paramMap.putIfAbsent("Cod","Cod~~consent_WATER_comparison~~treatedEffluentCod");
 			if(cwc.getTreatedEffluentSs()!=-999999)
-				paramMap.putIfAbsent("Ss","consent_WATER_comparison~~treatedEffluentSs");
+				paramMap.putIfAbsent("Ss","Ss~~consent_WATER_comparison~~treatedEffluentSs");
 			if(cwc.getTreatedEffluentTds()!=-999999)
-				paramMap.putIfAbsent("Tds","consent_WATER_comparison~~treatedEffluentTds");
+				paramMap.putIfAbsent("Tds","Tds~~consent_WATER_comparison~~treatedEffluentTds");
 			if(cwc.getTreatedEffluentPh()!=-999999)
-				paramMap.putIfAbsent("Ph","consent_WATER_comparison~~treatedEffluentPh");
+				paramMap.putIfAbsent("Ph","Ph~~consent_WATER_comparison~~treatedEffluentPh");
 		}
 		return paramMap;
 	}
@@ -912,7 +996,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
         );
 		Map<String,String> paramMap = new LinkedHashMap<String, String>();
 		for(String s : param.getParam()) {
-			paramMap.put(s, collectionName+"~~"+paramField+"~~"+valueField);
+			paramMap.put(s, s+"~~"+collectionName+"~~"+paramField+"~~"+valueField);
 		}
 		
 		return paramMap;

@@ -690,4 +690,27 @@ public class IDSSUtil {
 		bioMedWasteParamList.put("Category 10","BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
 		return bioMedWasteParamList;
 	}
+	
+	public static String getDateColumnName(String reportType){
+
+		switch(reportType.toUpperCase()) {
+			case "CONSENT" :
+				return "applicationCreatedOn";
+			case "ESR":
+				return "envStmtCreated";
+			case "EWASTE":
+				return "createdTime";
+			case "BATTERY":
+				return "applicationCreatedOn";
+			case "PLASTIC":
+				return "applicationCreatedOn";
+			case "BIOMEDWASTE":
+				return "createdTime";
+			case "OCEMS":
+				return "time_stamp";
+			case "HAZ_WASTE":
+				return "createdTime";
+		}
+		return null;
+	}
 }
