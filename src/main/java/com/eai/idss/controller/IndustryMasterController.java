@@ -142,7 +142,7 @@ public class IndustryMasterController {
    	public ResponseEntity  <Map<String,Map<String,List<PollutionScoreResponseVo>>>> getPollutionScoreCardDatabyDate(@RequestBody PollutionScoreFilter imr) throws IOException {
     	Map<String,Map<String,List<PollutionScoreResponseVo>>> iml = null;
        	try {
-   	    	iml=imd.getByIndustryNamePollutionScoreData(imr);
+   	    	iml=imd.getPollutionScoreData(imr);
    		} catch (Exception e) {
    			e.printStackTrace();
    			

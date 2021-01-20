@@ -858,18 +858,31 @@ public class VisitsDaoImpl implements VisitsDao {
 		List<TileVo> ltvo = new ArrayList<TileVo>();
 		
 		if(REPORT_FILED.equalsIgnoreCase(type)) {
-			ltvo.add(new TileVo("actual",(int)ChronoUnit.DAYS.between(vd.getVisit().getVisitedDate(),vd.getVisit().getReportCreatedOn())));
-			ltvo.add(new TileVo("defined",2));
-			ltvo.add(new TileVo("average",(int)industryVisitsList.stream()
-					.filter(v -> v.getVisitStatus().equalsIgnoreCase(VISITED))
-					.mapToLong(v -> ChronoUnit.DAYS.between(v.getVisitedDate(),v.getReportCreatedOn())).average().getAsDouble()));
+			if(null!=vd.getVisit().getVisitedDate() && null!=vd.getVisit().getReportCreatedOn()) {
+				ltvo.add(new TileVo("actual",(int)ChronoUnit.DAYS.between(vd.getVisit().getVisitedDate(),vd.getVisit().getReportCreatedOn())));
+				ltvo.add(new TileVo("defined",2));
+				ltvo.add(new TileVo("average",(int)industryVisitsList.stream()
+						.filter(v -> v.getVisitStatus().equalsIgnoreCase(VISITED))
+						.mapToLong(v -> ChronoUnit.DAYS.between(v.getVisitedDate(),v.getReportCreatedOn())).average().getAsDouble()));
+			}
+			else {
+				ltvo.add(new TileVo("actual",-1));
+				ltvo.add(new TileVo("defined",2));
+				ltvo.add(new TileVo("average",-1));
+			}
 		}
 		if(LEGAL_ACTION.equalsIgnoreCase(type)) {
-			ltvo.add(new TileVo("actual",(int)ChronoUnit.DAYS.between(vd.getVisit().getVisitedDate(),vd.getVisit().getLegalDirectionIssuedOn())));
-			ltvo.add(new TileVo("defined",2));
-			ltvo.add(new TileVo("average",(int)industryVisitsList.stream()
-					.filter(v -> v.getVisitStatus().equalsIgnoreCase(VISITED))
-					.mapToLong(v -> ChronoUnit.DAYS.between(v.getVisitedDate(),v.getLegalDirectionIssuedOn())).average().getAsDouble()));
+			if(null!=vd.getVisit().getVisitedDate() && null!=vd.getVisit().getLegalDirectionIssuedOn()) {
+				ltvo.add(new TileVo("actual",(int)ChronoUnit.DAYS.between(vd.getVisit().getVisitedDate(),vd.getVisit().getLegalDirectionIssuedOn())));
+				ltvo.add(new TileVo("defined",2));
+				ltvo.add(new TileVo("average",(int)industryVisitsList.stream()
+						.filter(v -> v.getVisitStatus().equalsIgnoreCase(VISITED))
+						.mapToLong(v -> ChronoUnit.DAYS.between(v.getVisitedDate(),v.getLegalDirectionIssuedOn())).average().getAsDouble()));
+			}else {
+				ltvo.add(new TileVo("actual",-1));
+				ltvo.add(new TileVo("defined",2));
+				ltvo.add(new TileVo("average",-1));
+			}
 		}
 		return ltvo;
 	}
