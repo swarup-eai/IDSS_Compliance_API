@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import com.eai.idss.model.User;
 import com.eai.idss.model.VisitProcessEfficiency;
 import com.eai.idss.model.Visits;
+import com.eai.idss.vo.DecisionMakingVo;
 import com.eai.idss.vo.TileVo;
 import com.eai.idss.vo.VisitDetails;
 import com.eai.idss.vo.VisitScheduleCurrentMonthResponseVo;
@@ -41,5 +42,7 @@ public interface VisitsDao {
 	public VisitProcessEfficiency getVisitProcessEfficiency(String region);
 	
 	public List<VisitScheduleCurrentMonthResponseVo> getVisitsScheduleByUserName(String userName);
+	
+	public List<DecisionMakingVo> getVisitDetailsDecisionMaking(long industryId,long visitId);
 	
 }

@@ -25,6 +25,7 @@ import com.eai.idss.model.VisitProcessEfficiency;
 import com.eai.idss.model.Visits;
 import com.eai.idss.repository.LeaveScheduleRepository;
 import com.eai.idss.repository.UserRepository;
+import com.eai.idss.vo.DecisionMakingVo;
 import com.eai.idss.vo.TileVo;
 import com.eai.idss.vo.VisitDetails;
 import com.eai.idss.vo.VisitScheduleCurrentMonthResponseVo;
@@ -166,6 +167,20 @@ public class VisitsController {
    			return new ResponseEntity("Exception in /visits-details/{industryId}/{visitId}", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
    	    return new ResponseEntity<VisitDetails>(vd,HttpStatus.OK);
+   	}
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+   	@RequestMapping(method = RequestMethod.GET, value = "/visits-details/decision-making/{industryId}/{visitId}", produces = "application/json")
+   	public ResponseEntity<List<DecisionMakingVo>> getVisitsDetailsDecisionMaking(@PathVariable("industryId") Long industryId,
+   			@PathVariable("visitId") Long visitId) throws IOException {
+    	List<DecisionMakingVo> vd = null;
+   	    try {
+   	    	vd = cd.getVisitDetailsDecisionMaking(industryId,visitId);
+   		} catch (Exception e) {
+   			e.printStackTrace();
+   			return new ResponseEntity("Exception in /visits-details/{industryId}/{visitId}", HttpStatus.INTERNAL_SERVER_ERROR);
+   		}
+   	    return new ResponseEntity<List<DecisionMakingVo>>(vd,HttpStatus.OK);
    	}
     
     @SuppressWarnings({ "rawtypes", "unchecked" })

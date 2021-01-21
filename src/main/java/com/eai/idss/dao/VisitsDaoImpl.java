@@ -21,6 +21,7 @@ import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -28,11 +29,13 @@ import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import com.eai.idss.model.DecisionMaking;
 import com.eai.idss.model.User;
 import com.eai.idss.model.VisitProcessEfficiency;
 import com.eai.idss.model.Visits;
 import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.ConcentByRegionVo;
+import com.eai.idss.vo.DecisionMakingVo;
 import com.eai.idss.vo.TileVo;
 import com.eai.idss.vo.VisitDetails;
 import com.eai.idss.vo.VisitScheduleCurrentMonthResponseVo;
@@ -1187,4 +1190,33 @@ public class VisitsDaoImpl implements VisitsDao {
 		}
 		return null;
 	}
+	
+	public List<DecisionMakingVo> getVisitDetailsDecisionMaking(long industryId,long visitId) {
+		List<DecisionMakingVo> dmvList = new ArrayList<DecisionMakingVo>();
+		
+		Query query = new Query();
+		query.addCriteria(Criteria.where("industryId").is(industryId));
+		query.addCriteria(Criteria.where("visitId").lte(visitId));
+		query.with(Sort.by(Sort.Direction.DESC,"visitId"));
+		query.limit(5);
+					
+		List<DecisionMaking> dmList= mongoTemplate.find(query, DecisionMaking.class);
+		
+		DecisionMakingVo dmv1 = new DecisionMakingVo();
+		dmv1.setParameter("Generating Domestic Waste as per consent");
+		dmv1.setRequiredValue(dmList.get(0).getRequiredDisposalDomesticAsPerConsent()==1?"Yes":"No");
+		dmv1.setCurrentValue(dmList.get(0).getDisposalDomesticAsPerConsent()==1?"Yes":"No");
+		if(dmList.size()>1) 
+			dmv1.setPastValueDate1(dmList.get(1).getDisposalDomesticAsPerConsent()==1?"Yes":"No");
+		if(dmList.size()>2) 
+			dmv1.setPastValueDate2(dmList.get(2).getDisposalDomesticAsPerConsent()==1?"Yes":"No");
+		if(dmList.size()>3) 
+			dmv1.setPastValueDate3(dmList.get(3).getDisposalDomesticAsPerConsent()==1?"Yes":"No");
+		if(dmList.size()>4) 
+			dmv1.setPastValueDate4(dmList.get(4).getDisposalDomesticAsPerConsent()==1?"Yes":"No");
+					
+		dmvList.add(dmv1);
+		return dmvList;
+	}
+	
 }
