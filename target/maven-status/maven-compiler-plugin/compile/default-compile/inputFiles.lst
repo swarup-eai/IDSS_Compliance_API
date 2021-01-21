@@ -13,7 +13,6 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\mo
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\configuration\MongoDBConfig.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\VisitsTeamVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Battery_Dealer_Annual_return_Form_V.java
-E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\PollutionParamGroupVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ParameterVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\controller\UserController.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\BatteriesSoldToVo.java
@@ -36,6 +35,7 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\co
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\BenchmarkingDaoImpl.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\BenchmarkingDestinationData.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\repository\BenchmarkingSourceDataRepository.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\DecisionMaking.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Plastic_Producer_Authorization.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\util\IDSSUtil.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\ConcentDaoImpl.java
@@ -52,6 +52,7 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Consent_RESOURCES_comparison.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Consent_EFFLUENT_Comparison.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\TileVo.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\DecisionMakingVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\LegalGroupByVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\controller\CommonController.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\BatteryVo.java
@@ -63,9 +64,12 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\re
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\VisitsFilter.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\VisitDetails.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\DashboardResponse.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ComparisonTableResponseVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Plastic_Annual_Report_Local_Body_Form_V.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Plastic_Recycler_Authorization.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ComparisonTableParamGroupVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\repository\ConcentRepository.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\PollutionScoreValueVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\PlasticVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\IDSSApiApplication.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ConcentByTeamVo.java

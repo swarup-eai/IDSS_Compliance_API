@@ -9,9 +9,9 @@ com\eai\idss\vo\ParameterVo.class
 com\eai\idss\dao\GenericDaoImpl$6.class
 com\eai\idss\model\BMW_Authorization_Comparison.class
 com\eai\idss\vo\MyVisitsIndustries.class
-com\eai\idss\vo\PollutionParamGroupVo.class
 com\eai\idss\dao\GenericDaoImpl$3.class
 com\eai\idss\dao\LegalDaoImpl$4.class
+com\eai\idss\vo\DecisionMakingVo.class
 com\eai\idss\model\Plastic_Annual_Report_Recycling_Facility_Form_IV.class
 com\eai\idss\dao\ConcentDao.class
 com\eai\idss\vo\ComlianceScoreFilter.class
@@ -27,6 +27,7 @@ com\eai\idss\vo\ConcentByRegionVo.class
 com\eai\idss\vo\Form5Vo.class
 com\eai\idss\configuration\WebSecurityConfiguration$1.class
 com\eai\idss\model\Plastic_Annual_Report_Local_Body_Form_V.class
+com\eai\idss\vo\PollutionScoreValueVo.class
 com\eai\idss\model\Consent_HW_Comparison.class
 com\eai\idss\vo\Form1AVo.class
 com\eai\idss\dao\BenchmarkingDao.class
@@ -64,11 +65,15 @@ com\eai\idss\dao\LegalDaoImpl$5.class
 com\eai\idss\dao\VisitsDaoImpl$2.class
 com\eai\idss\dao\GenericDaoImpl$2.class
 com\eai\idss\vo\BioMedWasteVo.class
+com\eai\idss\vo\ComparisonTableParamGroupVo.class
 com\eai\idss\vo\VisitsByScaleCategory.class
 com\eai\idss\vo\VisitsTeamVo.class
 com\eai\idss\dao\ConcentDaoImpl$5.class
 com\eai\idss\model\Consented_Air_Pollution_Comparison.class
+com\eai\idss\model\DecisionMaking.class
 com\eai\idss\dao\IndustryMasterDao.class
+com\eai\idss\dao\IndustryMasterDaoImpl$2.class
+com\eai\idss\vo\ComparisonTableResponseVo.class
 com\eai\idss\vo\PlasticVo.class
 com\eai\idss\model\Consent_SKU_comparison.class
 com\eai\idss\vo\MandatoryReportsResponseVo.class

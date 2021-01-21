@@ -304,14 +304,94 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			psrVo.setForm(formType.toString());
 			psrVo.setParam(paramName.toString());
 			List<PollutionScoreValueVo> psvList = new ArrayList<PollutionScoreValueVo>();
-			psvList = getPollutionScoreValue(formType.toString(),"industryId",cf.getIndustryId(),collectionName.toString(),
-					null!=paramColumnName?paramColumnName.toString():null,paramName.toString(),valueColumnName.toString(),cf.getFromDate(),cf.getToDate());
+			if(OCEMS.equalsIgnoreCase(formType.toString())) {
+				psvList = getOCEMSPollutionScoreValue(formType.toString(),"industry_mis_id",cf.getIndustryId(),collectionName.toString(),
+						null!=paramColumnName?paramColumnName.toString():null,paramName.toString(),valueColumnName.toString(),cf.getFromDate(),cf.getToDate());
+			}else {
+				psvList = getPollutionScoreValue(formType.toString(),"industryId",cf.getIndustryId(),collectionName.toString(),
+						null!=paramColumnName?paramColumnName.toString():null,paramName.toString(),valueColumnName.toString(),cf.getFromDate(),cf.getToDate());
+			}
 			psrVo.setPsv(psvList);
 			
 			responseList.add(psrVo);
 		}
 
 		return responseList;
+	}
+	
+	private List<PollutionScoreValueVo> getOCEMSPollutionScoreValue(String formType,String industryIdentifier, long industryId,String collectionName,
+			String paramField,String paramValue,String valueField,String fromDate,String toDate) {
+		try {
+			String dateColumnName = IDSSUtil.getDateColumnName(formType);
+			
+			Document matchDoc = new Document();
+			matchDoc.append(industryIdentifier, industryId);
+			if(StringUtils.hasText(paramField))
+				matchDoc.append(paramField, paramValue);
+			
+			matchDoc.append(dateColumnName, new Document()
+	        		.append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(toDate+" 00:00:00.000+0000"))
+	                .append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fromDate+" 00:00:00.000+0000")));
+	        
+			
+			List<PollutionScoreValueVo> pList = new ArrayList<PollutionScoreValueVo>();
+			List<? extends Bson> pipeline = Arrays.asList(
+						new Document().append("$match", matchDoc),  
+		                new Document()
+			            .append("$project", new Document()
+			                    .append("_id", false)
+			                    .append("day", new Document()
+				                        .append("$dateToString", new Document()
+				                                .append("format", "%Y-%m-%d")
+				                                .append("date", "$"+dateColumnName)
+				                        )
+				                )
+			                    .append("value", "$"+valueField)
+			            ),
+			            new Document()
+			            .append("$group", new Document()
+			                    .append("_id", "$day")
+			                    .append("value",  new Document()
+		                                .append("$avg", "$value")
+		                                )
+			            ),
+			            new Document()
+			            .append("$sort", new Document()
+			                    .append("_id", 1)
+			            ),
+			            new Document()
+			            .append("$project", new Document()
+			                    .append("_id", false)
+			                    .append( "monthYear","$_id")
+			                    .append("value", "$value")
+			            )
+					);
+			MongoDatabase database = mongoClient.getDatabase("IDSS");
+	        MongoCollection<Document> collection = database.getCollection(collectionName);
+	
+	        collection.aggregate(pipeline)
+	        .allowDiskUse(false)
+	        .forEach(new Consumer<Document>() {
+	                @Override
+	                public void accept(Document document) {
+	                    logger.info(document.toJson());
+						try {
+							PollutionScoreValueVo pVo = (new ObjectMapper().readValue(document.toJson(), PollutionScoreValueVo.class));
+							pList.add(pVo);
+						} catch (JsonMappingException e) {
+							e.printStackTrace();
+						} catch (JsonProcessingException e) {
+							e.printStackTrace();
+						}
+	                    
+	                }
+	            }
+	        );
+			return pList;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	private List<PollutionScoreValueVo> getPollutionScoreValue(String formType,String industryIdentifier, long industryId,String collectionName,
