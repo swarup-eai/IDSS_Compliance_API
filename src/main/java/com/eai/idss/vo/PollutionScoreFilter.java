@@ -5,7 +5,6 @@ import java.util.List;
 public class PollutionScoreFilter {
 
 	private long industryId;
-	private String formType;
 	private List<String> parametersList;
 	private String fromDate;
 	private String toDate;
@@ -24,14 +23,6 @@ public class PollutionScoreFilter {
 
 	public void setToDate(String toDate) {
 		this.toDate = toDate;
-	}
-
-	public String getFormType() {
-		return formType;
-	}
-
-	public void setFormType(String formType) {
-		this.formType = formType;
 	}
 
 	public List<String> getParametersList() {

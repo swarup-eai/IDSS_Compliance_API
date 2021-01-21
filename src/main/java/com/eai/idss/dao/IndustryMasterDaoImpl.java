@@ -94,6 +94,22 @@ import com.mongodb.client.MongoDatabase;
 @Repository
 public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	
+	private static final String OCEMS = "OCEMS";
+
+	private static final String BIO_MED_WASTE = "BioMedWaste";
+
+	private static final String PLASTIC = "Plastic";
+
+	private static final String BATTERY = "Battery";
+
+	private static final String EWASTE = "EWASTE";
+
+	private static final String HAZ_WASTE = "HAZ_WASTE";
+
+	private static final String ESR = "ESR";
+
+	private static final String CONSENT = "CONSENT";
+
 	@Autowired
 	MongoTemplate mongoTemplate;
 	
@@ -266,25 +282,29 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		
 		for(String param : cf.getParametersList()) {
 			String[] pa = param.split("~~");
+			StringBuilder formType = null;
 			StringBuilder paramName = null;
 			StringBuilder collectionName = null;
 			StringBuilder paramColumnName = null;
 			StringBuilder valueColumnName = null;
-			if(pa.length==3) {
-				paramName = new StringBuilder(pa[0]);
-				collectionName = new StringBuilder(pa[1]);
-				valueColumnName = new StringBuilder(pa[2]);
-			}else if(pa.length==4) {
-				paramName = new StringBuilder(pa[0]);
-				collectionName = new StringBuilder(pa[1]);
-				paramColumnName = new StringBuilder(pa[2]);
+			if(pa.length==4) {
+				formType = new StringBuilder(pa[0]);
+				paramName = new StringBuilder(pa[1]);
+				collectionName = new StringBuilder(pa[2]);
 				valueColumnName = new StringBuilder(pa[3]);
+			}else if(pa.length==5) {
+				formType = new StringBuilder(pa[0]);
+				paramName = new StringBuilder(pa[1]);
+				collectionName = new StringBuilder(pa[2]);
+				paramColumnName = new StringBuilder(pa[3]);
+				valueColumnName = new StringBuilder(pa[4]);
 			}
 			
 			PollutionScoreResponseVo psrVo = new PollutionScoreResponseVo();
+			psrVo.setForm(formType.toString());
 			psrVo.setParam(paramName.toString());
 			List<PollutionScoreValueVo> psvList = new ArrayList<PollutionScoreValueVo>();
-			psvList = getPollutionScoreValue("industryId",cf.getIndustryId(),collectionName.toString(),
+			psvList = getPollutionScoreValue(formType.toString(),"industryId",cf.getIndustryId(),collectionName.toString(),
 					null!=paramColumnName?paramColumnName.toString():null,paramName.toString(),valueColumnName.toString(),cf.getFromDate(),cf.getToDate());
 			psrVo.setPsv(psvList);
 			
@@ -294,10 +314,10 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return responseList;
 	}
 	
-	private List<PollutionScoreValueVo> getPollutionScoreValue(String industryIdentifier, long industryId,String collectionName,
+	private List<PollutionScoreValueVo> getPollutionScoreValue(String formType,String industryIdentifier, long industryId,String collectionName,
 			String paramField,String paramValue,String valueField,String fromDate,String toDate) {
 		try {
-			String dateColumnName = IDSSUtil.getDateColumnName(paramValue);
+			String dateColumnName = IDSSUtil.getDateColumnName(formType);
 			
 			Document matchDoc = new Document();
 			matchDoc.append(industryIdentifier, industryId);
@@ -884,34 +904,36 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return null;
 	}
 	
-	public Map<String,String> getPollutionGraphParam(long industryId, String form){
+	public Map<String,String> getPollutionGraphParam(long industryId, String formTypes){
 		Map<String,String> paramList = new LinkedHashMap<String, String>();
-		if("consent".equalsIgnoreCase(form)) {
-			paramList.putAll(getDistinctParamListIndustryId(industryId,"Consent_air_pollution_comparison","parameter","concentration"));
-			paramList.putAll(getFixedConsentWaterParamList(industryId));
-			paramList.putAll(getDistinctParamListIndustryId(industryId,"consent_FUEL_comparison","fuelName","fuelConsumptions"));
-			paramList.putAll(getFixedConsentEFFLUENTParamList(industryId));
-			paramList.putAll(getDistinctParamListIndustryId(industryId,"Consent_HW_Comparison","name","quantity"));
-		}else if("esr".equalsIgnoreCase(form)) {
-			paramList.putAll(getDistinctParamListIndustryId(industryId,"ESR_air_pollution","airPollutants","airPollutantConcentration"));
-			paramList.putAll(getDistinctParamListIndustryId(industryId,"esr_WATER_comparison","waterPollutants","waterPollutantConcentration"));
-			paramList.putAll(getDistinctParamListIndustryId(industryId,"esr_FUEL_comparison","fuelName","fuelQuantityActual"));
-			paramList.putAll(getDistinctParamListIndustryId(industryId,"esr_EFFLUENT_comparison","effluentParticulars","effluentParticularsQuantityActual"));
-			paramList.putAll(getDistinctParamListIndustryId(industryId,"ESR_HW_Comparison","name","hwQuantityNow"));
-		}else if("HAZ_WASTE".equalsIgnoreCase(form)) {
-			paramList.putAll(getDistinctParamListIndustryId(industryId,"Annual_Returns_HW_Comparison","name","quantity"));
-		}else if("EWASTE".equalsIgnoreCase(form)) {
-			paramList.putAll(IDSSUtil.getEWasteParams());
-		}else if("Battery".equalsIgnoreCase(form)) {
-			paramList.putAll(IDSSUtil.getBatteryParams());
-		}else if("Plastic".equalsIgnoreCase(form)) {
-			paramList.putAll(IDSSUtil.getPlasticParams());
-		}else if("BioMedWaste".equalsIgnoreCase(form)) {
-			paramList.putAll(IDSSUtil.getBioMedWasteParams());
-		}else if("OCEMS".equalsIgnoreCase(form)) {
-			paramList.putAll(getDistinctParamList("industry_mis_id",industryId,"OCEMS_data","parameter_name","value"));
+		String[] formArr = formTypes.split(",");
+		for(String form : formArr) {
+			if(CONSENT.equalsIgnoreCase(form)) {
+				paramList.putAll(getDistinctParamListIndustryId(CONSENT,industryId,"Consent_air_pollution_comparison","parameter","concentration"));
+				paramList.putAll(getFixedConsentWaterParamList(industryId));
+				paramList.putAll(getDistinctParamListIndustryId(CONSENT,industryId,"consent_FUEL_comparison","fuelName","fuelConsumptions"));
+				paramList.putAll(getFixedConsentEFFLUENTParamList(industryId));
+				paramList.putAll(getDistinctParamListIndustryId(CONSENT,industryId,"Consent_HW_Comparison","name","quantity"));
+			}else if(ESR.equalsIgnoreCase(form)) {
+				paramList.putAll(getDistinctParamListIndustryId(ESR,industryId,"ESR_air_pollution","airPollutants","airPollutantConcentration"));
+				paramList.putAll(getDistinctParamListIndustryId(ESR,industryId,"esr_WATER_comparison","waterPollutants","waterPollutantConcentration"));
+				paramList.putAll(getDistinctParamListIndustryId(ESR,industryId,"esr_FUEL_comparison","fuelName","fuelQuantityActual"));
+				paramList.putAll(getDistinctParamListIndustryId(ESR,industryId,"esr_EFFLUENT_comparison","effluentParticulars","effluentParticularsQuantityActual"));
+				paramList.putAll(getDistinctParamListIndustryId(ESR,industryId,"ESR_HW_Comparison","name","hwQuantityNow"));
+			}else if(HAZ_WASTE.equalsIgnoreCase(form)) {
+				paramList.putAll(getDistinctParamListIndustryId(HAZ_WASTE,industryId,"Annual_Returns_HW_Comparison","name","quantity"));
+			}else if(EWASTE.equalsIgnoreCase(form)) {
+				paramList.putAll(IDSSUtil.getEWasteParams());
+			}else if(BATTERY.equalsIgnoreCase(form)) {
+				paramList.putAll(IDSSUtil.getBatteryParams());
+			}else if(PLASTIC.equalsIgnoreCase(form)) {
+				paramList.putAll(IDSSUtil.getPlasticParams());
+			}else if(BIO_MED_WASTE.equalsIgnoreCase(form)) {
+				paramList.putAll(IDSSUtil.getBioMedWasteParams());
+			}else if(OCEMS.equalsIgnoreCase(form)) {
+				paramList.putAll(getDistinctParamList(OCEMS,"industry_mis_id",industryId,"OCEMS_data","parameter_name","value"));
+			}
 		}
-		
 		return paramList;
 		
 	}
@@ -923,9 +945,9 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		List<Consent_EFFLUENT_Comparison> cscList = mongoTemplate.find(query, Consent_EFFLUENT_Comparison.class);
 		for(Consent_EFFLUENT_Comparison cwc : cscList) {
 			if(cwc.getCapacityOfEtp()!=-999999)
-				paramMap.putIfAbsent("Etp","Etp~~consent_EFFLUENT_comparison~~capacityOfEtp");
+				paramMap.putIfAbsent("CONSENT-Etp","CONSENT~~Etp~~consent_EFFLUENT_comparison~~capacityOfEtp");
 			if(cwc.getCapacityOfStp()!=-999999)
-				paramMap.putIfAbsent("Stp","Stp~~consent_EFFLUENT_comparison~~capacityOfStp");
+				paramMap.putIfAbsent("CONSENT-Stp","CONSENT~~Stp~~consent_EFFLUENT_comparison~~capacityOfStp");
 		}
 		return paramMap;
 	}
@@ -937,24 +959,24 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		List<Consent_WATER_comparison> cscList = mongoTemplate.find(query, Consent_WATER_comparison.class);
 		for(Consent_WATER_comparison cwc : cscList) {
 			if(cwc.getTreatedEffluentBod()!=-999999)
-				paramMap.putIfAbsent("Bod","Bod~~consent_WATER_comparison~~treatedEffluentBod");
+				paramMap.putIfAbsent("CONSENT-Bod","CONSENT~~Bod~~consent_WATER_comparison~~treatedEffluentBod");
 			if(cwc.getTreatedEffluentCod()!=-999999)
-				paramMap.putIfAbsent("Cod","Cod~~consent_WATER_comparison~~treatedEffluentCod");
+				paramMap.putIfAbsent("CONSENT-Cod","CONSENT~~Cod~~consent_WATER_comparison~~treatedEffluentCod");
 			if(cwc.getTreatedEffluentSs()!=-999999)
-				paramMap.putIfAbsent("Ss","Ss~~consent_WATER_comparison~~treatedEffluentSs");
+				paramMap.putIfAbsent("CONSENT-Ss","CONSENT~~Ss~~consent_WATER_comparison~~treatedEffluentSs");
 			if(cwc.getTreatedEffluentTds()!=-999999)
-				paramMap.putIfAbsent("Tds","Tds~~consent_WATER_comparison~~treatedEffluentTds");
+				paramMap.putIfAbsent("CONSENT-Tds","CONSENT~~Tds~~consent_WATER_comparison~~treatedEffluentTds");
 			if(cwc.getTreatedEffluentPh()!=-999999)
-				paramMap.putIfAbsent("Ph","Ph~~consent_WATER_comparison~~treatedEffluentPh");
+				paramMap.putIfAbsent("CONSENT-Ph","CONSENT~~Ph~~consent_WATER_comparison~~treatedEffluentPh");
 		}
 		return paramMap;
 	}
 	
-	private Map<String,String> getDistinctParamListIndustryId(long industryId,String collectionName,String paramField,String valueField) {
-		return getDistinctParamList("industryId",industryId,collectionName,paramField,valueField);
+	private Map<String,String> getDistinctParamListIndustryId(String formType,long industryId,String collectionName,String paramField,String valueField) {
+		return getDistinctParamList(formType,"industryId",industryId,collectionName,paramField,valueField);
 	}
 	
-	private Map<String,String> getDistinctParamList(String industryIdentifier, long industryId,String collectionName,String paramField,String valueField) {
+	private Map<String,String> getDistinctParamList(String formType,String industryIdentifier, long industryId,String collectionName,String paramField,String valueField) {
 		Document matchDoc = new Document();
 		matchDoc.append(industryIdentifier, industryId);
 		
@@ -996,7 +1018,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
         );
 		Map<String,String> paramMap = new LinkedHashMap<String, String>();
 		for(String s : param.getParam()) {
-			paramMap.put(s, s+"~~"+collectionName+"~~"+paramField+"~~"+valueField);
+			paramMap.put(formType+"-"+s, formType+"~~"+s+"~~"+collectionName+"~~"+paramField+"~~"+valueField);
 		}
 		
 		return paramMap;

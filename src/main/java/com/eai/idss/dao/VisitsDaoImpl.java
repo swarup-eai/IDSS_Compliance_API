@@ -567,6 +567,9 @@ public class VisitsDaoImpl implements VisitsDao {
 		
 		if(null!=cf && null!=cf.getPendingByTeamCategoryList() ) 
 			matchDoc.append("category", new Document().append("$in", cf.getPendingByTeamCategoryList()));
+
+		if(null!=cf && null!=cf.getPendingByTeamScaleList() ) 
+			matchDoc.append("scale", new Document().append("$in", cf.getPendingByTeamScaleList()));
 		
 		List<? extends Bson> pipeline = Arrays.asList(
 				new Document().append("$match", matchDoc),  
