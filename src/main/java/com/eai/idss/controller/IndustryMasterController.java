@@ -155,8 +155,8 @@ public class IndustryMasterController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(method = RequestMethod.GET, value = "/industry-master-score-card/pollution-score/param-list/{industryId}",  produces = "application/json")
-   	public ResponseEntity<Map<String,String>> getPollutionGraphParam(@PathVariable("industryId") long industryId,String form) throws IOException {
-    	Map<String,String> iml = null;
+   	public ResponseEntity<List<Map<String,String>>> getPollutionGraphParam(@PathVariable("industryId") long industryId,String form) throws IOException {
+    	List<Map<String,String>> iml = null;
        	try {
    	    	iml=imd.getPollutionGraphParam(industryId,form);
    		} catch (Exception e) {
@@ -164,7 +164,7 @@ public class IndustryMasterController {
    			
    			return new ResponseEntity("Exception in /industry-master-score-card/pollution-score/param-list/{industryId}", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
-        return new ResponseEntity<Map<String,String>>(iml,HttpStatus.OK);
+        return new ResponseEntity<List<Map<String,String>>>(iml,HttpStatus.OK);
         
     }
     

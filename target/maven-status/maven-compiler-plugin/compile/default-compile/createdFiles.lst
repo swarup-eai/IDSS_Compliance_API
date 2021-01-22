@@ -108,6 +108,7 @@ com\eai\idss\dao\GenericDaoImpl$7.class
 com\eai\idss\vo\EWasteVo.class
 com\eai\idss\vo\PollutionScoreFilter.class
 com\eai\idss\dao\VisitsDaoImpl$4.class
+com\eai\idss\vo\DecisionMakingParamVo.class
 com\eai\idss\vo\MyVisits.class
 com\eai\idss\vo\DashboardRequest.class
 com\eai\idss\model\ESR_WATER_comparison.class

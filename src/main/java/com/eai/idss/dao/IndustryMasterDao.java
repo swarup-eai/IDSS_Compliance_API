@@ -26,6 +26,6 @@ public interface IndustryMasterDao {
 	
 	public MandatoryReportsResponseVo getMandatoryReportsData(long industryId,int year);
 	
-	public Map<String,String> getPollutionGraphParam(long industryId, String form);
+	public List<Map<String,String>> getPollutionGraphParam(long industryId, String form);
 
 }
