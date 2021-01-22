@@ -8,6 +8,7 @@ public class BenchmarkingSourceData {
     private String productName;
     private String productCategory;
     private String industryType;
+    private String industryName;
     private Double categoryCode;
     private String airPollutantsGroup;
     private Double concentration;
@@ -35,6 +36,12 @@ public class BenchmarkingSourceData {
     }
     public void setIndustryType(String industryType) {
         this.industryType = industryType;
+    }
+    public String getIndustryName() {
+        return industryName;
+    }
+    public void setIndustryName(String industryName) {
+        this.industryName = industryName;
     }
     public void setCategoryCode(Double categoryCode) {
         this.categoryCode = categoryCode;
