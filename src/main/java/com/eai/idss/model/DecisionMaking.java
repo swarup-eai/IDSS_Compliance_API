@@ -20,26 +20,32 @@ public class DecisionMaking {
 	private LocalDate schduledOn;
 	private double disposalIndustrialAsPerConsent;
 	private double disposalDomesticAsPerConsent;
+	private double bgImposed; 
+	private double legalAnyComplaint;
+	private double omsAmbientInstalled;
+	private double omswPlacedProperly;
+	private double omswInstalled;
+	private double omsStackProperlyPlaced;
+	private double omsStackInstalled;
+	private double stackFacilityExist;
+	private double stpOperational;
+	private double etpOperational;
+	private double percentPlantation;
+
 	private double requiredDisposalIndustrialAsPerConsent;
 	private double requiredDisposalDomesticAsPerConsent;
+	private double requiredBgImposed;
+	private double requiredLegalAnyComplaint;
+	private double requiredOmsAmbientInstalled;
+	private double requiredOmswPlacedProperly;
+	private double requiredOmswInstalled;
+	private double requiredOmsStackProperlyPlaced;
+	private double requiredOmsStackInstalled;
 //	private double 
 //	private double 
 //	private double 
 //	private double 
-//	private double 
-//	private double 
-//	private double 
-//	private double 
-//	private double 
-//	private double 
-//	private double 
-//	private double 
-//	private double 
-//	private double 
-//	private double 
-//	private double 
-//	private double 
-//	private double 
+	
 	public String get_id() {
 		return _id;
 	}

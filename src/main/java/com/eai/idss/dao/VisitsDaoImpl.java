@@ -1202,6 +1202,12 @@ public class VisitsDaoImpl implements VisitsDao {
 					
 		List<DecisionMaking> dmList= mongoTemplate.find(query, DecisionMaking.class);
 		
+		dmvList.add(getDisposalDomasticDataVo(dmList));
+					
+		return dmvList;
+	}
+
+	private DecisionMakingVo getDisposalDomasticDataVo(List<DecisionMaking> dmList) {
 		DecisionMakingVo dmv1 = new DecisionMakingVo();
 		dmv1.setParameter("Generating Domestic Waste as per consent");
 		dmv1.setRequiredValue(dmList.get(0).getRequiredDisposalDomesticAsPerConsent()==1?"Yes":"No");
@@ -1214,9 +1220,38 @@ public class VisitsDaoImpl implements VisitsDao {
 			dmv1.setPastValueDate3(dmList.get(3).getDisposalDomesticAsPerConsent()==1?"Yes":"No");
 		if(dmList.size()>4) 
 			dmv1.setPastValueDate4(dmList.get(4).getDisposalDomesticAsPerConsent()==1?"Yes":"No");
-					
-		dmvList.add(dmv1);
-		return dmvList;
+		return dmv1;
 	}
 	
+	private DecisionMakingVo getBankGurrtyImposedDataVo(List<DecisionMaking> dmList) {
+		DecisionMakingVo dmv1 = new DecisionMakingVo();
+		dmv1.setParameter("Bank Gurantee Imposed");
+		dmv1.setRequiredValue(dmList.get(0).getRequiredDisposalDomesticAsPerConsent()==1?"Yes":"No");
+		dmv1.setCurrentValue(dmList.get(0).getDisposalDomesticAsPerConsent()==1?"Yes":"No");
+		if(dmList.size()>1) 
+			dmv1.setPastValueDate1(dmList.get(1).getDisposalDomesticAsPerConsent()==1?"Yes":"No");
+		if(dmList.size()>2) 
+			dmv1.setPastValueDate2(dmList.get(2).getDisposalDomesticAsPerConsent()==1?"Yes":"No");
+		if(dmList.size()>3) 
+			dmv1.setPastValueDate3(dmList.get(3).getDisposalDomesticAsPerConsent()==1?"Yes":"No");
+		if(dmList.size()>4) 
+			dmv1.setPastValueDate4(dmList.get(4).getDisposalDomesticAsPerConsent()==1?"Yes":"No");
+		return dmv1;
+	}
+	
+	private DecisionMakingVo getDisposalIndustrialDataVo(List<DecisionMaking> dmList) {
+		DecisionMakingVo dmv1 = new DecisionMakingVo();
+		dmv1.setParameter("Disposal Industrial Waste as per Consent");
+		dmv1.setRequiredValue(dmList.get(0).getRequiredDisposalIndustrialAsPerConsent()==1?"Yes":"No");
+		dmv1.setCurrentValue(dmList.get(0).getDisposalIndustrialAsPerConsent()==1?"Yes":"No");
+		if(dmList.size()>1) 
+			dmv1.setPastValueDate1(dmList.get(1).getDisposalIndustrialAsPerConsent()==1?"Yes":"No");
+		if(dmList.size()>2) 
+			dmv1.setPastValueDate2(dmList.get(2).getDisposalIndustrialAsPerConsent()==1?"Yes":"No");
+		if(dmList.size()>3) 
+			dmv1.setPastValueDate3(dmList.get(3).getDisposalIndustrialAsPerConsent()==1?"Yes":"No");
+		if(dmList.size()>4) 
+			dmv1.setPastValueDate4(dmList.get(4).getDisposalIndustrialAsPerConsent()==1?"Yes":"No");
+		return dmv1;
+	}
 }

@@ -92,6 +92,7 @@ com\eai\idss\model\Annual_Returns_HW_Comparison.class
 com\eai\idss\dao\ConcentDaoImpl$1.class
 com\eai\idss\model\Consent_RESOURCES_comparison.class
 com\eai\idss\model\Consent_WATER_comparison.class
+com\eai\idss\dao\IndustryMasterDaoImpl$3.class
 com\eai\idss\dao\ConcentDaoImpl.class
 com\eai\idss\dao\LegalDaoImpl$3.class
 com\eai\idss\repository\BenchmarkingSourceDataRepository.class
