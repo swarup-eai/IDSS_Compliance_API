@@ -6,7 +6,14 @@ public class MyVisitsIndustries {
 	private String industryName;
 	private int cScore;
 	private String visitStatus;
+	private int visitId;
 	
+	public int getVisitId() {
+		return visitId;
+	}
+	public void setVisitId(int visitId) {
+		this.visitId = visitId;
+	}
 	public String getVisitStatus() {
 		return visitStatus;
 	}

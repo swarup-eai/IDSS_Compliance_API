@@ -476,6 +476,7 @@ public class GenericDaoImpl implements GenericDao {
 									myVisitsIndustries.setIndustryName(industries.getIndustryName());
 									myVisitsIndustries.setVisitStatus(industries.getVisitStatus());
 									myVisitsIndustries.setcScore((int)getCscore(industries.getIndustryId()));
+									myVisitsIndustries.setVisitId(industries.getVisitId());
 									tVoList.add(myVisitsIndustries);
 								}
 								myVisitsData.setDateView(mvVo.getDateView());
@@ -522,6 +523,7 @@ public class GenericDaoImpl implements GenericDao {
 	                                .append("industryName", "$industryName")
 	                                .append("industryId", "$industryId")
 	                                .append("visitStatus", "$visitStatus")
+	                                .append("visitId", "$visitId")
 	                        )
 	                )
 	        );
@@ -543,6 +545,7 @@ public class GenericDaoImpl implements GenericDao {
 			                                .append("industryName", "$industryName")
 											.append("industryId", "$industryId")
 											.append("visitStatus", "$visitStatus")
+											.append("visitId", "$visitId")
 			                        )
 			                )
 			);
