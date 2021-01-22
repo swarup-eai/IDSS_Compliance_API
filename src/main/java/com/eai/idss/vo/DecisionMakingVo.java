@@ -1,54 +1,27 @@
 package com.eai.idss.vo;
 
+import java.util.List;
+
 public class DecisionMakingVo {
-	private String parameter;
-	private String requiredValue;
-	private String currentValue;
-	private String pastValueDate1;
-	private String pastValueDate2;
-	private String pastValueDate3;
-	private String pastValueDate4;
-	public String getParameter() {
-		return parameter;
+	private String action;
+	private String suggestion;
+	private List<DecisionMakingParamVo> dmpList;
+	public String getAction() {
+		return action;
 	}
-	public void setParameter(String parameter) {
-		this.parameter = parameter;
+	public void setAction(String action) {
+		this.action = action;
 	}
-	public String getRequiredValue() {
-		return requiredValue;
+	public String getSuggestion() {
+		return suggestion;
 	}
-	public void setRequiredValue(String requiredValue) {
-		this.requiredValue = requiredValue;
+	public void setSuggestion(String suggestion) {
+		this.suggestion = suggestion;
 	}
-	public String getCurrentValue() {
-		return currentValue;
+	public List<DecisionMakingParamVo> getDmpList() {
+		return dmpList;
 	}
-	public void setCurrentValue(String currentValue) {
-		this.currentValue = currentValue;
+	public void setDmpList(List<DecisionMakingParamVo> dmpList) {
+		this.dmpList = dmpList;
 	}
-	public String getPastValueDate1() {
-		return pastValueDate1;
-	}
-	public void setPastValueDate1(String pastValueDate1) {
-		this.pastValueDate1 = pastValueDate1;
-	}
-	public String getPastValueDate2() {
-		return pastValueDate2;
-	}
-	public void setPastValueDate2(String pastValueDate2) {
-		this.pastValueDate2 = pastValueDate2;
-	}
-	public String getPastValueDate3() {
-		return pastValueDate3;
-	}
-	public void setPastValueDate3(String pastValueDate3) {
-		this.pastValueDate3 = pastValueDate3;
-	}
-	public String getPastValueDate4() {
-		return pastValueDate4;
-	}
-	public void setPastValueDate4(String pastValueDate4) {
-		this.pastValueDate4 = pastValueDate4;
-	}
-	
 }

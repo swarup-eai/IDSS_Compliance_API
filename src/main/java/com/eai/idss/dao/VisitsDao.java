@@ -43,6 +43,6 @@ public interface VisitsDao {
 	
 	public List<VisitScheduleCurrentMonthResponseVo> getVisitsScheduleByUserName(String userName);
 	
-	public List<DecisionMakingVo> getVisitDetailsDecisionMaking(long industryId,long visitId);
+	public DecisionMakingVo getVisitDetailsDecisionMaking(long industryId,long visitId);
 	
 }

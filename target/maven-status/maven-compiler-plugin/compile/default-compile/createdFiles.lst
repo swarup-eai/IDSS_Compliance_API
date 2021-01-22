@@ -34,6 +34,7 @@ com\eai\idss\dao\BenchmarkingDao.class
 com\eai\idss\model\ESR_EFFLUENT_Comparison.class
 com\eai\idss\vo\VisitsFilter.class
 com\eai\idss\model\ESR_Air_Pollution_Comparison.class
+com\eai\idss\vo\IndustryNameByTypeVo.class
 com\eai\idss\controller\CommonController.class
 com\eai\idss\model\BMW_Annual_Return_Comparison.class
 com\eai\idss\vo\LegalTileVo.class
@@ -124,6 +125,7 @@ com\eai\idss\controller\ConsentController.class
 com\eai\idss\dao\GenericDaoImpl$4.class
 com\eai\idss\model\Visits.class
 com\eai\idss\configuration\SwaggerConfig.class
+com\eai\idss\vo\BenchmarkingRequest.class
 com\eai\idss\vo\AnnualReturnsVo.class
 com\eai\idss\model\Battery_Dealer_Annual_return_Form_V.class
 com\eai\idss\vo\SKU.class

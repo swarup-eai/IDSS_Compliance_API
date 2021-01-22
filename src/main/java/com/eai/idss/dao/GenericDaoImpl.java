@@ -407,7 +407,7 @@ public class GenericDaoImpl implements GenericDao {
                         .append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
                         .append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))
                 		);
-		matchDoc.append("visitReportFile",new Document().append("$ne",null));
+		matchDoc.append("visitReportFile",new Document().append("$ne","NA"));
 		
 		applyGenericFilter(dbr, matchDoc);
 		
