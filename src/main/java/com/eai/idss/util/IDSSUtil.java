@@ -613,41 +613,50 @@ public class IDSSUtil {
 	public static List<Map<String,String>> getEWasteParams(){
 		List<Map<String,String>> pl = new ArrayList<Map<String,String>>();
 		Map<String,String> ewasteParamMap = new LinkedHashMap<String, String>();
-		ewasteParamMap.put("Form 1A - Qty e-waste generated MT/A","EWASTE~~ewaste_annual_authorization~~ewasteQtyGenerated");
+		ewasteParamMap.put("name","Form 1A - Qty e-waste generated MT/A");
+		ewasteParamMap.put("value","EWASTE~~ewaste_annual_authorization~~ewasteQtyGenerated");
 		pl.add(ewasteParamMap);
 		
 		ewasteParamMap = new LinkedHashMap<String, String>();
-		ewasteParamMap.put("Form 1A - Qty refurbished MT/A","EWASTE~~ewaste_annual_authorization~~ewasteQtyRefurbushing");
+		ewasteParamMap.put("name","Form 1A - Qty refurbished MT/A");
+		ewasteParamMap.put("value","EWASTE~~ewaste_annual_authorization~~ewasteQtyRefurbushing");
 		pl.add(ewasteParamMap);
 		
 		ewasteParamMap = new LinkedHashMap<String, String>();
-		ewasteParamMap.put("Form 1A - Qty sent for recycling MT/A","EWASTE~~ewaste_annual_authorization~~ewasteQtyRecycling");
+		ewasteParamMap.put("name","Form 1A - Qty sent for recycling MT/A");
+		ewasteParamMap.put("value","EWASTE~~ewaste_annual_authorization~~ewasteQtyRecycling");
 		pl.add(ewasteParamMap);
 		
 		ewasteParamMap = new LinkedHashMap<String, String>();
-		ewasteParamMap.put("Form 1A - Qty sent for disposal MT/A","EWASTE~~ewaste_annual_authorization~~ewasteQtyDisposal");
+		ewasteParamMap.put("name","Form 1A - Qty sent for disposal MT/A");
+		ewasteParamMap.put("value","EWASTE~~ewaste_annual_authorization~~ewasteQtyDisposal");
 		pl.add(ewasteParamMap);
 //		ewasteParamMap.put("Form 4 - Installed capacity in MT/A","");
 //		ewasteParamMap.put("Form 4 - e-waste processed in the last 3 years","");
 //		ewasteParamMap.put("Form 4 - Waste generation in processing waste MTA","");
 		ewasteParamMap = new LinkedHashMap<String, String>();
-		ewasteParamMap.put("Form 3 - Qty of waste MT","EWASTE~~e_waste_annual_returns~~eWasteQtyConsumer");
+		ewasteParamMap.put("name","Form 3 - Qty of waste MT");
+		ewasteParamMap.put("value","EWASTE~~e_waste_annual_returns~~eWasteQtyConsumer");
 		pl.add(ewasteParamMap);
 		
 		ewasteParamMap = new LinkedHashMap<String, String>();
-		ewasteParamMap.put("Form 3 - Qty of e-waste processed MT","EWASTE~~e_waste_annual_returns~~eWasteQtyDismantlersProcessed");
+		ewasteParamMap.put("name","Form 3 - Qty of e-waste processed MT");
+		ewasteParamMap.put("value","EWASTE~~e_waste_annual_returns~~eWasteQtyDismantlersProcessed");
 		pl.add(ewasteParamMap);
 		
 		ewasteParamMap = new LinkedHashMap<String, String>();
-		ewasteParamMap.put("Form 3 - Qty of materials recovered and sold MT","EWASTE~~e_waste_annual_returns~~eWasteQtyDismantlersRecoveredSold");
+		ewasteParamMap.put("name","Form 3 - Qty of materials recovered and sold MT");
+		ewasteParamMap.put("value","EWASTE~~e_waste_annual_returns~~eWasteQtyDismantlersRecoveredSold");
 		pl.add(ewasteParamMap);
 		
 		ewasteParamMap = new LinkedHashMap<String, String>();
-		ewasteParamMap.put("Form 3 - Qty sent to Treatment, Storage and Disposal facility","EWASTE~~e_waste_annual_returns~~eWasteQtyRecyclersSentTsdf");
+		ewasteParamMap.put("name","Form 3 - Qty sent to Treatment, Storage and Disposal facility");
+		ewasteParamMap.put("value","EWASTE~~e_waste_annual_returns~~eWasteQtyRecyclersSentTsdf");
 		pl.add(ewasteParamMap);
 		
 		ewasteParamMap = new LinkedHashMap<String, String>();
-		ewasteParamMap.put("Form 3 - Qty sent to recycler (for dismantlers only)","EWASTE~~e_waste_annual_returns~~eWasteQtyDismantlersSentRecyclers");
+		ewasteParamMap.put("name","Form 3 - Qty sent to recycler (for dismantlers only)");
+		ewasteParamMap.put("value","EWASTE~~e_waste_annual_returns~~eWasteQtyDismantlersSentRecyclers");
 		pl.add(ewasteParamMap);
 		
 		return pl;
@@ -657,67 +666,83 @@ public class IDSSUtil {
 		List<Map<String,String>> pl = new ArrayList<Map<String,String>>();
 		
 		Map<String,String> batteryParamMap = new LinkedHashMap<String, String>();
-		batteryParamMap.put("New Batteries Sold - 2 wheerler","Battery~~Battery_Dealer_Annual_return_Form_V~~twoWheelerBaterryCount");
+		batteryParamMap.put("name","New Batteries Sold - 2 wheerler");
+		batteryParamMap.put("value","Battery~~Battery_Dealer_Annual_return_Form_V~~twoWheelerBaterryCount");
 		pl.add(batteryParamMap);
 		
 		batteryParamMap = new LinkedHashMap<String, String>();
-		batteryParamMap.put("New Batteries Sold - 4 wheerler","Battery~~Battery_Dealer_Annual_return_Form_V~~fourWheelerBaterryCount");
+		batteryParamMap.put("name","New Batteries Sold - 4 wheerler");
+		batteryParamMap.put("value","Battery~~Battery_Dealer_Annual_return_Form_V~~fourWheelerBaterryCount");
 		pl.add(batteryParamMap);
 		
 		batteryParamMap = new LinkedHashMap<String, String>();
-		batteryParamMap.put("New Batteries Sold - UPS","Battery~~Battery_Dealer_Annual_return_Form_V~~upsBatteryCount");
+		batteryParamMap.put("name","New Batteries Sold - UPS");
+		batteryParamMap.put("value","Battery~~Battery_Dealer_Annual_return_Form_V~~upsBatteryCount");
 		pl.add(batteryParamMap);
 		
 		batteryParamMap = new LinkedHashMap<String, String>();
-		batteryParamMap.put("New Batteries Sold - Motive Power","Battery~~Battery_Dealer_Annual_return_Form_V~~motivePowerCount");
+		batteryParamMap.put("name","New Batteries Sold - Motive Power");
+		batteryParamMap.put("value","Battery~~Battery_Dealer_Annual_return_Form_V~~motivePowerCount");
 		pl.add(batteryParamMap);
 		
 		batteryParamMap = new LinkedHashMap<String, String>();
-		batteryParamMap.put("New Batteries Sold - Stand By","Battery~~Battery_Dealer_Annual_return_Form_V~~standByCount");
+		batteryParamMap.put("name","New Batteries Sold - Stand By");
+		batteryParamMap.put("value","Battery~~Battery_Dealer_Annual_return_Form_V~~standByCount");
 		pl.add(batteryParamMap);
 		
 		batteryParamMap = new LinkedHashMap<String, String>();
-		batteryParamMap.put("New Batteries Sold - Others(Inverters)","Battery~~Battery_Dealer_Annual_return_Form_V~~othersCount");
+		batteryParamMap.put("name","New Batteries Sold - Others(Inverters)");
+		batteryParamMap.put("value","Battery~~Battery_Dealer_Annual_return_Form_V~~othersCount");
 		pl.add(batteryParamMap);
 		
 		batteryParamMap = new LinkedHashMap<String, String>();
-		batteryParamMap.put("Old/Used Batteries - 2 wheerler","Battery~~Battery_Dealer_Annual_return_Form_V~~twoWheelerBaterryCountOld");
+		batteryParamMap.put("name","Old/Used Batteries - 2 wheerler");
+		batteryParamMap.put("value","Battery~~Battery_Dealer_Annual_return_Form_V~~twoWheelerBaterryCountOld");
 		pl.add(batteryParamMap);
 		
 		batteryParamMap = new LinkedHashMap<String, String>();
-		batteryParamMap.put("Old/Used Batteries - 4 wheerler","Battery~~Battery_Dealer_Annual_return_Form_V~~fourWheelerBaterryCountOld");
+		batteryParamMap.put("name","Old/Used Batteries - 4 wheerler");
+		batteryParamMap.put("value","Battery~~Battery_Dealer_Annual_return_Form_V~~fourWheelerBaterryCountOld");
 		pl.add(batteryParamMap);
 		
 		batteryParamMap = new LinkedHashMap<String, String>();
-		batteryParamMap.put("Old/Used Batteries - UPS","Battery~~Battery_Dealer_Annual_return_Form_V~~upsBatteryCountOld");
+		batteryParamMap.put("name","Old/Used Batteries - UPS");
+		batteryParamMap.put("value","Battery~~Battery_Dealer_Annual_return_Form_V~~upsBatteryCountOld");
 		pl.add(batteryParamMap);
 		
 		batteryParamMap = new LinkedHashMap<String, String>();
-		batteryParamMap.put("Old/Used Batteries - Motive Power","Battery~~Battery_Dealer_Annual_return_Form_V~~motivePowerCountOld");
+		batteryParamMap.put("name","Old/Used Batteries - Motive Power");
+		batteryParamMap.put("value","Battery~~Battery_Dealer_Annual_return_Form_V~~motivePowerCountOld");
 		pl.add(batteryParamMap);
 		
 		batteryParamMap = new LinkedHashMap<String, String>();
-		batteryParamMap.put("Old/Used Batteries - Stand By","Battery~~Battery_Dealer_Annual_return_Form_V~~standByCountOld");
+		batteryParamMap.put("name","Old/Used Batteries - Stand By");
+		batteryParamMap.put("value","Battery~~Battery_Dealer_Annual_return_Form_V~~standByCountOld");
 		pl.add(batteryParamMap);
 		
 		batteryParamMap = new LinkedHashMap<String, String>();
-		batteryParamMap.put("Old/Used Batteries - Others(Inverters)","Battery~~Battery_Dealer_Annual_return_Form_V~~othersCountOld");
+		batteryParamMap.put("name","Old/Used Batteries - Others(Inverters)");
+		batteryParamMap.put("value","Battery~~Battery_Dealer_Annual_return_Form_V~~othersCountOld");
 		pl.add(batteryParamMap);
 		
 		batteryParamMap = new LinkedHashMap<String, String>();
-		batteryParamMap.put("Batteries Sold To - Dealers","Battery~~Battery_Dealer_Annual_return_Form_V~~dealersBatteryCount");
+		batteryParamMap.put("name","Batteries Sold To - Dealers");
+		batteryParamMap.put("value","Battery~~Battery_Dealer_Annual_return_Form_V~~dealersBatteryCount");
 		pl.add(batteryParamMap);
 		
 		batteryParamMap = new LinkedHashMap<String, String>();
-		batteryParamMap.put("Batteries Sold To - Bulk Consumers","Battery~~Battery_Dealer_Annual_return_Form_V~~bulkConsumersBatteryCount");
+		batteryParamMap.put("name","Batteries Sold To - Bulk Consumers");
+		batteryParamMap.put("value","Battery~~Battery_Dealer_Annual_return_Form_V~~bulkConsumersBatteryCount");
 		pl.add(batteryParamMap);
 		
 		batteryParamMap = new LinkedHashMap<String, String>();
-		batteryParamMap.put("Batteries Sold To - OEM","Battery~~Battery_Dealer_Annual_return_Form_V~~oemBatteryCount");
+		batteryParamMap.put("name","Batteries Sold To - OEM");
+		batteryParamMap.put("value","Battery~~Battery_Dealer_Annual_return_Form_V~~oemBatteryCount");
 		pl.add(batteryParamMap);
 		
 		batteryParamMap = new LinkedHashMap<String, String>();
-		batteryParamMap.put("Batteries Sold To - Others","Battery~~Battery_Dealer_Annual_return_Form_V~~anyOtherParty");
+		batteryParamMap.put("name","Batteries Sold To - Others");
+		batteryParamMap.put("value","Battery~~Battery_Dealer_Annual_return_Form_V~~anyOtherParty");
 		pl.add(batteryParamMap);
 		return pl;
 	}
@@ -726,55 +751,68 @@ public class IDSSUtil {
 		List<Map<String,String>> pl = new ArrayList<Map<String,String>>();
 		
 		Map<String,String> plasticParamMap = new LinkedHashMap<String, String>();
-		plasticParamMap.put("Authorization Form - Producer - Waste/year","Plastic~~Plastic_producer_authorization~~generationTotal");
+		plasticParamMap.put("name","Authorization Form - Producer - Waste/year");
+		plasticParamMap.put("value","Plastic~~Plastic_producer_authorization~~generationTotal");
 		pl.add(plasticParamMap);
 		
 		plasticParamMap = new LinkedHashMap<String, String>();
-		plasticParamMap.put("Authorization Form - BrandOwner - Waste/year","Plastic~~Plastic_brand_owner_authorization~~generationTotal");
+		plasticParamMap.put("name","Authorization Form - BrandOwner - Waste/year");
+		plasticParamMap.put("value","Plastic~~Plastic_brand_owner_authorization~~generationTotal");
 		pl.add(plasticParamMap);
 		
 		plasticParamMap = new LinkedHashMap<String, String>();
-		plasticParamMap.put("Authorization Form - Recycler - WasteProcessed/year","Plastic~~Plastic_recycler_authorization~~wasteQuantityProcessed");
+		plasticParamMap.put("name","Authorization Form - Recycler - WasteProcessed/year");
+		plasticParamMap.put("value","Plastic~~Plastic_recycler_authorization~~wasteQuantityProcessed");
 		pl.add(plasticParamMap);
 		
 		plasticParamMap = new LinkedHashMap<String, String>();
-		plasticParamMap.put("Authorization Form - Raw Material Production/MTA","Plastic~~Plastic_raw_material_manufacturer_authorization~~produceQty");
+		plasticParamMap.put("name","Authorization Form - Raw Material Production/MTA");
+		plasticParamMap.put("value","Plastic~~Plastic_raw_material_manufacturer_authorization~~produceQty");
 		pl.add(plasticParamMap);
 		
 		plasticParamMap = new LinkedHashMap<String, String>();
-		plasticParamMap.put("Form 4 - Waste Received","Plastic~~Plastic_annual_report_recycling_facility_form_IV~~quantityReceived");
+		plasticParamMap.put("name","Form 4 - Waste Received");
+		plasticParamMap.put("value","Plastic~~Plastic_annual_report_recycling_facility_form_IV~~quantityReceived");
 		pl.add(plasticParamMap);
 		
 		plasticParamMap = new LinkedHashMap<String, String>();
-		plasticParamMap.put("Form 4 - Waste Recycled","Plastic~~Plastic_annual_report_recycling_facility_form_IV~~quantityRecycled");
+		plasticParamMap.put("name","Form 4 - Waste Recycled");
+		plasticParamMap.put("value","Plastic~~Plastic_annual_report_recycling_facility_form_IV~~quantityRecycled");
 		pl.add(plasticParamMap);
 		
 		plasticParamMap = new LinkedHashMap<String, String>();
-		plasticParamMap.put("Form 4 - Waste Disposed","Plastic~~Plastic_annual_report_recycling_facility_form_IV~~quantityDisposed");
+		plasticParamMap.put("name","Form 4 - Waste Disposed");
+		plasticParamMap.put("value","Plastic~~Plastic_annual_report_recycling_facility_form_IV~~quantityDisposed");
 		pl.add(plasticParamMap);
 		
 		plasticParamMap = new LinkedHashMap<String, String>();
-		plasticParamMap.put("Form 4 - Inert Produced","Plastic~~Plastic_annual_report_recycling_facility_form_IV~~quantityInerts");
+		plasticParamMap.put("name","Form 4 - Inert Produced");
+		plasticParamMap.put("value","Plastic~~Plastic_annual_report_recycling_facility_form_IV~~quantityInerts");
 		pl.add(plasticParamMap);
 		
 		plasticParamMap = new LinkedHashMap<String, String>();
-		plasticParamMap.put("Form 5 - Waste Gen.","Plastic~~Plastic_annual_report_local_body_form_V~~plasticWasteGeneratedQuantity");
+		plasticParamMap.put("name","Form 5 - Waste Gen.");
+		plasticParamMap.put("value","Plastic~~Plastic_annual_report_local_body_form_V~~plasticWasteGeneratedQuantity");
 		pl.add(plasticParamMap);
 		
 		plasticParamMap = new LinkedHashMap<String, String>();
-		plasticParamMap.put("Form 5 - Waste Collected","Plastic~~Plastic_annual_report_local_body_form_V~~plasticWasteCollectedQuantity");
+		plasticParamMap.put("name","Form 5 - Waste Collected");
+		plasticParamMap.put("value","Plastic~~Plastic_annual_report_local_body_form_V~~plasticWasteCollectedQuantity");
 		pl.add(plasticParamMap);
 		
 		plasticParamMap = new LinkedHashMap<String, String>();
-		plasticParamMap.put("Form 5 - Waste Recycled","Plastic~~Plastic_annual_report_local_body_form_V~~plasticWasteRecycledQuantity");
+		plasticParamMap.put("name","Form 5 - Waste Recycled");
+		plasticParamMap.put("value","Plastic~~Plastic_annual_report_local_body_form_V~~plasticWasteRecycledQuantity");
 		pl.add(plasticParamMap);
 		
 		plasticParamMap = new LinkedHashMap<String, String>();
-		plasticParamMap.put("Form 5 - Waste Processed","Plastic~~Plastic_annual_report_local_body_form_V~~plasticWasteProcessedQuantity");
+		plasticParamMap.put("name","Form 5 - Waste Processed");
+		plasticParamMap.put("value","Plastic~~Plastic_annual_report_local_body_form_V~~plasticWasteProcessedQuantity");
 		pl.add(plasticParamMap);
 		
 		plasticParamMap = new LinkedHashMap<String, String>();
-		plasticParamMap.put("Form 5 - Waste sent to Landfill","Plastic~~Plastic_annual_report_local_body_form_V~~landPlasticWasteQuantity");
+		plasticParamMap.put("name","Form 5 - Waste sent to Landfill");
+		plasticParamMap.put("value","Plastic~~Plastic_annual_report_local_body_form_V~~landPlasticWasteQuantity");
 		pl.add(plasticParamMap);
 		
 		return pl;
@@ -784,59 +822,73 @@ public class IDSSUtil {
 		List<Map<String,String>> pl = new ArrayList<Map<String,String>>();
 		
 		Map<String,String> bioMedWasteParamMap = new LinkedHashMap<String, String>();
-		bioMedWasteParamMap.put("Yellow","BioMedWaste~~BMW_Annual_return_Comparison~~yellowCategory");
+		bioMedWasteParamMap.put("name","Yellow");
+		bioMedWasteParamMap.put("value","BioMedWaste~~BMW_Annual_return_Comparison~~yellowCategory");
 		pl.add(bioMedWasteParamMap);
 		
 		bioMedWasteParamMap = new LinkedHashMap<String, String>();
-		bioMedWasteParamMap.put("Red","BioMedWaste~~BMW_Annual_return_Comparison~~redCategory");
+		bioMedWasteParamMap.put("name","Red");
+		bioMedWasteParamMap.put("value","BioMedWaste~~BMW_Annual_return_Comparison~~redCategory");
 		pl.add(bioMedWasteParamMap);
 		
 		bioMedWasteParamMap = new LinkedHashMap<String, String>();
-		bioMedWasteParamMap.put("Blue ","BioMedWaste~~BMW_Annual_return_Comparison~~blueCategory");
+		bioMedWasteParamMap.put("name","Blue");
+		bioMedWasteParamMap.put("value","BioMedWaste~~BMW_Annual_return_Comparison~~blueCategory");
 		pl.add(bioMedWasteParamMap);
 		
 		bioMedWasteParamMap = new LinkedHashMap<String, String>();
-		bioMedWasteParamMap.put("White","BioMedWaste~~BMW_Annual_return_Comparison~~whiteCategory");
+		bioMedWasteParamMap.put("name","White");
+		bioMedWasteParamMap.put("value","BioMedWaste~~BMW_Annual_return_Comparison~~whiteCategory");
 		pl.add(bioMedWasteParamMap);
 		
 		bioMedWasteParamMap = new LinkedHashMap<String, String>();
-		bioMedWasteParamMap.put("Category 01","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamMap.put("name","Category 01");
+		bioMedWasteParamMap.put("value","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
 		pl.add(bioMedWasteParamMap);
 		
 		bioMedWasteParamMap = new LinkedHashMap<String, String>();
-		bioMedWasteParamMap.put("Category 02","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamMap.put("name","Category 02");
+		bioMedWasteParamMap.put("value","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
 		pl.add(bioMedWasteParamMap);
 		
 		bioMedWasteParamMap = new LinkedHashMap<String, String>();
-		bioMedWasteParamMap.put("Category 03","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamMap.put("name","Category 03");
+		bioMedWasteParamMap.put("value","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
 		pl.add(bioMedWasteParamMap);
 		
 		bioMedWasteParamMap = new LinkedHashMap<String, String>();
-		bioMedWasteParamMap.put("Category 04","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamMap.put("name","Category 04");
+		bioMedWasteParamMap.put("value","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
 		pl.add(bioMedWasteParamMap);
 		
 		bioMedWasteParamMap = new LinkedHashMap<String, String>();
-		bioMedWasteParamMap.put("Category 05","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamMap.put("name","Category 05");
+		bioMedWasteParamMap.put("value","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
 		pl.add(bioMedWasteParamMap);
 		
 		bioMedWasteParamMap = new LinkedHashMap<String, String>();
-		bioMedWasteParamMap.put("Category 06","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamMap.put("name","Category 06");
+		bioMedWasteParamMap.put("value","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
 		pl.add(bioMedWasteParamMap);
 		
 		bioMedWasteParamMap = new LinkedHashMap<String, String>();
-		bioMedWasteParamMap.put("Category 07","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamMap.put("name","Category 07");
+		bioMedWasteParamMap.put("value","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
 		pl.add(bioMedWasteParamMap);
 		
 		bioMedWasteParamMap = new LinkedHashMap<String, String>();
-		bioMedWasteParamMap.put("Category 08","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamMap.put("name","Category 08");
+		bioMedWasteParamMap.put("value","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
 		pl.add(bioMedWasteParamMap);
 		
 		bioMedWasteParamMap = new LinkedHashMap<String, String>();
-		bioMedWasteParamMap.put("Category 09","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamMap.put("name","Category 09");
+		bioMedWasteParamMap.put("value","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
 		pl.add(bioMedWasteParamMap);
 		
 		bioMedWasteParamMap = new LinkedHashMap<String, String>();
-		bioMedWasteParamMap.put("Category 10","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
+		bioMedWasteParamMap.put("name","Category 10");
+		bioMedWasteParamMap.put("value","BioMedWaste~~BMW_Authorization_comparison~~bioMedicalWasteName~~bioMedicalWasteQuantity");
 		pl.add(bioMedWasteParamMap);
 		
 		return pl;
