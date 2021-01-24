@@ -274,7 +274,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	}
 
 	@Override
-	public  List<PollutionScoreResponseVo> getPollutionScoreData(PollutionScoreFilter cf) {
+	public  List<Map<String,String>> getPollutionScoreData(PollutionScoreFilter cf) {
 
 		logger.info("getPollutionScoreData..."+cf.getIndustryId());
 		List<PollutionScoreResponseVo> responseList = new ArrayList<PollutionScoreResponseVo>();
@@ -315,8 +315,19 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			
 			responseList.add(psrVo);
 		}
+		
+		List<Map<String,String>> lms = new ArrayList<Map<String,String>>();
+		for(PollutionScoreResponseVo rv : responseList) {
+			List<PollutionScoreValueVo> pvL =   rv.getPsv();
+			for(PollutionScoreValueVo pVO : pvL) {
+				Map<String,String> msd = new LinkedHashMap<String, String>();
+				msd.put("date", pVO.getMonthYear());
+				msd.put(rv.getForm()+"~~"+rv.getParam(), String.valueOf(pVO.getValue()));
+				lms.add(msd);
+			}
+		}
 
-		return responseList;
+		return lms;
 	}
 	
 	private List<PollutionScoreValueVo> getOCEMSPollutionScoreValue(String formType,String industryIdentifier, long industryId,String collectionName,

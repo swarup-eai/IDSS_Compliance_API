@@ -140,8 +140,8 @@ public class IndustryMasterController {
    
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(method = RequestMethod.POST, value = "/industry-master-score-card/pollution-score",  produces = "application/json")
-   	public ResponseEntity  <List<PollutionScoreResponseVo>> getPollutionScoreCardDatabyDate(@RequestBody PollutionScoreFilter imr) throws IOException {
-    	List<PollutionScoreResponseVo> iml = null;
+   	public ResponseEntity  <List<Map<String,String>>> getPollutionScoreCardDatabyDate(@RequestBody PollutionScoreFilter imr) throws IOException {
+    	List<Map<String,String>> iml = null;
        	try {
    	    	iml=imd.getPollutionScoreData(imr);
    		} catch (Exception e) {
@@ -149,7 +149,7 @@ public class IndustryMasterController {
    			
    			return new ResponseEntity("Exception in /industry-master-score-card/pollution-score", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
-        return new ResponseEntity<List<PollutionScoreResponseVo>>(iml,HttpStatus.OK);
+        return new ResponseEntity<List<Map<String,String>>>(iml,HttpStatus.OK);
         
     }
     

@@ -20,7 +20,7 @@ public interface IndustryMasterDao {
 	
 	public List<ComplianceScoreResponseVo> getByIndustryIdComplianceScoreData(ComlianceScoreFilter imr);
 
-	public  List<PollutionScoreResponseVo> getPollutionScoreData(PollutionScoreFilter imr);
+	public  List<Map<String,String>> getPollutionScoreData(PollutionScoreFilter imr);
 
 	public ComparisonTableResponseVo getComparisonData(long industryId,int consentYear,int esrYear,int form4Year);
 	
