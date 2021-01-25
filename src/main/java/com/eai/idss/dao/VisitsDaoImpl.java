@@ -1182,6 +1182,9 @@ public class VisitsDaoImpl implements VisitsDao {
 				visitScheduleVo.setType(vsd.getType());
 				visitScheduleVo.setCategory(vsd.getCategory());
 				visitScheduleVo.setScheduledOn(vsd.getSchduledOn());
+				visitScheduleVo.setLongitude(vsd.getLongitude());
+				visitScheduleVo.setLatitude(vsd.getLatitude());
+				visitScheduleVo.setPriority(vsd.getPriority());
 
 				visitScheduleList.add(visitScheduleVo);
 			}
