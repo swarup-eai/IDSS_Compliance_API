@@ -66,12 +66,12 @@ public class LegalController {
 	}
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping(method = RequestMethod.GET, value = "/legal-dashboard/pending-legal-actions",  produces = "application/json")
-	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getLegalDashboardPendingData(@RequestHeader String userName) throws IOException {
+	@RequestMapping(method = RequestMethod.POST, value = "/legal-dashboard/pending-legal-actions",  produces = "application/json")
+	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getLegalDashboardPendingData(@RequestHeader String userName, @RequestBody LegalFilter cf) throws IOException {
     	Map<String,Map<String,List<TileVo>>> ct = new LinkedHashMap<String, Map<String,List<TileVo>>>();
 	    try {
 	    	User u = userRepository.findByUserName(userName);
-	    	ct.put("pendingRequest",cd.getPendingLegalActionsData(u.getRegion(),u.getSubRegion()));
+	    	ct.put("pendingRequest",cd.getPendingLegalActionsData(cf,u.getRegion(),u.getSubRegion()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /legal-dashboard/pending-legal-actions", HttpStatus.INTERNAL_SERVER_ERROR);

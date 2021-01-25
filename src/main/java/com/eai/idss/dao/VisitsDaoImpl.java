@@ -834,7 +834,7 @@ public class VisitsDaoImpl implements VisitsDao {
 		try {
 			Query query = new Query();
 			
-			query.addCriteria(Criteria.where("industryId").is(String.valueOf(industryId)));
+			query.addCriteria(Criteria.where("industryId").is(industryId));
 			
 			List<Visits> industryVisitsList= mongoTemplate.find(query, Visits.class);
 			

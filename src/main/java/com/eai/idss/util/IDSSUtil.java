@@ -430,6 +430,7 @@ public class IDSSUtil {
 		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		String dateToday = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date5DaysBack = currentTime.minusDays(5).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String date7DaysBack = currentTime.minusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date15DaysBack = currentTime.minusDays(15).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date30DaysBack = currentTime.minusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date90DaysBack = currentTime.minusDays(90).format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -441,6 +442,11 @@ public class IDSSUtil {
 		days.add(dateToday);
 		days.add(date5DaysBack);
 		daysMap.put("_0To5Days",days);
+		
+		days = new ArrayList<String>();
+		days.add(dateToday);
+		days.add(date7DaysBack);
+		daysMap.put("_0To7Days",days);
 		
 		days = new ArrayList<String>();
 		days.add(date5DaysBack);
