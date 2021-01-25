@@ -133,35 +133,34 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 				query.addCriteria(Criteria.where("scale").is(imr.getScale()));
 			if(StringUtils.hasText(imr.getType()) && !"All".equalsIgnoreCase(imr.getType()))
 				query.addCriteria(Criteria.where("type").is(imr.getType()));
-			if(null!=imr.getComplianceScore() && !"All".equalsIgnoreCase(imr.getComplianceScore())) {
-				if("-".equalsIgnoreCase(imr.getComplianceScore())) {
+			if(StringUtils.hasText(imr.getComplianceScore()) && !"All".equalsIgnoreCase(imr.getComplianceScore())) {
+				if(imr.getComplianceScore().contains("-")) {
 					String[] csString = imr.getComplianceScore().split("-");
-					query.addCriteria(Criteria.where("complianceScore")
-							.gte(csString[0])
-							.lte(csString[1]));
+					query.addCriteria(Criteria.where("cscore")
+							.gte(Integer.parseInt(csString[0]))
+							.lte(Integer.parseInt(csString[1])));
 				}
 			}
 			if(StringUtils.hasText(imr.getLegalActions()) && !"All".equalsIgnoreCase(imr.getLegalActions())) {
-				if("-".equalsIgnoreCase(imr.getLegalActions())) {
+				if(imr.getLegalActions().contains("-")) {
 					String[] csString = imr.getLegalActions().split("-");
 					query.addCriteria(Criteria.where("legalActions")
-							.gte(csString[0])
-							.lte(csString[1]));
+							.gte(Integer.parseInt(csString[0]))
+							.lte(Integer.parseInt(csString[1])));
 				}else if("Above".equalsIgnoreCase(imr.getLegalActions())) {
 					query.addCriteria(Criteria.where("legalActions").gt(50));
 				}
 			}
-			if(StringUtils.hasText(imr.getPendingCases()) && !"All".equalsIgnoreCase(imr.getPendingCases()))
-				query.addCriteria(Criteria.where("pendingCases").is(imr.getPendingCases()));
-			
-				if("-".equalsIgnoreCase(imr.getPendingCases())) {
+			if(StringUtils.hasText(imr.getPendingCases()) && !"All".equalsIgnoreCase(imr.getPendingCases())) {
+				if(imr.getPendingCases().contains("-")) {
 					String[] csString = imr.getPendingCases().split("-");
 					query.addCriteria(Criteria.where("pendingCases")
-							.gte(csString[0])
-							.lte(csString[1]));
+							.gte(Integer.parseInt(csString[0]))
+							.lte(Integer.parseInt(csString[1])));
 				}else if("Above".equalsIgnoreCase(imr.getPendingCases())) {
 					query.addCriteria(Criteria.where("pendingCases").gt(50));
 				}
+			}
 		}
 		
 
