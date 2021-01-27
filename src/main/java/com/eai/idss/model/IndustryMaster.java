@@ -13,7 +13,7 @@ public class IndustryMaster {
 
 	@Id
 	private String _id;
-	private int industryId;
+	private long industryId;
 	private String region;
 	private String subRegion;
 	private String industryName;
@@ -24,16 +24,16 @@ public class IndustryMaster {
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date commissioningDate;
 	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date concentValidity;
+	private Date consentValidityDate;
 	private int totalLegalActions;
 	private int legalActionsPending;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate lastVisited;
 	
-	public int getIndustryId() {
+	public long getIndustryId() {
 		return industryId;
 	}
-	public void setIndustryId(int industryId) {
+	public void setIndustryId(long industryId) {
 		this.industryId = industryId;
 	}
 	public String getSubRegion() {
@@ -91,11 +91,12 @@ public class IndustryMaster {
 	public void setCommissioningDate(Date commissioningDate) {
 		this.commissioningDate = commissioningDate;
 	}
-	public Date getConcentValidity() {
-		return concentValidity;
+	
+	public Date getConsentValidityDate() {
+		return consentValidityDate;
 	}
-	public void setConcentValidity(Date concentValidity) {
-		this.concentValidity = concentValidity;
+	public void setConsentValidityDate(Date consentValidityDate) {
+		this.consentValidityDate = consentValidityDate;
 	}
 	public int getTotalLegalActions() {
 		return totalLegalActions;

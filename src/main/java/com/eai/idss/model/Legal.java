@@ -23,7 +23,14 @@ public class Legal {
 	private String subRegion;
 	private double totalLegalActionsCreated;
 	private int totalDirections;
+	private long industryId;
 	
+	public long getIndustryId() {
+		return industryId;
+	}
+	public void setIndustryId(long industryId) {
+		this.industryId = industryId;
+	}
 	public int getTotalDirections() {
 		return totalDirections;
 	}
