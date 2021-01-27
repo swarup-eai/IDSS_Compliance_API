@@ -1,9 +1,12 @@
 package com.eai.idss.vo;
 
+import java.util.List;
+
 public class TileVo {
 
 	private String caseType;
 	private int caseCount;
+	private List<Integer> industries;
 	
 	public TileVo() {
 		
@@ -14,6 +17,14 @@ public class TileVo {
 		this.caseCount = caseCount;
 	}
 	
+	public List<Integer> getIndustries() {
+		return industries;
+	}
+
+	public void setIndustries(List<Integer> industries) {
+		this.industries = industries;
+	}
+
 	public String getCaseType() {
 		return caseType;
 	}

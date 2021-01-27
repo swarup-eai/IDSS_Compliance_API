@@ -173,12 +173,14 @@ public class GenericDaoImpl implements GenericDao {
 		                        .append("caseCount", new Document()
 		                                .append("$sum", 1)
 		                        )
+		                        .append("industries", new Document().append("$addToSet", "$industryId"))
 		                ),
 		        new Document()
 		            .append("$project", new Document()
 		                    .append("_id", false)
 		                    .append("caseType", "$_id")
 		                    .append("caseCount", "$caseCount")
+		                    .append("industries", "$industries")
 		            )
 				);
 		return pipeline;

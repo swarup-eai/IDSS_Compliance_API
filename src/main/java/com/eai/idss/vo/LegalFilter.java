@@ -11,6 +11,22 @@ public class LegalFilter {
 	List<String> subRegionWiseScaleList;
 	List<String> subRegionWiseCategoryList;
 	
+	List<String> pendingResponseByIndustryScaleList;
+	List<String> pendingResponseByIndustryCategoryList;
+
+	public List<String> getPendingResponseByIndustryScaleList() {
+		return pendingResponseByIndustryScaleList;
+	}
+	public void setPendingResponseByIndustryScaleList(List<String> pendingResponseByIndustryScaleList) {
+		this.pendingResponseByIndustryScaleList = pendingResponseByIndustryScaleList;
+	}
+	public List<String> getPendingResponseByIndustryCategoryList() {
+		return pendingResponseByIndustryCategoryList;
+	}
+	public void setPendingResponseByIndustryCategoryList(List<String> pendingResponseByIndustryCategoryList) {
+		this.pendingResponseByIndustryCategoryList = pendingResponseByIndustryCategoryList;
+	}
+	
 	public List<String> getRegionWiseScaleList() {
 		return regionWiseScaleList;
 	}

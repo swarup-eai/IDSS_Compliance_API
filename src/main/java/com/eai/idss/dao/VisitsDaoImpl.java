@@ -834,7 +834,7 @@ public class VisitsDaoImpl implements VisitsDao {
 		try {
 			Query query = new Query();
 			
-			query.addCriteria(Criteria.where("industryId").is(String.valueOf(industryId)));
+			query.addCriteria(Criteria.where("industryId").is(industryId));
 			
 			List<Visits> industryVisitsList= mongoTemplate.find(query, Visits.class);
 			
@@ -1182,6 +1182,9 @@ public class VisitsDaoImpl implements VisitsDao {
 				visitScheduleVo.setType(vsd.getType());
 				visitScheduleVo.setCategory(vsd.getCategory());
 				visitScheduleVo.setScheduledOn(vsd.getSchduledOn());
+				visitScheduleVo.setLongitude(vsd.getLongitude());
+				visitScheduleVo.setLatitude(vsd.getLatitude());
+				visitScheduleVo.setPriority(vsd.getPriority());
 
 				visitScheduleList.add(visitScheduleVo);
 			}

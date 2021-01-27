@@ -39,29 +39,34 @@ public class IDSSUtil {
 				getAllSubRegions(subRegionList);
 				break;
 			case "Mumbai":
+				subRegionList.add("ALL");
 				subRegionList.add("Mumbai I");
 				subRegionList.add("Mumbai II");
 				subRegionList.add("Mumbai III");
 				subRegionList.add("Mumbai IV");
 				break;
 			case "Kalyan":
+				subRegionList.add("ALL");
 				subRegionList.add("Kalyan I");
 				subRegionList.add("Kalyan II");
 				subRegionList.add("Kalyan III");
 				subRegionList.add("Bhiwandi");
 				break;
 			case "Kolhapur":
+				subRegionList.add("ALL");
 				subRegionList.add("Kolhapur");
 				subRegionList.add("Sangli");
 				subRegionList.add("Ratnagiri");
 				subRegionList.add("Chiplun");
 				break;
 			case "Nagpur":
+				subRegionList.add("ALL");
 				subRegionList.add("Nagpur I");
 				subRegionList.add("Nagpur II");
 				subRegionList.add("Bhandara");
 				break;
 			case "Aurangabad":
+				subRegionList.add("ALL");
 				subRegionList.add("Aurangabad I");
 				subRegionList.add("Jalna");
 				subRegionList.add("Latur");
@@ -69,17 +74,20 @@ public class IDSSUtil {
 				subRegionList.add("Parbhani");
 				break;
 			case "Nashik":
+				subRegionList.add("ALL");
 				subRegionList.add("Nashik");
 				subRegionList.add("Jalgaon");
 				subRegionList.add("Dhule");
 				subRegionList.add("Ahmednagar");
 				break;
 			case "Navi Mumbai":
+				subRegionList.add("ALL");
 				subRegionList.add("Navi Mumbai I");
 				subRegionList.add("Navi Mumbai II");
 				subRegionList.add("Taloja");
 				break;
 			case "Pune":
+				subRegionList.add("ALL");
 				subRegionList.add("Pune I");
 				subRegionList.add("Pune II");
 				subRegionList.add("Pimpri-Chichwad");
@@ -87,20 +95,24 @@ public class IDSSUtil {
 				subRegionList.add("Solapur");
 				break;
 			case "Raigad":
+				subRegionList.add("ALL");
 				subRegionList.add("Raigad I");
 				subRegionList.add("Raigad II");
 				subRegionList.add("Mahad");
 				break;
 			case "Thane":
+				subRegionList.add("ALL");
 				subRegionList.add("Thane I");
 				subRegionList.add("Thane II");
 				subRegionList.add("Tarapur");
 				subRegionList.add("Tarapur II");
 				break;
 			case "Chandrapur":
+				subRegionList.add("ALL");
 				subRegionList.add("Chandrapur-I");
 				break;
 			case "Amravati":
+				subRegionList.add("ALL");
 				subRegionList.add("Amravati I");
 				subRegionList.add("Amravati II");
 				subRegionList.add("Akola");
@@ -113,6 +125,7 @@ public class IDSSUtil {
 	}
 
 	private static void getAllSubRegions(List<String> subRegionList) {
+		subRegionList.add("ALL");
 		subRegionList.add("Mumbai I");
 		subRegionList.add("Mumbai II");
 		subRegionList.add("Mumbai III");
@@ -417,6 +430,7 @@ public class IDSSUtil {
 		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		String dateToday = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date5DaysBack = currentTime.minusDays(5).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String date7DaysBack = currentTime.minusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date15DaysBack = currentTime.minusDays(15).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date30DaysBack = currentTime.minusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date90DaysBack = currentTime.minusDays(90).format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -428,6 +442,11 @@ public class IDSSUtil {
 		days.add(dateToday);
 		days.add(date5DaysBack);
 		daysMap.put("_0To5Days",days);
+		
+		days = new ArrayList<String>();
+		days.add(dateToday);
+		days.add(date7DaysBack);
+		daysMap.put("_0To7Days",days);
 		
 		days = new ArrayList<String>();
 		days.add(date5DaysBack);

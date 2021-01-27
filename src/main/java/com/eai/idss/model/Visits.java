@@ -27,7 +27,11 @@ public class Visits {
 	private LocalDate reportCreatedOn;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate legalDirectionIssuedOn;
-	
+
+	private Double latitude;
+	private Double longitude;
+	private String priority;
+
 	public long getIndustryId() {
 		return industryId;
 	}
@@ -111,6 +115,25 @@ public class Visits {
 	}
 	public void setcScore(int cScore) {
 		this.cScore = cScore;
+	}
+
+	public Double  getLatitude() {
+		return latitude;
+	}
+	public void setLatitude(Double  latitude) {
+		this.latitude = latitude;
+	}
+	public Double  getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(Double  longitude) {
+		this.longitude = longitude;
+	}
+	public void setPriority(String priority) {
+		this.priority = priority;
+	}
+	public String getPriority() {
+		return priority;
 	}
 	
 }

@@ -53,7 +53,7 @@ public class LegalDaoImpl implements LegalDao {
 	@Autowired
 	MongoClient mongoClient;
 
-	public Map<String,List<TileVo>> getPendingLegalActionsData(String region,String subRegion){
+	public Map<String,List<TileVo>> getPendingLegalActionsData(LegalFilter cf,String region,String subRegion){
 		try {
 			logger.info("getPendingLegalActionsData");
 			Map<String, List<String>> daysMap = IDSSUtil.getDaysMapForLegal();
@@ -65,7 +65,7 @@ public class LegalDaoImpl implements LegalDao {
             
             for(String days : daysMap.keySet()) {
             	logger.info("getPendingLegalActionsData : "+days);
-	            List<? extends Bson> pipeline = getPendingLegalActionsPipeline(daysMap.get(days),region,subRegion);
+            	List<? extends Bson> pipeline = getPendingLegalActionsPipeline(cf,daysMap.get(days),region,subRegion);
 	            
 	            List<TileVo> tVoList = new ArrayList<TileVo>();
 	            collection.aggregate(pipeline)
@@ -97,7 +97,7 @@ public class LegalDaoImpl implements LegalDao {
 		return null;
 	}
 	
-	private List<? extends Bson> getPendingLegalActionsPipeline(List<String> days,String region,String subRegion) throws ParseException {
+	private List<? extends Bson> getPendingLegalActionsPipeline(LegalFilter cf,List<String> days,String region,String subRegion) throws ParseException {
 		
 		Document matchDoc = new Document();
 		
@@ -108,6 +108,12 @@ public class LegalDaoImpl implements LegalDao {
 		matchDoc.append("legalDirection", new Document().append("$in", IDSSUtil.getLegalActionsList()));
 		
 		matchDoc.append("complied",0);
+		
+		if(null!=cf && null!=cf.getPendingResponseByIndustryCategoryList() ) 
+			matchDoc.append("category", new Document().append("$in", cf.getPendingResponseByIndustryCategoryList()));
+		if(null!=cf && null!=cf.getPendingResponseByIndustryScaleList() ) 
+			matchDoc.append("scale", new Document().append("$in", cf.getPendingResponseByIndustryScaleList()));
+
 		
 		if(!"ALL".equalsIgnoreCase(region))
 			matchDoc.append("region",region);
