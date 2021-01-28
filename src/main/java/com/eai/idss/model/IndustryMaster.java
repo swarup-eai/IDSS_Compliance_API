@@ -29,7 +29,10 @@ public class IndustryMaster {
 	private int legalActionsPending;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate lastVisited;
-	
+
+	private String latitudeDegree;
+	private String longitudeDegree;
+
 	public long getIndustryId() {
 		return industryId;
 	}
@@ -115,6 +118,19 @@ public class IndustryMaster {
 	}
 	public void setLastVisited(LocalDate lastVisited) {
 		this.lastVisited = lastVisited;
+	}
+
+	public String  getLatitudeDegree() {
+		return latitudeDegree;
+	}
+	public void setLatitudeDegree(String  latitudeDegree) {
+		this.latitudeDegree = latitudeDegree;
+	}
+	public String  getLongitudeDegree() {
+		return longitudeDegree;
+	}
+	public void setLongitudeDegree(String  longitudeDegree) {
+		this.longitudeDegree = longitudeDegree;
 	}
 	
 }

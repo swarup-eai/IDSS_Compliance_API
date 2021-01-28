@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import com.eai.idss.model.*;
+import com.eai.idss.vo.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.jboss.logging.Logger;
@@ -24,8 +26,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
-import com.eai.idss.model.CScoreMaster;
-import com.eai.idss.model.IndustryTypes;
 import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.DashboardRequest;
 import com.eai.idss.vo.HeatmapResponseVo;
@@ -50,6 +50,7 @@ public class GenericDaoImpl implements GenericDao {
 
 	@Autowired
 	MongoTemplate mongoTemplate;
+
 
 	public Map<String,List<TileVo>> getConcentTileData(DashboardRequest dbr){
 		try {
@@ -695,6 +696,31 @@ public class GenericDaoImpl implements GenericDao {
 			}
 			return heatmapData;
 		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public List<HeatmapResponseVo> getHeatmapDataByIndustryIds(List<Integer> industryIds) {
+		try {
+			Query query = new Query();
+
+			query.addCriteria(Criteria.where("industryId").in(industryIds));
+
+			List<IndustryMaster> industryMasterList= mongoTemplate.find(query, IndustryMaster.class);
+
+			List<HeatmapResponseVo> industryTypes =  industryMasterList.stream().map(data -> {
+				HeatmapResponseVo heatmapResponseVo = new HeatmapResponseVo();
+				heatmapResponseVo.setIndustryName(data.getIndustryName());
+				heatmapResponseVo.setLatitude(data.getLatitudeDegree());
+				heatmapResponseVo.setLongitude(data.getLongitudeDegree());
+				return heatmapResponseVo;
+			}).collect(Collectors.toList());
+			return industryTypes;
+
+		}
+		catch(Exception e) {
 			e.printStackTrace();
 		}
 		return null;

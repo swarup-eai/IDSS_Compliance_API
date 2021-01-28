@@ -7,16 +7,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.eai.idss.vo.HeatmapResponseVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.eai.idss.dao.GenericDao;
 import com.eai.idss.model.User;
@@ -92,4 +87,17 @@ public class CommonController {
 	public ResponseEntity<List<String>> getIndustryType(@PathVariable("category") String category) throws IOException {
 	    return new ResponseEntity<List<String>>(gd.getIndustryTypes(category),HttpStatus.OK);
 	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "/heat-map-dashboard", produces = "application/json")
+	public ResponseEntity<List<HeatmapResponseVo>> getHeadMapDetailByIndustryIds(@RequestParam List<Integer> industryIds) throws IOException {
+		List<HeatmapResponseVo> heatmapResponseVo = null;
+		try {
+			heatmapResponseVo = gd.getHeatmapDataByIndustryIds(industryIds);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity("Exception in /heat-dashboard", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<List<HeatmapResponseVo>>(heatmapResponseVo,HttpStatus.OK);
+	}
+
 }
