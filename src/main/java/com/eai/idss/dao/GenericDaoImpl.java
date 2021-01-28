@@ -29,7 +29,6 @@ import com.eai.idss.model.IndustryTypes;
 import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.DashboardRequest;
 import com.eai.idss.vo.HeatmapResponseVo;
-import com.eai.idss.vo.LegalTileVo;
 import com.eai.idss.vo.MyVisits;
 import com.eai.idss.vo.MyVisitsIndustries;
 import com.eai.idss.vo.TileVo;
@@ -114,38 +113,22 @@ public class GenericDaoImpl implements GenericDao {
             
             for(String days : daysMap.keySet()) {
             	logger.info("getLegalTileData : "+days);
-	            List<? extends Bson> pipeline = getLegalTilePipeline(daysMap.get(days),dbr);
+            	List<TileVo> tVoList = new ArrayList<TileVo>();
+	            List<? extends Bson> pipeline = getLegalTilePipeline(daysMap.get(days),dbr,"new");
 	            
-	            List<TileVo> tVoList = new ArrayList<TileVo>();
-	            collection.aggregate(pipeline)
-	                    .allowDiskUse(false)
-	                    .forEach(new Consumer<Document>() {
-		    	                @Override
-		    	                public void accept(Document document) {
-		    	                    logger.info(document.toJson());
-									try {
-										LegalTileVo ltVo = new ObjectMapper().readValue(document.toJson(), LegalTileVo.class);
-										TileVo tVoNew = new TileVo("new",ltVo.getNeu());
-										tVoList.add(tVoNew);
-										
-										TileVo tVoNotice = new TileVo("notice",ltVo.getNotice());
-										tVoList.add(tVoNotice);
-										
-										TileVo tVoAction = new TileVo("action",ltVo.getAction());
-										tVoList.add(tVoAction);
-										
-										TileVo tVoComplied = new TileVo("complied",ltVo.getComplied());
-										tVoList.add(tVoComplied);
-									
-									} catch (JsonMappingException e) {
-										e.printStackTrace();
-									} catch (JsonProcessingException e) {
-										e.printStackTrace();
-									}
-		    	                    
-		    	                }
-		    	            }
-	                    );
+	            getLegalDataCount(collection, pipeline, tVoList);
+	            
+	            pipeline = getLegalTilePipeline(daysMap.get(days),dbr,"notice");
+	            
+	            getLegalDataCount(collection, pipeline, tVoList);
+	            
+	            pipeline = getLegalTilePipeline(daysMap.get(days),dbr,"actions");
+	            
+	            getLegalDataCount(collection, pipeline, tVoList);
+	            
+	            pipeline = getLegalTilePipeline(daysMap.get(days),dbr,"complied");
+	            
+	            getLegalDataCount(collection, pipeline, tVoList);
 	            tileMap.put(days, tVoList);
             
             }
@@ -154,6 +137,29 @@ public class GenericDaoImpl implements GenericDao {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private void getLegalDataCount(MongoCollection<Document> collection, List<? extends Bson> pipeline,
+			List<TileVo> tVoList) {
+		collection.aggregate(pipeline)
+		        .allowDiskUse(false)
+		        .forEach(new Consumer<Document>() {
+		                @Override
+		                public void accept(Document document) {
+		                    logger.info(document.toJson());
+							try {
+								TileVo ltVo = new ObjectMapper().readValue(document.toJson(), TileVo.class);
+								tVoList.add(ltVo);
+							
+							} catch (JsonMappingException e) {
+								e.printStackTrace();
+							} catch (JsonProcessingException e) {
+								e.printStackTrace();
+							}
+		                    
+		                }
+		            }
+		        );
 	}
 
 	private List<? extends Bson> getConcentTilePipeline(List<String> days,DashboardRequest dbr) throws ParseException {
@@ -186,12 +192,14 @@ public class GenericDaoImpl implements GenericDao {
 		return pipeline;
 	}
 	
-	private List<? extends Bson> getLegalTilePipeline(List<String> days,DashboardRequest dbr) throws ParseException {
+	private List<? extends Bson> getLegalTilePipeline(List<String> days,DashboardRequest dbr,String type) throws ParseException {
 		Document matchDoc = new Document();
 		matchDoc.append("issuedOn", new Document()
                         .append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
                         .append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))
                 		);
+		matchDoc.append(type, new Document().append("$ne", 0));
+		
 		applyGenericFilter(dbr, matchDoc);
 		
 		List<? extends Bson> pipeline = Arrays.asList(
@@ -199,18 +207,15 @@ public class GenericDaoImpl implements GenericDao {
 		        new Document()
 		                .append("$group", new Document()
 		                        .append("_id", null)
-		                        .append("new", new Document() .append("$sum", "$new"))
-		                        .append("notice", new Document() .append("$sum", "$notice"))
-		                        .append("action", new Document() .append("$sum", "$actions"))
-		                        .append("complied", new Document() .append("$sum", "$complied"))
+		                        .append("caseCount", new Document() .append("$sum", "$"+type))
+		                        .append("industries", new Document().append("$addToSet", "$industryId"))
 		                ),
 		        new Document()
 		            .append("$project", new Document()
 		                    .append("_id", false)
-		                    .append("neu", "$new")
-		                    .append("notice", "$notice")
-		                    .append("action", "$action")
-		                    .append("complied", "$complied")
+		                    .append("caseType", type)
+		                    .append("caseCount", "$caseCount")
+		                    .append("industries", "$industries")
 		            )
 				);
 		return pipeline;
@@ -333,12 +338,14 @@ public class GenericDaoImpl implements GenericDao {
                         .append("caseCount", new Document()
                                 .append("$sum", 1)
                         )
+                        .append("industries", new Document().append("$addToSet", "$industryId"))
                 ),
         new Document()
             .append("$project", new Document()
                     .append("_id", false)
                     .append("caseType", "planned")
                     .append("caseCount", "$caseCount")
+                    .append("industries", "$industries")
             )
 		);
 		return pipeline;
@@ -360,12 +367,14 @@ public class GenericDaoImpl implements GenericDao {
                         .append("caseCount", new Document()
                                 .append("$sum", 1)
                         )
+                        .append("industries", new Document().append("$addToSet", "$industryId"))
                 ),
         new Document()
             .append("$project", new Document()
                     .append("_id", false)
                     .append("caseType", "visited")
                     .append("caseCount", "$caseCount")
+                    .append("industries", "$industries")
             )
 		);
 		return pipeline;
@@ -421,12 +430,14 @@ public class GenericDaoImpl implements GenericDao {
                         .append("caseCount", new Document()
                                 .append("$sum", 1)
                         )
+                        .append("industries", new Document().append("$addToSet", "$industryId"))
                 ),
         new Document()
             .append("$project", new Document()
                     .append("_id", false)
                     .append("caseType", "Reports")
                     .append("caseCount", "$caseCount")
+                    .append("industries", "$industries")
             )
 		);
 		return pipeline;
