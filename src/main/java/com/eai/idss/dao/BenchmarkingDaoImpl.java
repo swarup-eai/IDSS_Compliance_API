@@ -118,7 +118,7 @@ return skuDetailVos;
             List<SkuDetailVo> skuDetailVos = benchmarkingSourceData.stream().map(benchmarkingData -> {
                 if(benchmarkingData.equals("NOx")){
                     SkuDetailVo skuDetailVo = new SkuDetailVo();
-                    List<BenchmarkingSourceData> benchmarkingSourceDataList=benchmarkingSourceDataRepository.findByIndustryTypeAndAirPollutantsGroup(br.getType(),benchmarkingData);
+                    List<BenchmarkingSourceData> benchmarkingSourceDataList=benchmarkingSourceDataRepository.findByIndustryTypeAndIndustryNameAndAirPollutantsGroup(br.getType(),br.getIndustryName(),benchmarkingData);
                     double productQty = benchmarkingSourceDataList.stream().mapToDouble(BenchmarkingSourceData::getConcentration).sum();
                     double average = productQty / benchmarkingSourceDataList.size();
                     skuDetailVo.setProductQuantity(average);
@@ -129,7 +129,7 @@ return skuDetailVos;
                     return skuDetailVo;
                 }else if(benchmarkingData.equals("SO2")){
                     SkuDetailVo skuDetailVo = new SkuDetailVo();
-                    List<BenchmarkingSourceData> benchmarkingSourceDataList=benchmarkingSourceDataRepository.findByIndustryTypeAndAirPollutantsGroup(br.getType(),benchmarkingData);
+                    List<BenchmarkingSourceData> benchmarkingSourceDataList=benchmarkingSourceDataRepository.findByIndustryTypeAndIndustryNameAndAirPollutantsGroup(br.getType(),br.getIndustryName(),benchmarkingData);
                     double productQty = benchmarkingSourceDataList.stream().mapToDouble(BenchmarkingSourceData::getConcentration).sum();
                     double average = productQty / benchmarkingSourceDataList.size();
                     skuDetailVo.setProductQuantity(average);
@@ -140,7 +140,7 @@ return skuDetailVos;
                     return skuDetailVo;
                 }else if(benchmarkingData.equals("P_M")){
                     SkuDetailVo skuDetailVo = new SkuDetailVo();
-                    List<BenchmarkingSourceData> benchmarkingSourceDataList=benchmarkingSourceDataRepository.findByIndustryTypeAndAirPollutantsGroup(br.getType(),benchmarkingData);
+                    List<BenchmarkingSourceData> benchmarkingSourceDataList=benchmarkingSourceDataRepository.findByIndustryTypeAndIndustryNameAndAirPollutantsGroup(br.getType(),br.getIndustryName(),benchmarkingData);
                     double productQty = benchmarkingSourceDataList.stream().mapToDouble(BenchmarkingSourceData::getConcentration).sum();
                     double average = productQty / benchmarkingSourceDataList.size();
                     skuDetailVo.setProductQuantity(average);
