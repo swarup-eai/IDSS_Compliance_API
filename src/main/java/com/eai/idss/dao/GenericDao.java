@@ -24,4 +24,6 @@ public interface GenericDao {
 	public List<String> getIndustryTypes(String category) ;
 	
 	public Map<String,List<HeatmapResponseVo>> getHeatmapData(DashboardRequest dbr);
+
+	public List<HeatmapResponseVo> getHeatmapDataByIndustryIds(List<Integer> industryIds);
 }

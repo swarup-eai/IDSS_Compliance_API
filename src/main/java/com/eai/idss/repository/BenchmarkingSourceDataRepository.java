@@ -10,6 +10,6 @@ import java.util.List;
 public interface BenchmarkingSourceDataRepository extends MongoRepository<BenchmarkingSourceData, String> {
     List<BenchmarkingSourceData> findByCategoryCode(Double categoryCode);
 
-    List<BenchmarkingSourceData> findByIndustryTypeAndAirPollutantsGroup(String industryType,String airPollutantGroup);
+    List<BenchmarkingSourceData> findByIndustryTypeAndIndustryNameAndAirPollutantsGroup(String industryType,String industryName,String airPollutantGroup);
 }
 

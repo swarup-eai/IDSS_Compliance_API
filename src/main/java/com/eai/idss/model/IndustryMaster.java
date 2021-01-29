@@ -13,7 +13,7 @@ public class IndustryMaster {
 
 	@Id
 	private String _id;
-	private int industryId;
+	private long industryId;
 	private String region;
 	private String subRegion;
 	private String industryName;
@@ -24,16 +24,19 @@ public class IndustryMaster {
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date commissioningDate;
 	@JsonFormat(pattern="yyyy-MM-dd")
-	private Date concentValidity;
+	private Date consentValidityDate;
 	private int totalLegalActions;
 	private int legalActionsPending;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate lastVisited;
-	
-	public int getIndustryId() {
+
+	private String latitudeDegree;
+	private String longitudeDegree;
+
+	public long getIndustryId() {
 		return industryId;
 	}
-	public void setIndustryId(int industryId) {
+	public void setIndustryId(long industryId) {
 		this.industryId = industryId;
 	}
 	public String getSubRegion() {
@@ -91,11 +94,12 @@ public class IndustryMaster {
 	public void setCommissioningDate(Date commissioningDate) {
 		this.commissioningDate = commissioningDate;
 	}
-	public Date getConcentValidity() {
-		return concentValidity;
+	
+	public Date getConsentValidityDate() {
+		return consentValidityDate;
 	}
-	public void setConcentValidity(Date concentValidity) {
-		this.concentValidity = concentValidity;
+	public void setConsentValidityDate(Date consentValidityDate) {
+		this.consentValidityDate = consentValidityDate;
 	}
 	public int getTotalLegalActions() {
 		return totalLegalActions;
@@ -114,6 +118,19 @@ public class IndustryMaster {
 	}
 	public void setLastVisited(LocalDate lastVisited) {
 		this.lastVisited = lastVisited;
+	}
+
+	public String  getLatitudeDegree() {
+		return latitudeDegree;
+	}
+	public void setLatitudeDegree(String  latitudeDegree) {
+		this.latitudeDegree = latitudeDegree;
+	}
+	public String  getLongitudeDegree() {
+		return longitudeDegree;
+	}
+	public void setLongitudeDegree(String  longitudeDegree) {
+		this.longitudeDegree = longitudeDegree;
 	}
 	
 }

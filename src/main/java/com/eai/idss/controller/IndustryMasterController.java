@@ -26,7 +26,6 @@ import com.eai.idss.vo.ComplianceScoreResponseVo;
 import com.eai.idss.vo.IndustryMasterRequest;
 import com.eai.idss.vo.MandatoryReportsResponseVo;
 import com.eai.idss.vo.PollutionScoreFilter;
-import com.eai.idss.vo.PollutionScoreResponseVo;
 
 
 @RestController

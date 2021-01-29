@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
 import java.util.*;
@@ -40,8 +41,12 @@ public class BenchmarkingDaoImpl implements BenchmarkingDao{
         try {
             logger.info("getSkuDetail");
             Query query = new Query();
-            query.addCriteria(Criteria.where("industryType").is(br.getType()));
-            query.addCriteria(Criteria.where("industryName").is(br.getIndustryName()));
+            if(StringUtils.hasText(br.getType())){
+                query.addCriteria(Criteria.where("industryType").is(br.getType()));
+            }
+            if(StringUtils.hasText(br.getIndustryName())){
+                query.addCriteria(Criteria.where("industryName").is(br.getIndustryName()));
+            }
             List<Double> benchmarkingSourceData=mongoTemplate.findDistinct(query,"categoryCode",BenchmarkingSourceData.class,Double.class); // benchmarkingSourceDataRepository.findDistinctCategoryCodeByIndustryType(dr.getType());//mongoTemplate.find(query,BenchmarkingSourceData.class);
 
             List<SkuDetailVo> skuDetailVos = benchmarkingSourceData.stream().map(benchmarkingData -> {
@@ -103,13 +108,17 @@ return skuDetailVos;
         try {
             logger.info("getAirPollutant");
             Query query = new Query();
-            query.addCriteria(Criteria.where("industryType").is(br.getType()));
-            List<String> benchmarkingSourceData=mongoTemplate.findDistinct(query,"airPollutantsGroup",BenchmarkingSourceData.class,String.class); // benchmarkingSourceDataRepository.findDistinctCategoryCodeByIndustryType(dr.getType());//mongoTemplate.find(query,BenchmarkingSourceData.class);
+            if(StringUtils.hasText(br.getType())){
+                query.addCriteria(Criteria.where("industryType").is(br.getType()));
+            }
+            if(StringUtils.hasText(br.getIndustryName())){
+                query.addCriteria(Criteria.where("industryName").is(br.getIndustryName()));
+            }            List<String> benchmarkingSourceData=mongoTemplate.findDistinct(query,"airPollutantsGroup",BenchmarkingSourceData.class,String.class); // benchmarkingSourceDataRepository.findDistinctCategoryCodeByIndustryType(dr.getType());//mongoTemplate.find(query,BenchmarkingSourceData.class);
 
             List<SkuDetailVo> skuDetailVos = benchmarkingSourceData.stream().map(benchmarkingData -> {
                 if(benchmarkingData.equals("NOx")){
                     SkuDetailVo skuDetailVo = new SkuDetailVo();
-                    List<BenchmarkingSourceData> benchmarkingSourceDataList=benchmarkingSourceDataRepository.findByIndustryTypeAndAirPollutantsGroup(br.getType(),benchmarkingData);
+                    List<BenchmarkingSourceData> benchmarkingSourceDataList=benchmarkingSourceDataRepository.findByIndustryTypeAndIndustryNameAndAirPollutantsGroup(br.getType(),br.getIndustryName(),benchmarkingData);
                     double productQty = benchmarkingSourceDataList.stream().mapToDouble(BenchmarkingSourceData::getConcentration).sum();
                     double average = productQty / benchmarkingSourceDataList.size();
                     skuDetailVo.setProductQuantity(average);
@@ -120,7 +129,7 @@ return skuDetailVos;
                     return skuDetailVo;
                 }else if(benchmarkingData.equals("SO2")){
                     SkuDetailVo skuDetailVo = new SkuDetailVo();
-                    List<BenchmarkingSourceData> benchmarkingSourceDataList=benchmarkingSourceDataRepository.findByIndustryTypeAndAirPollutantsGroup(br.getType(),benchmarkingData);
+                    List<BenchmarkingSourceData> benchmarkingSourceDataList=benchmarkingSourceDataRepository.findByIndustryTypeAndIndustryNameAndAirPollutantsGroup(br.getType(),br.getIndustryName(),benchmarkingData);
                     double productQty = benchmarkingSourceDataList.stream().mapToDouble(BenchmarkingSourceData::getConcentration).sum();
                     double average = productQty / benchmarkingSourceDataList.size();
                     skuDetailVo.setProductQuantity(average);
@@ -131,7 +140,7 @@ return skuDetailVos;
                     return skuDetailVo;
                 }else if(benchmarkingData.equals("P_M")){
                     SkuDetailVo skuDetailVo = new SkuDetailVo();
-                    List<BenchmarkingSourceData> benchmarkingSourceDataList=benchmarkingSourceDataRepository.findByIndustryTypeAndAirPollutantsGroup(br.getType(),benchmarkingData);
+                    List<BenchmarkingSourceData> benchmarkingSourceDataList=benchmarkingSourceDataRepository.findByIndustryTypeAndIndustryNameAndAirPollutantsGroup(br.getType(),br.getIndustryName(),benchmarkingData);
                     double productQty = benchmarkingSourceDataList.stream().mapToDouble(BenchmarkingSourceData::getConcentration).sum();
                     double average = productQty / benchmarkingSourceDataList.size();
                     skuDetailVo.setProductQuantity(average);
@@ -158,8 +167,12 @@ return skuDetailVos;
         try {
             logger.info("getWaterPollutant");
             Query query = new Query();
-            query.addCriteria(Criteria.where("industryType").is(br.getType()));
-            List<BenchmarkingSourceData> benchmarkingSourceData=mongoTemplate.find(query,BenchmarkingSourceData.class);
+            if(StringUtils.hasText(br.getType())){
+                query.addCriteria(Criteria.where("industryType").is(br.getType()));
+            }
+            if(StringUtils.hasText(br.getIndustryName())){
+                query.addCriteria(Criteria.where("industryName").is(br.getIndustryName()));
+            }            List<BenchmarkingSourceData> benchmarkingSourceData=mongoTemplate.find(query,BenchmarkingSourceData.class);
 
             List<SkuDetailVo> skuDetailVo = new ArrayList<SkuDetailVo>();
 
@@ -196,8 +209,12 @@ return skuDetailVos;
         try {
             logger.info("getEffluents");
             Query query = new Query();
-            query.addCriteria(Criteria.where("industryType").is(br.getType()));
-            List<BenchmarkingSourceData> benchmarkingSourceData=mongoTemplate.find(query,BenchmarkingSourceData.class);
+            if(StringUtils.hasText(br.getType())){
+                query.addCriteria(Criteria.where("industryType").is(br.getType()));
+            }
+            if(StringUtils.hasText(br.getIndustryName())){
+                query.addCriteria(Criteria.where("industryName").is(br.getIndustryName()));
+            }            List<BenchmarkingSourceData> benchmarkingSourceData=mongoTemplate.find(query,BenchmarkingSourceData.class);
 
             List<SkuDetailVo> skuDetailVo = new ArrayList<SkuDetailVo>();
 
