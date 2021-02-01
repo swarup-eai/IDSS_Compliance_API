@@ -15,6 +15,10 @@ public class MongoDBConfig {
 	
 	@Value("${spring.data.mongodb.uri}")
 	private String mdbUrl;
+	
+
+	@Value("${dbName}")
+	private String dbName;
 
     @Bean
     public MongoClient mongoClient() throws Exception {
@@ -25,7 +29,7 @@ public class MongoDBConfig {
 
     @Bean
     public MongoTemplate mongoTemplate() throws Exception {
-        return new MongoTemplate(mongoClient(), "IDSS");
+        return new MongoTemplate(mongoClient(), dbName);
     }
 
 }

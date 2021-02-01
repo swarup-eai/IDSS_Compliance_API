@@ -17,6 +17,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -94,6 +95,10 @@ import com.mongodb.client.MongoDatabase;
 
 @Repository
 public class IndustryMasterDaoImpl implements IndustryMasterDao {
+	
+
+	@Value("${dbName}")
+	private String dbName;
 	
 	private static final String OCEMS = "OCEMS";
 
@@ -420,7 +425,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			                    .append("value", "$value")
 			            )
 					);
-			MongoDatabase database = mongoClient.getDatabase("IDSS");
+			MongoDatabase database = mongoClient.getDatabase(dbName);
 	        MongoCollection<Document> collection = database.getCollection(collectionName);
 	
 	        collection.aggregate(pipeline)
@@ -478,7 +483,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			                    .append("value", "$"+valueField)
 			            )
 					);
-			MongoDatabase database = mongoClient.getDatabase("IDSS");
+			MongoDatabase database = mongoClient.getDatabase(dbName);
 	        MongoCollection<Document> collection = database.getCollection(collectionName);
 	
 	        collection.aggregate(pipeline)
@@ -1168,7 +1173,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			                    .append("param", "$param")
 			            )
 				);
-		MongoDatabase database = mongoClient.getDatabase("IDSS");
+		MongoDatabase database = mongoClient.getDatabase(dbName);
         MongoCollection<Document> collection = database.getCollection(collectionName);
         ParameterVo param = new ParameterVo();
 		collection.aggregate(pipeline)

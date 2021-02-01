@@ -16,6 +16,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -43,6 +44,10 @@ import com.mongodb.client.MongoDatabase;
 @Repository
 public class ConcentDaoImpl implements ConcentDao {
 	
+
+	@Value("${dbName}")
+	private String dbName;
+
 	public static final Logger logger = Logger.getLogger(ConcentDaoImpl.class);
 	
 	@Autowired
@@ -56,7 +61,7 @@ public class ConcentDaoImpl implements ConcentDao {
 			logger.info("getPendingRequestConcentData");
 			Map<String, String> daysMap = IDSSUtil.getPastDaysMap();
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("Consent");
             
             
@@ -133,7 +138,7 @@ public class ConcentDaoImpl implements ConcentDao {
 			logger.info("getUpcomingRenewalConcentData");
 			Map<String, String> daysMap = IDSSUtil.getFutureDaysMap();
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("Consent");
             
             
@@ -234,7 +239,7 @@ public class ConcentDaoImpl implements ConcentDao {
 			logger.info("getByRegionConcentData");
 			Map<String, String> daysMap = IDSSUtil.getPastDaysMap();
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("Consent");
             
             Map<String,Map<String,List<TileVo>>> byRegionMap = new LinkedHashMap<String, Map<String,List<TileVo>>>(); 
@@ -322,7 +327,7 @@ public class ConcentDaoImpl implements ConcentDao {
 			logger.info("getPendingRequestConcentData");
 			Map<String, String> daysMap = IDSSUtil.getPastDaysMap();
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("Consent");
 
 
@@ -407,7 +412,7 @@ public class ConcentDaoImpl implements ConcentDao {
 			logger.info("getByTeamConcentData");
 			Map<String, String> daysMap = IDSSUtil.getPastDaysMap();
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("Consent");
             
             Map<String,Map<String,List<TileVo>>> byTeamMap = new LinkedHashMap<String, Map<String,List<TileVo>>>(); 

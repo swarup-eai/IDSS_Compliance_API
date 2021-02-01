@@ -16,6 +16,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -45,6 +46,10 @@ import com.mongodb.client.MongoDatabase;
 @Repository
 public class LegalDaoImpl implements LegalDao {
 	
+
+	@Value("${dbName}")
+	private String dbName;
+	
 	public static final Logger logger = Logger.getLogger(LegalDaoImpl.class);
 	
 	@Autowired
@@ -58,7 +63,7 @@ public class LegalDaoImpl implements LegalDao {
 			logger.info("getPendingLegalActionsData");
 			Map<String, List<String>> daysMap = IDSSUtil.getDaysMapForLegal();
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("legalDataMaster");
             
             Map<String,List<TileVo>> tileMap = new LinkedHashMap<String, List<TileVo>>();
@@ -143,7 +148,7 @@ public class LegalDaoImpl implements LegalDao {
 		try {
 			logger.info("getLegalActionsByIndustryScaleTypeData");
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("legalDataMaster");
             
             
@@ -258,7 +263,7 @@ public class LegalDaoImpl implements LegalDao {
 			logger.info("getByRegionLegalData");
 			Map<String, String> daysMap = IDSSUtil.getPastDaysMapForLegal();
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("legalDataMaster");
             
             Map<String,Map<String,List<TileVo>>> byRegionMap = new LinkedHashMap<String, Map<String,List<TileVo>>>(); 
@@ -350,7 +355,7 @@ public class LegalDaoImpl implements LegalDao {
 			logger.info("getBySubRegionLegalData");
 			Map<String, String> daysMap = IDSSUtil.getPastDaysMapForLegal();
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("legalDataMaster");
             
             Map<String,Map<String,List<TileVo>>> tileMap = new LinkedHashMap<String, Map<String,List<TileVo>>>();
@@ -435,7 +440,7 @@ public class LegalDaoImpl implements LegalDao {
 			logger.info("getByTeamLegalData");
 			Map<String, List<String>> daysMap = IDSSUtil.getDaysMapForLegal();
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("legalDataMaster");
             
             Map<String,List<TileVo>> byTeamMap = new LinkedHashMap<String, List<TileVo>>(); 
