@@ -19,6 +19,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -58,6 +59,9 @@ import com.mongodb.client.MongoDatabase;
 @Repository
 public class VisitsDaoImpl implements VisitsDao {
 	
+	@Value("${dbName}")
+	private String dbName;
+	
 	private static final String LEGAL_ACTION = "legalAction";
 
 	private static final String REPORT_FILED = "reportFiled";
@@ -95,7 +99,7 @@ public class VisitsDaoImpl implements VisitsDao {
 			logger.info("getPendingVisitsData");
 			Map<String, List<String>> daysMap = IDSSUtil.getDaysMapForVisits();
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("Visit_master");
             
             Map<String,List<TileVo>> tileMap = new LinkedHashMap<String, List<TileVo>>();
@@ -180,7 +184,7 @@ public class VisitsDaoImpl implements VisitsDao {
 			logger.info("getByRegionLegalData");
 			Map<String, List<String>> daysMap = IDSSUtil.getPastAndFutureDaysMap();
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("Visit_master");
             
             Map<String,Map<String,List<TileVo>>> byRegionMap = new LinkedHashMap<String, Map<String,List<TileVo>>>(); 
@@ -343,7 +347,7 @@ public class VisitsDaoImpl implements VisitsDao {
 			logger.info("getBySubRegionVisitData");
 			Map<String, List<String>> daysMap = IDSSUtil.getPastAndFutureDaysMap();
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("Visit_master");
             
             Map<String,Map<String,List<TileVo>>> byRegionMap = new LinkedHashMap<String, Map<String,List<TileVo>>>(); 
@@ -420,7 +424,7 @@ public class VisitsDaoImpl implements VisitsDao {
 			logger.info("getByTeamVisitsData");
 			Map<String, List<String>> daysMap = IDSSUtil.getPastAndFutureDaysMap();
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("Visit_master");
             
             Map<String,Map<String,List<TileVo>>> byRegionMap = new LinkedHashMap<String, Map<String,List<TileVo>>>(); 
@@ -750,7 +754,7 @@ public class VisitsDaoImpl implements VisitsDao {
 		try {
 			logger.info("getVisitsScheduleByScaleCategory");
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("Visit_master");
             
             Map<String,List<TileVo>> tileMap = new LinkedHashMap<String, List<TileVo>>();
@@ -927,7 +931,7 @@ public class VisitsDaoImpl implements VisitsDao {
 			logger.info("getVisitsByCompliance");
 			Map<String, String> daysMap = IDSSUtil.get3090120PastDaysMap();
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("C_score_visits_days");
             
             for(String days : daysMap.keySet()) {

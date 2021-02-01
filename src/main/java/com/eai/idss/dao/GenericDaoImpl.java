@@ -13,12 +13,11 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import com.eai.idss.model.*;
-import com.eai.idss.vo.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -26,6 +25,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import com.eai.idss.model.CScoreMaster;
+import com.eai.idss.model.IndustryMaster;
+import com.eai.idss.model.IndustryTypes;
 import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.DashboardRequest;
 import com.eai.idss.vo.HeatmapResponseVo;
@@ -43,6 +45,10 @@ import com.mongodb.client.MongoDatabase;
 @Repository
 public class GenericDaoImpl implements GenericDao {
 
+
+	@Value("${dbName}")
+	private String dbName;
+	
 	public static final Logger logger = Logger.getLogger(GenericDaoImpl.class);
 	
 	@Autowired
@@ -57,7 +63,7 @@ public class GenericDaoImpl implements GenericDao {
 			logger.info("getConcentTileData");
 			Map<String, List<String>> daysMap = IDSSUtil.getDaysMapForDashboard();
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("Consent");
             
             
@@ -78,8 +84,12 @@ public class GenericDaoImpl implements GenericDao {
 										TileVo tVo = new ObjectMapper().readValue(document.toJson(), TileVo.class);
 										if(!"Operate".equalsIgnoreCase(tVo.getCaseType()) && !"New".equalsIgnoreCase(tVo.getCaseType()) )
 											tVoList.add(tVo);
-										else
+										else {
 											tNewVo.setCaseCount(tNewVo.getCaseCount() + tVo.getCaseCount());
+											List<Integer> ind = tNewVo.getIndustries();
+											ind.addAll(tVo.getIndustries());
+											tNewVo.setIndustries(ind);
+										}
 									} catch (JsonMappingException e) {
 										e.printStackTrace();
 									} catch (JsonProcessingException e) {
@@ -106,7 +116,7 @@ public class GenericDaoImpl implements GenericDao {
 			logger.info("getLegalTileData");
 			Map<String, List<String>> daysMap = IDSSUtil.getDaysMapForDashboard();
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("legalDataMaster");
             
             
@@ -242,7 +252,7 @@ public class GenericDaoImpl implements GenericDao {
 			
 			Map<String, List<String>> futureVisitsMap = IDSSUtil.getFutureDaysMapForVisits();
 			
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("Visit_master");
             
             
@@ -447,7 +457,7 @@ public class GenericDaoImpl implements GenericDao {
 	public List<MyVisits> getMyVisitsData(String userName){
 			logger.info("getMyVisitsData");
 			try {
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
 	        MongoCollection<Document> collection = database.getCollection("Visit_master");
 
 				List<MyVisits> tileMap =  new ArrayList<MyVisits>();
@@ -590,7 +600,7 @@ public class GenericDaoImpl implements GenericDao {
 	public List<TopPerfVo> getTopPerformer(String region){
 		List<TopPerfVo> tVoList = new ArrayList<TopPerfVo>();
 		try {
-		 	MongoDatabase database = mongoClient.getDatabase("IDSS");
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
 	        MongoCollection<Document> collection = database.getCollection("topPerformance");
 			List<? extends Bson> pipeline = Arrays.asList(
 					new Document()
@@ -662,7 +672,7 @@ public class GenericDaoImpl implements GenericDao {
 			Map<String, List<String>> daysMap = IDSSUtil.getDaysMapForDashboard();
 
 
-			MongoDatabase database = mongoClient.getDatabase("IDSS");
+			MongoDatabase database = mongoClient.getDatabase(dbName);
 			MongoCollection<Document> collection = database.getCollection("industryMaster");
 			Map<String,List<HeatmapResponseVo>> heatmapData = new LinkedHashMap<String, List<HeatmapResponseVo>>();
 
