@@ -47,7 +47,8 @@ public class CommonController {
 	    	dr.setTopPerformers(gd.getTopPerformer(u.getRegion()));
 	    	dr.setMyVisits(gd.getMyVisitsData(userName));
 	    	dr.setDashboardMap(dashboardMap);
-	    	dr.setHeatmapResponseList(gd.getHeatmapData(dbr));
+//	    	dr.setHeatmapResponseList(gd.getHeatmapData(dbr));
+			dr.setIndustryScore(gd.getIndustryScore(dbr));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /compliance-dashboard", HttpStatus.INTERNAL_SERVER_ERROR);
