@@ -725,10 +725,11 @@ public class VisitsDaoImpl implements VisitsDao {
 			}
 			
 			if(StringUtils.hasText(cdr.getStatus()) && !"ALL".equalsIgnoreCase(cdr.getStatus())) {
-				if("Pending".equalsIgnoreCase(cdr.getStatus()) || "Scheduled".equalsIgnoreCase(cdr.getStatus()))
-					query.addCriteria(Criteria.where("visitStatus").is(PENDING));
-				if(VISITED.equalsIgnoreCase(cdr.getStatus()))
-					query.addCriteria(Criteria.where("visitStatus").is(VISITED));
+				query.addCriteria(Criteria.where("visitStatus").is(cdr.getStatus()));
+//				if("Pending".equalsIgnoreCase(cdr.getStatus()) || "Scheduled".equalsIgnoreCase(cdr.getStatus()))
+//					query.addCriteria(Criteria.where("visitStatus").is(PENDING));
+//				if(VISITED.equalsIgnoreCase(cdr.getStatus()))
+//					query.addCriteria(Criteria.where("visitStatus").is(VISITED));
 			}
 			
 			query.addCriteria(Criteria.where("userId").is(userName));

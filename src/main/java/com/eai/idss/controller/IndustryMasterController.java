@@ -4,28 +4,17 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import com.eai.idss.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.eai.idss.dao.IndustryMasterDao;
 import com.eai.idss.model.IndustryMaster;
 import com.eai.idss.model.User_Filters;
 import com.eai.idss.repository.UserFiltersRepository;
-import com.eai.idss.vo.ComlianceScoreFilter;
-import com.eai.idss.vo.ComparisonTableResponseVo;
-import com.eai.idss.vo.ComplianceScoreResponseVo;
-import com.eai.idss.vo.IndustryMasterRequest;
-import com.eai.idss.vo.MandatoryReportsResponseVo;
-import com.eai.idss.vo.PollutionScoreFilter;
 
 
 @RestController
@@ -196,4 +185,16 @@ public class IndustryMasterController {
         return new ResponseEntity<MandatoryReportsResponseVo>(iml,HttpStatus.OK);
         
     }
+	@RequestMapping(method = RequestMethod.GET, value = "/industry-master-detail", produces = "application/json")
+	public ResponseEntity<IndustryMasterDetailResponseVo> getIndustryMasterDetailByIndustryId(@RequestParam(required = true) long indutryId) throws IOException {
+		IndustryMasterDetailResponseVo industryMasterDetailResponseVo = null;
+		try {
+			industryMasterDetailResponseVo = imd.getIndustryMasterDetailByIndustryId(indutryId);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity("Exception in industry master.", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<IndustryMasterDetailResponseVo>(industryMasterDetailResponseVo,HttpStatus.OK);
+	}
 }

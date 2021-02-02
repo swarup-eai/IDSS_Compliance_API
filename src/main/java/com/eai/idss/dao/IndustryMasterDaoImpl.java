@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import com.eai.idss.model.*;
+import com.eai.idss.repository.IndustryMasterRepository;
+import com.eai.idss.vo.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.jboss.logging.Logger;
@@ -28,63 +31,7 @@ import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
-import com.eai.idss.model.Annual_Returns_HW_Comparison;
-import com.eai.idss.model.BMW_Annual_Return_Comparison;
-import com.eai.idss.model.BMW_Authorization_Comparison;
-import com.eai.idss.model.Battery_Dealer_Annual_return_Form_V;
-import com.eai.idss.model.CScoreMaster;
-import com.eai.idss.model.Consent_EFFLUENT_Comparison;
-import com.eai.idss.model.Consent_FUEL_comparison;
-import com.eai.idss.model.Consent_HW_Comparison;
-import com.eai.idss.model.Consent_RESOURCES_comparison;
-import com.eai.idss.model.Consent_SKU_comparison;
-import com.eai.idss.model.Consent_STACK_comparison;
-import com.eai.idss.model.Consent_WATER_comparison;
-import com.eai.idss.model.Consented_Air_Pollution_Comparison;
-import com.eai.idss.model.ESR_Air_Pollution_Comparison;
-import com.eai.idss.model.ESR_EFFLUENT_Comparison;
-import com.eai.idss.model.ESR_FUEL_comparison;
-import com.eai.idss.model.ESR_RESOURCES_comparison;
-import com.eai.idss.model.ESR_SKU_comparison;
-import com.eai.idss.model.ESR_WATER_comparison;
-import com.eai.idss.model.EWasteAnnualAuthorization;
-import com.eai.idss.model.EWasteAnnualReturns;
-import com.eai.idss.model.IndustryMaster;
-import com.eai.idss.model.Legal;
-import com.eai.idss.model.Plastic_Annual_Report_Local_Body_Form_V;
-import com.eai.idss.model.Plastic_Annual_Report_Recycling_Facility_Form_IV;
-import com.eai.idss.model.Plastic_Brand_Owner_Authorization;
-import com.eai.idss.model.Plastic_Producer_Authorization;
-import com.eai.idss.model.Plastic_Raw_Material_Manufacturer_Authorization;
-import com.eai.idss.model.Plastic_Recycler_Authorization;
-import com.eai.idss.model.Visits;
 import com.eai.idss.util.IDSSUtil;
-import com.eai.idss.vo.AnnualReturnsVo;
-import com.eai.idss.vo.BatteriesSoldToVo;
-import com.eai.idss.vo.BatteryVo;
-import com.eai.idss.vo.BioMedWasteAuthFormVo;
-import com.eai.idss.vo.BioMedWasteVo;
-import com.eai.idss.vo.ComlianceScoreFilter;
-import com.eai.idss.vo.ComparisonTableParamGroupVo;
-import com.eai.idss.vo.ComparisonTableResponseVo;
-import com.eai.idss.vo.ComplianceScoreResponseVo;
-import com.eai.idss.vo.EWasteForm4Vo;
-import com.eai.idss.vo.EWasteVo;
-import com.eai.idss.vo.Form1AVo;
-import com.eai.idss.vo.Form3Vo;
-import com.eai.idss.vo.Form5Vo;
-import com.eai.idss.vo.IndustryMasterRequest;
-import com.eai.idss.vo.MandatoryReportsResponseVo;
-import com.eai.idss.vo.NewBatteriesSoldVo;
-import com.eai.idss.vo.OldUsedBatteriesVo;
-import com.eai.idss.vo.ParameterVo;
-import com.eai.idss.vo.PlasticAuthorizationFormVo;
-import com.eai.idss.vo.PlasticForm4Vo;
-import com.eai.idss.vo.PlasticVo;
-import com.eai.idss.vo.PollutionScoreFilter;
-import com.eai.idss.vo.PollutionScoreResponseVo;
-import com.eai.idss.vo.PollutionScoreValueVo;
-import com.eai.idss.vo.SKU;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -121,6 +68,9 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	
 	@Autowired
 	MongoClient mongoClient;
+
+	@Autowired
+	IndustryMasterRepository industryMasterRepository;
 	
 	public static final Logger logger = Logger.getLogger(IndustryMasterDaoImpl.class);
 	
@@ -1076,7 +1026,35 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return paramList;
 		
 	}
-	
+
+	@Override
+	public IndustryMasterDetailResponseVo getIndustryMasterDetailByIndustryId(long industryId) {
+		try {
+			IndustryMaster industryMaster =industryMasterRepository.findByIndustryId(industryId);
+			IndustryMasterDetailResponseVo industryMasterDetailResponseVo = new IndustryMasterDetailResponseVo();
+			industryMasterDetailResponseVo.setRegion(industryMaster.getRegion());
+			industryMasterDetailResponseVo.setCategory(industryMaster.getCategory());
+			industryMasterDetailResponseVo.setScale(industryMaster.getScale());
+			industryMasterDetailResponseVo.setType(industryMaster.getType());
+			industryMasterDetailResponseVo.setCscore(industryMaster.getCscore());
+
+			String date = LocalDate.of(1970, 1,1).format(DateTimeFormatter.ISO_LOCAL_DATE);
+
+			Query query = new Query();
+			query.addCriteria(Criteria.where("industryId").is(industryId));
+			query.addCriteria(Criteria.where("statusUpdatedOn")
+					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(date + " 00:00:00.000+0000"))
+					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(date + " 23:59:59.000+0000")));
+			List<Directions> directionsList = mongoTemplate.find(query, Directions.class);
+
+			industryMasterDetailResponseVo.setPendingLegalAction(directionsList.size());
+			return industryMasterDetailResponseVo;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	private List<Map<String,String>> getFixedConsentEFFLUENTParamList(long industryId) {
 		
 		List<Map<String,String>> pl = new ArrayList<Map<String,String>>();
