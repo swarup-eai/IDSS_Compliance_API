@@ -47,61 +47,23 @@ public class BenchmarkingDaoImpl implements BenchmarkingDao{
             if(StringUtils.hasText(br.getIndustryName())){
                 query.addCriteria(Criteria.where("industryName").is(br.getIndustryName()));
             }
-            List<Double> benchmarkingSourceData=mongoTemplate.findDistinct(query,"categoryCode",BenchmarkingSourceData.class,Double.class); // benchmarkingSourceDataRepository.findDistinctCategoryCodeByIndustryType(dr.getType());//mongoTemplate.find(query,BenchmarkingSourceData.class);
-
-            List<SkuDetailVo> skuDetailVos = benchmarkingSourceData.stream().map(benchmarkingData -> {
-                SkuDetailVo skuDetailVo = new SkuDetailVo();
-                List<BenchmarkingSourceData> benchmarkingSourceDataList=benchmarkingSourceDataRepository.findByCategoryCode(benchmarkingData); //mongoTemplate.find(query,BenchmarkingSourceData.class);
-                double productQty = benchmarkingSourceDataList.stream().mapToDouble(BenchmarkingSourceData::getProductionQty).sum();
-                double average = productQty / benchmarkingSourceDataList.size();
-                skuDetailVo.setProductQuantity(average);
-                skuDetailVo.setProductCategory(benchmarkingSourceDataList.get(0).getProductCategory());
-                List<BenchmarkingDestinationData> benchmarkingDestinationData=benchmarkingDestinationDataRepository.findByCategoryCodeAndIndustryType(benchmarkingData,br.getType()); //mongoTemplate.find(query,BenchmarkingSourceData.class);
-                double benchmarkingValue =benchmarkingDestinationData.stream().mapToDouble(BenchmarkingDestinationData::getAvgQty).sum();
-                skuDetailVo.setBenchmarkValues(benchmarkingValue);
-                return skuDetailVo;
-            }).collect(Collectors.toList());
-return skuDetailVos;
+            List<BenchmarkingSourceData> benchmarkingSourceData=mongoTemplate.find(query,BenchmarkingSourceData.class); // benchmarkingSourceDataRepository.findDistinctCategoryCodeByIndustryType(dr.getType());//mongoTemplate.find(query,BenchmarkingSourceData.class);
+            List<SkuDetailVo> skuDetailVoList = new ArrayList<>();
+            SkuDetailVo skuDetailVo = new SkuDetailVo();
+            double productQty = benchmarkingSourceData.stream().mapToDouble(BenchmarkingSourceData::getProductionQty).sum();
+            double average = productQty / benchmarkingSourceData.size();
+            skuDetailVo.setProductQuantity(average);
+            skuDetailVo.setProductCategory(benchmarkingSourceData.get(0).getProductCategory());
+            List<BenchmarkingDestinationData> benchmarkingDestinationData=benchmarkingDestinationDataRepository.findByCategoryCodeAndIndustryType(benchmarkingSourceData.get(0).getCategoryCode(),br.getType()); //mongoTemplate.find(query,BenchmarkingSourceData.class);
+            double benchmarkingValue =benchmarkingDestinationData.stream().mapToDouble(BenchmarkingDestinationData::getAvgQty).sum();
+            skuDetailVo.setBenchmarkValues(benchmarkingValue);
+            skuDetailVoList.add(skuDetailVo);
+            return skuDetailVoList;
         }
         catch(Exception e) {
             e.printStackTrace();
         }
         return null;
-//        try {
-//            logger.info("getBenchmarkingdata");
-//
-//            MongoDatabase database = mongoClient.getDatabase("IDSS");
-//            MongoCollection<Document> collection = database.getCollection("benchmarkingSourceData");
-//
-//            Map<String,List<TileVo>> tileMap = new LinkedHashMap<String, List<TileVo>>();
-//
-//            List<? extends Bson> pipeline = getSkuDetailPipeline(dr);
-//
-//            collection.aggregate(pipeline)
-//                    .allowDiskUse(false)
-//                    .forEach(new Consumer<Document>() {
-//                                 @Override
-//                                 public void accept(Document document) {
-//                                     logger.info(document.toJson());
-//                                     try {
-//                                         SkuDetailVo vVo = new ObjectMapper().readValue(document.toJson(), SkuDetailVo.class);
-//                                         System.out.println(vVo);
-//
-//                                     } catch (JsonMappingException e) {
-//                                         e.printStackTrace();
-//                                     } catch (JsonProcessingException e) {
-//                                         e.printStackTrace();
-//                                     }
-//
-//                                 }
-//                             }
-//                    );
-//
-//            return null;
-//        }catch(Exception e) {
-//            e.printStackTrace();
-//        }
-//        return null;
     }
     @Override
     public List<SkuDetailVo> getAirPollutant(BenchmarkingRequest br) {
@@ -297,39 +259,5 @@ return skuDetailVos;
         return null;
     }
 
-    private List<? extends Bson> getSkuDetailPipeline(DashboardRequest dr) throws ParseException {
-        Document matchDoc = new Document();
-
-        matchDoc.append("industryType", dr.getType());
-
-        List<? extends Bson> pipeline = Arrays.asList(
-                new Document().append("$match", matchDoc),
-                new Document()
-                        .append("$group", new Document()
-                                .append("_id", new Document()
-                                        .append("productName", "$productName")
-                                        .append("categoryCode", "$categoryCode")
-                                        .append("productionQty", "$productionQty")
-
-                                )
-                                .append("count", new Document()
-                                        .append("$sum", 1)
-                                )
-                        ),
-                new Document()
-                        .append("$project", new Document()
-                                .append("_id", false)
-                                .append("productName", "$_id.productName")
-                                .append("quantity", "$_id.productionQty")
-                                .append("categoryCode", "$_id.categoryCode")
-                                .append("count", "$count")
-                        )
-//                new Document()
-//                        .append("$sort", new Document()
-//                                .append("scale", 1.0)
-//                        )
-        );
-        return pipeline;
-    }
 
 }
