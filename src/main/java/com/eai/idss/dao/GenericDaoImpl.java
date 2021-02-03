@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -729,6 +731,42 @@ public class GenericDaoImpl implements GenericDao {
 			}).collect(Collectors.toList());
 			return industryTypes;
 
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public Double getIndustryScore(DashboardRequest dbr) {
+		try {
+			Query query = new Query();
+
+			if(null!=dbr && StringUtils.hasText(dbr.getRegion()) && !"All".equalsIgnoreCase(dbr.getRegion()))
+			query.addCriteria(Criteria.where("region").is(dbr.getRegion()));
+			if(null!=dbr && StringUtils.hasText(dbr.getSubRegion()) && !"All".equalsIgnoreCase(dbr.getSubRegion()))
+			query.addCriteria(Criteria.where("subRegion").is(dbr.getSubRegion()));
+			if(null!=dbr && StringUtils.hasText(dbr.getScale()) && !"All".equalsIgnoreCase(dbr.getScale()))
+			query.addCriteria(Criteria.where("scale").is(dbr.getScale()));
+			if(null!=dbr && StringUtils.hasText(dbr.getType()) && !"All".equalsIgnoreCase(dbr.getType()))
+			query.addCriteria(Criteria.where("type").is(dbr.getType()));
+			if(null!=dbr && StringUtils.hasText(dbr.getCategory()) && !"All".equalsIgnoreCase(dbr.getCategory()))
+			query.addCriteria(Criteria.where("category").is(dbr.getCategory()));
+
+
+			List<IndustryMaster> industryMasterList= mongoTemplate.find(query, IndustryMaster.class);
+			final Double[] score = {new Double(0)};
+			final int[] count = {0};
+			industryMasterList.stream().map(data -> {
+				if(data.getCscore() >0){
+					score[0] = Double.sum(score[0],data.getCscore());
+					count[0] = count[0] +1;
+				}
+				return data;
+			}).collect(Collectors.toList());
+			double scoreAverage = score[0] / count[0];
+			return scoreAverage;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
