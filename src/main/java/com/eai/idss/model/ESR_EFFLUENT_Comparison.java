@@ -8,7 +8,8 @@ public class ESR_EFFLUENT_Comparison {
 	private String effluentParticulars;
 	private double effluentParticularsQuantityActual;
 	private String effluentUom;
-	
+	private String name;
+
 	public String getEffluentParticulars() {
 		return effluentParticulars;
 	}
@@ -26,6 +27,12 @@ public class ESR_EFFLUENT_Comparison {
 	}
 	public void setEffluentUom(String effluentUom) {
 		this.effluentUom = effluentUom;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

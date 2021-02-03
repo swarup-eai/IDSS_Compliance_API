@@ -103,7 +103,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			
 			return imPage.toList();
 		}
-		return null;
+		return new ArrayList<>();
 	}
 
 	private void filterForPendingCases(IndustryMasterRequest imr, List<IndustryMaster> filteredIndustryMaster) {
@@ -170,7 +170,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	}
 
 	private void filterForLegalActions(IndustryMasterRequest imr, List<IndustryMaster> filteredIndustryMaster) {
-		if(StringUtils.hasText(imr.getLegalActions()) && !"All".equalsIgnoreCase(imr.getLegalActions())) {
+		if(StringUtils.hasText(imr.getLegalActions()) && !"All".equalsIgnoreCase(imr.getLegalActions()) && !"0".equalsIgnoreCase(imr.getLegalActions())) {
 			List<Long> indIdList = filteredIndustryMaster.stream().map(IndustryMaster::getIndustryId).collect(Collectors.toList());
 			Query queryLDM = new Query();
 			
@@ -488,7 +488,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		
 		List<Consent_STACK_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_STACK_comparison.class);
 		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
-		ppgVo.setParam("stack");
+		ppgVo.setParam("Stack");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_STACK_comparison csc : cscList) {
 			SKU sku1 = new SKU("Stack Number",csc.getStackNumber(),"");
@@ -529,7 +529,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		
 		List<Consent_EFFLUENT_Comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_EFFLUENT_Comparison.class);
 		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
-		ppgVo.setParam("effluent");
+		ppgVo.setParam("Effluent");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_EFFLUENT_Comparison csc : cscList) {
 			SKU skuE = new SKU("ETP",String.valueOf(csc.getCapacityOfEtp()),csc.getName());
@@ -542,7 +542,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		List<ESR_EFFLUENT_Comparison> escList = mongoTemplate.find(getESRQueryObj(industryId, esrYear), ESR_EFFLUENT_Comparison.class);
 		List<SKU> eSKUList = new ArrayList<SKU>();
 		for(ESR_EFFLUENT_Comparison esc : escList) {
-			SKU sku = new SKU(esc.getEffluentParticulars(),String.valueOf(esc.getEffluentParticularsQuantityActual()),esc.getEffluentUom());
+			SKU sku = new SKU(esc.getEffluentParticulars(),String.valueOf(esc.getEffluentParticularsQuantityActual()),esc.getName());
 			eSKUList.add(sku);
 		}
 		ppgVo.setEsrSKU(eSKUList);
@@ -568,7 +568,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		
 		List<Consent_HW_Comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_HW_Comparison.class);
 		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
-		ppgVo.setParam("hazWaste");
+		ppgVo.setParam("Hazardous Waste");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_HW_Comparison csc : cscList) {
 			SKU sku = new SKU(csc.getName(),String.valueOf(csc.getQuantity()),csc.getNewUom());
@@ -590,7 +590,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		
 		List<Consent_FUEL_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_FUEL_comparison.class);
 		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
-		ppgVo.setParam("fuel");
+		ppgVo.setParam("Fuel");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_FUEL_comparison csc : cscList) {
 			SKU sku = new SKU(csc.getFuelType(),String.valueOf(csc.getFuelConsumptions()),csc.getName());
@@ -662,7 +662,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	private ComparisonTableParamGroupVo getWaterData(long industryId,int consentYear,int esrYear) {
 		List<Consent_WATER_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_WATER_comparison.class);
 		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
-		ppgVo.setParam("water");
+		ppgVo.setParam("Water");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_WATER_comparison csc : cscList) {
 			SKU skuBod = new SKU("BOD",String.valueOf(csc.getTreatedEffluentBod()),csc.getName());
@@ -691,7 +691,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	private ComparisonTableParamGroupVo getAirData(long industryId,int consentYear,int esrYear) {
 		List<Consented_Air_Pollution_Comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consented_Air_Pollution_Comparison.class);
 		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
-		ppgVo.setParam("air");
+		ppgVo.setParam("Air");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consented_Air_Pollution_Comparison csc : cscList) {
 			SKU sku = new SKU(csc.getParameter(),String.valueOf(csc.getConcentration()),csc.getConcentrationUom());
@@ -749,7 +749,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		
 		ComparisonTableParamGroupVo ppgVoRaw = new ComparisonTableParamGroupVo();
 		List<Consent_RESOURCES_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_RESOURCES_comparison.class);
-		ppgVoRaw.setParam("raw");
+		ppgVoRaw.setParam("Raw");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_RESOURCES_comparison csc : cscList) {
 			SKU sku = new SKU(csc.getRawMaterialName(),String.valueOf(csc.getQty()),csc.getName());
@@ -769,7 +769,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		//////////////////////////////////
 		
 		ComparisonTableParamGroupVo ppgVoWater = new ComparisonTableParamGroupVo();
-		ppgVoRaw.setParam("water");
+		ppgVoRaw.setParam("Water");
 		List<SKU> wcSKUList = new ArrayList<SKU>();
 		List<SKU> infracSKUList = new ArrayList<SKU>();
 		for(Consent_RESOURCES_comparison csc : cscList) {
@@ -795,7 +795,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		ppgVoList.add(ppgVoWater);
 		
 		ComparisonTableParamGroupVo ppgVoInfra = new ComparisonTableParamGroupVo();
-		ppgVoInfra.setParam("infra");
+		ppgVoInfra.setParam("Infrastructure");
 		ppgVoInfra.setConsentSKU(infracSKUList);
 		ppgVoInfra.setEsrSKU(infraeSKUList);
 		ppgVoList.add(ppgVoInfra);
