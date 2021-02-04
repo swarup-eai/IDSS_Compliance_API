@@ -1094,7 +1094,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			industryMasterDetailResponseVo.setScale(industryMaster.getScale());
 			industryMasterDetailResponseVo.setType(industryMaster.getType());
 			industryMasterDetailResponseVo.setCscore(industryMaster.getCscore());
-
+			industryMasterDetailResponseVo.setIndustryName(industryMaster.getIndustryName());
 			String date = LocalDate.of(1970, 1,1).format(DateTimeFormatter.ISO_LOCAL_DATE);
 
 			Query query = new Query();

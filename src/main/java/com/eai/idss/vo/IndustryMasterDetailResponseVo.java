@@ -1,6 +1,7 @@
 package com.eai.idss.vo;
 
 public class IndustryMasterDetailResponseVo {
+    private String industryName;
     private String region;
     private String category;
     private String scale;
@@ -8,6 +9,12 @@ public class IndustryMasterDetailResponseVo {
     private int cscore;
     private int pendingLegalAction;
 
+    public String getIndustryName() {
+        return industryName;
+    }
+    public void setIndustryName(String industryName) {
+        this.industryName = industryName;
+    }
     public String getRegion() {
         return region;
     }
