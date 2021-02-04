@@ -1006,7 +1006,7 @@ public class VisitsDaoImpl implements VisitsDao {
                                                 .append("else", "$actualFreqDays")
                                         )
                                 )
-                                .append("score", new Document()
+                                .append("cscore", new Document()
                                         .append("$concat", Arrays.asList(
                                                 new Document()
                                                         .append("$cond", Arrays.asList(
@@ -1014,13 +1014,13 @@ public class VisitsDaoImpl implements VisitsDao {
                                                                         .append("$and", Arrays.asList(
                                                                                 new Document()
                                                                                         .append("$gte", Arrays.asList(
-                                                                                                "$cscore",
+                                                                                        		new Document().append("$ceil","$cScore"),
                                                                                                 0.0
                                                                                             )
                                                                                         ),
                                                                                 new Document()
                                                                                         .append("$lt", Arrays.asList(
-                                                                                                "$cscore",
+                                                                                                new Document().append("$ceil","$cScore"),
                                                                                                 26.0
                                                                                             )
                                                                                         )
@@ -1036,13 +1036,13 @@ public class VisitsDaoImpl implements VisitsDao {
                                                                         .append("$and", Arrays.asList(
                                                                                 new Document()
                                                                                         .append("$gte", Arrays.asList(
-                                                                                                "$cscore",
+                                                                                                new Document().append("$ceil","$cScore"),
                                                                                                 26.0
                                                                                             )
                                                                                         ),
                                                                                 new Document()
                                                                                         .append("$lt", Arrays.asList(
-                                                                                                "$cscore",
+                                                                                                new Document().append("$ceil","$cScore"),
                                                                                                 51.0
                                                                                             )
                                                                                         )
@@ -1058,13 +1058,13 @@ public class VisitsDaoImpl implements VisitsDao {
                                                                         .append("$and", Arrays.asList(
                                                                                 new Document()
                                                                                         .append("$gte", Arrays.asList(
-                                                                                                "$cscore",
+                                                                                                new Document().append("$ceil","$cScore"),
                                                                                                 51.0
                                                                                             )
                                                                                         ),
                                                                                 new Document()
                                                                                         .append("$lt", Arrays.asList(
-                                                                                                "$cscore",
+                                                                                                new Document().append("$ceil","$cScore"),
                                                                                                 76.0
                                                                                             )
                                                                                         )
@@ -1080,13 +1080,13 @@ public class VisitsDaoImpl implements VisitsDao {
                                                                         .append("$and", Arrays.asList(
                                                                                 new Document()
                                                                                         .append("$gte", Arrays.asList(
-                                                                                                "$cscore",
+                                                                                                new Document().append("$ceil","$cScore"),
                                                                                                 76.0
                                                                                             )
                                                                                         ),
                                                                                 new Document()
                                                                                         .append("$lt", Arrays.asList(
-                                                                                                "$cscore",
+                                                                                                new Document().append("$ceil","$cScore"),
                                                                                                 101.0
                                                                                             )
                                                                                         )
@@ -1102,7 +1102,7 @@ public class VisitsDaoImpl implements VisitsDao {
                         ), 
                 new Document()
                         .append("$group", new Document()
-                                .append("_id", "$score")
+                                .append("_id", "$cscore")
                                 .append("expected", new Document()
                                         .append("$avg", "$expected")
                                 )
@@ -1120,6 +1120,10 @@ public class VisitsDaoImpl implements VisitsDao {
                         .append("actualFreq", new Document()
                                 .append("$ceil", "$actual")
                         )
+                ),
+                new Document()
+                .append("$sort", new Document()
+                        .append("cScore", 1.0)
                 )
         );
 		
