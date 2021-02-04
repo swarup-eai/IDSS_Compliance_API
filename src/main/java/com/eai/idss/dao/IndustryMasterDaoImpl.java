@@ -108,20 +108,77 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 	private void filterForPendingCases(IndustryMasterRequest imr, List<IndustryMaster> filteredIndustryMaster) {
 		if(StringUtils.hasText(imr.getPendingCases()) && !"All".equalsIgnoreCase(imr.getPendingCases())) {
-			Query queryPC = new Query();
-			if("YES".equalsIgnoreCase(imr.getPendingCases())) {
-				queryPC.addCriteria(Criteria.where("complied").is(0));
-			}else if("NO".equalsIgnoreCase(imr.getPendingCases())) {
-				queryPC.addCriteria(Criteria.where("complied").is(1));
-			}
+			
 			List<Long> indIdList = filteredIndustryMaster.stream().map(IndustryMaster::getIndustryId).collect(Collectors.toList());
-
-			queryPC.addCriteria(Criteria.where("industryId").in(indIdList));
-			List<Legal> ldmList = mongoTemplate.find(queryPC, Legal.class);
-			List<Long> ldmIndIdList = ldmList.stream().map(Legal::getIndustryId).collect(Collectors.toList());
+			
+			List<Long> ldmIndIdList = getDirectionsIndustryId(indIdList,imr.getPendingCases());
 			
 			filteredIndustryMaster.removeIf(i -> !ldmIndIdList.contains(i.getIndustryId()));
 		}
+	}
+	
+	private List<Long> getDirectionsIndustryId(List<Long> indIdList,String directionsCnt){
+		try {
+			Document matchDocDirCnt =new Document();
+			if(directionsCnt.contains("+")) {
+				String dc = directionsCnt.replace("+", "");
+				matchDocDirCnt.append("count",new Document().append("$gte", Integer.parseInt(dc)));
+			}
+			else 
+				matchDocDirCnt.append("count", Integer.parseInt(directionsCnt));
+			
+			Document matchDoc = new Document();
+			matchDoc.append("industryId", new Document().append("$in", indIdList));
+			
+			matchDoc.append("statusUpdatedOn", new Document()
+	        		.append("$eq", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse("1970-01-01 00:00:00.000+0000")));
+	        
+			
+			List<Long> pList = new ArrayList<Long>();
+			List<? extends Bson> pipeline = Arrays.asList(
+						new Document().append("$match", matchDoc),  
+						new Document()
+			            .append("$group", new Document()
+			                    .append("_id", "$industryId")
+			                    .append("count",  new Document()
+		                                .append("$sum", 1)
+		                                )
+			            ),
+			            new Document().append("$match", matchDocDirCnt),
+						new Document()
+			            .append("$project", new Document()
+			                    .append("_id", false)
+			                    .append("industryId", "$_id")
+			            )
+			            
+					);
+			MongoDatabase database = mongoClient.getDatabase(dbName);
+	        MongoCollection<Document> collection = database.getCollection("Directions");
+	
+	        collection.aggregate(pipeline)
+	        .allowDiskUse(false)
+	        .forEach(new Consumer<Document>() {
+	                @Override
+	                public void accept(Document document) {
+	                    logger.info(document.toJson());
+						try {
+							IndustryMaster dc = (new ObjectMapper().readValue(document.toJson(), IndustryMaster.class));
+							pList.add(dc.getIndustryId());
+						} catch (JsonMappingException e) {
+							e.printStackTrace();
+						} catch (JsonProcessingException e) {
+							e.printStackTrace();
+						}
+	                    
+	                }
+	            }
+	        );
+			return pList;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private void setCriteria(IndustryMasterRequest imr, Query query) {

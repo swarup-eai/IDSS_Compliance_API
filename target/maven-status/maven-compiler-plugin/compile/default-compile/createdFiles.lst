@@ -1,4 +1,5 @@
 com\eai\idss\vo\TopPerfVo.class
+com\eai\idss\vo\IndustryMasterDetailResponseVo.class
 com\eai\idss\vo\PollutionScoreResponseVo.class
 com\eai\idss\vo\PlasticForm4Vo.class
 com\eai\idss\model\Consent_EFFLUENT_Comparison.class
@@ -8,11 +9,13 @@ com\eai\idss\vo\LegalGroupByVo.class
 com\eai\idss\vo\ParameterVo.class
 com\eai\idss\dao\GenericDaoImpl$6.class
 com\eai\idss\model\BMW_Authorization_Comparison.class
+com\eai\idss\repository\IndustryMasterRepository.class
 com\eai\idss\vo\MyVisitsIndustries.class
 com\eai\idss\dao\GenericDaoImpl$3.class
 com\eai\idss\dao\LegalDaoImpl$4.class
 com\eai\idss\vo\DecisionMakingVo.class
 com\eai\idss\model\Plastic_Annual_Report_Recycling_Facility_Form_IV.class
+com\eai\idss\model\Directions.class
 com\eai\idss\dao\ConcentDao.class
 com\eai\idss\vo\ComlianceScoreFilter.class
 com\eai\idss\model\Consent_FUEL_comparison.class
