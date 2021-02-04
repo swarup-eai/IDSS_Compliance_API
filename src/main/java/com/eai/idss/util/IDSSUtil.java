@@ -109,7 +109,7 @@ public class IDSSUtil {
 				break;
 			case "Chandrapur":
 				subRegionList.add("ALL");
-				subRegionList.add("Chandrapur-I");
+				subRegionList.add("Chandrapur");
 				break;
 			case "Amravati":
 				subRegionList.add("ALL");

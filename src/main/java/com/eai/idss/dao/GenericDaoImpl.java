@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import com.eai.idss.vo.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.jboss.logging.Logger;
@@ -31,12 +32,6 @@ import com.eai.idss.model.CScoreMaster;
 import com.eai.idss.model.IndustryMaster;
 import com.eai.idss.model.IndustryTypes;
 import com.eai.idss.util.IDSSUtil;
-import com.eai.idss.vo.DashboardRequest;
-import com.eai.idss.vo.HeatmapResponseVo;
-import com.eai.idss.vo.MyVisits;
-import com.eai.idss.vo.MyVisitsIndustries;
-import com.eai.idss.vo.TileVo;
-import com.eai.idss.vo.TopPerfVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -739,39 +734,54 @@ public class GenericDaoImpl implements GenericDao {
 	}
 
 	@Override
-	public Double getIndustryScore(DashboardRequest dbr) {
+	public List<IndustryCscoreResponseVo> getIndustryScore() {
 		try {
-			Query query = new Query();
-
-			if(null!=dbr && StringUtils.hasText(dbr.getRegion()) && !"All".equalsIgnoreCase(dbr.getRegion()))
-			query.addCriteria(Criteria.where("region").is(dbr.getRegion()));
-			if(null!=dbr && StringUtils.hasText(dbr.getSubRegion()) && !"All".equalsIgnoreCase(dbr.getSubRegion()))
-			query.addCriteria(Criteria.where("subRegion").is(dbr.getSubRegion()));
-			if(null!=dbr && StringUtils.hasText(dbr.getScale()) && !"All".equalsIgnoreCase(dbr.getScale()))
-			query.addCriteria(Criteria.where("scale").is(dbr.getScale()));
-			if(null!=dbr && StringUtils.hasText(dbr.getType()) && !"All".equalsIgnoreCase(dbr.getType()))
-			query.addCriteria(Criteria.where("type").is(dbr.getType()));
-			if(null!=dbr && StringUtils.hasText(dbr.getCategory()) && !"All".equalsIgnoreCase(dbr.getCategory()))
-			query.addCriteria(Criteria.where("category").is(dbr.getCategory()));
-
-
-			List<IndustryMaster> industryMasterList= mongoTemplate.find(query, IndustryMaster.class);
-			final Double[] score = {new Double(0)};
-			final int[] count = {0};
-			industryMasterList.stream().map(data -> {
-				if(data.getCscore() >0){
-					score[0] = Double.sum(score[0],data.getCscore());
-					count[0] = count[0] +1;
+			logger.info("getIndustryScore");
+			String[] regions = {"Ahmednagar", "Amravati", "Bhandara", "Bid", "Dhule", "Jalgaon", "Kolhapur", "Nanded", "Nandurbar", "Nashik", "Osmanabad", "Pune", "Raigarh", "Ratnagiri", "Sangli", "Sindhudurg", "Solapur", "Thane", "Yavatmal", "Latur", "Akola", "Aurangabad", "Buldana", "Chandrapur", "Garhchiroli", "Gondiya", "Mumbai", "Hingoli", "Jalna", "Nagpur", "Parbhani", "Satara", "Wardha", "Washim"};
+			logger.info(regions);
+			List<IndustryCscoreResponseVo> industryCscoreResponseVoList  = new ArrayList<>();
+			for(int i=0;i<regions.length;i++){
+				logger.info(regions[i]);
+				List<IndustryMaster> industryMasterList= getIndustryCscoreByRegion(regions[i]);//mongoTemplate.find(query, IndustryMaster.class);
+				final Double[] score = {new Double(0)};
+				final int[] count = {0};
+				industryMasterList.stream().map(data -> {
+					if(data.getCscore() >0){
+						score[0] = Double.sum(score[0],data.getCscore());
+						count[0] = count[0] +1;
+					}
+					return data;
+				}).collect(Collectors.toList());
+				double scoreAverage = score[0] / count[0];
+				String fill = "#eff3ff";
+				if(25 >=scoreAverage){
+					fill = "#eff3ff";
+				}else if(50 >=scoreAverage){
+					fill = "#bdd7e7";
+				}else if(75>=scoreAverage){
+					fill = "#6baed6";
+				}else if(100 >=scoreAverage){
+					fill = "#2171b5";
 				}
-				return data;
-			}).collect(Collectors.toList());
-			double scoreAverage = score[0] / count[0];
-			return scoreAverage;
+				IndustryCscoreResponseVo industryCscoreResponseVo = new IndustryCscoreResponseVo();
+				industryCscoreResponseVo.setcScoreAverage(scoreAverage);
+				industryCscoreResponseVo.setFill(fill);
+				industryCscoreResponseVo.setId(regions[i]);
+				industryCscoreResponseVoList.add(industryCscoreResponseVo);
+			}
+			return industryCscoreResponseVoList;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private List<IndustryMaster> getIndustryCscoreByRegion(String region){
+		Query query = new Query();
+		query.addCriteria(Criteria.where("region").is(region));
+		return mongoTemplate.find(query, IndustryMaster.class);
 	}
 
 	private List<? extends Bson> getHeatmapPipline(List<String> days,DashboardRequest dbr) throws ParseException {
