@@ -698,11 +698,6 @@ public class VisitsDaoImpl implements VisitsDao {
 					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(cdr.getFromDate()+" 00:00:00.000+0000"))
 					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(cdr.getToDate()+" 00:00:00.000+0000")));
 				
-			if(StringUtils.hasText(cdr.getCompliance()) && !"ALL".equalsIgnoreCase(cdr.getCompliance())) {
-				String[] op = cdr.getCompliance().split("-");
-				query.addCriteria(Criteria.where("cscore").gte(Integer.parseInt(op[0])).lte(Integer.parseInt(op[1])));
-			}
-			
 			if(StringUtils.hasText(cdr.getStatus()) && !"ALL".equalsIgnoreCase(cdr.getStatus())) {
 				query.addCriteria(Criteria.where("visitStatus").is(cdr.getStatus()));
 			}
@@ -713,6 +708,8 @@ public class VisitsDaoImpl implements VisitsDao {
 			
 			List<Visits> filteredVisitList= mongoTemplate.find(query, Visits.class);
 			
+			applyCScoreFilter(cdr, filteredVisitList);
+			
 			Page<Visits> cPage = PageableExecutionUtils.getPage(
 					filteredVisitList,
 					pageable,
@@ -720,27 +717,49 @@ public class VisitsDaoImpl implements VisitsDao {
 			
 			List<Visits> finalVisitList = cPage.toList();
 			
-			List<Long> indIdList = finalVisitList.stream().map(Visits::getIndustryId).collect(Collectors.toList());
-			Query queryIM = new Query();
-			
-			queryIM.addCriteria(Criteria.where("industryId").in(indIdList));
-			List<IndustryMaster> imList = mongoTemplate.find(queryIM, IndustryMaster.class);
-			
-			for(Visits v : finalVisitList) {
-				for(IndustryMaster im : imList) {
-					if(im.getIndustryId() == v.getIndustryId()) {
-						v.setcScore(im.getCscore());
-						break;
-					}
-				}
-			}
+			populateCScore(finalVisitList);
 			
 			return finalVisitList;
-		}
+		}	
 		catch(Exception e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private void populateCScore(List<Visits> finalVisitList) {
+		List<Long> indIdList = finalVisitList.stream().map(Visits::getIndustryId).collect(Collectors.toList());
+		Query queryIM = new Query();
+		
+		queryIM.addCriteria(Criteria.where("industryId").in(indIdList));
+		List<IndustryMaster> imList = mongoTemplate.find(queryIM, IndustryMaster.class);
+		
+		for(Visits v : finalVisitList) {
+			for(IndustryMaster im : imList) {
+				if(im.getIndustryId() == v.getIndustryId()) {
+					v.setcScore(im.getCscore());
+					break;
+				}
+			}
+		}
+	}
+
+	private void applyCScoreFilter(VisitsScheduleDetailsRequest cdr, List<Visits> filteredVisitList) {
+		if(StringUtils.hasText(cdr.getCompliance()) && !"ALL".equalsIgnoreCase(cdr.getCompliance())) {
+			String[] op = cdr.getCompliance().split("-");
+			
+			List<Long> indIdList = filteredVisitList.stream().map(Visits::getIndustryId).collect(Collectors.toList());
+			Query queryIM = new Query();
+			
+			queryIM.addCriteria(Criteria.where("industryId").in(indIdList));
+			queryIM.addCriteria(Criteria.where("cscore").gte(Integer.parseInt(op[0])).lte(Integer.parseInt(op[1])));
+			
+			List<IndustryMaster> imList = mongoTemplate.find(queryIM, IndustryMaster.class);
+			
+			List<Long> ldmIndIdList = imList.stream().map(IndustryMaster::getIndustryId).collect(Collectors.toList());
+			
+			filteredVisitList.removeIf(i -> !ldmIndIdList.contains(i.getIndustryId()));
+		}
 	}
 	
 	public Map<String,List<TileVo>> getVisitsScheduleByScaleCategory(String userName){

@@ -22,7 +22,7 @@ public class Visits {
 	private String region;
 	private String type;
 	private String category;
-	private int cScore;
+	private double cScore;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate reportCreatedOn;
 	@JsonFormat(pattern="yyyy-MM-dd")
@@ -110,10 +110,10 @@ public class Visits {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	public int getcScore() {
+	public double getcScore() {
 		return cScore;
 	}
-	public void setcScore(int cScore) {
+	public void setcScore(double cScore) {
 		this.cScore = cScore;
 	}
 
