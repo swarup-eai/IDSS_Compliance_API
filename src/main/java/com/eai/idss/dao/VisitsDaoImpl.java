@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -14,6 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -693,31 +693,10 @@ public class VisitsDaoImpl implements VisitsDao {
 	public List<Visits> getVisitsSchedulePaginatedRecords(VisitsScheduleDetailsRequest cdr, Pageable pageable,String userName){
 		try {
 			Query query = new Query().with(pageable);
-			if(null!=cdr) {
-				String[] my = cdr.getMonth().split("-");
-
-				YearMonth ym = YearMonth.of(Integer.parseInt(my[1]),Integer.parseInt(my[0]));
-				LocalDate startDate = ym.atDay(1);
-				LocalDate endDate = ym.atEndOfMonth();
 				
-				if("Historical".equalsIgnoreCase(cdr.getWhen())) {
-					Criteria c = new Criteria();
-					c.orOperator(Criteria.where("visitedDate")
-							.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(startDate+" 00:00:00.000+0000"))
-							.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(endDate+" 00:00:00.000+0000")),
-							
-							Criteria.where("schduledOn")
-							.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(startDate+" 00:00:00.000+0000"))
-							.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(endDate+" 00:00:00.000+0000"))
-							);
-						query.addCriteria(c);
-						
-				}else {
-						query.addCriteria(Criteria.where("schduledOn")
-								.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(startDate+" 00:00:00.000+0000"))
-								.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(endDate+" 00:00:00.000+0000")));
-				}
-			}
+			query.addCriteria(Criteria.where("schduledOn")
+					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(cdr.getFromDate()+" 00:00:00.000+0000"))
+					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(cdr.getToDate()+" 00:00:00.000+0000")));
 				
 			if(StringUtils.hasText(cdr.getCompliance()) && !"ALL".equalsIgnoreCase(cdr.getCompliance())) {
 				String[] op = cdr.getCompliance().split("-");
@@ -726,24 +705,37 @@ public class VisitsDaoImpl implements VisitsDao {
 			
 			if(StringUtils.hasText(cdr.getStatus()) && !"ALL".equalsIgnoreCase(cdr.getStatus())) {
 				query.addCriteria(Criteria.where("visitStatus").is(cdr.getStatus()));
-//				if("Pending".equalsIgnoreCase(cdr.getStatus()) || "Scheduled".equalsIgnoreCase(cdr.getStatus()))
-//					query.addCriteria(Criteria.where("visitStatus").is(PENDING));
-//				if(VISITED.equalsIgnoreCase(cdr.getStatus()))
-//					query.addCriteria(Criteria.where("visitStatus").is(VISITED));
 			}
 			
 			query.addCriteria(Criteria.where("userId").is(userName));
 	
 			logger.info(mongoTemplate.count(query, Visits.class));
 			
-			List<Visits> filteredLegalList= mongoTemplate.find(query, Visits.class);
+			List<Visits> filteredVisitList= mongoTemplate.find(query, Visits.class);
 			
 			Page<Visits> cPage = PageableExecutionUtils.getPage(
-					filteredLegalList,
+					filteredVisitList,
 					pageable,
 			        () -> mongoTemplate.count(query, Visits.class));
 			
-			return cPage.toList();
+			List<Visits> finalVisitList = cPage.toList();
+			
+			List<Long> indIdList = finalVisitList.stream().map(Visits::getIndustryId).collect(Collectors.toList());
+			Query queryIM = new Query();
+			
+			queryIM.addCriteria(Criteria.where("industryId").in(indIdList));
+			List<IndustryMaster> imList = mongoTemplate.find(queryIM, IndustryMaster.class);
+			
+			for(Visits v : finalVisitList) {
+				for(IndustryMaster im : imList) {
+					if(im.getIndustryId() == v.getIndustryId()) {
+						v.setcScore(im.getCscore());
+						break;
+					}
+				}
+			}
+			
+			return finalVisitList;
 		}
 		catch(Exception e) {
 			e.printStackTrace();

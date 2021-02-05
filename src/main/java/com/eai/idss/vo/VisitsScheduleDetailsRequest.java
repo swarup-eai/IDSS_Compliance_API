@@ -2,16 +2,28 @@ package com.eai.idss.vo;
 
 public class VisitsScheduleDetailsRequest {
 
-	String month; //MM-YYYY
 	String when; // Historical (completed, pending), Upcoming (scheduled)
 	String status; //pending, all, completed, scheduled
 	String compliance; //0-25, 26-50, 51-75, 76-100
-	public String getMonth() {
-		return month;
+	private String fromDate;
+	private String toDate;
+	
+	public String getFromDate() {
+		return fromDate;
 	}
-	public void setMonth(String month) {
-		this.month = month;
+
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
 	}
+
+	public String getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
+	
 	public String getWhen() {
 		return when;
 	}
