@@ -7,7 +7,7 @@ import java.time.LocalDate;
 @Document(collection = "Directions")
 public class Directions {
 
-    private Double industryId;
+    private long industryId;
 
     private LocalDate statusUpdatedOn;
 
@@ -17,11 +17,12 @@ public class Directions {
     public void setStatusUpdatedOn(LocalDate statusUpdatedOn) {
         this.statusUpdatedOn = statusUpdatedOn;
     }
+	public long getIndustryId() {
+		return industryId;
+	}
+	public void setIndustryId(long industryId) {
+		this.industryId = industryId;
+	}
 
-    public Double getIndustryId() {
-        return industryId;
-    }
-    public void setIndustryId(Double industryid) {
-        this.industryId = industryId;
-    }
+    
 }

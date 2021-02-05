@@ -9,14 +9,13 @@ public class DashboardResponse {
 	private List<TopPerfVo> topPerformers;
 	private List<MyVisits> myVisits;
 	private Double industryScore;
-//	private Map<String,List<HeatmapResponseVo>> heatmapResponseList;
-//
-//	public Map<String,List<HeatmapResponseVo>> getHeatmapResponseList() {
-//		return heatmapResponseList;
-//	}
-//	public void setHeatmapResponseList(Map<String,List<HeatmapResponseVo>> heatmapResponse) {
-//		this.heatmapResponseList = heatmapResponse;
-//	}
+	private List<IndustryCscoreResponseVo> industryCscoreDetails;
+	public List<IndustryCscoreResponseVo> getIndustryCscoreDetails() {
+		return industryCscoreDetails;
+	}
+	public void setIndustryCscoreDetails(List<IndustryCscoreResponseVo> industryCscoreDetails) {
+		this.industryCscoreDetails = industryCscoreDetails;
+	}
 	public Map<String, Map<String, List<TileVo>>> getDashboardMap() {
 		return dashboardMap;
 	}

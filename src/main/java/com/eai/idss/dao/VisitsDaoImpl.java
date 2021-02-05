@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -14,6 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -693,62 +693,73 @@ public class VisitsDaoImpl implements VisitsDao {
 	public List<Visits> getVisitsSchedulePaginatedRecords(VisitsScheduleDetailsRequest cdr, Pageable pageable,String userName){
 		try {
 			Query query = new Query().with(pageable);
-			if(null!=cdr) {
-				String[] my = cdr.getMonth().split("-");
-
-				YearMonth ym = YearMonth.of(Integer.parseInt(my[1]),Integer.parseInt(my[0]));
-				LocalDate startDate = ym.atDay(1);
-				LocalDate endDate = ym.atEndOfMonth();
 				
-				if("Historical".equalsIgnoreCase(cdr.getWhen())) {
-					Criteria c = new Criteria();
-					c.orOperator(Criteria.where("visitedDate")
-							.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(startDate+" 00:00:00.000+0000"))
-							.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(endDate+" 00:00:00.000+0000")),
-							
-							Criteria.where("schduledOn")
-							.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(startDate+" 00:00:00.000+0000"))
-							.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(endDate+" 00:00:00.000+0000"))
-							);
-						query.addCriteria(c);
-						
-				}else {
-						query.addCriteria(Criteria.where("schduledOn")
-								.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(startDate+" 00:00:00.000+0000"))
-								.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(endDate+" 00:00:00.000+0000")));
-				}
-			}
+			query.addCriteria(Criteria.where("schduledOn")
+					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(cdr.getFromDate()+" 00:00:00.000+0000"))
+					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(cdr.getToDate()+" 00:00:00.000+0000")));
 				
-			if(StringUtils.hasText(cdr.getCompliance()) && !"ALL".equalsIgnoreCase(cdr.getCompliance())) {
-				String[] op = cdr.getCompliance().split("-");
-				query.addCriteria(Criteria.where("cscore").gte(Integer.parseInt(op[0])).lte(Integer.parseInt(op[1])));
-			}
-			
 			if(StringUtils.hasText(cdr.getStatus()) && !"ALL".equalsIgnoreCase(cdr.getStatus())) {
 				query.addCriteria(Criteria.where("visitStatus").is(cdr.getStatus()));
-//				if("Pending".equalsIgnoreCase(cdr.getStatus()) || "Scheduled".equalsIgnoreCase(cdr.getStatus()))
-//					query.addCriteria(Criteria.where("visitStatus").is(PENDING));
-//				if(VISITED.equalsIgnoreCase(cdr.getStatus()))
-//					query.addCriteria(Criteria.where("visitStatus").is(VISITED));
 			}
 			
 			query.addCriteria(Criteria.where("userId").is(userName));
 	
 			logger.info(mongoTemplate.count(query, Visits.class));
 			
-			List<Visits> filteredLegalList= mongoTemplate.find(query, Visits.class);
+			List<Visits> filteredVisitList= mongoTemplate.find(query, Visits.class);
+			
+			applyCScoreFilter(cdr, filteredVisitList);
 			
 			Page<Visits> cPage = PageableExecutionUtils.getPage(
-					filteredLegalList,
+					filteredVisitList,
 					pageable,
 			        () -> mongoTemplate.count(query, Visits.class));
 			
-			return cPage.toList();
-		}
+			List<Visits> finalVisitList = cPage.toList();
+			
+			populateCScore(finalVisitList);
+			
+			return finalVisitList;
+		}	
 		catch(Exception e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private void populateCScore(List<Visits> finalVisitList) {
+		List<Long> indIdList = finalVisitList.stream().map(Visits::getIndustryId).collect(Collectors.toList());
+		Query queryIM = new Query();
+		
+		queryIM.addCriteria(Criteria.where("industryId").in(indIdList));
+		List<IndustryMaster> imList = mongoTemplate.find(queryIM, IndustryMaster.class);
+		
+		for(Visits v : finalVisitList) {
+			for(IndustryMaster im : imList) {
+				if(im.getIndustryId() == v.getIndustryId()) {
+					v.setcScore(im.getCscore());
+					break;
+				}
+			}
+		}
+	}
+
+	private void applyCScoreFilter(VisitsScheduleDetailsRequest cdr, List<Visits> filteredVisitList) {
+		if(StringUtils.hasText(cdr.getCompliance()) && !"ALL".equalsIgnoreCase(cdr.getCompliance())) {
+			String[] op = cdr.getCompliance().split("-");
+			
+			List<Long> indIdList = filteredVisitList.stream().map(Visits::getIndustryId).collect(Collectors.toList());
+			Query queryIM = new Query();
+			
+			queryIM.addCriteria(Criteria.where("industryId").in(indIdList));
+			queryIM.addCriteria(Criteria.where("cscore").gte(Integer.parseInt(op[0])).lte(Integer.parseInt(op[1])));
+			
+			List<IndustryMaster> imList = mongoTemplate.find(queryIM, IndustryMaster.class);
+			
+			List<Long> ldmIndIdList = imList.stream().map(IndustryMaster::getIndustryId).collect(Collectors.toList());
+			
+			filteredVisitList.removeIf(i -> !ldmIndIdList.contains(i.getIndustryId()));
+		}
 	}
 	
 	public Map<String,List<TileVo>> getVisitsScheduleByScaleCategory(String userName){
@@ -1006,7 +1017,7 @@ public class VisitsDaoImpl implements VisitsDao {
                                                 .append("else", "$actualFreqDays")
                                         )
                                 )
-                                .append("score", new Document()
+                                .append("cscore", new Document()
                                         .append("$concat", Arrays.asList(
                                                 new Document()
                                                         .append("$cond", Arrays.asList(
@@ -1014,13 +1025,13 @@ public class VisitsDaoImpl implements VisitsDao {
                                                                         .append("$and", Arrays.asList(
                                                                                 new Document()
                                                                                         .append("$gte", Arrays.asList(
-                                                                                                "$cscore",
+                                                                                        		new Document().append("$ceil","$cScore"),
                                                                                                 0.0
                                                                                             )
                                                                                         ),
                                                                                 new Document()
                                                                                         .append("$lt", Arrays.asList(
-                                                                                                "$cscore",
+                                                                                                new Document().append("$ceil","$cScore"),
                                                                                                 26.0
                                                                                             )
                                                                                         )
@@ -1036,13 +1047,13 @@ public class VisitsDaoImpl implements VisitsDao {
                                                                         .append("$and", Arrays.asList(
                                                                                 new Document()
                                                                                         .append("$gte", Arrays.asList(
-                                                                                                "$cscore",
+                                                                                                new Document().append("$ceil","$cScore"),
                                                                                                 26.0
                                                                                             )
                                                                                         ),
                                                                                 new Document()
                                                                                         .append("$lt", Arrays.asList(
-                                                                                                "$cscore",
+                                                                                                new Document().append("$ceil","$cScore"),
                                                                                                 51.0
                                                                                             )
                                                                                         )
@@ -1058,13 +1069,13 @@ public class VisitsDaoImpl implements VisitsDao {
                                                                         .append("$and", Arrays.asList(
                                                                                 new Document()
                                                                                         .append("$gte", Arrays.asList(
-                                                                                                "$cscore",
+                                                                                                new Document().append("$ceil","$cScore"),
                                                                                                 51.0
                                                                                             )
                                                                                         ),
                                                                                 new Document()
                                                                                         .append("$lt", Arrays.asList(
-                                                                                                "$cscore",
+                                                                                                new Document().append("$ceil","$cScore"),
                                                                                                 76.0
                                                                                             )
                                                                                         )
@@ -1080,13 +1091,13 @@ public class VisitsDaoImpl implements VisitsDao {
                                                                         .append("$and", Arrays.asList(
                                                                                 new Document()
                                                                                         .append("$gte", Arrays.asList(
-                                                                                                "$cscore",
+                                                                                                new Document().append("$ceil","$cScore"),
                                                                                                 76.0
                                                                                             )
                                                                                         ),
                                                                                 new Document()
                                                                                         .append("$lt", Arrays.asList(
-                                                                                                "$cscore",
+                                                                                                new Document().append("$ceil","$cScore"),
                                                                                                 101.0
                                                                                             )
                                                                                         )
@@ -1102,7 +1113,7 @@ public class VisitsDaoImpl implements VisitsDao {
                         ), 
                 new Document()
                         .append("$group", new Document()
-                                .append("_id", "$score")
+                                .append("_id", "$cscore")
                                 .append("expected", new Document()
                                         .append("$avg", "$expected")
                                 )
@@ -1120,6 +1131,10 @@ public class VisitsDaoImpl implements VisitsDao {
                         .append("actualFreq", new Document()
                                 .append("$ceil", "$actual")
                         )
+                ),
+                new Document()
+                .append("$sort", new Document()
+                        .append("cScore", 1.0)
                 )
         );
 		

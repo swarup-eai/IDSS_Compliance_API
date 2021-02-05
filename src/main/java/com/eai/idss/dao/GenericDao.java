@@ -3,11 +3,7 @@ package com.eai.idss.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.eai.idss.vo.DashboardRequest;
-import com.eai.idss.vo.HeatmapResponseVo;
-import com.eai.idss.vo.MyVisits;
-import com.eai.idss.vo.TileVo;
-import com.eai.idss.vo.TopPerfVo;
+import com.eai.idss.vo.*;
 
 public interface GenericDao {
 
@@ -27,5 +23,5 @@ public interface GenericDao {
 
 	public List<HeatmapResponseVo> getHeatmapDataByIndustryIds(List<Integer> industryIds);
 
-	public Double getIndustryScore(DashboardRequest dbr);
+	public List<IndustryCscoreResponseVo> getIndustryScore();
 }
