@@ -738,7 +738,7 @@ public class GenericDaoImpl implements GenericDao {
 		try {
 			logger.info("getIndustryScore");
 			String[] regions = {"Ahmednagar", "Amravati", "Bhandara", "Bid", "Dhule", "Jalgaon", "Kolhapur", "Nanded", "Nandurbar", "Nashik", "Osmanabad", "Pune", "Raigarh", "Ratnagiri", "Sangli", "Sindhudurg", "Solapur", "Thane", "Yavatmal", "Latur", "Akola", "Aurangabad", "Buldana", "Chandrapur", "Garhchiroli", "Gondiya", "Mumbai", "Hingoli", "Jalna", "Nagpur", "Parbhani", "Satara", "Wardha", "Washim"};
-			logger.info(regions);
+
 			List<IndustryCscoreResponseVo> industryCscoreResponseVoList  = new ArrayList<>();
 			for(int i=0;i<regions.length;i++){
 				logger.info(regions[i]);
