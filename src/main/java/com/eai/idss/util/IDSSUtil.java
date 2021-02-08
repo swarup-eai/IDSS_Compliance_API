@@ -163,7 +163,7 @@ public class IDSSUtil {
 		subRegionList.add("Mahad");
 		subRegionList.add("Thane I");
 		subRegionList.add("Thane II");
-		subRegionList.add("Tarapur");
+		subRegionList.add("Tarapur I");
 		subRegionList.add("Tarapur II");
 		subRegionList.add("Chandrapur-I");
 		subRegionList.add("Amravati I");
