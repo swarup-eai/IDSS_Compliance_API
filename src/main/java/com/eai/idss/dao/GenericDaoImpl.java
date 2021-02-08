@@ -1,5 +1,6 @@
 package com.eai.idss.dao;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -741,7 +742,6 @@ public class GenericDaoImpl implements GenericDao {
 
 			List<IndustryCscoreResponseVo> industryCscoreResponseVoList  = new ArrayList<>();
 			for(int i=0;i<regions.length;i++){
-				logger.info(regions[i]);
 				List<IndustryMaster> industryMasterList= getIndustryCscoreByRegion(regions[i]);//mongoTemplate.find(query, IndustryMaster.class);
 				final Double[] score = {new Double(0)};
 				final int[] count = {0};
@@ -764,7 +764,11 @@ public class GenericDaoImpl implements GenericDao {
 					fill = "#2171b5";
 				}
 				IndustryCscoreResponseVo industryCscoreResponseVo = new IndustryCscoreResponseVo();
-				industryCscoreResponseVo.setcScoreAverage(scoreAverage);
+				if(Double.isNaN(scoreAverage)){
+					industryCscoreResponseVo.setcScoreAverage(0.0);
+				}else{
+					industryCscoreResponseVo.setcScoreAverage(Double.parseDouble(new DecimalFormat("##.##").format(scoreAverage)));
+				}
 				industryCscoreResponseVo.setFill(fill);
 				industryCscoreResponseVo.setId(regions[i]);
 				industryCscoreResponseVoList.add(industryCscoreResponseVo);
