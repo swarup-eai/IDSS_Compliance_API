@@ -1,7 +1,11 @@
 package com.eai.idss.service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +16,13 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.eai.idss.dao.IndustryMasterDao;
+import com.eai.idss.dao.OCEMSDataDaoImpl;
 import com.eai.idss.model.IndustryMaster;
+import com.eai.idss.model.OCEMS_Alerts;
+import com.eai.idss.repository.OCEMSAlertsRepositoy;
+import com.eai.idss.vo.PollutionScoreValueVo;
+import com.mongodb.client.MongoClient;
 
 @Component
 public class OCEMSAlertsScheduler {
@@ -21,10 +31,47 @@ public class OCEMSAlertsScheduler {
 	
 	@Autowired
 	MongoTemplate mongoTemplate;
+	
+	@Autowired
+	OCEMSAlertsRepositoy ocemsRepo;
+	
+	@Autowired
+	IndustryMasterDao imd;
+	
+	@Autowired
+	OCEMSDataDaoImpl od;
+	
+	private static final String OCEMS = "OCEMS";
 
 	@Scheduled(cron = "59 * * * * *")
 	public void generateOCEMSAlerts() {
+		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
+		String currentDayTime = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+		String hours96Back = currentTime.minusHours(96).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 		List<IndustryMaster> filteredIndustryMaster = getIndustryList();
+		for(IndustryMaster im : filteredIndustryMaster) {
+			List<Map<String,String>> paramList = imd.getPollutionGraphParam(im.getIndustryId(),OCEMS);
+			for(Map<String,String> m : paramList) {
+				for(String value : m.values()) {
+					List<PollutionScoreValueVo> psVoList = od.getOCEMSPollutionScoreValue(im.getIndustryId(),value,currentDayTime,hours96Back);
+				}
+			}
+			createOCEMSAlert(im,"test");
+		}
+	}
+	
+	private void createOCEMSAlert(IndustryMaster im, String alertType) {
+		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
+		OCEMS_Alerts oa = new OCEMS_Alerts();
+		oa.setAlertCreatedDateTime(currentTime);
+		oa.setDisabled(false);
+		oa.setIndustryId(im.getIndustryId());
+		oa.setIndustryName(im.getIndustryName());
+		oa.setRegion(im.getRegion());
+		oa.setSubRegion(im.getSubRegion());
+//		oa.setRoUser(im.get);
+		ocemsRepo.save(oa);
+		
 	}
 
 	private List<IndustryMaster> getIndustryList() {

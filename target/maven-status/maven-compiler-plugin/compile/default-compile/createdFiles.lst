@@ -16,6 +16,7 @@ com\eai\idss\dao\LegalDaoImpl$4.class
 com\eai\idss\vo\DecisionMakingVo.class
 com\eai\idss\model\Plastic_Annual_Report_Recycling_Facility_Form_IV.class
 com\eai\idss\model\Directions.class
+com\eai\idss\service\OCEMSAlertsScheduler.class
 com\eai\idss\dao\ConcentDao.class
 com\eai\idss\vo\ComlianceScoreFilter.class
 com\eai\idss\model\Consent_FUEL_comparison.class
@@ -144,6 +145,7 @@ com\eai\idss\model\Plastic_Recycler_Authorization.class
 com\eai\idss\vo\BatteryVo.class
 com\eai\idss\configuration\WebSecurityConfiguration.class
 com\eai\idss\model\Esr_HW_Comparison.class
+com\eai\idss\model\OCEMS_Alerts.class
 com\eai\idss\model\VisitProcessEfficiency.class
 com\eai\idss\model\IndustryMaster.class
 com\eai\idss\vo\LegalDetailsRequest.class

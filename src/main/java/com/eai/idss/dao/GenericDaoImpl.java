@@ -85,6 +85,7 @@ public class GenericDaoImpl implements GenericDao {
 										else {
 											tNewVo.setCaseCount(tNewVo.getCaseCount() + tVo.getCaseCount());
 											List<Integer> ind = tNewVo.getIndustries();
+											if(null==ind) ind = new ArrayList<Integer>();
 											ind.addAll(tVo.getIndustries());
 											tNewVo.setIndustries(ind);
 										}
