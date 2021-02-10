@@ -22,7 +22,6 @@ import com.eai.idss.model.IndustryMaster;
 import com.eai.idss.model.OCEMS_Alerts;
 import com.eai.idss.repository.OCEMSAlertsRepositoy;
 import com.eai.idss.vo.PollutionScoreValueVo;
-import com.mongodb.client.MongoClient;
 
 @Component
 public class OCEMSAlertsScheduler {
@@ -43,17 +42,17 @@ public class OCEMSAlertsScheduler {
 	
 	private static final String OCEMS = "OCEMS";
 
-	@Scheduled(cron = "59 * * * * *")
+	@Scheduled(cron = "0 0 0/3 ? * * *")
 	public void generateOCEMSAlerts() {
 		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		String currentDayTime = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-		String hours96Back = currentTime.minusHours(96).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+		String threeHoursBack = currentTime.minusHours(3).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 		List<IndustryMaster> filteredIndustryMaster = getIndustryList();
 		for(IndustryMaster im : filteredIndustryMaster) {
 			List<Map<String,String>> paramList = imd.getPollutionGraphParam(im.getIndustryId(),OCEMS);
 			for(Map<String,String> m : paramList) {
 				for(String value : m.values()) {
-					List<PollutionScoreValueVo> psVoList = od.getOCEMSPollutionScoreValue(im.getIndustryId(),value,currentDayTime,hours96Back);
+					List<PollutionScoreValueVo> psVoList = od.getOCEMSPollutionScoreValue(im.getIndustryId(),value,"2020-11-27T13:00:00.000+00:00","2020-11-27T16:00:00.000+00:00");
 				}
 			}
 			createOCEMSAlert(im,"test");

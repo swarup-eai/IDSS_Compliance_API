@@ -18,6 +18,7 @@ com\eai\idss\model\Plastic_Annual_Report_Recycling_Facility_Form_IV.class
 com\eai\idss\model\Directions.class
 com\eai\idss\service\OCEMSAlertsScheduler.class
 com\eai\idss\dao\ConcentDao.class
+com\eai\idss\dao\OCEMSDataDaoImpl$1.class
 com\eai\idss\vo\ComlianceScoreFilter.class
 com\eai\idss\model\Consent_FUEL_comparison.class
 com\eai\idss\dao\ConcentDaoImpl$3.class
@@ -47,6 +48,7 @@ com\eai\idss\model\Legal.class
 com\eai\idss\vo\LegalFilter.class
 com\eai\idss\dao\GenericDaoImpl$1.class
 com\eai\idss\dao\IndustryMasterDaoImpl$1.class
+com\eai\idss\repository\OCEMSAlertsRepositoy.class
 com\eai\idss\dao\GenericDaoImpl$8.class
 com\eai\idss\vo\VisitDetails.class
 com\eai\idss\vo\BatteriesSoldToVo.class
@@ -87,6 +89,7 @@ com\eai\idss\vo\MandatoryReportsResponseVo.class
 com\eai\idss\model\LegalDataMaster.class
 com\eai\idss\model\BenchmarkingDestinationData.class
 com\eai\idss\model\Consent_STACK_comparison.class
+com\eai\idss\dao\OCEMSDataDao.class
 com\eai\idss\vo\LegalSubRegionVo.class
 com\eai\idss\dao\VisitsDaoImpl$1.class
 com\eai\idss\dao\ConcentDaoImpl$4.class
@@ -103,6 +106,7 @@ com\eai\idss\dao\IndustryMasterDaoImpl$3.class
 com\eai\idss\dao\ConcentDaoImpl.class
 com\eai\idss\dao\LegalDaoImpl$3.class
 com\eai\idss\repository\BenchmarkingSourceDataRepository.class
+com\eai\idss\dao\OCEMSDataDaoImpl.class
 com\eai\idss\vo\NewBatteriesSoldVo.class
 com\eai\idss\model\Plastic_Producer_Authorization.class
 com\eai\idss\vo\VisitsScheduleDetailsRequest.class

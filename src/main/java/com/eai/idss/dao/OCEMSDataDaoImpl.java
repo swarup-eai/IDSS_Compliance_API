@@ -39,8 +39,8 @@ public class OCEMSDataDaoImpl implements OCEMSDataDao {
 			matchDoc.append("parameter_name", paramValue);
 			
 			matchDoc.append("time_stamp", new Document()
-	        		.append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(toDate+" 00:00:00.000+0000"))
-	                .append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fromDate+" 00:00:00.000+0000")));
+	        		.append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(toDate))
+	                .append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fromDate)));
 	        
 			
 			List<PollutionScoreValueVo> pList = new ArrayList<PollutionScoreValueVo>();
@@ -55,23 +55,6 @@ public class OCEMSDataDaoImpl implements OCEMSDataDao {
 				                                .append("date", "$time_stamp")
 				                        )
 				                )
-			            ),
-			            new Document()
-			            .append("$group", new Document()
-			                    .append("_id", "$day")
-			                    .append("value",  new Document()
-		                                .append("$avg", "$value")
-		                                )
-			            ),
-			            new Document()
-			            .append("$sort", new Document()
-			                    .append("_id", 1)
-			            ),
-			            new Document()
-			            .append("$project", new Document()
-			                    .append("_id", false)
-			                    .append( "monthYear","$_id")
-			                    .append("value", "$value")
 			            )
 					);
 			MongoDatabase database = mongoClient.getDatabase(dbName);

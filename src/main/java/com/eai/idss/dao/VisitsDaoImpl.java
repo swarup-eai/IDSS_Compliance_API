@@ -181,7 +181,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	
 	public Map<String,Map<String,List<TileVo>>> getByRegionVisitsData(VisitsFilter cf){
 		try {
-			logger.info("getByRegionLegalData");
+			logger.info("getByRegionVisitData");
 			Map<String, List<String>> daysMap = IDSSUtil.getPastAndFutureDaysMap();
 			
 		 	MongoDatabase database = mongoClient.getDatabase(dbName);
@@ -231,7 +231,7 @@ public class VisitsDaoImpl implements VisitsDao {
 								if(REGION_WISE.equalsIgnoreCase(extractType)) {
 									ConcentByRegionVo crVo = new ObjectMapper().readValue(document.toJson(), ConcentByRegionVo.class);
 									TileVo tVo = new TileVo(crVo.getRegion(),crVo.getCount());
-									List<TileVo> concentStatusList = regionVisitMap.get(crVo.getRegion());
+									List<TileVo> concentStatusList = regionVisitMap.get(type);
 									if(null==concentStatusList) concentStatusList = new ArrayList<TileVo>();
 									concentStatusList.add(tVo);
 									regionVisitMap.put(type, concentStatusList);

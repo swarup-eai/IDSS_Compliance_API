@@ -650,7 +650,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		ppgVo.setParam("Fuel");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_FUEL_comparison csc : cscList) {
-			SKU sku = new SKU(csc.getFuelType(),String.valueOf(csc.getFuelConsumptions()),csc.getName());
+			SKU sku = new SKU(csc.getFuelName(),String.valueOf(csc.getFuelConsumptions()),csc.getName());
 			cSKUList.add(sku);
 		}
 		ppgVo.setConsentSKU(cSKUList);
