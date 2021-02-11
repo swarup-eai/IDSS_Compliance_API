@@ -23,5 +23,5 @@ public interface GenericDao {
 
 	public List<HeatmapResponseVo> getHeatmapDataByIndustryIds(List<Integer> industryIds);
 
-	public List<IndustryCscoreResponseVo> getIndustryScore();
+	public List<IndustryCscoreResponseVo> getIndustryScore(DashboardRequest dbr);
 }
