@@ -47,7 +47,7 @@ public class CommonController {
 	    	dr.setTopPerformers(gd.getTopPerformer(u.getRegion()));
 	    	dr.setMyVisits(gd.getMyVisitsData(userName));
 	    	dr.setDashboardMap(dashboardMap);
-	    	dr.setIndustryCscoreDetails(gd.getIndustryScore());
+	    	dr.setIndustryCscoreDetails(gd.getIndustryScore(dbr));
 //			dr.setIndustryScore(gd.getIndustryScore(dbr));
 		} catch (Exception e) {
 			e.printStackTrace();
