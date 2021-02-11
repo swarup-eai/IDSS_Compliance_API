@@ -42,7 +42,7 @@ public class OCEMSAlertsScheduler {
 	
 	private static final String OCEMS = "OCEMS";
 
-	@Scheduled(cron = "0 0 0/3 ? * * *")
+	//@Scheduled(cron = "0 0 0/3 ? * * *")
 	public void generateOCEMS3HoursAlerts() {
 		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		String currentDayTime = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
