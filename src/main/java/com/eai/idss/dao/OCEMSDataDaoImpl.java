@@ -31,6 +31,8 @@ public class OCEMSDataDaoImpl implements OCEMSDataDao {
 	MongoClient mongoClient;
 	
 	public static final Logger logger = Logger.getLogger(OCEMSDataDaoImpl.class);
+	
+	
 
 	public List<PollutionScoreValueVo> getOCEMSPollutionScoreValue(long industryId, String paramValue, String fromDate,String toDate) {
 		try {

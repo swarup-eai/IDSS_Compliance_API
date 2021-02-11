@@ -16,7 +16,6 @@ public class OCEMS_Alerts {
 	private String region;
 	private String subRegion;
 	private String industryName;
-	private String roUser;
 	private String sroUser;
 	private String alertType;
 	private boolean isDisabled;
@@ -52,12 +51,7 @@ public class OCEMS_Alerts {
 	public void setIndustryName(String industryName) {
 		this.industryName = industryName;
 	}
-	public String getRoUser() {
-		return roUser;
-	}
-	public void setRoUser(String roUser) {
-		this.roUser = roUser;
-	}
+	
 	public String getSroUser() {
 		return sroUser;
 	}
