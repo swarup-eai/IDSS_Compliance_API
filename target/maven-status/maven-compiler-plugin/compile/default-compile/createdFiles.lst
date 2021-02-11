@@ -18,6 +18,7 @@ com\eai\idss\model\Plastic_Annual_Report_Recycling_Facility_Form_IV.class
 com\eai\idss\model\Directions.class
 com\eai\idss\service\OCEMSAlertsScheduler.class
 com\eai\idss\dao\ConcentDao.class
+com\eai\idss\dao\GenericDaoImpl$9.class
 com\eai\idss\dao\OCEMSDataDaoImpl$1.class
 com\eai\idss\vo\ComlianceScoreFilter.class
 com\eai\idss\model\Consent_FUEL_comparison.class
@@ -108,6 +109,7 @@ com\eai\idss\dao\LegalDaoImpl$3.class
 com\eai\idss\repository\BenchmarkingSourceDataRepository.class
 com\eai\idss\dao\OCEMSDataDaoImpl.class
 com\eai\idss\vo\NewBatteriesSoldVo.class
+com\eai\idss\controller\OCEMSController.class
 com\eai\idss\model\Plastic_Producer_Authorization.class
 com\eai\idss\vo\VisitsScheduleDetailsRequest.class
 com\eai\idss\model\CScoreMaster.class

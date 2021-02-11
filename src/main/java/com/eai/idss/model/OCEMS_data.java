@@ -21,7 +21,17 @@ public class OCEMS_data {
 	private Date time_stamp;
 	private Double value;
 	private String units;
+	private double upper_limit;
 	
+	
+	public double getUpper_limit() {
+		return upper_limit;
+	}
+
+	public void setUpper_limit(double upper_limit) {
+		this.upper_limit = upper_limit;
+	}
+
 	public OCEMS_data() {
 
 	}

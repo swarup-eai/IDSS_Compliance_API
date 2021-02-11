@@ -3,7 +3,6 @@ package com.eai.idss.service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.eai.idss.dao.IndustryMasterDao;
@@ -21,7 +19,6 @@ import com.eai.idss.dao.OCEMSDataDaoImpl;
 import com.eai.idss.model.IndustryMaster;
 import com.eai.idss.model.OCEMS_Alerts;
 import com.eai.idss.repository.OCEMSAlertsRepositoy;
-import com.eai.idss.vo.PollutionScoreValueVo;
 
 @Component
 public class OCEMSAlertsScheduler {
@@ -47,15 +44,31 @@ public class OCEMSAlertsScheduler {
 		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		String currentDayTime = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 		String threeHoursBack = currentTime.minusHours(3).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+		String twoHoursBack = currentTime.minusHours(2).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+		String oneHoursBack = currentTime.minusHours(1).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 		List<IndustryMaster> filteredIndustryMaster = getIndustryList();
 		for(IndustryMaster im : filteredIndustryMaster) {
 			List<Map<String,String>> paramList = imd.getPollutionGraphParam(im.getIndustryId(),OCEMS);
 			for(Map<String,String> m : paramList) {
-				for(String value : m.values()) {
-					List<PollutionScoreValueVo> psVoList = od.getOCEMSPollutionScoreValue(im.getIndustryId(),value,"2020-11-27T13:00:00.000+00:00","2020-11-27T16:00:00.000+00:00");
-				}
+				String value = m.get("name").substring(m.get("name").indexOf("-")+1);
+				boolean b = od.isParamValueInLimit(im.getIndustryId(),value,threeHoursBack,currentDayTime,"90-94");
+				logAlert(im, value, b,"90-94");
+				
+				b = od.isParamValueInLimit(im.getIndustryId(),value,twoHoursBack,currentDayTime,"94-98");
+				logAlert(im, value, b,"94-98");
+				
+				b = od.isParamValueInLimit(im.getIndustryId(),value,oneHoursBack,currentDayTime,"94-101");
+				logAlert(im, value, b,"98-101");
 			}
-			createOCEMSAlert(im,"test");
+		}
+	}
+
+	private void logAlert(IndustryMaster im, String value, boolean b,String threshold) {
+		if(b)
+			logger.info("OCEMS Data in limit for industry - "+im.getIndustryId()+", for parameter - "+value);
+		else {
+			logger.info("OCEMS Data is NOT in limit for industry - "+im.getIndustryId()+", for parameter - "+value+", threshhold- "+threshold);
+			createOCEMSAlert(im,"Value for the parameter "+value+" falls in range "+threshold);
 		}
 	}
 	
@@ -68,14 +81,15 @@ public class OCEMSAlertsScheduler {
 		oa.setIndustryName(im.getIndustryName());
 		oa.setRegion(im.getRegion());
 		oa.setSubRegion(im.getSubRegion());
-//		oa.setRoUser(im.get);
+		oa.setSroUser(im.getSroEmailId());
 		ocemsRepo.save(oa);
 		
 	}
 
 	private List<IndustryMaster> getIndustryList() {
 		Query query = new Query();
-		query.addCriteria(Criteria.where("applicationStatus").in(Arrays.asList("Approved","In Process")));
+		//query.addCriteria(Criteria.where("applicationStatus").in(Arrays.asList("Approved","In Process")));
+		query.addCriteria(Criteria.where("industryId").is(5704));
 		query.with(Sort.by(Sort.Direction.ASC,"industryId"));
 		
 		logger.info("generateOCEMSAlerts Total Count="+mongoTemplate.count(query, IndustryMaster.class));
