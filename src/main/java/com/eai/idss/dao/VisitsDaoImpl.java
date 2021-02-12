@@ -1142,12 +1142,14 @@ public class VisitsDaoImpl implements VisitsDao {
 		return pipeline;
 	}
 
-	public VisitProcessEfficiency getVisitProcessEfficiency(String region) {
+	public VisitProcessEfficiency getVisitProcessEfficiency(String region,String duration) {
 		try {
 			Query query = new Query();
 			
 			if(!"ALL".equalsIgnoreCase(region))
 				query.addCriteria(Criteria.where("region").is(region));
+			
+			query.addCriteria(Criteria.where("time").is(duration));
 			
 			List<VisitProcessEfficiency> visitProcessEfficiencyList= mongoTemplate.find(query, VisitProcessEfficiency.class);
 			
@@ -1156,6 +1158,7 @@ public class VisitsDaoImpl implements VisitsDao {
 			else {
 				
 				VisitProcessEfficiency vpe = new VisitProcessEfficiency();
+				vpe.setRegion("All");
 				vpe.setAvg_legal_action(visitProcessEfficiencyList.stream().mapToDouble(v -> v.getAvg_legal_action()).average().getAsDouble());
 				vpe.setAvg_report_filed(visitProcessEfficiencyList.stream().mapToDouble(v -> v.getAvg_report_filed()).average().getAsDouble());
 				vpe.setAvg_review_comp((int)visitProcessEfficiencyList.stream().mapToInt(v -> v.getAvg_review_comp()).average().getAsDouble());

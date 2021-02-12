@@ -21,6 +21,23 @@ public class OCEMS_Alerts {
 	private boolean isDisabled;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime alertCreatedDateTime;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime violationStartDateTime;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime violationEndDateTime;
+	
+	public LocalDateTime getViolationStartDateTime() {
+		return violationStartDateTime;
+	}
+	public void setViolationStartDateTime(LocalDateTime violationStartDateTime) {
+		this.violationStartDateTime = violationStartDateTime;
+	}
+	public LocalDateTime getViolationEndDateTime() {
+		return violationEndDateTime;
+	}
+	public void setViolationEndDateTime(LocalDateTime violationEndDateTime) {
+		this.violationEndDateTime = violationEndDateTime;
+	}
 	public String get_id() {
 		return _id;
 	}

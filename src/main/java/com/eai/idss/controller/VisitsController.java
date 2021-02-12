@@ -212,10 +212,10 @@ public class VisitsController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
    	@RequestMapping(method = RequestMethod.GET, value = "/visits-dashboard/visits-process-efficiency/{region}", produces = "application/json")
-   	public ResponseEntity<VisitProcessEfficiency> getVisitsProcessEfficiency(@PathVariable("region") String region) throws IOException {
+   	public ResponseEntity<VisitProcessEfficiency> getVisitsProcessEfficiency(@PathVariable("region") String region,@RequestParam(required = true) String duration) throws IOException {
     	VisitProcessEfficiency vd = null;
    	    try {
-   	    	vd = cd.getVisitProcessEfficiency(region);
+   	    	vd = cd.getVisitProcessEfficiency(region,duration);
    		} catch (Exception e) {
    			e.printStackTrace();
    			return new ResponseEntity("Exception in /visits-details/visits-process-efficiency", HttpStatus.INTERNAL_SERVER_ERROR);

@@ -39,7 +39,7 @@ public interface VisitsDao {
 	
 	public Map<String,List<VisitsByComplianceVo>> getVisitsByCompliance(String region, String subRegion);
 	
-	public VisitProcessEfficiency getVisitProcessEfficiency(String region);
+	public VisitProcessEfficiency getVisitProcessEfficiency(String region,String duration);
 	
 	public List<VisitScheduleCurrentMonthResponseVo> getVisitsScheduleByUserName(String userName);
 	

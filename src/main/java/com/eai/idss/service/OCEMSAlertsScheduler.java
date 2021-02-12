@@ -52,27 +52,27 @@ public class OCEMSAlertsScheduler {
 			for(Map<String,String> m : paramList) {
 				String value = m.get("name").substring(m.get("name").indexOf("-")+1);
 				boolean b = od.isParamValueInLimit(im.getIndustryId(),value,threeHoursBack,currentDayTime,"90-94");
-				logAlert(im, value, b,"90-94");
+				logAlert(im, value, b,"90-94",currentTime.minusHours(3),currentTime);
 				
 				b = od.isParamValueInLimit(im.getIndustryId(),value,twoHoursBack,currentDayTime,"94-98");
-				logAlert(im, value, b,"94-98");
+				logAlert(im, value, b,"94-98",currentTime.minusHours(2),currentTime);
 				
 				b = od.isParamValueInLimit(im.getIndustryId(),value,oneHoursBack,currentDayTime,"94-101");
-				logAlert(im, value, b,"98-101");
+				logAlert(im, value, b,"98-101",currentTime.minusHours(1),currentTime);
 			}
 		}
 	}
 
-	private void logAlert(IndustryMaster im, String value, boolean b,String threshold) {
+	private void logAlert(IndustryMaster im, String value, boolean b,String threshold,LocalDateTime startdt,LocalDateTime enddt) {
 		if(b)
 			logger.info("OCEMS Data in limit for industry - "+im.getIndustryId()+", for parameter - "+value);
 		else {
 			logger.info("OCEMS Data is NOT in limit for industry - "+im.getIndustryId()+", for parameter - "+value+", threshhold- "+threshold);
-			createOCEMSAlert(im,"Value for the parameter "+value+" falls in range "+threshold);
+			createOCEMSAlert(im,"Value for the parameter "+value+" falls in range "+threshold,startdt,enddt);
 		}
 	}
 	
-	private void createOCEMSAlert(IndustryMaster im, String alertType) {
+	private void createOCEMSAlert(IndustryMaster im, String alertType,LocalDateTime startdt,LocalDateTime enddt) {
 		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		OCEMS_Alerts oa = new OCEMS_Alerts();
 		oa.setAlertCreatedDateTime(currentTime);
@@ -82,6 +82,8 @@ public class OCEMSAlertsScheduler {
 		oa.setRegion(im.getRegion());
 		oa.setSubRegion(im.getSubRegion());
 		oa.setSroUser(im.getSroEmailId());
+		oa.setViolationStartDateTime(startdt);
+		oa.setViolationEndDateTime(enddt);
 		ocemsRepo.save(oa);
 		
 	}
