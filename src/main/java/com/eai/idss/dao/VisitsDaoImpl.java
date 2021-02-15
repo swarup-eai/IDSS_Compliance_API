@@ -181,7 +181,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	
 	public Map<String,Map<String,List<TileVo>>> getByRegionVisitsData(VisitsFilter cf){
 		try {
-			logger.info("getByRegionLegalData");
+			logger.info("getByRegionVisitData");
 			Map<String, List<String>> daysMap = IDSSUtil.getPastAndFutureDaysMap();
 			
 		 	MongoDatabase database = mongoClient.getDatabase(dbName);
@@ -231,7 +231,7 @@ public class VisitsDaoImpl implements VisitsDao {
 								if(REGION_WISE.equalsIgnoreCase(extractType)) {
 									ConcentByRegionVo crVo = new ObjectMapper().readValue(document.toJson(), ConcentByRegionVo.class);
 									TileVo tVo = new TileVo(crVo.getRegion(),crVo.getCount());
-									List<TileVo> concentStatusList = regionVisitMap.get(crVo.getRegion());
+									List<TileVo> concentStatusList = regionVisitMap.get(type);
 									if(null==concentStatusList) concentStatusList = new ArrayList<TileVo>();
 									concentStatusList.add(tVo);
 									regionVisitMap.put(type, concentStatusList);
@@ -1025,13 +1025,13 @@ public class VisitsDaoImpl implements VisitsDao {
                                                                         .append("$and", Arrays.asList(
                                                                                 new Document()
                                                                                         .append("$gte", Arrays.asList(
-                                                                                        		new Document().append("$ceil","$cScore"),
+                                                                                        		new Document().append("$ceil","$cscore"),
                                                                                                 0.0
                                                                                             )
                                                                                         ),
                                                                                 new Document()
                                                                                         .append("$lt", Arrays.asList(
-                                                                                                new Document().append("$ceil","$cScore"),
+                                                                                                new Document().append("$ceil","$cscore"),
                                                                                                 26.0
                                                                                             )
                                                                                         )
@@ -1047,13 +1047,13 @@ public class VisitsDaoImpl implements VisitsDao {
                                                                         .append("$and", Arrays.asList(
                                                                                 new Document()
                                                                                         .append("$gte", Arrays.asList(
-                                                                                                new Document().append("$ceil","$cScore"),
+                                                                                                new Document().append("$ceil","$cscore"),
                                                                                                 26.0
                                                                                             )
                                                                                         ),
                                                                                 new Document()
                                                                                         .append("$lt", Arrays.asList(
-                                                                                                new Document().append("$ceil","$cScore"),
+                                                                                                new Document().append("$ceil","$cscore"),
                                                                                                 51.0
                                                                                             )
                                                                                         )
@@ -1069,13 +1069,13 @@ public class VisitsDaoImpl implements VisitsDao {
                                                                         .append("$and", Arrays.asList(
                                                                                 new Document()
                                                                                         .append("$gte", Arrays.asList(
-                                                                                                new Document().append("$ceil","$cScore"),
+                                                                                                new Document().append("$ceil","$cscore"),
                                                                                                 51.0
                                                                                             )
                                                                                         ),
                                                                                 new Document()
                                                                                         .append("$lt", Arrays.asList(
-                                                                                                new Document().append("$ceil","$cScore"),
+                                                                                                new Document().append("$ceil","$cscore"),
                                                                                                 76.0
                                                                                             )
                                                                                         )
@@ -1091,13 +1091,13 @@ public class VisitsDaoImpl implements VisitsDao {
                                                                         .append("$and", Arrays.asList(
                                                                                 new Document()
                                                                                         .append("$gte", Arrays.asList(
-                                                                                                new Document().append("$ceil","$cScore"),
+                                                                                                new Document().append("$ceil","$cscore"),
                                                                                                 76.0
                                                                                             )
                                                                                         ),
                                                                                 new Document()
                                                                                         .append("$lt", Arrays.asList(
-                                                                                                new Document().append("$ceil","$cScore"),
+                                                                                                new Document().append("$ceil","$cscore"),
                                                                                                 101.0
                                                                                             )
                                                                                         )
@@ -1142,12 +1142,14 @@ public class VisitsDaoImpl implements VisitsDao {
 		return pipeline;
 	}
 
-	public VisitProcessEfficiency getVisitProcessEfficiency(String region) {
+	public VisitProcessEfficiency getVisitProcessEfficiency(String region,String duration) {
 		try {
 			Query query = new Query();
 			
 			if(!"ALL".equalsIgnoreCase(region))
 				query.addCriteria(Criteria.where("region").is(region));
+			
+			query.addCriteria(Criteria.where("time").is(duration));
 			
 			List<VisitProcessEfficiency> visitProcessEfficiencyList= mongoTemplate.find(query, VisitProcessEfficiency.class);
 			
@@ -1156,6 +1158,7 @@ public class VisitsDaoImpl implements VisitsDao {
 			else {
 				
 				VisitProcessEfficiency vpe = new VisitProcessEfficiency();
+				vpe.setRegion("All");
 				vpe.setAvg_legal_action(visitProcessEfficiencyList.stream().mapToDouble(v -> v.getAvg_legal_action()).average().getAsDouble());
 				vpe.setAvg_report_filed(visitProcessEfficiencyList.stream().mapToDouble(v -> v.getAvg_report_filed()).average().getAsDouble());
 				vpe.setAvg_review_comp((int)visitProcessEfficiencyList.stream().mapToInt(v -> v.getAvg_review_comp()).average().getAsDouble());

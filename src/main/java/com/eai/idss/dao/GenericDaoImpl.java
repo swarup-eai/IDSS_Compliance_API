@@ -1,5 +1,6 @@
 package com.eai.idss.dao;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -84,6 +85,7 @@ public class GenericDaoImpl implements GenericDao {
 										else {
 											tNewVo.setCaseCount(tNewVo.getCaseCount() + tVo.getCaseCount());
 											List<Integer> ind = tNewVo.getIndustries();
+											if(null==ind) ind = new ArrayList<Integer>();
 											ind.addAll(tVo.getIndustries());
 											tNewVo.setIndustries(ind);
 										}
@@ -734,42 +736,48 @@ public class GenericDaoImpl implements GenericDao {
 	}
 
 	@Override
-	public List<IndustryCscoreResponseVo> getIndustryScore() {
+	public List<IndustryCscoreResponseVo> getIndustryScore(DashboardRequest dbr) {
 		try {
 			logger.info("getIndustryScore");
-			String[] regions = {"Ahmednagar", "Amravati", "Bhandara", "Bid", "Dhule", "Jalgaon", "Kolhapur", "Nanded", "Nandurbar", "Nashik", "Osmanabad", "Pune", "Raigarh", "Ratnagiri", "Sangli", "Sindhudurg", "Solapur", "Thane", "Yavatmal", "Latur", "Akola", "Aurangabad", "Buldana", "Chandrapur", "Garhchiroli", "Gondiya", "Mumbai", "Hingoli", "Jalna", "Nagpur", "Parbhani", "Satara", "Wardha", "Washim"};
-			logger.info(regions);
-			List<IndustryCscoreResponseVo> industryCscoreResponseVoList  = new ArrayList<>();
-			for(int i=0;i<regions.length;i++){
-				logger.info(regions[i]);
-				List<IndustryMaster> industryMasterList= getIndustryCscoreByRegion(regions[i]);//mongoTemplate.find(query, IndustryMaster.class);
-				final Double[] score = {new Double(0)};
-				final int[] count = {0};
-				industryMasterList.stream().map(data -> {
-					if(data.getCscore() >0){
-						score[0] = Double.sum(score[0],data.getCscore());
-						count[0] = count[0] +1;
-					}
-					return data;
-				}).collect(Collectors.toList());
-				double scoreAverage = score[0] / count[0];
-				String fill = "#eff3ff";
-				if(25 >=scoreAverage){
-					fill = "#eff3ff";
-				}else if(50 >=scoreAverage){
-					fill = "#bdd7e7";
-				}else if(75>=scoreAverage){
-					fill = "#6baed6";
-				}else if(100 >=scoreAverage){
-					fill = "#2171b5";
-				}
-				IndustryCscoreResponseVo industryCscoreResponseVo = new IndustryCscoreResponseVo();
-				industryCscoreResponseVo.setcScoreAverage(scoreAverage);
-				industryCscoreResponseVo.setFill(fill);
-				industryCscoreResponseVo.setId(regions[i]);
-				industryCscoreResponseVoList.add(industryCscoreResponseVo);
-			}
-			return industryCscoreResponseVoList;
+			MongoDatabase database = mongoClient.getDatabase(dbName);
+			MongoCollection<Document> collection = database.getCollection("industryMaster");
+
+			List<? extends Bson> pipeline = getIndustryCscorePipline(dbr);
+
+			List<IndustryCscoreResponseVo> industryCscoreResponseVoArrayList = new ArrayList<IndustryCscoreResponseVo>();
+
+			collection.aggregate(pipeline)
+					.allowDiskUse(false)
+					.forEach(new Consumer<Document>() {
+								 @Override
+								 public void accept(Document document) {
+									 try {
+										 ObjectMapper mapper = new ObjectMapper();
+
+										 IndustryCscoreResponseVo industryCscoreResponseVo = mapper.readValue(document.toJson(), IndustryCscoreResponseVo.class);
+										 String fill = "#eff3ff";
+										if(25 >=industryCscoreResponseVo.getcScoreAverage()){
+											fill = "#eff3ff";
+										}else if(50 >=industryCscoreResponseVo.getcScoreAverage()){
+											fill = "#bdd7e7";
+										}else if(75>=industryCscoreResponseVo.getcScoreAverage()){
+											fill = "#6baed6";
+										}else if(100 >=industryCscoreResponseVo.getcScoreAverage()){
+											fill = "#2171b5";
+										}
+										 industryCscoreResponseVo.setFill(fill);
+										 industryCscoreResponseVo.setcScoreAverage(Double.parseDouble(new DecimalFormat("##.##").format(industryCscoreResponseVo.getcScoreAverage())));
+
+										 industryCscoreResponseVoArrayList.add(industryCscoreResponseVo);
+									 } catch (JsonMappingException e) {
+										 e.printStackTrace();
+									 } catch (JsonProcessingException e) {
+										 e.printStackTrace();
+									 }
+								 }
+							 }
+					);
+			return industryCscoreResponseVoArrayList;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -799,6 +807,55 @@ public class GenericDaoImpl implements GenericDao {
 								.append("industryName", "$industryName")
 								.append("latitude", "$latitudeDegree")
 								.append("longitude", "$longitudeDegree")
+						)
+		);
+		return pipeline;
+	}
+
+	private List<? extends Bson> getIndustryCscorePipline(DashboardRequest dbr) throws ParseException {
+
+		Document matchDoc = new Document();
+		matchDoc.append("cscore", new Document()
+				.append("$gte", 0)
+		);
+
+		if(null!=dbr && StringUtils.hasText(dbr.getRegion()) && !"All".equalsIgnoreCase(dbr.getRegion()))
+			matchDoc.append("region", dbr.getRegion());
+
+		Document groupDoc = new Document();
+		groupDoc.append("_id", "$region")
+				.append("value",  new Document()
+						.append("$avg", "$cscore")
+				);
+		if(null!=dbr && StringUtils.hasText(dbr.getRegion()) && !"All".equalsIgnoreCase(dbr.getRegion()))
+			groupDoc.append("_id", "$subRegion")
+				.append("value",  new Document()
+						.append("$avg", "$cscore")
+		);
+		List<? extends Bson> pipeline = Arrays.asList(
+				new Document().append("$match", matchDoc),
+				new Document().append("$group", groupDoc),
+
+//				new Document()
+//						.append("$group", new Document()
+//								.append("_id", "$region")
+//										.append("value",  new Document()
+//												.append("$avg", "$cscore")
+//										)
+//								.append("value",  new Document()
+//										.append("$sum", "$cscore")
+//								)
+//								.append("count",  new Document()
+//										.append("$sum", 1)
+//								)
+//						),
+				new Document()
+						.append("$project", new Document()
+								.append("_id", false)
+								.append( "id","$_id")
+								.append("cScoreAverage", "$value")
+//								.append("count", "$count")
+
 						)
 		);
 		return pipeline;

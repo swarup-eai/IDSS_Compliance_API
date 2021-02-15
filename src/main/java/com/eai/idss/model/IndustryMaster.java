@@ -29,10 +29,23 @@ public class IndustryMaster {
 	private int legalActionsPending;
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private LocalDate lastVisited;
-
+	private String sroName;
 	private String latitudeDegree;
 	private String longitudeDegree;
-
+	private String sroEmailId;
+	
+	public String getSroEmailId() {
+		return sroEmailId;
+	}
+	public void setSroEmailId(String sroEmailId) {
+		this.sroEmailId = sroEmailId;
+	}
+	public String getSroName() {
+		return sroName;
+	}
+	public void setSroName(String sroName) {
+		this.sroName = sroName;
+	}
 	public long getIndustryId() {
 		return industryId;
 	}

@@ -3,6 +3,7 @@ package com.eai.idss.model;
 import java.time.LocalDate;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -31,6 +32,23 @@ public class Visits {
 	private Double latitude;
 	private Double longitude;
 	private String priority;
+	
+	@Field("reportingToName")
+	private String sroName;
+	private String subRegion;
+	
+	public String getSroName() {
+		return sroName;
+	}
+	public void setSroName(String sroName) {
+		this.sroName = sroName;
+	}
+	public String getSubRegion() {
+		return subRegion;
+	}
+	public void setSubRegion(String subRegion) {
+		this.subRegion = subRegion;
+	}
 
 	public long getIndustryId() {
 		return industryId;

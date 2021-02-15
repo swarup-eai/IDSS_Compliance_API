@@ -3,6 +3,7 @@ package com.eai.idss.model;
 import java.util.Date;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -22,6 +23,22 @@ public class Consent {
 	private String type;
 	private String category;
 	private String consentStatus;
+	@Field("adminName")
+	private String sroName;
+	private String subRegion;
+	
+	public String getSroName() {
+		return sroName;
+	}
+	public void setSroName(String sroName) {
+		this.sroName = sroName;
+	}
+	public String getSubRegion() {
+		return subRegion;
+	}
+	public void setSubRegion(String subRegion) {
+		this.subRegion = subRegion;
+	}
 	public Date getCreated() {
 		return created;
 	}

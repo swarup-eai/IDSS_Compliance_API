@@ -13,9 +13,6 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import com.eai.idss.model.*;
-import com.eai.idss.repository.IndustryMasterRepository;
-import com.eai.idss.vo.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.jboss.logging.Logger;
@@ -31,7 +28,66 @@ import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import com.eai.idss.model.Annual_Returns_HW_Comparison;
+import com.eai.idss.model.BMW_Annual_Return_Comparison;
+import com.eai.idss.model.BMW_Authorization_Comparison;
+import com.eai.idss.model.Battery_Dealer_Annual_return_Form_V;
+import com.eai.idss.model.CScoreMaster;
+import com.eai.idss.model.Consent_EFFLUENT_Comparison;
+import com.eai.idss.model.Consent_FUEL_comparison;
+import com.eai.idss.model.Consent_HW_Comparison;
+import com.eai.idss.model.Consent_RESOURCES_comparison;
+import com.eai.idss.model.Consent_SKU_comparison;
+import com.eai.idss.model.Consent_STACK_comparison;
+import com.eai.idss.model.Consent_WATER_comparison;
+import com.eai.idss.model.Consented_Air_Pollution_Comparison;
+import com.eai.idss.model.Directions;
+import com.eai.idss.model.ESR_Air_Pollution_Comparison;
+import com.eai.idss.model.ESR_EFFLUENT_Comparison;
+import com.eai.idss.model.ESR_FUEL_comparison;
+import com.eai.idss.model.ESR_RESOURCES_comparison;
+import com.eai.idss.model.ESR_SKU_comparison;
+import com.eai.idss.model.ESR_WATER_comparison;
+import com.eai.idss.model.EWasteAnnualAuthorization;
+import com.eai.idss.model.EWasteAnnualReturns;
+import com.eai.idss.model.IndustryMaster;
+import com.eai.idss.model.Legal;
+import com.eai.idss.model.Plastic_Annual_Report_Local_Body_Form_V;
+import com.eai.idss.model.Plastic_Annual_Report_Recycling_Facility_Form_IV;
+import com.eai.idss.model.Plastic_Brand_Owner_Authorization;
+import com.eai.idss.model.Plastic_Producer_Authorization;
+import com.eai.idss.model.Plastic_Raw_Material_Manufacturer_Authorization;
+import com.eai.idss.model.Plastic_Recycler_Authorization;
+import com.eai.idss.model.Visits;
+import com.eai.idss.repository.IndustryMasterRepository;
 import com.eai.idss.util.IDSSUtil;
+import com.eai.idss.vo.AnnualReturnsVo;
+import com.eai.idss.vo.BatteriesSoldToVo;
+import com.eai.idss.vo.BatteryVo;
+import com.eai.idss.vo.BioMedWasteAuthFormVo;
+import com.eai.idss.vo.BioMedWasteVo;
+import com.eai.idss.vo.ComlianceScoreFilter;
+import com.eai.idss.vo.ComparisonTableParamGroupVo;
+import com.eai.idss.vo.ComparisonTableResponseVo;
+import com.eai.idss.vo.ComplianceScoreResponseVo;
+import com.eai.idss.vo.EWasteForm4Vo;
+import com.eai.idss.vo.EWasteVo;
+import com.eai.idss.vo.Form1AVo;
+import com.eai.idss.vo.Form3Vo;
+import com.eai.idss.vo.Form5Vo;
+import com.eai.idss.vo.IndustryMasterDetailResponseVo;
+import com.eai.idss.vo.IndustryMasterRequest;
+import com.eai.idss.vo.MandatoryReportsResponseVo;
+import com.eai.idss.vo.NewBatteriesSoldVo;
+import com.eai.idss.vo.OldUsedBatteriesVo;
+import com.eai.idss.vo.ParameterVo;
+import com.eai.idss.vo.PlasticAuthorizationFormVo;
+import com.eai.idss.vo.PlasticForm4Vo;
+import com.eai.idss.vo.PlasticVo;
+import com.eai.idss.vo.PollutionScoreFilter;
+import com.eai.idss.vo.PollutionScoreResponseVo;
+import com.eai.idss.vo.PollutionScoreValueVo;
+import com.eai.idss.vo.SKU;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -365,8 +421,20 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			}else {
 				psvList = getPollutionScoreValue(formType.toString(),"industryId",cf.getIndustryId(),collectionName.toString(),
 						null!=paramColumnName?paramColumnName.toString():null,paramName.toString(),valueColumnName.toString(),cf.getFromDate(),cf.getToDate());
+
+				Integer fromYear =  Integer.parseInt( cf.getFromDate().substring(0, cf.getFromDate().indexOf("-")));
+				Integer toYear =  Integer.parseInt( cf.getToDate().substring(0, cf.getToDate().indexOf("-")));
+				while(fromYear<=toYear) {
+					StringBuffer fY = new StringBuffer(String.valueOf(fromYear));
+					if(!psvList.stream().filter(p -> p.getYear().equalsIgnoreCase(fY.toString())).findAny().isPresent()) {
+						PollutionScoreValueVo pvv = new PollutionScoreValueVo(String.valueOf(fromYear),0);
+						psvList.add(pvv);
+					}
+					fromYear++;
+				}
 			}
-			psrVo.setPsv(psvList);
+			
+			psrVo.setPsv(psvList.stream().sorted((p1,p2) -> p1.getYear().compareTo(p2.getYear())).collect(Collectors.toList()));
 			
 			responseList.add(psrVo);
 		}
@@ -376,7 +444,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			List<PollutionScoreValueVo> pvL =   rv.getPsv();
 			for(PollutionScoreValueVo pVO : pvL) {
 				Map<String,String> msd = new LinkedHashMap<String, String>();
-				msd.put("date", pVO.getMonthYear());
+				msd.put("date", pVO.getYear());
 				msd.put(rv.getForm()+"~~"+rv.getParam(), String.valueOf(pVO.getValue()));
 				lms.add(msd);
 			}
@@ -481,9 +549,9 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		                new Document()
 			            .append("$project", new Document()
 			                    .append("_id", false)
-			                    .append("monthYear", new Document()
+			                    .append("year", new Document()
 				                        .append("$dateToString", new Document()
-				                                .append("format", "%Y-%m-%d")
+				                                .append("format", "%Y")
 				                                .append("date", "$"+dateColumnName)
 				                        )
 				                )
@@ -650,7 +718,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		ppgVo.setParam("Fuel");
 		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_FUEL_comparison csc : cscList) {
-			SKU sku = new SKU(csc.getFuelType(),String.valueOf(csc.getFuelConsumptions()),csc.getName());
+			SKU sku = new SKU(csc.getFuelName(),String.valueOf(csc.getFuelConsumptions()),csc.getName());
 			cSKUList.add(sku);
 		}
 		ppgVo.setConsentSKU(cSKUList);

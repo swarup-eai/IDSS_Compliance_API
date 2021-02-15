@@ -7,6 +7,7 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\se
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\IndustryMasterDaoImpl.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Consent_HW_Comparison.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\repository\UserRepository.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\controller\OCEMSController.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\controller\VisitsController.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\controller\IndustryMasterController.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\IndustryMaster.java
@@ -45,6 +46,7 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\BenchmarkingSourceData.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Consented_Air_Pollution_Comparison.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\ESR_WATER_comparison.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\repository\OCEMSAlertsRepositoy.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\repository\IndustryMasterRepository.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\BioMedWasteAuthFormVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\Form1AVo.java
@@ -73,6 +75,7 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Plastic_Annual_Report_Local_Body_Form_V.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Plastic_Recycler_Authorization.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ComparisonTableParamGroupVo.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\OCEMS_Alerts.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\repository\ConcentRepository.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\PollutionScoreValueVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\PlasticVo.java
@@ -92,12 +95,14 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\mo
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\CScoreMaster.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\ESR_EFFLUENT_Comparison.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\VisitsScheduleDetailsRequest.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\OCEMSDataDaoImpl.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Plastic_Raw_Material_Manufacturer_Authorization.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ConsentDetailsRequest.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Consent.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\GenericDao.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Plastic_Brand_Owner_Authorization.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\HeatmapResponseVo.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\service\OCEMSAlertsScheduler.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\LegalDaoImpl.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\BMW_Annual_Return_Comparison.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\ConcentDao.java
@@ -107,6 +112,7 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Legal.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\configuration\SecurityConfiguration.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\EWasteAnnualAuthorization.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\OCEMSDataDao.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\VisitsSubRegionVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\IndustryMasterDao.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ConcentByRegionVo.java

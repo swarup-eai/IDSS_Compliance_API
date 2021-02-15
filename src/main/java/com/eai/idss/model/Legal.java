@@ -24,6 +24,14 @@ public class Legal {
 	private double totalLegalActionsCreated;
 	private int totalDirections;
 	private long industryId;
+	private String sroName;
+	
+	public String getSroName() {
+		return sroName;
+	}
+	public void setSroName(String sroName) {
+		this.sroName = sroName;
+	}
 	
 	public long getIndustryId() {
 		return industryId;
