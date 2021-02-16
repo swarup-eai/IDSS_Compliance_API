@@ -95,6 +95,21 @@ public class ConsentController {
 	}
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(method = RequestMethod.POST, value = "/concent-dashboard/upcoming-renewal-new", produces = "application/json")
+	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getConcentDashboardUpcomingRenewalDataNew(@RequestHeader String userName,@RequestBody ConcentFilter cf) throws IOException {
+    	Map<String,Map<String,List<TileVo>>> ct = new HashMap<String, Map<String,List<TileVo>>>();
+	    try {
+	    	User u = userRepository.findByUserName(userName);
+	    	ct.put("upcomingRenewalNew",cd.getUpcomingRenewalConcentDataNew(cf,u.getRegion(), u.getSubRegion()));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity("Exception in /concent-dashboard/upcoming-renewal", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	    return new ResponseEntity<Map<String,Map<String,List<TileVo>>>>(ct,HttpStatus.OK);
+	    //return new ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>>(ct,HttpStatus.OK);
+	}
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.POST, value = "/concent-dashboard/pending-request",  produces = "application/json")
 	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getConcentDashboardPendingData(@RequestHeader String userName,@RequestBody ConcentFilter cf) throws IOException {
     	Map<String,Map<String,List<TileVo>>> ct = new HashMap<String, Map<String,List<TileVo>>>();

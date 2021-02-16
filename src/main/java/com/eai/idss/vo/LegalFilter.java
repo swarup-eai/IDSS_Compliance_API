@@ -13,6 +13,9 @@ public class LegalFilter {
 	
 	List<String> pendingResponseByIndustryScaleList;
 	List<String> pendingResponseByIndustryCategoryList;
+	
+	List<String> legalActionsByIndustryScaleList;
+	List<String> legalActionsByIndustryCategoryList;
 
 	public List<String> getPendingResponseByIndustryScaleList() {
 		return pendingResponseByIndustryScaleList;
@@ -62,6 +65,18 @@ public class LegalFilter {
 	}
 	public void setSubRegionWiseCategoryList(List<String> subRegionWiseCategoryList) {
 		this.subRegionWiseCategoryList = subRegionWiseCategoryList;
+	}
+	public List<String> getLegalActionsByIndustryScaleList() {
+		return legalActionsByIndustryScaleList;
+	}
+	public void setLegalActionsByIndustryScaleList(List<String> legalActionsByIndustryScaleList) {
+		this.legalActionsByIndustryScaleList = legalActionsByIndustryScaleList;
+	}
+	public List<String> getLegalActionsByIndustryCategoryList() {
+		return legalActionsByIndustryCategoryList;
+	}
+	public void setLegalActionsByIndustryCategoryList(List<String> legalActionsByIndustryCategoryList) {
+		this.legalActionsByIndustryCategoryList = legalActionsByIndustryCategoryList;
 	}
 	
 }

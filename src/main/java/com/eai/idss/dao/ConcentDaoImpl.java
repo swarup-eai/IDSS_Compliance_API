@@ -563,4 +563,100 @@ public class ConcentDaoImpl implements ConcentDao {
 		}
 		return null;
 	}
+	
+	public Map<String,List<TileVo>> getUpcomingRenewalConcentDataNew(ConcentFilter cf,String region,String subRegion){
+		try {
+			logger.info("getPendingRequestConcentDataNew");
+			Map<String, String> daysMap = IDSSUtil.getFutureDaysMapConsent(); //IDSSUtil.getPastDaysMap();
+			
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
+            MongoCollection<Document> collection = database.getCollection("Consent");
+            
+            
+            Map<String,List<TileVo>> tileMap = new LinkedHashMap<String, List<TileVo>>();
+            
+            for(String days : daysMap.keySet()) {
+            	logger.info("getUpcomingRenewalConcentDataNew : "+days);
+	            List<? extends Bson> pipeline = getUpcomingRenewalConcentPipelineNew(days,cf,region,subRegion);
+	            
+	            List<TileVo> tVoList = new ArrayList<TileVo>();
+	            collection.aggregate(pipeline)
+	                    .allowDiskUse(false)
+	                    .forEach(new Consumer<Document>() {
+		    	                @Override
+		    	                public void accept(Document document) {
+		    	                    logger.info(document.toJson());
+									try {
+										TileVo tVo = new ObjectMapper().readValue(document.toJson(), TileVo.class);
+										tVoList.add(tVo);
+									
+									} catch (JsonMappingException e) {
+										e.printStackTrace();
+									} catch (JsonProcessingException e) {
+										e.printStackTrace();
+									}
+		    	                    
+		    	                }
+		    	            }
+	                    );
+	            tileMap.put(daysMap.get(days), tVoList);
+            
+            }
+            return tileMap;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private List<? extends Bson> getUpcomingRenewalConcentPipelineNew(String days,ConcentFilter cf,String region,String subRegion) throws ParseException {	
+		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
+		String currentDay = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
+		
+		Document matchDoc = new Document();
+		
+		//matchDoc.append("created", new Document().append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000")));
+		if(currentDay.equalsIgnoreCase(days)) {
+			matchDoc
+            .append("status", "Approved")
+            .append("consentValidityDate", new Document()
+                            .append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(currentDay+" 00:00:00.000+0000"))
+                            .append("$gt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse("1970-01-01 00:00:00.000+0000"))
+            ); 
+		}else {
+			matchDoc 
+                //.append("consentStatus", "Renewal")
+                .append("consentValidityDate", new Document()
+                		.append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
+                		.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(currentDay+" 00:00:00.000+0000"))
+                );
+		}
+		
+		if(null!=cf && null!=cf.getPendingCategoryList() ) 
+			matchDoc.append("category", new Document().append("$in", cf.getUpcomingRenewalCategoryList()));
+		if(null!=cf && null!=cf.getPendingScaleList() ) 
+			matchDoc.append("scale", new Document().append("$in", cf.getUpcomingRenewalScaleList()));
+		if(!"ALL".equalsIgnoreCase(region))
+			matchDoc.append("region",region);
+		if(!"ALL".equalsIgnoreCase(subRegion))
+			matchDoc.append("subRegion",subRegion);
+		
+		List<? extends Bson> pipeline = Arrays.asList(
+				new Document().append("$match", matchDoc),  
+		        new Document()
+		                .append("$group", new Document()
+		                        .append("_id", "$consentStatus")
+		                        .append("caseCount", new Document()
+		                                .append("$sum", 1)
+		                        )
+		                ),
+		        new Document()
+		            .append("$project", new Document()
+		                    .append("_id", false)
+		                    .append("caseType", "$_id")
+		                    .append("caseCount", "$caseCount")
+		            )
+				);
+		return pipeline;
+	}
 }
