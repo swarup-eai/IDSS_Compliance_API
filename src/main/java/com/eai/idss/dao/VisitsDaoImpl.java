@@ -15,9 +15,10 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import com.eai.idss.model.*;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.jboss.logging.Logger;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -30,11 +31,6 @@ import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
-import com.eai.idss.model.DecisionMaking;
-import com.eai.idss.model.IndustryMaster;
-import com.eai.idss.model.User;
-import com.eai.idss.model.VisitProcessEfficiency;
-import com.eai.idss.model.Visits;
 import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.ConcentByRegionVo;
 import com.eai.idss.vo.DecisionMakingParamVo;
@@ -855,7 +851,9 @@ public class VisitsDaoImpl implements VisitsDao {
 			List<Visits> industryVisitsList= mongoTemplate.find(query, Visits.class);
 			
 			vd.setVisit(industryVisitsList.stream().filter(v -> v.getVisitId()==visitId).findFirst().get());
-			
+
+			vd.getVisit().setcScore(getCscore(industryId));
+
 			vd.setPastVisits(industryVisitsList.stream().filter(v -> v.getVisitStatus().equalsIgnoreCase(VISITED)).count());
 			
 			Map<String, List<TileVo>> visitStatusDaysMap = new LinkedHashMap<String, List<TileVo>>();
@@ -876,6 +874,16 @@ public class VisitsDaoImpl implements VisitsDao {
 			e.printStackTrace();
 		}
 		return vd;
+	}
+	public double getCscore(long industryId){
+
+		Query query = new Query();
+		query.limit(1);
+		query.with(Sort.by(Sort.Direction.DESC,"_id"));
+		query.addCriteria(Criteria.where("industryId").is(industryId));
+		List<CScoreMaster> cScoreMasters = mongoTemplate.find(query, CScoreMaster.class);
+		if(null==cScoreMasters || cScoreMasters.isEmpty()) return 0;
+		return cScoreMasters.get(0).getCscore();
 	}
 
 	private List<TileVo> getVisitStats(VisitDetails vd, List<Visits> industryVisitsList,String type) {

@@ -1,14 +1,11 @@
 package com.eai.idss.dao;
 
-import com.eai.idss.model.BenchmarkingDestinationData;
-import com.eai.idss.model.BenchmarkingSourceData;
-import com.eai.idss.repository.BenchmarkingDestinationDataRepository;
-import com.eai.idss.repository.BenchmarkingSourceDataRepository;
-import com.eai.idss.vo.*;
-import com.mongodb.client.MongoClient;
-import org.bson.Document;
-import org.bson.conversions.Bson;
-import org.jboss.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -16,9 +13,14 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
-import java.text.ParseException;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.eai.idss.model.BenchmarkingDestinationData;
+import com.eai.idss.model.BenchmarkingSourceData;
+import com.eai.idss.repository.BenchmarkingDestinationDataRepository;
+import com.eai.idss.repository.BenchmarkingSourceDataRepository;
+import com.eai.idss.vo.BenchmarkingRequest;
+import com.eai.idss.vo.IndustryNameByTypeVo;
+import com.eai.idss.vo.SkuDetailVo;
+import com.mongodb.client.MongoClient;
 
 @Repository
 public class BenchmarkingDaoImpl implements BenchmarkingDao{

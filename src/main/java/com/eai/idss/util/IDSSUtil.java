@@ -104,7 +104,7 @@ public class IDSSUtil {
 				subRegionList.add("ALL");
 				subRegionList.add("Thane I");
 				subRegionList.add("Thane II");
-				subRegionList.add("Tarapur");
+				subRegionList.add("Tarapur I");
 				subRegionList.add("Tarapur II");
 				break;
 			case "Chandrapur":

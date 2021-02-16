@@ -19,7 +19,6 @@ com\eai\idss\model\Directions.class
 com\eai\idss\service\OCEMSAlertsScheduler.class
 com\eai\idss\dao\ConcentDao.class
 com\eai\idss\dao\GenericDaoImpl$9.class
-com\eai\idss\dao\OCEMSDataDaoImpl$1.class
 com\eai\idss\vo\ComlianceScoreFilter.class
 com\eai\idss\model\Consent_FUEL_comparison.class
 com\eai\idss\dao\ConcentDaoImpl$3.class

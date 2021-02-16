@@ -3,7 +3,7 @@ package com.eai.idss.dao;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import org.jboss.logging.Logger;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
