@@ -277,7 +277,7 @@ public class IDSSUtil {
 	
 	public static Map<String, String> getFutureDaysMapConsent() {
 		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
-		//String currentDay = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String currentDay = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date7DaysBack = currentTime.plusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date30DaysBack = currentTime.plusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date60DaysBack = currentTime.plusDays(60).format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -285,7 +285,7 @@ public class IDSSUtil {
 		String date120DaysBack = currentTime.plusDays(120).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		
 		Map<String,String> daysMap = new LinkedHashMap<String, String>();
-		//daysMap.put(currentDay, "_pastDue");
+		daysMap.put(currentDay, "_pastDue");
 		daysMap.put(date7DaysBack, "_7Days");
 		daysMap.put(date30DaysBack, "_30Days");
 		daysMap.put(date60DaysBack, "_60Days");

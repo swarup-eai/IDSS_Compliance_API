@@ -639,9 +639,9 @@ private List<? extends Bson> getLegalActionsByIndustryPipeline(LegalFilter cf,St
 		
 		matchDoc.append("complied",0);
 		
-		if(null!=cf && null!=cf.getPendingResponseByIndustryCategoryList() ) 
+		if(null!=cf && null!=cf.getLegalActionsByIndustryCategoryList() ) 
 			matchDoc.append("category", new Document().append("$in", cf.getLegalActionsByIndustryCategoryList()));
-		if(null!=cf && null!=cf.getPendingResponseByIndustryScaleList() ) 
+		if(null!=cf && null!=cf.getLegalActionsByIndustryScaleList() ) 
 			matchDoc.append("scale", new Document().append("$in", cf.getLegalActionsByIndustryScaleList()));
 
 		if(!"ALL".equalsIgnoreCase(region))
