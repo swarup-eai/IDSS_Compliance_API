@@ -134,7 +134,7 @@ public class OCEMSAlertsScheduler {
 	}
 
 	private void logAlert(IndustryMaster im, String value, boolean b,String threshold,LocalDateTime startdt,LocalDateTime enddt) {
-		if(!b)
+		if(b)
 			logger.info("OCEMS Data in limit for industry - "+im.getIndustryId()+", for parameter - "+value+", for threshold="+threshold);
 		else {
 			logger.info("OCEMS Data is NOT in limit for industry - "+im.getIndustryId()+", for parameter - "+value+", threshhold- "+threshold);

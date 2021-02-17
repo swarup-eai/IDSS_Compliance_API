@@ -1,6 +1,7 @@
 package com.eai.idss.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -26,7 +27,15 @@ public class OCEMS_Alerts {
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime violationEndDateTime;
 	private String parameter;
+	private List<String> ocemsDataRef;
 	
+	
+	public List<String> getOcemsDataRef() {
+		return ocemsDataRef;
+	}
+	public void setOcemsDataRef(List<String> ocemsDataRef) {
+		this.ocemsDataRef = ocemsDataRef;
+	}
 	public String getParameter() {
 		return parameter;
 	}

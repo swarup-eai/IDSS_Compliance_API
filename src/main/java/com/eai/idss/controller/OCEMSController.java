@@ -54,7 +54,7 @@ public class OCEMSController {
     public ResponseEntity<List<OCEMS_Alerts>> getAlerts(@RequestHeader String userName) throws IOException {
     	List<OCEMS_Alerts> oal =  new ArrayList<OCEMS_Alerts>();
    	    try {
-   	    	oal = or.findBySroUser(userName);
+   	    	oal = or.findBySroUserAndIsDisabled(userName,false);
    		} catch (Exception e) {
    			e.printStackTrace();
    			return new ResponseEntity("Exception in /ocems-alerts", HttpStatus.INTERNAL_SERVER_ERROR);

@@ -17,7 +17,7 @@ public class OCEMS_data {
 	private String industry;
 	private String station_name;
 	private String parameter_name;
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss" , timezone="UTC")
 	private LocalDateTime time_stamp;
 	private Double value;
 	private String units;

@@ -11,6 +11,6 @@ import com.eai.idss.model.OCEMS_Alerts;
 @Repository
 public interface OCEMSAlertsRepositoy extends MongoRepository<OCEMS_Alerts, String> {
 
-	public List<OCEMS_Alerts> findBySroUser(String sroUserId);
+	public List<OCEMS_Alerts> findBySroUserAndIsDisabled(String sroUserId,boolean isDisabled);
 
 }

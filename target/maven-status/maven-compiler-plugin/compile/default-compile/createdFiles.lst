@@ -59,6 +59,7 @@ com\eai\idss\dao\VisitsDao.class
 com\eai\idss\vo\IndustryCscoreResponseVo.class
 com\eai\idss\model\EWasteAnnualAuthorization.class
 com\eai\idss\vo\LegalByTeamVo.class
+com\eai\idss\dao\ConcentDaoImpl$6.class
 com\eai\idss\dao\VisitsDaoImpl$3.class
 com\eai\idss\model\ESR_RESOURCES_comparison.class
 com\eai\idss\vo\VisitScheduleCurrentMonthResponseVo.class
@@ -118,6 +119,7 @@ com\eai\idss\vo\Form3Vo.class
 com\eai\idss\dao\GenericDaoImpl$7.class
 com\eai\idss\vo\EWasteVo.class
 com\eai\idss\vo\PollutionScoreFilter.class
+com\eai\idss\dao\LegalDaoImpl$6.class
 com\eai\idss\dao\VisitsDaoImpl$4.class
 com\eai\idss\vo\DecisionMakingParamVo.class
 com\eai\idss\vo\MyVisits.class

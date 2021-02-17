@@ -1,6 +1,8 @@
 package com.eai.idss.dao;
 
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -31,7 +33,7 @@ public class OCEMSDataDaoImpl implements OCEMSDataDao {
 	@Autowired
 	MongoTemplate mongoTemplate;
 	
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSZ");
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	
 	public static final Logger logger = Logger.getLogger(OCEMSDataDaoImpl.class);
 	
@@ -39,15 +41,15 @@ public class OCEMSDataDaoImpl implements OCEMSDataDao {
 	public List<Map<String,String>> getOCEMSPollutionScoreValue(OCEMS_Alerts oa) {
 			
 		try {
+			String vst = oa.getViolationStartDateTime().format(formatter)+".000+0000";
+			String vet = oa.getViolationEndDateTime().format(formatter)+".000+0000";
 			Query query = new Query();
 			query.addCriteria(Criteria.where("industry_mis_id").is(oa.getIndustryId()));
 			query.addCriteria(Criteria.where("parameter_name").is(oa.getParameter()));
 			query.addCriteria(Criteria.where("time_stamp")
-					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse("2020-12-02 00:00:00.000+0000"))
-					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse("2020-12-02 23:00:00.000+0000")));
+					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(vst))
+					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(vet)));
 			
-			long cnt = mongoTemplate.count(query, OCEMS_data.class);
-			logger.info("generateOCEMSAlerts param "+oa.getParameter()+" Count="+cnt);
 			
 			
 			List<OCEMS_data> odl = mongoTemplate.find(query, OCEMS_data.class);
@@ -57,7 +59,9 @@ public class OCEMSDataDaoImpl implements OCEMSDataDao {
 			List<Map<String,String>> lms = new ArrayList<Map<String,String>>();
 			for(OCEMS_data od : odl) {
 					Map<String,String> msd = new LinkedHashMap<String, String>();
-					msd.put("date", od.getTime_stamp().format(formatter));
+					ZoneId zi = ZoneId.of("UTC");
+					ZonedDateTime zdt = od.getTime_stamp().atZone(zi);
+					msd.put("date", zdt.format(formatter));
 					msd.put("OCEMS"+"~~"+oa.getParameter(), String.valueOf(od.getValue()));
 					lms.add(msd);
 			}
