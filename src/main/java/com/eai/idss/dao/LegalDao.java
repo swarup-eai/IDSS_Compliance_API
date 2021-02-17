@@ -24,4 +24,6 @@ public interface LegalDao {
 	public Map<String,List<TileVo>> getByTeamLegalData(LegalFilter cf,User u);
 	
 	public List<Legal> getLegalPaginatedRecords(LegalDetailsRequest cdr, Pageable pageable);
+	
+	public Map<String,List<TileVo>> getLegalActionsByIndustryData(LegalFilter cf,String region,String subRegion);
 }

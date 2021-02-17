@@ -66,6 +66,20 @@ public class LegalController {
 	}
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(method = RequestMethod.POST, value = "/legal-dashboard/action-by-industry", produces = "application/json")
+	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getLegalActionByIndustryData(@RequestHeader String userName, @RequestBody LegalFilter cf) throws IOException {
+    	Map<String,Map<String,List<TileVo>>> ct = new LinkedHashMap<String, Map<String,List<TileVo>>>();
+	    try {
+	    	User u = userRepository.findByUserName(userName);
+	    	ct.put("actionByIndustry",cd.getLegalActionsByIndustryData(cf,u.getRegion(),u.getSubRegion()));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity("Exception in /legal-dashboard/action-by-industry", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	    return new ResponseEntity<Map<String,Map<String,List<TileVo>>>>(ct,HttpStatus.OK);
+	}
+    
+    @SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.POST, value = "/legal-dashboard/pending-legal-actions",  produces = "application/json")
 	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getLegalDashboardPendingData(@RequestHeader String userName, @RequestBody LegalFilter cf) throws IOException {
     	Map<String,Map<String,List<TileVo>>> ct = new LinkedHashMap<String, Map<String,List<TileVo>>>();

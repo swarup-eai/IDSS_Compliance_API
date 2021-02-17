@@ -24,4 +24,6 @@ public interface ConcentDao {
 	public Map<String,Map<String,List<TileVo>>> getByTeamConcentData(ConcentFilter cf,User u);
 	
 	public List<Consent> getConsentPaginatedRecords(ConsentDetailsRequest cdr, Pageable pageable);
+	
+	public Map<String,List<TileVo>> getUpcomingRenewalConcentDataNew(ConcentFilter cf,String region,String subRegion);
 }

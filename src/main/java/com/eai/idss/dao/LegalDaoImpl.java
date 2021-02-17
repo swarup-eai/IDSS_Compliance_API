@@ -582,4 +582,90 @@ public class LegalDaoImpl implements LegalDao {
 		}
 		return null;
 	}
+	
+	public Map<String,List<TileVo>> getLegalActionsByIndustryData(LegalFilter cf,String region,String subRegion){
+		try {
+			logger.info("getLegalActionsByIndustryData");
+			Map<String, String> daysMap = IDSSUtil.getFutureDaysMapConsent();//IDSSUtil.getDaysMapForLegal();
+			
+		 	MongoDatabase database = mongoClient.getDatabase(dbName);
+            MongoCollection<Document> collection = database.getCollection("legalDataMaster");
+            
+            Map<String,List<TileVo>> tileMap = new LinkedHashMap<String, List<TileVo>>();
+            
+            for(String days : daysMap.keySet()) {
+            	logger.info("getLegalActionsByIndustryData : "+days);
+            	List<? extends Bson> pipeline = getLegalActionsByIndustryPipeline(cf,days,region,subRegion);
+	            
+	            List<TileVo> tVoList = new ArrayList<TileVo>();
+	            collection.aggregate(pipeline)
+	                    .allowDiskUse(false)
+	                    .forEach(new Consumer<Document>() {
+		    	                @Override
+		    	                public void accept(Document document) {
+		    	                    logger.info(document.toJson());
+									try {
+										TileVo tVo = new ObjectMapper().readValue(document.toJson(), TileVo.class);
+										tVoList.add(tVo);
+									
+									} catch (JsonMappingException e) {
+										e.printStackTrace();
+									} catch (JsonProcessingException e) {
+										e.printStackTrace();
+									}
+		    	                    
+		    	                }
+		    	            }
+	                    );
+	            tileMap.put(daysMap.get(days), tVoList);
+            
+            }
+            return tileMap;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+private List<? extends Bson> getLegalActionsByIndustryPipeline(LegalFilter cf,String days,String region,String subRegion) throws ParseException {
+		
+		Document matchDoc = new Document();
+		
+//		matchDoc.append("issuedOn", new Document()
+//							.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
+//							.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))
+//						);
+//		matchDoc.append("issuedOn", new Document().append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000")));
+		matchDoc.append("legalDirection", new Document().append("$in", IDSSUtil.getLegalActionsList()));
+		
+		matchDoc.append("complied",0);
+		
+		if(null!=cf && null!=cf.getPendingResponseByIndustryCategoryList() ) 
+			matchDoc.append("category", new Document().append("$in", cf.getLegalActionsByIndustryCategoryList()));
+		if(null!=cf && null!=cf.getPendingResponseByIndustryScaleList() ) 
+			matchDoc.append("scale", new Document().append("$in", cf.getLegalActionsByIndustryScaleList()));
+
+		if(!"ALL".equalsIgnoreCase(region))
+			matchDoc.append("region",region);
+		if(!"ALL".equalsIgnoreCase(subRegion))
+			matchDoc.append("subRegion",subRegion);
+		
+		List<? extends Bson> pipeline = Arrays.asList(
+				new Document().append("$match", matchDoc),  
+		        new Document()
+		                .append("$group", new Document()
+		                        .append("_id", "$legalDirection")
+		                        .append("caseCount", new Document()
+		                                .append("$sum", 1)
+		                        )
+		                ),
+		        new Document()
+		            .append("$project", new Document()
+		                    .append("_id", false)
+		                    .append("caseType", "$_id")
+		                    .append("caseCount", "$caseCount")
+		            )
+				);
+		return pipeline;
+	}
+	
 }
