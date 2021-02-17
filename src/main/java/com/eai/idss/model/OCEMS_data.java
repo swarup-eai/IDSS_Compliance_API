@@ -1,6 +1,6 @@
 package com.eai.idss.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,13 +17,20 @@ public class OCEMS_data {
 	private String industry;
 	private String station_name;
 	private String parameter_name;
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Date time_stamp;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime time_stamp;
 	private Double value;
 	private String units;
 	private double upper_limit;
 	
-	
+	public LocalDateTime getTime_stamp() {
+		return time_stamp;
+	}
+
+	public void setTime_stamp(LocalDateTime time_stamp) {
+		this.time_stamp = time_stamp;
+	}
+
 	public double getUpper_limit() {
 		return upper_limit;
 	}
@@ -37,7 +44,7 @@ public class OCEMS_data {
 	}
 
 	public OCEMS_data(String site_id, String industry_name, String industry, String station_name, String parameter_name,
-			Date time_stamp, Double value, String units) {
+			LocalDateTime time_stamp, Double value, String units) {
 		super();
 		this.site_id = site_id;
 		this.industry_name = industry_name;
@@ -87,14 +94,6 @@ public class OCEMS_data {
 
 	public void setParameter_name(String parameter_name) {
 		this.parameter_name = parameter_name;
-	}
-
-	public Date getTime_stamp() {
-		return time_stamp;
-	}
-
-	public void setTime_stamp(Date time_stamp) {
-		this.time_stamp = time_stamp;
 	}
 
 	public Double getValue() {
