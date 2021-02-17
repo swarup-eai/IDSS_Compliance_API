@@ -632,9 +632,9 @@ public class ConcentDaoImpl implements ConcentDao {
                 );
 		}
 		
-		if(null!=cf && null!=cf.getPendingCategoryList() ) 
+		if(null!=cf && null!=cf.getUpcomingRenewalCategoryList() ) 
 			matchDoc.append("category", new Document().append("$in", cf.getUpcomingRenewalCategoryList()));
-		if(null!=cf && null!=cf.getPendingScaleList() ) 
+		if(null!=cf && null!=cf.getUpcomingRenewalScaleList() ) 
 			matchDoc.append("scale", new Document().append("$in", cf.getUpcomingRenewalScaleList()));
 		if(!"ALL".equalsIgnoreCase(region))
 			matchDoc.append("region",region);

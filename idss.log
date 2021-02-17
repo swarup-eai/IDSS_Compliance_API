@@ -6,3 +6,24 @@
 2021-02-17 16:02:14 OCEMSDataDaoImpl [INFO] generateOCEMSAlerts param PM Count=6
 2021-02-17 16:03:42 OCEMSDataDaoImpl [INFO] generateOCEMSAlerts param PM Count=6
 2021-02-17 16:16:51 OCEMSDataDaoImpl [INFO] generateOCEMSAlerts param PM Count=6
+2021-02-17 18:21:02 LegalDaoImpl [INFO] 0
+2021-02-17 18:33:37 LegalDaoImpl [INFO] getLegalActionsByIndustryData
+2021-02-17 18:33:37 LegalDaoImpl [INFO] getLegalActionsByIndustryData : 2021-02-24
+2021-02-17 18:34:21 LegalDaoImpl [INFO] getLegalActionsByIndustryData
+2021-02-17 18:34:21 LegalDaoImpl [INFO] getLegalActionsByIndustryData : 2021-02-24
+2021-02-17 18:34:41 LegalDaoImpl [INFO] {"caseType": "SCN", "caseCount": 8}
+2021-02-17 18:34:42 LegalDaoImpl [INFO] getLegalActionsByIndustryData : 2021-03-19
+2021-02-17 18:34:45 LegalDaoImpl [INFO] {"caseType": "SCN", "caseCount": 8}
+2021-02-17 18:34:45 LegalDaoImpl [INFO] getLegalActionsByIndustryData : 2021-04-18
+2021-02-17 18:34:45 LegalDaoImpl [INFO] {"caseType": "SCN", "caseCount": 8}
+2021-02-17 18:34:45 LegalDaoImpl [INFO] getLegalActionsByIndustryData : 2021-05-18
+2021-02-17 18:34:45 LegalDaoImpl [INFO] {"caseType": "SCN", "caseCount": 8}
+2021-02-17 18:34:45 LegalDaoImpl [INFO] getLegalActionsByIndustryData : 2021-06-17
+2021-02-17 18:34:46 LegalDaoImpl [INFO] {"caseType": "SCN", "caseCount": 8}
+2021-02-17 18:38:15 ConcentDaoImpl [INFO] getPendingRequestConcentDataNew
+2021-02-17 18:38:15 ConcentDaoImpl [INFO] getUpcomingRenewalConcentDataNew : 2021-02-24
+2021-02-17 18:38:15 ConcentDaoImpl [INFO] getUpcomingRenewalConcentDataNew : 2021-03-19
+2021-02-17 18:38:16 ConcentDaoImpl [INFO] getUpcomingRenewalConcentDataNew : 2021-04-18
+2021-02-17 18:38:16 ConcentDaoImpl [INFO] getUpcomingRenewalConcentDataNew : 2021-05-18
+2021-02-17 18:38:16 ConcentDaoImpl [INFO] getUpcomingRenewalConcentDataNew : 2021-06-17
+2021-02-17 18:38:16 ConcentDaoImpl [INFO] {"caseType": "Renewal", "caseCount": 1}
