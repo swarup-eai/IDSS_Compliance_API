@@ -25,7 +25,14 @@ public class OCEMS_Alerts {
 	private LocalDateTime violationStartDateTime;
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime violationEndDateTime;
+	private String parameter;
 	
+	public String getParameter() {
+		return parameter;
+	}
+	public void setParameter(String parameter) {
+		this.parameter = parameter;
+	}
 	public LocalDateTime getViolationStartDateTime() {
 		return violationStartDateTime;
 	}

@@ -1,7 +1,11 @@
 package com.eai.idss.dao;
 
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +15,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import com.eai.idss.model.OCEMS_Alerts;
 import com.eai.idss.model.OCEMS_data;
 import com.mongodb.client.MongoClient;
 
@@ -26,9 +31,43 @@ public class OCEMSDataDaoImpl implements OCEMSDataDao {
 	@Autowired
 	MongoTemplate mongoTemplate;
 	
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSZ");
+	
 	public static final Logger logger = Logger.getLogger(OCEMSDataDaoImpl.class);
 	
 	
+	public List<Map<String,String>> getOCEMSPollutionScoreValue(OCEMS_Alerts oa) {
+			
+		try {
+			Query query = new Query();
+			query.addCriteria(Criteria.where("industry_mis_id").is(oa.getIndustryId()));
+			query.addCriteria(Criteria.where("parameter_name").is(oa.getParameter()));
+			query.addCriteria(Criteria.where("time_stamp")
+					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse("2020-12-02 00:00:00.000+0000"))
+					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse("2020-12-02 23:00:00.000+0000")));
+			
+			long cnt = mongoTemplate.count(query, OCEMS_data.class);
+			logger.info("generateOCEMSAlerts param "+oa.getParameter()+" Count="+cnt);
+			
+			
+			List<OCEMS_data> odl = mongoTemplate.find(query, OCEMS_data.class);
+			
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			
+			List<Map<String,String>> lms = new ArrayList<Map<String,String>>();
+			for(OCEMS_data od : odl) {
+					Map<String,String> msd = new LinkedHashMap<String, String>();
+					msd.put("date", od.getTime_stamp().format(formatter));
+					msd.put("OCEMS"+"~~"+oa.getParameter(), String.valueOf(od.getValue()));
+					lms.add(msd);
+			}
+			return lms;
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+			
+		return null;
+	}
 
 	public boolean isParamValueInLimit(long industryId, String paramValue, String fromDate,String toDate,String thresholdRange) {
 		try {

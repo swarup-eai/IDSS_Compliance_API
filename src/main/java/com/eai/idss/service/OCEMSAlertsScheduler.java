@@ -58,7 +58,7 @@ public class OCEMSAlertsScheduler {
 		for(IndustryMaster im : filteredIndustryMaster) {
 			CompletableFuture.runAsync(() -> {
 				if(!isOCEMSDataPresent(im.getIndustryId(),fourDaysBack)) {
-					createOCEMSAlert(im,"No data captured for industry for 48 hours. ",currentTime.minusHours(96),currentTime);
+					createOCEMSAlert(im,null,"No data captured for industry for 48 hours. ",currentTime.minusHours(96),currentTime);
 				}
 			},executorService);
 		}
@@ -75,7 +75,7 @@ public class OCEMSAlertsScheduler {
 		for(IndustryMaster im : filteredIndustryMaster) {
 			CompletableFuture.runAsync(() -> {
 				if(!isOCEMSDataPresent(im.getIndustryId(),fourDaysBack)) {
-					createOCEMSAlert(im,"No data captured for industry for 96 hours. ",currentTime.minusHours(96),currentTime);
+					createOCEMSAlert(im,null,"No data captured for industry for 96 hours. ",currentTime.minusHours(96),currentTime);
 				}
 			},executorService);
 		}
@@ -134,15 +134,15 @@ public class OCEMSAlertsScheduler {
 	}
 
 	private void logAlert(IndustryMaster im, String value, boolean b,String threshold,LocalDateTime startdt,LocalDateTime enddt) {
-		if(b)
+		if(!b)
 			logger.info("OCEMS Data in limit for industry - "+im.getIndustryId()+", for parameter - "+value+", for threshold="+threshold);
 		else {
 			logger.info("OCEMS Data is NOT in limit for industry - "+im.getIndustryId()+", for parameter - "+value+", threshhold- "+threshold);
-			createOCEMSAlert(im,"Value for the parameter "+value+" falls in range "+threshold,startdt,enddt);
+			createOCEMSAlert(im,value,"Value for the parameter "+value+" falls in range "+threshold,startdt,enddt);
 		}
 	}
 	
-	private void createOCEMSAlert(IndustryMaster im, String alertType,LocalDateTime startdt,LocalDateTime enddt) {
+	private void createOCEMSAlert(IndustryMaster im, String param, String alertType,LocalDateTime startdt,LocalDateTime enddt) {
 		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 		OCEMS_Alerts oa = new OCEMS_Alerts();
 		oa.setAlertCreatedDateTime(currentTime);
@@ -154,6 +154,8 @@ public class OCEMSAlertsScheduler {
 		oa.setSroUser(im.getSroEmailId());
 		oa.setViolationStartDateTime(startdt);
 		oa.setViolationEndDateTime(enddt);
+		oa.setParameter(param);
+		oa.setAlertType(alertType);
 		ocemsRepo.save(oa);
 		
 	}
