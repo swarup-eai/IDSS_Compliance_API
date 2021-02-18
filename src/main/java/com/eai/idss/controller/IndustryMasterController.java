@@ -29,15 +29,15 @@ public class IndustryMasterController {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.POST, value = "/industry-master", produces = "application/json")
-	public ResponseEntity<List<IndustryMaster>> getIndustryMasterTileData(@RequestBody IndustryMasterRequest imr, Pageable pageable) throws IOException {
-    	List<IndustryMaster> iml = null;
+	public ResponseEntity<IndustryMasterPaginationResponseVo> getIndustryMasterTileData(@RequestBody IndustryMasterRequest imr, Pageable pageable) throws IOException {
+    	IndustryMasterPaginationResponseVo iml = null;
 	    try {
 	    	iml =  imd.getIndustryMasterPaginatedRecords(imr,pageable);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /industry-master", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	    return new ResponseEntity<List<IndustryMaster>>(iml,HttpStatus.OK);
+	    return new ResponseEntity<IndustryMasterPaginationResponseVo>(iml,HttpStatus.OK);
 	}
     
     @SuppressWarnings({ "rawtypes", "unchecked" })

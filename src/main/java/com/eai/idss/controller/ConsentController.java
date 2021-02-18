@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eai.idss.dao.ConcentDao;
 import com.eai.idss.dao.GenericDao;
-import com.eai.idss.model.Consent;
 import com.eai.idss.model.User;
 import com.eai.idss.repository.UserRepository;
 import com.eai.idss.vo.ConcentFilter;
 import com.eai.idss.vo.ConsentDetailsRequest;
+import com.eai.idss.vo.ConsentPaginationResponseVo;
 import com.eai.idss.vo.TileVo;
 
 
@@ -43,15 +43,15 @@ public class ConsentController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.POST, value = "/consent-details", produces = "application/json")
-	public ResponseEntity<List<Consent>> getIndustryMasterTileData(@RequestBody ConsentDetailsRequest cdr, Pageable pageable) throws IOException {
-    	List<Consent> cl = null;
+	public ResponseEntity<ConsentPaginationResponseVo> getIndustryMasterTileData(@RequestBody ConsentDetailsRequest cdr, Pageable pageable) throws IOException {
+    	ConsentPaginationResponseVo cl = null;
 	    try {
 	    	cl =  cd.getConsentPaginatedRecords(cdr,pageable);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /consent-details", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	    return new ResponseEntity<List<Consent>>(cl,HttpStatus.OK);
+	    return new ResponseEntity<ConsentPaginationResponseVo>(cl,HttpStatus.OK);
 	}
     
     @SuppressWarnings({ "rawtypes", "unchecked" })

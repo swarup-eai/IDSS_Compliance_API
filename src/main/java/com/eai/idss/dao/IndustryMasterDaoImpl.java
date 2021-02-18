@@ -13,9 +13,9 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -76,6 +76,7 @@ import com.eai.idss.vo.Form1AVo;
 import com.eai.idss.vo.Form3Vo;
 import com.eai.idss.vo.Form5Vo;
 import com.eai.idss.vo.IndustryMasterDetailResponseVo;
+import com.eai.idss.vo.IndustryMasterPaginationResponseVo;
 import com.eai.idss.vo.IndustryMasterRequest;
 import com.eai.idss.vo.MandatoryReportsResponseVo;
 import com.eai.idss.vo.NewBatteriesSoldVo;
@@ -130,14 +131,16 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	
 	public static final Logger logger = Logger.getLogger(IndustryMasterDaoImpl.class);
 	
-	public List<IndustryMaster> getIndustryMasterPaginatedRecords(IndustryMasterRequest imr ,Pageable page){
+	public IndustryMasterPaginationResponseVo getIndustryMasterPaginatedRecords(IndustryMasterRequest imr ,Pageable page){
 		
+		IndustryMasterPaginationResponseVo imprVo = new IndustryMasterPaginationResponseVo();
 		
 		Query query = new Query().with(page);
 		setCriteria(imr, query);
-
-		logger.info("Total Count="+mongoTemplate.count(query, IndustryMaster.class));
 		
+		Query queryCnt = new Query();
+		setCriteria(imr, queryCnt);
+
 		List<IndustryMaster> filteredIndustryMaster = mongoTemplate.find(query, IndustryMaster.class);
 		
 		if(null!=filteredIndustryMaster && !filteredIndustryMaster.isEmpty()) {
@@ -146,7 +149,13 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			
 			filterForPendingCases(imr, filteredIndustryMaster);
 			
-			logger.info("Filter Count="+filteredIndustryMaster.size());
+			List<IndustryMaster> filteredIndustryMasterCnt = mongoTemplate.find(queryCnt, IndustryMaster.class);
+			
+			filterForLegalActions(imr, filteredIndustryMasterCnt);
+			
+			filterForPendingCases(imr, filteredIndustryMasterCnt);
+			
+			imprVo.setTotalRecords(filteredIndustryMasterCnt.size());
 			
 			Page<IndustryMaster> imPage = PageableExecutionUtils.getPage(filteredIndustryMaster, page,
 			        () -> mongoTemplate.count(query, IndustryMaster.class));
@@ -157,9 +166,11 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 				populateLastVisited(im);
 			}
 			
-			return imPage.toList();
+			imprVo.setImList(imPage.toList());
+			
+			return imprVo;
 		}
-		return new ArrayList<>();
+		return new IndustryMasterPaginationResponseVo(new ArrayList<IndustryMaster>(),0);
 	}
 
 	private void filterForPendingCases(IndustryMasterRequest imr, List<IndustryMaster> filteredIndustryMaster) {

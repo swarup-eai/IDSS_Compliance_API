@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eai.idss.dao.LegalDao;
-import com.eai.idss.model.Legal;
 import com.eai.idss.model.User;
 import com.eai.idss.repository.UserRepository;
 import com.eai.idss.vo.LegalDetailsRequest;
 import com.eai.idss.vo.LegalFilter;
+import com.eai.idss.vo.LegalPaginationResponseVo;
 import com.eai.idss.vo.TileVo;
 
 
@@ -39,15 +39,15 @@ public class LegalController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.POST, value = "/legal-details", produces = "application/json")
-	public ResponseEntity<List<Legal>> getLegalDetailsData(@RequestBody LegalDetailsRequest cdr, Pageable pageable) throws IOException {
-    	List<Legal> cl = null;
+	public ResponseEntity<LegalPaginationResponseVo> getLegalDetailsData(@RequestBody LegalDetailsRequest cdr, Pageable pageable) throws IOException {
+    	LegalPaginationResponseVo cl = null;
 	    try {
 	    	cl =  cd.getLegalPaginatedRecords(cdr,pageable);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /Legal-details", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	    return new ResponseEntity<List<Legal>>(cl,HttpStatus.OK);
+	    return new ResponseEntity<LegalPaginationResponseVo>(cl,HttpStatus.OK);
 	}
     
     

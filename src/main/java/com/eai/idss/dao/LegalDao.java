@@ -5,10 +5,10 @@ import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
 
-import com.eai.idss.model.Legal;
 import com.eai.idss.model.User;
 import com.eai.idss.vo.LegalDetailsRequest;
 import com.eai.idss.vo.LegalFilter;
+import com.eai.idss.vo.LegalPaginationResponseVo;
 import com.eai.idss.vo.TileVo;
 
 public interface LegalDao {
@@ -23,7 +23,7 @@ public interface LegalDao {
 	
 	public Map<String,List<TileVo>> getByTeamLegalData(LegalFilter cf,User u);
 	
-	public List<Legal> getLegalPaginatedRecords(LegalDetailsRequest cdr, Pageable pageable);
+	public LegalPaginationResponseVo getLegalPaginatedRecords(LegalDetailsRequest cdr, Pageable pageable);
 	
 	public Map<String,List<TileVo>> getLegalActionsByIndustryData(LegalFilter cf,String region,String subRegion);
 }

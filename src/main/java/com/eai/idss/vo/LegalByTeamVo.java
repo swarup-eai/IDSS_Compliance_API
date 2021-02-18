@@ -3,9 +3,16 @@ package com.eai.idss.vo;
 public class LegalByTeamVo {
 
 	private String name;
+	private String userId;
 	private String designation;
 	private int count;
 	
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	public String getDesignation() {
 		return designation;
 	}

@@ -15,10 +15,9 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import com.eai.idss.model.*;
+import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -31,6 +30,12 @@ import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import com.eai.idss.model.CScoreMaster;
+import com.eai.idss.model.DecisionMaking;
+import com.eai.idss.model.IndustryMaster;
+import com.eai.idss.model.User;
+import com.eai.idss.model.VisitProcessEfficiency;
+import com.eai.idss.model.Visits;
 import com.eai.idss.util.IDSSUtil;
 import com.eai.idss.vo.ConcentByRegionVo;
 import com.eai.idss.vo.DecisionMakingParamVo;
@@ -42,6 +47,7 @@ import com.eai.idss.vo.VisitsByComplianceVo;
 import com.eai.idss.vo.VisitsByScaleCategory;
 import com.eai.idss.vo.VisitsDetailsRequest;
 import com.eai.idss.vo.VisitsFilter;
+import com.eai.idss.vo.VisitsPaginationResponseVo;
 import com.eai.idss.vo.VisitsScheduleDetailsRequest;
 import com.eai.idss.vo.VisitsSubRegionVo;
 import com.eai.idss.vo.VisitsTeamVo;
@@ -594,48 +600,16 @@ public class VisitsDaoImpl implements VisitsDao {
 		return pipeline;
 	}
 	
-	public List<Visits> getVisitsPaginatedRecords(VisitsDetailsRequest cdr, Pageable page){
+	public VisitsPaginationResponseVo getVisitsPaginatedRecords(VisitsDetailsRequest cdr, Pageable page){
 		try {
 			Query query = new Query().with(page);
-			if(null!=cdr) {
-				List<String> days = new ArrayList<String>(); 
-				LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
-				
-				if(SCHEDULED.equalsIgnoreCase(cdr.getVisitStatus())) {
-					days.add(currentTime.plusDays(Integer.parseInt(cdr.getDuration())).format(DateTimeFormatter.ISO_LOCAL_DATE));
-					days.add(currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
-				}
-				else {
-					if(StringUtils.hasText(cdr.getDuration())) {
-						String[] d = cdr.getDuration().split("_");
-						
-						LocalDateTime fromDate = currentTime.minusDays(Integer.parseInt(d[0]));
-						String fromDay = fromDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
-						days.add(fromDay);
-						if("ALL".equalsIgnoreCase(d[1])) {
-							days.add("1970-01-01");
-						}else {
-							LocalDateTime toDate = currentTime.minusDays(Integer.parseInt(d[1]));
-							String toDay = toDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
-							days.add(toDay);
-						}
-					}
-					
-				}
-				
-				addCriteriaFilter(cdr.getVisitStatus(), days, query);
-				
-				if(StringUtils.hasText(cdr.getRegion()))
-					query.addCriteria(Criteria.where("region").is(cdr.getRegion()));
-				if(null!= cdr.getCategory() && !cdr.getCategory().isEmpty())
-					query.addCriteria(Criteria.where("category").in(cdr.getCategory()));
-				if(StringUtils.hasText(cdr.getSubRegion()))
-					query.addCriteria(Criteria.where("subRegion").is(cdr.getSubRegion()));
-				if(null!=cdr.getScale() && !cdr.getScale().isEmpty())
-					query.addCriteria(Criteria.where("scale").in(cdr.getScale()));
-			}
+			getQueryCriteria(cdr, query);
+			
+			Query queryCnt = new Query().with(page);
+			getQueryCriteria(cdr, queryCnt);
 	
-			logger.info(mongoTemplate.count(query, Visits.class));
+			VisitsPaginationResponseVo vprv = new VisitsPaginationResponseVo();
+			vprv.setTotalRecords(mongoTemplate.count(queryCnt, Visits.class));
 			
 			List<Visits> filteredVisitsList= mongoTemplate.find(query, Visits.class);
 			
@@ -646,12 +620,54 @@ public class VisitsDaoImpl implements VisitsDao {
 					page,
 			        () -> mongoTemplate.count(query, Visits.class));
 			
-			return cPage.toList();
+			vprv.setVisitsList(cPage.toList());
+			
+			return vprv;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return new VisitsPaginationResponseVo(new ArrayList<Visits>(),0);
+	}
+
+	private void getQueryCriteria(VisitsDetailsRequest cdr, Query query) throws ParseException {
+		if(null!=cdr) {
+			List<String> days = new ArrayList<String>(); 
+			LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
+			
+			if(SCHEDULED.equalsIgnoreCase(cdr.getVisitStatus())) {
+				days.add(currentTime.plusDays(Integer.parseInt(cdr.getDuration())).format(DateTimeFormatter.ISO_LOCAL_DATE));
+				days.add(currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
+			}
+			else {
+				if(StringUtils.hasText(cdr.getDuration())) {
+					String[] d = cdr.getDuration().split("_");
+					
+					LocalDateTime fromDate = currentTime.minusDays(Integer.parseInt(d[0]));
+					String fromDay = fromDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+					days.add(fromDay);
+					if("ALL".equalsIgnoreCase(d[1])) {
+						days.add("1970-01-01");
+					}else {
+						LocalDateTime toDate = currentTime.minusDays(Integer.parseInt(d[1]));
+						String toDay = toDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+						days.add(toDay);
+					}
+				}
+				
+			}
+			
+			addCriteriaFilter(cdr.getVisitStatus(), days, query);
+			
+			if(StringUtils.hasText(cdr.getRegion()))
+				query.addCriteria(Criteria.where("region").is(cdr.getRegion()));
+			if(null!= cdr.getCategory() && !cdr.getCategory().isEmpty())
+				query.addCriteria(Criteria.where("category").in(cdr.getCategory()));
+			if(StringUtils.hasText(cdr.getSubRegion()))
+				query.addCriteria(Criteria.where("subRegion").is(cdr.getSubRegion()));
+			if(null!=cdr.getScale() && !cdr.getScale().isEmpty())
+				query.addCriteria(Criteria.where("scale").in(cdr.getScale()));
+		}
 	}
 	
 	private void addCriteriaFilter(String caseType, List<String> days, Query query) throws ParseException {
@@ -686,21 +702,17 @@ public class VisitsDaoImpl implements VisitsDao {
 		}
 	}
 	
-	public List<Visits> getVisitsSchedulePaginatedRecords(VisitsScheduleDetailsRequest cdr, Pageable pageable,String userName){
+	public VisitsPaginationResponseVo getVisitsSchedulePaginatedRecords(VisitsScheduleDetailsRequest cdr, Pageable pageable,String userName){
 		try {
 			Query query = new Query().with(pageable);
-				
-			query.addCriteria(Criteria.where("schduledOn")
-					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(cdr.getFromDate()+" 00:00:00.000+0000"))
-					.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(cdr.getToDate()+" 00:00:00.000+0000")));
-				
-			if(StringUtils.hasText(cdr.getStatus()) && !"ALL".equalsIgnoreCase(cdr.getStatus())) {
-				query.addCriteria(Criteria.where("visitStatus").is(cdr.getStatus()));
-			}
+			getQueryCriteria(cdr, userName, query);
 			
-			query.addCriteria(Criteria.where("userId").is(userName));
+			Query queryCnt = new Query();
+			getQueryCriteria(cdr, userName, queryCnt);
+			
+			VisitsPaginationResponseVo vprv = new VisitsPaginationResponseVo();
 	
-			logger.info(mongoTemplate.count(query, Visits.class));
+			vprv.setTotalRecords(mongoTemplate.count(queryCnt, Visits.class));
 			
 			List<Visits> filteredVisitList= mongoTemplate.find(query, Visits.class);
 			
@@ -715,12 +727,27 @@ public class VisitsDaoImpl implements VisitsDao {
 			
 			populateCScore(finalVisitList);
 			
-			return finalVisitList;
+			vprv.setVisitsList(finalVisitList);
+			
+			return vprv;
 		}	
 		catch(Exception e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private void getQueryCriteria(VisitsScheduleDetailsRequest cdr, String userName, Query query)
+			throws ParseException {
+		query.addCriteria(Criteria.where("schduledOn")
+				.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(cdr.getFromDate()+" 00:00:00.000+0000"))
+				.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(cdr.getToDate()+" 00:00:00.000+0000")));
+			
+		if(StringUtils.hasText(cdr.getStatus()) && !"ALL".equalsIgnoreCase(cdr.getStatus())) {
+			query.addCriteria(Criteria.where("visitStatus").is(cdr.getStatus()));
+		}
+		
+		query.addCriteria(Criteria.where("userId").is(userName));
 	}
 
 	private void populateCScore(List<Visits> finalVisitList) {

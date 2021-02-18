@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -34,6 +34,7 @@ import com.eai.idss.vo.LegalByTeamVo;
 import com.eai.idss.vo.LegalDetailsRequest;
 import com.eai.idss.vo.LegalFilter;
 import com.eai.idss.vo.LegalGroupByVo;
+import com.eai.idss.vo.LegalPaginationResponseVo;
 import com.eai.idss.vo.LegalSubRegionVo;
 import com.eai.idss.vo.TileVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -529,64 +530,72 @@ public class LegalDaoImpl implements LegalDao {
 		return pipeline;
 	}
 	
-	public List<Legal> getLegalPaginatedRecords(LegalDetailsRequest cdr, Pageable page){
+	public LegalPaginationResponseVo getLegalPaginatedRecords(LegalDetailsRequest cdr, Pageable page){
 		try {
 			Query query = new Query().with(page);
-			if(null!=cdr) {
-				if(StringUtils.hasText(cdr.getDuration())) {
-					String[] d = cdr.getDuration().split("_");
-					
-					LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
-					LocalDateTime fromDate = currentTime.minusDays(Integer.parseInt(d[0]));
-					String fromDay = fromDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
-					String toDay = null;
-					if("ALL".equalsIgnoreCase(d[1])) {
-						toDay = "1970-01-01";
-					}else {
-						LocalDateTime toDate = currentTime.minusDays(Integer.parseInt(d[1]));
-						toDay = toDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
-					}
-					
-					query.addCriteria(Criteria.where("issuedOn")
-													.gt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(toDay+" 00:00:00.000+0000"))
-													.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fromDay+" 00:00:00.000+0000")));
-				}
-				if(StringUtils.hasText(cdr.getRegion()))
-						query.addCriteria(Criteria.where("region").is(cdr.getRegion()));
-				if(null!=cdr.getCategory() && !cdr.getCategory().isEmpty())
-						query.addCriteria(Criteria.where("category").in(cdr.getCategory()));
-				if(StringUtils.hasText(cdr.getSubRegion()))
-						query.addCriteria(Criteria.where("subRegion").is(cdr.getSubRegion()));
-				if(null!=cdr.getScale() && !cdr.getScale().isEmpty() )
-					query.addCriteria(Criteria.where("scale").in(cdr.getScale()));
-				if(StringUtils.hasText(cdr.getAction()))
-					query.addCriteria(Criteria.where("legalDirection").is(cdr.getAction()));
-				else
-					query.addCriteria(Criteria.where("legalDirection").in(IDSSUtil.getLegalActionsList()));
-			}
+			getQueryCriteria(cdr, query);
 			
-	
-			logger.info(mongoTemplate.count(query, Legal.class));
+			Query queryCnt = new Query().with(page);
+			getQueryCriteria(cdr, queryCnt);
 			
-			List<Legal> filteredLegalList= 
-			mongoTemplate.find(query, Legal.class);
+			LegalPaginationResponseVo lprv = new LegalPaginationResponseVo(); 
+			lprv.setTotalRecords(mongoTemplate.count(queryCnt, Legal.class));
+			
+			List<Legal> filteredLegalList=  mongoTemplate.find(query, Legal.class);
+			
 			Page<Legal> cPage = PageableExecutionUtils.getPage(
 					filteredLegalList,
 					page,
 			        () -> mongoTemplate.count(query, Legal.class));
 			
-			return cPage.toList();
+			lprv.setLegalList(cPage.toList());
+			return lprv;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return new LegalPaginationResponseVo(new ArrayList<Legal>(),0);
+	}
+
+	private void getQueryCriteria(LegalDetailsRequest cdr, Query query) throws ParseException {
+		if(null!=cdr) {
+			if(StringUtils.hasText(cdr.getDuration())) {
+				String[] d = cdr.getDuration().split("_");
+				
+				LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
+				LocalDateTime fromDate = currentTime.minusDays(Integer.parseInt(d[0]));
+				String fromDay = fromDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+				String toDay = null;
+				if("ALL".equalsIgnoreCase(d[1])) {
+					toDay = "1970-01-01";
+				}else {
+					LocalDateTime toDate = currentTime.minusDays(Integer.parseInt(d[1]));
+					toDay = toDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+				}
+				
+				query.addCriteria(Criteria.where("issuedOn")
+												.gt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(toDay+" 00:00:00.000+0000"))
+												.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fromDay+" 00:00:00.000+0000")));
+			}
+			if(StringUtils.hasText(cdr.getRegion()))
+					query.addCriteria(Criteria.where("region").is(cdr.getRegion()));
+			if(null!=cdr.getCategory() && !cdr.getCategory().isEmpty())
+					query.addCriteria(Criteria.where("category").in(cdr.getCategory()));
+			if(StringUtils.hasText(cdr.getSubRegion()))
+					query.addCriteria(Criteria.where("subRegion").is(cdr.getSubRegion()));
+			if(null!=cdr.getScale() && !cdr.getScale().isEmpty() )
+				query.addCriteria(Criteria.where("scale").in(cdr.getScale()));
+			if(StringUtils.hasText(cdr.getAction()))
+				query.addCriteria(Criteria.where("legalDirection").is(cdr.getAction()));
+			else
+				query.addCriteria(Criteria.where("legalDirection").in(IDSSUtil.getLegalActionsList()));
+		}
 	}
 	
 	public Map<String,List<TileVo>> getLegalActionsByIndustryData(LegalFilter cf,String region,String subRegion){
 		try {
 			logger.info("getLegalActionsByIndustryData");
-			Map<String, String> daysMap = IDSSUtil.getFutureDaysMapConsent();//IDSSUtil.getDaysMapForLegal();
+			Map<String, String> daysMap = IDSSUtil.getPastDaysMap();//IDSSUtil.getDaysMapForLegal();
 			
 		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("legalDataMaster");
@@ -634,7 +643,7 @@ private List<? extends Bson> getLegalActionsByIndustryPipeline(LegalFilter cf,St
 //							.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
 //							.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))
 //						);
-//		matchDoc.append("issuedOn", new Document().append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000")));
+		matchDoc.append("issuedOn", new Document().append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000")));
 		matchDoc.append("legalDirection", new Document().append("$in", IDSSUtil.getLegalActionsList()));
 		
 		matchDoc.append("complied",0);

@@ -5,10 +5,10 @@ import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
 
-import com.eai.idss.model.Consent;
 import com.eai.idss.model.User;
 import com.eai.idss.vo.ConcentFilter;
 import com.eai.idss.vo.ConsentDetailsRequest;
+import com.eai.idss.vo.ConsentPaginationResponseVo;
 import com.eai.idss.vo.TileVo;
 
 public interface ConcentDao {
@@ -23,7 +23,7 @@ public interface ConcentDao {
 	
 	public Map<String,Map<String,List<TileVo>>> getByTeamConcentData(ConcentFilter cf,User u);
 	
-	public List<Consent> getConsentPaginatedRecords(ConsentDetailsRequest cdr, Pageable pageable);
+	public ConsentPaginationResponseVo getConsentPaginatedRecords(ConsentDetailsRequest cdr, Pageable pageable);
 	
 	public Map<String,List<TileVo>> getUpcomingRenewalConcentDataNew(ConcentFilter cf,String region,String subRegion);
 }

@@ -32,6 +32,7 @@ import com.eai.idss.vo.VisitScheduleCurrentMonthResponseVo;
 import com.eai.idss.vo.VisitsByComplianceVo;
 import com.eai.idss.vo.VisitsDetailsRequest;
 import com.eai.idss.vo.VisitsFilter;
+import com.eai.idss.vo.VisitsPaginationResponseVo;
 import com.eai.idss.vo.VisitsScheduleDetailsRequest;
 
 
@@ -50,15 +51,15 @@ public class VisitsController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.POST, value = "/visits-details", produces = "application/json")
-	public ResponseEntity<List<Visits>> getVisitsDetailsData(@RequestBody VisitsDetailsRequest vdr, Pageable pageable) throws IOException {
-    	List<Visits> cl = null;
+	public ResponseEntity<VisitsPaginationResponseVo> getVisitsDetailsData(@RequestBody VisitsDetailsRequest vdr, Pageable pageable) throws IOException {
+    	VisitsPaginationResponseVo cl = null;
 	    try {
 	    	cl =  cd.getVisitsPaginatedRecords(vdr,pageable);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /visits-details", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	    return new ResponseEntity<List<Visits>>(cl,HttpStatus.OK);
+	    return new ResponseEntity<VisitsPaginationResponseVo>(cl,HttpStatus.OK);
 	}
     
     
@@ -105,15 +106,15 @@ public class VisitsController {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
    	@RequestMapping(method = RequestMethod.POST, value = "/visits-schedule-details", produces = "application/json")
-   	public ResponseEntity<List<Visits>> getVisitsScheduleDetailsData(@RequestHeader String userName,@RequestBody VisitsScheduleDetailsRequest vdr, Pageable pageable) throws IOException {
-       	List<Visits> cl = null;
+   	public ResponseEntity<VisitsPaginationResponseVo> getVisitsScheduleDetailsData(@RequestHeader String userName,@RequestBody VisitsScheduleDetailsRequest vdr, Pageable pageable) throws IOException {
+    	VisitsPaginationResponseVo cl = null;
    	    try {
    	    	cl =  cd.getVisitsSchedulePaginatedRecords(vdr,pageable,userName);
    		} catch (Exception e) {
    			e.printStackTrace();
    			return new ResponseEntity("Exception in /visits-schedule-details", HttpStatus.INTERNAL_SERVER_ERROR);
    		}
-   	    return new ResponseEntity<List<Visits>>(cl,HttpStatus.OK);
+   	    return new ResponseEntity<VisitsPaginationResponseVo>(cl,HttpStatus.OK);
    	}
     
     @SuppressWarnings({ "rawtypes", "unchecked" })

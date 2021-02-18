@@ -15,6 +15,7 @@ import com.eai.idss.vo.VisitScheduleCurrentMonthResponseVo;
 import com.eai.idss.vo.VisitsByComplianceVo;
 import com.eai.idss.vo.VisitsDetailsRequest;
 import com.eai.idss.vo.VisitsFilter;
+import com.eai.idss.vo.VisitsPaginationResponseVo;
 import com.eai.idss.vo.VisitsScheduleDetailsRequest;
 
 public interface VisitsDao {
@@ -27,9 +28,9 @@ public interface VisitsDao {
 	
 	public Map<String,Map<String,List<TileVo>>> getByTeamVisitsData(VisitsFilter cf,User u);
 	
-	public List<Visits> getVisitsPaginatedRecords(VisitsDetailsRequest cdr, Pageable pageable);
+	public VisitsPaginationResponseVo getVisitsPaginatedRecords(VisitsDetailsRequest cdr, Pageable pageable);
 	
-	public List<Visits> getVisitsSchedulePaginatedRecords(VisitsScheduleDetailsRequest cdr, Pageable pageable,String userName);
+	public VisitsPaginationResponseVo getVisitsSchedulePaginatedRecords(VisitsScheduleDetailsRequest cdr, Pageable pageable,String userName);
 	
 	public Map<String,List<TileVo>> getVisitsScheduleByScaleCategory(String userName);
 	

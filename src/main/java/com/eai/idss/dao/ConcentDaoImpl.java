@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -33,6 +33,7 @@ import com.eai.idss.vo.ConcentByRegionVo;
 import com.eai.idss.vo.ConcentByTeamVo;
 import com.eai.idss.vo.ConcentFilter;
 import com.eai.idss.vo.ConsentDetailsRequest;
+import com.eai.idss.vo.ConsentPaginationResponseVo;
 import com.eai.idss.vo.TileVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -504,64 +505,72 @@ public class ConcentDaoImpl implements ConcentDao {
 		return pipeline;
 	}
 	
-	public List<Consent> getConsentPaginatedRecords(ConsentDetailsRequest cdr, Pageable page){
+	public ConsentPaginationResponseVo getConsentPaginatedRecords(ConsentDetailsRequest cdr, Pageable page){
 		try {
 			Query query = new Query().with(page);
-			if(null!=cdr) {
-				LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
-				String today = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
-				LocalDateTime futuredate = currentTime.plusDays(cdr.getDuration());
-				String pastOrFutureDay = futuredate.format(DateTimeFormatter.ISO_LOCAL_DATE);
-				
-				if(null!=cdr.getDuration() && cdr.getDuration().intValue()>=0) {
-					query.addCriteria(Criteria.where("status").is("Approved"));
-					if(cdr.getDuration().intValue() ==0) // Past Due from current day
-					{
-						query.addCriteria(Criteria.where("consentValidityDate")
-													.lt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(today+" 00:00:00.000+0000"))
-													.gt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse("1970-01-01 00:00:00.000+0000")));
-					}else { // 30/60/90 days in future
-						
-						query.addCriteria(Criteria.where("consentValidityDate")
-													.lt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(pastOrFutureDay+" 00:00:00.000+0000"))
-													.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(today+" 00:00:00.000+0000")));
-					}
-				}else { // -30, -60, -90 days in past
-					query.addCriteria(Criteria.where("created")
-													.gt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(pastOrFutureDay+" 00:00:00.000+0000"))
-													.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(today+" 00:00:00.000+0000")));
-				}
-				
-				if(StringUtils.hasText(cdr.getRegion()))
-					query.addCriteria(Criteria.where("region").is(cdr.getRegion()));
-				if(null!=cdr.getCategory() && !cdr.getCategory().isEmpty())
-					query.addCriteria(Criteria.where("category").in(cdr.getCategory()));
-				if(null!=cdr.getScale() && !cdr.getScale().isEmpty())
-					query.addCriteria(Criteria.where("scale").in(cdr.getScale()));
-				if(StringUtils.hasText(cdr.getStatus()))
-					query.addCriteria(Criteria.where("status").is(cdr.getStatus()));
-				if(StringUtils.hasText(cdr.getConsentStatus()) && !"Renewal".equalsIgnoreCase(cdr.getConsentStatus()))
-					query.addCriteria(Criteria.where("consentStatus").is(cdr.getConsentStatus()));
-				if(StringUtils.hasText(cdr.getSubRegion()))
-					query.addCriteria(Criteria.where("subRegion").is(cdr.getSubRegion()));
-			}
+			getQueryCriteria(cdr, query);
 			
-	
-			logger.info(mongoTemplate.count(query, Consent.class));
+			Query queryCnt = new Query();
+			getQueryCriteria(cdr, queryCnt);
 			
-			List<Consent> filteredConsentList= 
-			mongoTemplate.find(query, Consent.class);
+			ConsentPaginationResponseVo cprv = new ConsentPaginationResponseVo();
+			cprv.setTotalRecords(mongoTemplate.count(queryCnt, Consent.class));
+			
+			List<Consent> filteredConsentList= mongoTemplate.find(query, Consent.class);
+			
 			Page<Consent> cPage = PageableExecutionUtils.getPage(
 					filteredConsentList,
 					page,
 			        () -> mongoTemplate.count(query, Consent.class));
 			
-			return cPage.toList();
+			cprv.setConsentList(cPage.toList());
+			return cprv;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return new ConsentPaginationResponseVo(new ArrayList<Consent>(),0);
+	}
+
+	private void getQueryCriteria(ConsentDetailsRequest cdr, Query query) throws ParseException {
+		if(null!=cdr) {
+			LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
+			String today = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
+			LocalDateTime futuredate = currentTime.plusDays(cdr.getDuration());
+			String pastOrFutureDay = futuredate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+			
+			if(null!=cdr.getDuration() && cdr.getDuration().intValue()>=0) {
+				query.addCriteria(Criteria.where("status").is("Approved"));
+				if(cdr.getDuration().intValue() ==0) // Past Due from current day
+				{
+					query.addCriteria(Criteria.where("consentValidityDate")
+												.lt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(today+" 00:00:00.000+0000"))
+												.gt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse("1970-01-01 00:00:00.000+0000")));
+				}else { // 30/60/90 days in future
+					
+					query.addCriteria(Criteria.where("consentValidityDate")
+												.lt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(pastOrFutureDay+" 00:00:00.000+0000"))
+												.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(today+" 00:00:00.000+0000")));
+				}
+			}else { // -30, -60, -90 days in past
+				query.addCriteria(Criteria.where("created")
+												.gt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(pastOrFutureDay+" 00:00:00.000+0000"))
+												.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(today+" 00:00:00.000+0000")));
+			}
+			
+			if(StringUtils.hasText(cdr.getRegion()))
+				query.addCriteria(Criteria.where("region").is(cdr.getRegion()));
+			if(null!=cdr.getCategory() && !cdr.getCategory().isEmpty())
+				query.addCriteria(Criteria.where("category").in(cdr.getCategory()));
+			if(null!=cdr.getScale() && !cdr.getScale().isEmpty())
+				query.addCriteria(Criteria.where("scale").in(cdr.getScale()));
+			if(StringUtils.hasText(cdr.getStatus()))
+				query.addCriteria(Criteria.where("status").is(cdr.getStatus()));
+			if(StringUtils.hasText(cdr.getConsentStatus()) && !"Renewal".equalsIgnoreCase(cdr.getConsentStatus()))
+				query.addCriteria(Criteria.where("consentStatus").is(cdr.getConsentStatus()));
+			if(StringUtils.hasText(cdr.getSubRegion()))
+				query.addCriteria(Criteria.where("subRegion").is(cdr.getSubRegion()));
+		}
 	}
 	
 	public Map<String,List<TileVo>> getUpcomingRenewalConcentDataNew(ConcentFilter cf,String region,String subRegion){
