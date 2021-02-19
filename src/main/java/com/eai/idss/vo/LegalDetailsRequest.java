@@ -10,7 +10,14 @@ public class LegalDetailsRequest {
 	String subRegion;
 	String region;
 	List<String> scale;
+	private String userId;
 	
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	public List<String> getCategory() {
 		return category;
 	}

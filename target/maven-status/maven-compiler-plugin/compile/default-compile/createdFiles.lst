@@ -41,6 +41,7 @@ com\eai\idss\model\ESR_EFFLUENT_Comparison.class
 com\eai\idss\vo\VisitsFilter.class
 com\eai\idss\model\ESR_Air_Pollution_Comparison.class
 com\eai\idss\vo\IndustryNameByTypeVo.class
+com\eai\idss\vo\LegalPaginationResponseVo.class
 com\eai\idss\controller\CommonController.class
 com\eai\idss\model\BMW_Annual_Return_Comparison.class
 com\eai\idss\vo\LegalTileVo.class
@@ -49,6 +50,7 @@ com\eai\idss\vo\LegalFilter.class
 com\eai\idss\dao\GenericDaoImpl$1.class
 com\eai\idss\dao\IndustryMasterDaoImpl$1.class
 com\eai\idss\repository\OCEMSAlertsRepositoy.class
+com\eai\idss\vo\IndustryMasterPaginationResponseVo.class
 com\eai\idss\dao\GenericDaoImpl$8.class
 com\eai\idss\vo\VisitDetails.class
 com\eai\idss\vo\BatteriesSoldToVo.class
@@ -111,10 +113,12 @@ com\eai\idss\dao\OCEMSDataDaoImpl.class
 com\eai\idss\vo\NewBatteriesSoldVo.class
 com\eai\idss\controller\OCEMSController.class
 com\eai\idss\model\Plastic_Producer_Authorization.class
+com\eai\idss\vo\VisitsPaginationResponseVo.class
 com\eai\idss\vo\VisitsScheduleDetailsRequest.class
 com\eai\idss\model\CScoreMaster.class
 com\eai\idss\IDSSApiApplication.class
 com\eai\idss\model\Consent.class
+com\eai\idss\vo\ConsentPaginationResponseVo.class
 com\eai\idss\vo\Form3Vo.class
 com\eai\idss\dao\GenericDaoImpl$7.class
 com\eai\idss\vo\EWasteVo.class

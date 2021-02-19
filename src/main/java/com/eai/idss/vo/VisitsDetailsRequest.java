@@ -10,7 +10,21 @@ public class VisitsDetailsRequest {
 	List<String> category;
 	String subRegion;
 	String region;
-
+	private String userId;
+	private String designation;
+	
+	public String getDesignation() {
+		return designation;
+	}
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	public List<String> getScale() {
 		return scale;
 	}

@@ -40,6 +40,7 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\mo
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Plastic_Producer_Authorization.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\util\IDSSUtil.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\ConcentDaoImpl.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\LegalPaginationResponseVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\repository\UserFiltersRepository.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\ESR_FUEL_comparison.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\PollutionScoreResponseVo.java
@@ -77,6 +78,7 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\mo
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ComparisonTableParamGroupVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\OCEMS_Alerts.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\repository\ConcentRepository.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ConsentPaginationResponseVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\PollutionScoreValueVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\PlasticVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\IDSSApiApplication.java
@@ -98,10 +100,12 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\OCEMSDataDaoImpl.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Plastic_Raw_Material_Manufacturer_Authorization.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ConsentDetailsRequest.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\VisitsPaginationResponseVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Consent.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\GenericDao.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Plastic_Brand_Owner_Authorization.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\HeatmapResponseVo.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\IndustryMasterPaginationResponseVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\service\OCEMSAlertsScheduler.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\LegalDaoImpl.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\BMW_Annual_Return_Comparison.java

@@ -240,10 +240,10 @@ public class VisitsDaoImpl implements VisitsDao {
 								}else if(TEAM_WISE.equalsIgnoreCase(extractType)) {
 									VisitsTeamVo crVo = new ObjectMapper().readValue(document.toJson(), VisitsTeamVo.class);
 									TileVo tVo = new TileVo(type,crVo.getCount());
-									List<TileVo> concentStatusList = regionVisitMap.get(crVo.getName()+"~"+crVo.getDesignation());
+									List<TileVo> concentStatusList = regionVisitMap.get(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getUserId());
 									if(null==concentStatusList) concentStatusList = new ArrayList<TileVo>();
 									concentStatusList.add(tVo);
-									regionVisitMap.put(crVo.getName()+"~"+crVo.getDesignation(), concentStatusList);
+									regionVisitMap.put(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getUserId(), concentStatusList);
 								}else if(SUB_REGION_WISE.equalsIgnoreCase(extractType)) {
 									VisitsSubRegionVo crVo = new ObjectMapper().readValue(document.toJson(), VisitsSubRegionVo.class);
 									TileVo tVo = new TileVo(type,crVo.getCount());
@@ -527,8 +527,9 @@ public class VisitsDaoImpl implements VisitsDao {
 			
 			groupDoc
                     .append("_id", new Document()
-                            .append("name", "$reportingToName")
+                            .append("name", "$adminName")
                             .append("designation", "FO")
+                            .append("userId", "$userId")
                     )
                     .append("count", new Document()
                             .append("$sum", 1.0)
@@ -542,6 +543,7 @@ public class VisitsDaoImpl implements VisitsDao {
                     .append("_id", new Document()
                             .append("name", "$adminName")
                             .append("designation", "SRO")
+                            .append("userId", "$userId")
                     )
                     .append("count", new Document()
                             .append("$sum", 1.0)
@@ -555,6 +557,7 @@ public class VisitsDaoImpl implements VisitsDao {
                     .append("_id", new Document()
                             .append("name", "$adminName")
                             .append("designation", "FO")
+                            .append("userId", "$userId")
                     )
                     .append("count", new Document()
                             .append("$sum", 1.0)
@@ -570,6 +573,7 @@ public class VisitsDaoImpl implements VisitsDao {
                     .append("_id", new Document()
                             .append("name", "$adminName")
                             .append("designation", "FO")
+                            .append("userId", "$userId")
                     )
                     .append("count", new Document()
                             .append("$sum", 1.0)
@@ -590,6 +594,7 @@ public class VisitsDaoImpl implements VisitsDao {
                                 .append("_id", false)
                                 .append("name", "$_id.name")
                                 .append("designation", "$_id.designation")
+                                .append("userId", "$_id.userId")
                                 .append("count", "$count")
                         ), 
                 new Document()
@@ -667,6 +672,18 @@ public class VisitsDaoImpl implements VisitsDao {
 				query.addCriteria(Criteria.where("subRegion").is(cdr.getSubRegion()));
 			if(null!=cdr.getScale() && !cdr.getScale().isEmpty())
 				query.addCriteria(Criteria.where("scale").in(cdr.getScale()));
+			if(StringUtils.hasText(cdr.getUserId()) && StringUtils.hasText(cdr.getDesignation())) {
+				Criteria andCriteria1 = new Criteria();
+				andCriteria1.andOperator(Criteria.where("userId").is(cdr.getUserId()),Criteria.where("adminDesignation").is(cdr.getDesignation()));
+				
+				Criteria andCriteria2 = new Criteria();
+				andCriteria2.andOperator(Criteria.where("reportingToUserId").is(cdr.getUserId()),Criteria.where("reportingToDesignation").is(cdr.getDesignation()));
+
+				Criteria orCriteria = new Criteria();
+				orCriteria.orOperator(andCriteria1,andCriteria2);
+				
+				query.addCriteria(orCriteria);
+			}
 		}
 	}
 	

@@ -461,10 +461,10 @@ public class LegalDaoImpl implements LegalDao {
 										
 										TileVo tVo = new TileVo(days,crVo.getCount());
 										
-										List<TileVo> lbtList = byTeamMap.get(crVo.getName()+"~"+crVo.getDesignation());
+										List<TileVo> lbtList = byTeamMap.get(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getUserId());
 										if(null==lbtList) lbtList = new ArrayList<TileVo>();
 										lbtList.add(tVo);
-										byTeamMap.put(crVo.getName()+"~"+crVo.getDesignation(), lbtList);
+										byTeamMap.put(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getUserId(), lbtList);
 									
 									} catch (JsonMappingException e) {
 										e.printStackTrace();
@@ -510,6 +510,7 @@ public class LegalDaoImpl implements LegalDao {
                     		.append("$group", new Document()
     		                		.append("_id", new Document()
                                             .append("name", "$sroName")
+                                            .append("userId", "$userId")
                                     )
                                 .append("count", new Document()
                                         .append("$sum", 1.0)
@@ -519,6 +520,7 @@ public class LegalDaoImpl implements LegalDao {
                         .append("$project", new Document()
                                 .append("_id", false)
                                 .append("name", "$_id.name")
+                                .append("userId", "$_id.userId")
                                 .append("designation", "SRO")
                                 .append("count", "$count")
                         ), 
@@ -585,10 +587,13 @@ public class LegalDaoImpl implements LegalDao {
 					query.addCriteria(Criteria.where("subRegion").is(cdr.getSubRegion()));
 			if(null!=cdr.getScale() && !cdr.getScale().isEmpty() )
 				query.addCriteria(Criteria.where("scale").in(cdr.getScale()));
+			if(StringUtils.hasText(cdr.getUserId()))
+				query.addCriteria(Criteria.where("userId").is(cdr.getUserId()));
 			if(StringUtils.hasText(cdr.getAction()))
 				query.addCriteria(Criteria.where("legalDirection").is(cdr.getAction()));
 			else
 				query.addCriteria(Criteria.where("legalDirection").in(IDSSUtil.getLegalActionsList()));
+			
 		}
 	}
 	

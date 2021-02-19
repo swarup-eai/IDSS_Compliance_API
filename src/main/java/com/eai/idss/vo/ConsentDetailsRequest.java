@@ -11,6 +11,14 @@ public class ConsentDetailsRequest {
 	String subRegion;
 	String region;
 	String consentStatus; //expansion, renewal, operate, establish
+	private String userId;
+	
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	public String getStatus() {
 		return status;
 	}

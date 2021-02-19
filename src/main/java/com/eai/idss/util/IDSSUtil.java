@@ -308,6 +308,7 @@ public class IDSSUtil {
 		daysMap.put(date60DaysBack, "_60Days");
 		daysMap.put(date90DaysBack, "_90Days");
 		daysMap.put(date120DaysBack, "_120Days");
+		daysMap.put("1970-01-01", "_allDays");
 		return daysMap;
 	}
 	

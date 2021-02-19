@@ -434,10 +434,10 @@ public class ConcentDaoImpl implements ConcentDao {
 										if("In Process".equalsIgnoreCase(crVo.getStatus()))
 											crVo.setStatus("Pending");
 										TileVo tVo = new TileVo(crVo.getStatus(),crVo.getCount());
-										List<TileVo> concentStatusList = subRegionConcentMap.get(crVo.getName()+"~"+crVo.getDesignation());
+										List<TileVo> concentStatusList = subRegionConcentMap.get(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getUserId());
 										if(null==concentStatusList) concentStatusList = new ArrayList<TileVo>();
 										concentStatusList.add(tVo);
-										subRegionConcentMap.put(crVo.getName()+"~"+crVo.getDesignation(), concentStatusList);
+										subRegionConcentMap.put(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getUserId(), concentStatusList);
 									
 									} catch (JsonMappingException e) {
 										e.printStackTrace();
@@ -484,6 +484,7 @@ public class ConcentDaoImpl implements ConcentDao {
                         		.append("_id", new Document()
 										.append("name", "$adminName")
 										.append("status", "$status")
+										.append("userId", "$adminEmail")
 								)
                                 .append("count", new Document()
                                         .append("$sum", 1.0)
@@ -494,6 +495,7 @@ public class ConcentDaoImpl implements ConcentDao {
                                 .append("_id", false)
                                 .append("name", "$_id.name")
                                 .append("status", "$_id.status")
+                                .append("userId", "$_id.userId")
                                 .append("designation", "SRO")
                                 .append("count", "$count")
                         ), 
@@ -570,6 +572,8 @@ public class ConcentDaoImpl implements ConcentDao {
 				query.addCriteria(Criteria.where("consentStatus").is(cdr.getConsentStatus()));
 			if(StringUtils.hasText(cdr.getSubRegion()))
 				query.addCriteria(Criteria.where("subRegion").is(cdr.getSubRegion()));
+			if(StringUtils.hasText(cdr.getUserId()))
+				query.addCriteria(Criteria.where("adminEmail").is(cdr.getUserId()));
 		}
 	}
 	
