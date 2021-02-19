@@ -250,6 +250,8 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 	private void setCriteria(IndustryMasterRequest imr, Query query) {
 		if(null!=imr) {
+			if(StringUtils.hasText(imr.getIndustryName()))
+				query.addCriteria(Criteria.where("industryName").is(imr.getIndustryName()));
 			if(StringUtils.hasText(imr.getRegion()) && !"All".equalsIgnoreCase(imr.getRegion()))
 				query.addCriteria(Criteria.where("region").is(imr.getRegion()));
 			if(StringUtils.hasText(imr.getSubRegion()) && !"All".equalsIgnoreCase(imr.getSubRegion()))
@@ -1185,6 +1187,25 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 			industryMasterDetailResponseVo.setPendingLegalAction(directionsList.size());
 			return industryMasterDetailResponseVo;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public List<String> getIndustryNameBySearch(String searchValue) {
+		try {
+			logger.info("getIndustryNameBySearch");
+
+			Query query = new Query();
+			query.limit(20);
+			query.addCriteria(Criteria.where("industryName").regex(searchValue.toUpperCase()));
+
+			List<IndustryMaster> industryMasterList = mongoTemplate.find(query, IndustryMaster.class);
+			List<String> industryNames = industryMasterList.stream().map(IndustryMaster::getIndustryName).collect(Collectors.toList());
+
+			return industryNames;
 		}catch(Exception e){
 			e.printStackTrace();
 		}

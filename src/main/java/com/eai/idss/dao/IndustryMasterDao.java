@@ -29,5 +29,7 @@ public interface IndustryMasterDao {
 	public List<Map<String,String>> getPollutionGraphParam(long industryId, String form);
 
 	public IndustryMasterDetailResponseVo getIndustryMasterDetailByIndustryId(long industryId);
+
+	public List<String> getIndustryNameBySearch(String industryName);
 	
 }

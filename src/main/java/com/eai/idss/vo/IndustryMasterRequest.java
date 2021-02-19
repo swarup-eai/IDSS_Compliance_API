@@ -10,6 +10,7 @@ public class IndustryMasterRequest {
 	private String complianceScore;
 	private String pendingCases;
 	private String legalActions;
+	private String industryName;
 	
 	public String getSubRegion() {
 		return subRegion;
@@ -58,6 +59,12 @@ public class IndustryMasterRequest {
 	}
 	public void setCategory(String category) {
 		this.category = category;
+	}
+	public String getIndustryName() {
+		return industryName;
+	}
+	public void setIndustryName(String industryName) {
+		this.industryName = industryName;
 	}
 	
 }
