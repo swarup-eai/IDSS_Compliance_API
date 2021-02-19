@@ -198,16 +198,16 @@ public class IndustryMasterController {
 		return new ResponseEntity<IndustryMasterDetailResponseVo>(industryMasterDetailResponseVo,HttpStatus.OK);
 	}
 	@RequestMapping(method = RequestMethod.GET, value = "/industry-name-filter", produces = "application/json")
-	public ResponseEntity<List<String>> getIndustryNameBySearch(@RequestHeader(value="industryName") String industryName) throws IOException {
-		List<String> usersList = null;
+	public ResponseEntity<List<String>> getIndustryNameBySearch(@RequestParam(required = true) String industryName) throws IOException {
+		List<String> industryNameList = null;
 		try {
-			usersList = imd.getIndustryNameBySearch(industryName);
+			industryNameList = imd.getIndustryNameBySearch(industryName);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in industry name.", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<List<String>>(usersList,HttpStatus.OK);
+		return new ResponseEntity<List<String>>(industryNameList,HttpStatus.OK);
 	}
 
 }
