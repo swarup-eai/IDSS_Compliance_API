@@ -28,7 +28,7 @@ import com.eai.idss.vo.TileVo;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins ={"http://localhost:4200", "http://10.10.10.32:8080"})
 public class ConsentController {
 
 	@Autowired
@@ -99,8 +99,8 @@ public class ConsentController {
 	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getConcentDashboardUpcomingRenewalDataNew(@RequestHeader String userName,@RequestBody ConcentFilter cf) throws IOException {
     	Map<String,Map<String,List<TileVo>>> ct = new HashMap<String, Map<String,List<TileVo>>>();
 	    try {
-	    	User u = userRepository.findByUserName(userName);
-	    	ct.put("upcomingRenewalNew",cd.getUpcomingRenewalConcentDataNew(cf,u.getRegion(), u.getSubRegion()));
+//	    	User u = userRepository.findByUserName(userName);
+	    	ct.put("upcomingRenewalNew",cd.getUpcomingRenewalConcentDataNew(cf,cf.getRegion(), cf.getSubRegion()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /concent-dashboard/upcoming-renewal", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -114,8 +114,8 @@ public class ConsentController {
 	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getConcentDashboardPendingData(@RequestHeader String userName,@RequestBody ConcentFilter cf) throws IOException {
     	Map<String,Map<String,List<TileVo>>> ct = new HashMap<String, Map<String,List<TileVo>>>();
 	    try {
-	    	User u = userRepository.findByUserName(userName);
-	    	ct.put("pendingRequest",cd.getPendingRequestConcentData(cf,u.getRegion(), u.getSubRegion()));
+//	    	User u = userRepository.findByUserName(userName);
+	    	ct.put("pendingRequest",cd.getPendingRequestConcentData(cf,cf.getRegion(), cf.getSubRegion()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /concent-dashboard/pending-request", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -129,7 +129,7 @@ public class ConsentController {
 		Map<String,Map<String,Map<String,List<TileVo>>>> ct = new LinkedHashMap<String, Map<String,Map<String,List<TileVo>>>>();
 	    try {
 	    	User u = userRepository.findByUserName(userName);
-	    	ct.put("bySubRegionRequest",cd.getBySubRegionConcentData(u.getRegion(), cf));
+	    	ct.put("bySubRegionRequest",cd.getBySubRegionConcentData(u.getSubRegion(), cf));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /concent-dashboard/pending-request", HttpStatus.INTERNAL_SERVER_ERROR);

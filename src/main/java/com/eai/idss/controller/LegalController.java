@@ -26,7 +26,7 @@ import com.eai.idss.vo.TileVo;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins ={"http://localhost:4200", "http://10.10.10.32:8080"})
 public class LegalController {
 
 	@Autowired
@@ -70,8 +70,8 @@ public class LegalController {
 	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getLegalActionByIndustryData(@RequestHeader String userName, @RequestBody LegalFilter cf) throws IOException {
     	Map<String,Map<String,List<TileVo>>> ct = new LinkedHashMap<String, Map<String,List<TileVo>>>();
 	    try {
-	    	User u = userRepository.findByUserName(userName);
-	    	ct.put("actionByIndustry",cd.getLegalActionsByIndustryData(cf,u.getRegion(),u.getSubRegion()));
+//	    	User u = userRepository.findByUserName(userName);
+	    	ct.put("actionByIndustry",cd.getLegalActionsByIndustryData(cf,cf.getRegion(),cf.getSubRegion()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /legal-dashboard/action-by-industry", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -84,8 +84,8 @@ public class LegalController {
 	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getLegalDashboardPendingData(@RequestHeader String userName, @RequestBody LegalFilter cf) throws IOException {
     	Map<String,Map<String,List<TileVo>>> ct = new LinkedHashMap<String, Map<String,List<TileVo>>>();
 	    try {
-	    	User u = userRepository.findByUserName(userName);
-	    	ct.put("pendingRequest",cd.getPendingLegalActionsData(cf,u.getRegion(),u.getSubRegion()));
+//	    	User u = userRepository.findByUserName(userName);
+	    	ct.put("pendingRequest",cd.getPendingLegalActionsData(cf,cf.getRegion(),cf.getSubRegion()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /legal-dashboard/pending-legal-actions", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -99,7 +99,7 @@ public class LegalController {
     	Map<String,Map<String,Map<String,List<TileVo>>>> ct = new LinkedHashMap<String, Map<String,Map<String,List<TileVo>>>>();
 	    try {
 	    	User u = userRepository.findByUserName(userName);
-	    	ct.put("bySubRegionRequest",cd.getBySubRegionLegalData(u.getRegion(), cf));
+	    	ct.put("bySubRegionRequest",cd.getBySubRegionLegalData(u.getSubRegion(), cf));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /legal-dashboard/request-by-sub-region", HttpStatus.INTERNAL_SERVER_ERROR);

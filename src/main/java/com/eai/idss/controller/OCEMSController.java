@@ -22,7 +22,7 @@ import com.eai.idss.service.OCEMSAlertsScheduler;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins ={"http://localhost:4200", "http://10.10.10.32:8080"})
 public class OCEMSController {
 
 	@Autowired

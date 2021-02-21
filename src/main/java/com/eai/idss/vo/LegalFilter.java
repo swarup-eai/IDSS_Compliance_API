@@ -17,6 +17,9 @@ public class LegalFilter {
 	List<String> legalActionsByIndustryScaleList;
 	List<String> legalActionsByIndustryCategoryList;
 
+	String region;
+	String subRegion;
+
 	public List<String> getPendingResponseByIndustryScaleList() {
 		return pendingResponseByIndustryScaleList;
 	}
@@ -78,5 +81,18 @@ public class LegalFilter {
 	public void setLegalActionsByIndustryCategoryList(List<String> legalActionsByIndustryCategoryList) {
 		this.legalActionsByIndustryCategoryList = legalActionsByIndustryCategoryList;
 	}
-	
+
+	public String getRegion() {
+		return region;
+	}
+	public void setUpcomingRenewalCategoryList(String region) {
+		this.region = region;
+	}
+
+	public String getSubRegion() {
+		return subRegion;
+	}
+	public void setSubRegion(String subRegion) {
+		this.subRegion = subRegion;
+	}
 }

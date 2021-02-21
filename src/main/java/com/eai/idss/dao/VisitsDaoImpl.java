@@ -150,9 +150,9 @@ public class VisitsDaoImpl implements VisitsDao {
 						);
 		matchDoc.append("visitStatus", PENDING);
 
-		if(!"ALL".equalsIgnoreCase(region))
+		if(StringUtils.hasText(region) && !"ALL".equalsIgnoreCase(region))
 			matchDoc.append("region",region);
-		if(!"ALL".equalsIgnoreCase(subRegion))
+		if(StringUtils.hasText(subRegion) && !"ALL".equalsIgnoreCase(subRegion))
 			matchDoc.append("subRegion",subRegion);
 		
 		if(null!=vf.getPendingScaleList())

@@ -110,9 +110,9 @@ public class ConcentDaoImpl implements ConcentDao {
 			matchDoc.append("category", new Document().append("$in", cf.getPendingCategoryList()));
 		if(null!=cf && null!=cf.getPendingScaleList() ) 
 			matchDoc.append("scale", new Document().append("$in", cf.getPendingScaleList()));
-		if(!"ALL".equalsIgnoreCase(region))
+		if(StringUtils.hasText(region) && !"ALL".equalsIgnoreCase(region))
 			matchDoc.append("region",region);
-		if(!"ALL".equalsIgnoreCase(subRegion))
+		if(StringUtils.hasText(subRegion) && !"ALL".equalsIgnoreCase(subRegion))
 			matchDoc.append("subRegion",subRegion);
 		
 		List<? extends Bson> pipeline = Arrays.asList(
@@ -649,12 +649,12 @@ public class ConcentDaoImpl implements ConcentDao {
 			matchDoc.append("category", new Document().append("$in", cf.getUpcomingRenewalCategoryList()));
 		if(null!=cf && null!=cf.getUpcomingRenewalScaleList() ) 
 			matchDoc.append("scale", new Document().append("$in", cf.getUpcomingRenewalScaleList()));
-		if(!"ALL".equalsIgnoreCase(region))
+		if(StringUtils.hasText(region) && !"ALL".equalsIgnoreCase(region))
 			matchDoc.append("region",region);
-		if(!"ALL".equalsIgnoreCase(subRegion))
+		if(StringUtils.hasText(subRegion) && !"ALL".equalsIgnoreCase(subRegion))
 			matchDoc.append("subRegion",subRegion);
-		
-		List<? extends Bson> pipeline = Arrays.asList(
+
+			List<? extends Bson> pipeline = Arrays.asList(
 				new Document().append("$match", matchDoc),  
 		        new Document()
 		                .append("$group", new Document()

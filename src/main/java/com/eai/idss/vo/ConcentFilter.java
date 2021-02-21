@@ -14,6 +14,9 @@ public class ConcentFilter {
 	List<String> subRegionWiseCategoryList;
 	List<String> upcomingRenewalScaleList;
 	List<String> upcomingRenewalCategoryList;
+
+	String region;
+	String subRegion;
 	
 	public List<String> getPendingScaleList() {
 		return pendingScaleList;
@@ -75,6 +78,20 @@ public class ConcentFilter {
 	}
 	public void setUpcomingRenewalCategoryList(List<String> upcomingRenewalCategoryList) {
 		this.upcomingRenewalCategoryList = upcomingRenewalCategoryList;
+	}
+
+	public String getRegion() {
+		return region;
+	}
+	public void setUpcomingRenewalCategoryList(String region) {
+		this.region = region;
+	}
+
+	public String getSubRegion() {
+		return subRegion;
+	}
+	public void setSubRegion(String subRegion) {
+		this.subRegion = subRegion;
 	}
 	
 }

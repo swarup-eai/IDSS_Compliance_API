@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins ={"http://localhost:4200", "http://10.10.10.32:8080"})
 public class BenchmarkingController {
     @Autowired
     BenchmarkingDao benchmarkingDao;
