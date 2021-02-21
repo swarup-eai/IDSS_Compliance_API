@@ -120,10 +120,10 @@ public class LegalDaoImpl implements LegalDao {
 		if(null!=cf && null!=cf.getPendingResponseByIndustryScaleList() ) 
 			matchDoc.append("scale", new Document().append("$in", cf.getPendingResponseByIndustryScaleList()));
 
-		
-		if(!"ALL".equalsIgnoreCase(region))
+
+		if(StringUtils.hasText(region) && !"ALL".equalsIgnoreCase(region))
 			matchDoc.append("region",region);
-		if(!"ALL".equalsIgnoreCase(subRegion))
+		if(StringUtils.hasText(subRegion) && !"ALL".equalsIgnoreCase(subRegion))
 			matchDoc.append("subRegion",subRegion);
 		
 		List<? extends Bson> pipeline = Arrays.asList(
@@ -658,10 +658,10 @@ private List<? extends Bson> getLegalActionsByIndustryPipeline(LegalFilter cf,St
 		if(null!=cf && null!=cf.getLegalActionsByIndustryScaleList() ) 
 			matchDoc.append("scale", new Document().append("$in", cf.getLegalActionsByIndustryScaleList()));
 
-		if(!"ALL".equalsIgnoreCase(region))
-			matchDoc.append("region",region);
-		if(!"ALL".equalsIgnoreCase(subRegion))
-			matchDoc.append("subRegion",subRegion);
+	if(StringUtils.hasText(region) && !"ALL".equalsIgnoreCase(region))
+		matchDoc.append("region",region);
+	if(StringUtils.hasText(subRegion) && !"ALL".equalsIgnoreCase(subRegion))
+		matchDoc.append("subRegion",subRegion);
 		
 		List<? extends Bson> pipeline = Arrays.asList(
 				new Document().append("$match", matchDoc),  

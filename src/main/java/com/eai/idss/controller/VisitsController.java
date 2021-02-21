@@ -68,8 +68,8 @@ public class VisitsController {
 	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getVisitsDashboardPendingData(@RequestHeader String userName,@RequestBody VisitsFilter vf) throws IOException {
     	Map<String,Map<String,List<TileVo>>> ct = new LinkedHashMap<String, Map<String,List<TileVo>>>();
 	    try {
-	    	User u = userRepository.findByUserName(userName);
-	    	ct.put("pendingRequest",cd.getPendingVisitsData(vf,u.getRegion(),u.getSubRegion()));
+//	    	User u = userRepository.findByUserName(userName);
+	    	ct.put("pendingRequest",cd.getPendingVisitsData(vf,vf.getRegion(),vf.getSubRegion()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /visits-dashboard/pending-legal-actions", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -230,7 +230,7 @@ public class VisitsController {
     	Map<String,Map<String,Map<String,List<TileVo>>>> ct = new LinkedHashMap<String, Map<String,Map<String,List<TileVo>>>>();
 	    try {
 	    	User u = userRepository.findByUserName(userName);
-	    	ct.put("bySubRegionRequest",cd.getBySubRegionVisitsData(u.getRegion(), vf));
+	    	ct.put("bySubRegionRequest",cd.getBySubRegionVisitsData(u.getSubRegion(), vf));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /visits-dashboard/request-by-sub-region", HttpStatus.INTERNAL_SERVER_ERROR);
