@@ -344,7 +344,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	}
 	
 	
-	public  Map<String,Map<String,List<TileVo>>> getBySubRegionVisitsData(String region, VisitsFilter cf){
+	public  Map<String,Map<String,List<TileVo>>> getBySubRegionVisitsData(List<String> subRegion, VisitsFilter cf){
 		try {
 			logger.info("getBySubRegionVisitData");
 			Map<String, List<String>> daysMap = IDSSUtil.getPastAndFutureDaysMap();
@@ -358,19 +358,19 @@ public class VisitsDaoImpl implements VisitsDao {
             	logger.info("getBySubRegionVisitsData : "+days);
             	Map<String,List<TileVo>> regionVisitMap = new LinkedHashMap<String, List<TileVo>>();
             	
-            	List<? extends Bson> pipeline = getSubRegionVisitsPipeline(PENDING,daysMap.get(days).get(0),cf,region);
+            	List<? extends Bson> pipeline = getSubRegionVisitsPipeline(PENDING,daysMap.get(days).get(0),cf,subRegion);
 	            
 	            extractData(collection, regionVisitMap, pipeline,PENDING,SUB_REGION_WISE);
             
-	            pipeline = getSubRegionVisitsPipeline(SCHEDULED,daysMap.get(days).get(1),cf,region);
+	            pipeline = getSubRegionVisitsPipeline(SCHEDULED,daysMap.get(days).get(1),cf,subRegion);
 	            
 	            extractData(collection, regionVisitMap, pipeline,SCHEDULED,SUB_REGION_WISE);
 	            
-	            pipeline = getSubRegionVisitsPipeline(LEGAL_NOTICES,daysMap.get(days).get(0),cf,region);
+	            pipeline = getSubRegionVisitsPipeline(LEGAL_NOTICES,daysMap.get(days).get(0),cf,subRegion);
 	            
 	            extractData(collection, regionVisitMap, pipeline,LEGAL_NOTICES,SUB_REGION_WISE);
 
-	            pipeline = getSubRegionVisitsPipeline(COMPLETED,daysMap.get(days).get(0),cf,region);
+	            pipeline = getSubRegionVisitsPipeline(COMPLETED,daysMap.get(days).get(0),cf,subRegion);
 	            
 	            extractData(collection, regionVisitMap, pipeline,COMPLETED,SUB_REGION_WISE);
 	            
@@ -384,14 +384,13 @@ public class VisitsDaoImpl implements VisitsDao {
 		return null;
 	}
 	
-	private List<? extends Bson> getSubRegionVisitsPipeline(String caseType,String days,VisitsFilter cf,String region) throws ParseException {
+	private List<? extends Bson> getSubRegionVisitsPipeline(String caseType,String days,VisitsFilter cf,List<String> subRegion) throws ParseException {
 		
 		Document matchDoc = new Document();
 		
 		applyMatchFilter(caseType, days, matchDoc);
-		
-		if(!"ALL".equalsIgnoreCase(region))
-			matchDoc.append("region",region);
+
+		matchDoc.append("subRegion", new Document().append("$in", subRegion));
 		
 		if(null!=cf && null!=cf.getSubRegionWiseCategoryList() ) 
 			matchDoc.append("category", new Document().append("$in", cf.getSubRegionWiseCategoryList()));

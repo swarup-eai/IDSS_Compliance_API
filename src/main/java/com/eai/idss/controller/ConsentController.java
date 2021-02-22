@@ -1,11 +1,9 @@
 package com.eai.idss.controller;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.eai.idss.util.IDSSUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -40,6 +38,7 @@ public class ConsentController {
 	
     @Autowired
     private UserRepository userRepository;
+
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.POST, value = "/consent-details", produces = "application/json")
@@ -129,7 +128,13 @@ public class ConsentController {
 		Map<String,Map<String,Map<String,List<TileVo>>>> ct = new LinkedHashMap<String, Map<String,Map<String,List<TileVo>>>>();
 	    try {
 	    	User u = userRepository.findByUserName(userName);
-	    	ct.put("bySubRegionRequest",cd.getBySubRegionConcentData(u.getSubRegion(), cf));
+	    	List<String> subRegions =new ArrayList<String>();
+	    	if(u.getDesignation().equals("RO")){
+				subRegions = IDSSUtil.getSubRegion(u.getRegion());
+			}else{
+	    		subRegions.add(u.getSubRegion());
+			}
+	    	ct.put("bySubRegionRequest",cd.getBySubRegionConcentData(subRegions, cf));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /concent-dashboard/pending-request", HttpStatus.INTERNAL_SERVER_ERROR);

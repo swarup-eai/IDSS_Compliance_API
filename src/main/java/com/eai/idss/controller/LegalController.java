@@ -1,10 +1,12 @@
 package com.eai.idss.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.eai.idss.util.IDSSUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -99,7 +101,13 @@ public class LegalController {
     	Map<String,Map<String,Map<String,List<TileVo>>>> ct = new LinkedHashMap<String, Map<String,Map<String,List<TileVo>>>>();
 	    try {
 	    	User u = userRepository.findByUserName(userName);
-	    	ct.put("bySubRegionRequest",cd.getBySubRegionLegalData(u.getSubRegion(), cf));
+			List<String> subRegions =new ArrayList<String>();
+			if(u.getDesignation().equals("RO")){
+				subRegions = IDSSUtil.getSubRegion(u.getRegion());
+			}else{
+				subRegions.add(u.getSubRegion());
+			}
+	    	ct.put("bySubRegionRequest",cd.getBySubRegionLegalData(subRegions, cf));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /legal-dashboard/request-by-sub-region", HttpStatus.INTERNAL_SERVER_ERROR);

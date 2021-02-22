@@ -351,7 +351,7 @@ public class LegalDaoImpl implements LegalDao {
 	
 	
 	
-	public  Map<String,Map<String,List<TileVo>>> getBySubRegionLegalData(String region, LegalFilter cf){
+	public  Map<String,Map<String,List<TileVo>>> getBySubRegionLegalData(List<String> subRegion, LegalFilter cf){
 		try {
 			logger.info("getBySubRegionLegalData");
 			Map<String, String> daysMap = IDSSUtil.getPastDaysMapForLegal();
@@ -364,7 +364,7 @@ public class LegalDaoImpl implements LegalDao {
             
             for(String days : daysMap.keySet()) {
             	logger.info("getBySubRegionLegalData : "+days);
-	            List<? extends Bson> pipeline = getBySubRegionLegalPipeline(region,days,cf);
+	            List<? extends Bson> pipeline = getBySubRegionLegalPipeline(subRegion,days,cf);
 	            Map<String,List<TileVo>> subRegionMap = new LinkedHashMap<String, List<TileVo>>();
 	            collection.aggregate(pipeline)
 	                    .allowDiskUse(false)
@@ -398,14 +398,14 @@ public class LegalDaoImpl implements LegalDao {
 		return null;
 	}
 	
-	private List<? extends Bson> getBySubRegionLegalPipeline(String region,String days,LegalFilter cf) throws ParseException {
+	private List<? extends Bson> getBySubRegionLegalPipeline(List<String> subRegion,String days,LegalFilter cf) throws ParseException {
 		Document matchDoc = new Document();
 		
 		matchDoc.append("issuedOn", new Document()
 				.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
 			);
-		matchDoc.append("region",region);
-		
+		matchDoc.append("subRegion", new Document().append("$in", subRegion));
+
 		matchDoc.append("legalDirection", new Document().append("$in", IDSSUtil.getLegalActionsList()));
 		
 		if(null!=cf && null!=cf.getSubRegionWiseCategoryList() ) 
