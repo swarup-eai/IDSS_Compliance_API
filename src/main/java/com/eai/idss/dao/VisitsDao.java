@@ -24,7 +24,7 @@ public interface VisitsDao {
 	
 	public Map<String,Map<String,List<TileVo>>> getByRegionVisitsData(VisitsFilter cf);
 	
-	public Map<String,Map<String,List<TileVo>>> getBySubRegionVisitsData(String region,VisitsFilter cf);
+	public Map<String,Map<String,List<TileVo>>> getBySubRegionVisitsData(List<String> subRegion,VisitsFilter cf);
 	
 	public Map<String,Map<String,List<TileVo>>> getByTeamVisitsData(VisitsFilter cf,User u);
 	

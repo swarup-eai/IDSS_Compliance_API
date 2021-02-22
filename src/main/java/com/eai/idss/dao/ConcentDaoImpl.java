@@ -323,7 +323,7 @@ public class ConcentDaoImpl implements ConcentDao {
 	}
 	
 	
-	public Map<String,Map<String,List<TileVo>>> getBySubRegionConcentData(String region, ConcentFilter cf){
+	public Map<String,Map<String,List<TileVo>>> getBySubRegionConcentData(List<String> subRegion, ConcentFilter cf){
 		try {
 			logger.info("getPendingRequestConcentData");
 			Map<String, String> daysMap = IDSSUtil.getPastDaysMap();
@@ -336,7 +336,7 @@ public class ConcentDaoImpl implements ConcentDao {
             
             for(String days : daysMap.keySet()) {
             	logger.info("getPendingRequestConcentData : "+days);
-	            List<? extends Bson> pipeline = getBySubRegionConcentPipeline(region,days,cf);
+	            List<? extends Bson> pipeline = getBySubRegionConcentPipeline(subRegion,days,cf);
 
 //	            List<TileVo> tVoList = new ArrayList<TileVo>();
 				Map<String,List<TileVo>> subRegionMap = new LinkedHashMap<String, List<TileVo>>();
@@ -374,11 +374,12 @@ public class ConcentDaoImpl implements ConcentDao {
 		return null;
 	}
 	
-	private List<? extends Bson> getBySubRegionConcentPipeline(String region,String days,ConcentFilter cf) throws ParseException {
+	private List<? extends Bson> getBySubRegionConcentPipeline(List<String> subRegion,String days,ConcentFilter cf) throws ParseException {
 		Document matchDoc = new Document();
 		
 		matchDoc.append("created", new Document().append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000")));
-		matchDoc.append("region",region);
+		matchDoc.append("subRegion", new Document().append("$in", subRegion));
+
 		if(null!=cf && null!=cf.getSubRegionWiseCategoryList() ) 
 			matchDoc.append("category", new Document().append("$in", cf.getSubRegionWiseCategoryList()));
 		if(null!=cf && null!=cf.getSubRegionWiseScaleList() ) 
