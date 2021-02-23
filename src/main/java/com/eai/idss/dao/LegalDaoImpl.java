@@ -461,10 +461,11 @@ public class LegalDaoImpl implements LegalDao {
 										
 										TileVo tVo = new TileVo(days,crVo.getCount());
 										
-										List<TileVo> lbtList = byTeamMap.get(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getUserId());
+//										List<TileVo> lbtList = byTeamMap.get(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getUserId());
+										List<TileVo> lbtList = byTeamMap.get(crVo.getUserId());
 										if(null==lbtList) lbtList = new ArrayList<TileVo>();
 										lbtList.add(tVo);
-										byTeamMap.put(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getUserId(), lbtList);
+										byTeamMap.put(crVo.getUserId(), lbtList);
 									
 									} catch (JsonMappingException e) {
 										e.printStackTrace();

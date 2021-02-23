@@ -85,7 +85,7 @@ public class LegalFilter {
 	public String getRegion() {
 		return region;
 	}
-	public void setUpcomingRenewalCategoryList(String region) {
+	public void setRegion(String region) {
 		this.region = region;
 	}
 
