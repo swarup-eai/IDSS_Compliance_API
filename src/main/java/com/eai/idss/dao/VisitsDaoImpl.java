@@ -610,7 +610,7 @@ public class VisitsDaoImpl implements VisitsDao {
 			Query query = new Query().with(page);
 			getQueryCriteria(cdr, query);
 			
-			Query queryCnt = new Query().with(page);
+			Query queryCnt = new Query();
 			getQueryCriteria(cdr, queryCnt);
 	
 			VisitsPaginationResponseVo vprv = new VisitsPaginationResponseVo();
