@@ -19,7 +19,7 @@ public interface LegalDao {
 	
 	public Map<String,Map<String,List<TileVo>>> getByRegionLegalData(LegalFilter cf);
 	
-	public Map<String,Map<String,List<TileVo>>> getBySubRegionLegalData(String region,LegalFilter cf);
+	public Map<String,Map<String,List<TileVo>>> getBySubRegionLegalData(List<String> subRegions,LegalFilter cf);
 	
 	public Map<String,List<TileVo>> getByTeamLegalData(LegalFilter cf,User u);
 	

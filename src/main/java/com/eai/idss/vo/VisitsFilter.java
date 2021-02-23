@@ -12,7 +12,10 @@ public class VisitsFilter {
 	List<String> regionWiseCategoryList;
 	List<String> subRegionWiseScaleList;
 	List<String> subRegionWiseCategoryList;
-	
+
+	String region;
+	String subRegion;
+
 	public List<String> getPendingScaleList() {
 		return pendingScaleList;
 	}
@@ -61,5 +64,19 @@ public class VisitsFilter {
 	}
 	public void setSubRegionWiseCategoryList(List<String> subRegionWiseCategoryList) {
 		this.subRegionWiseCategoryList = subRegionWiseCategoryList;
+	}
+
+	public String getRegion() {
+		return region;
+	}
+	public void setUpcomingRenewalCategoryList(String region) {
+		this.region = region;
+	}
+
+	public String getSubRegion() {
+		return subRegion;
+	}
+	public void setSubRegion(String subRegion) {
+		this.subRegion = subRegion;
 	}
 }

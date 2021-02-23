@@ -1,10 +1,12 @@
 package com.eai.idss.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.eai.idss.util.IDSSUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -37,7 +39,7 @@ import com.eai.idss.vo.VisitsScheduleDetailsRequest;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins ={"http://localhost:4200", "http://10.10.10.32:8080"})
 public class VisitsController {
 
 	@Autowired
@@ -68,8 +70,8 @@ public class VisitsController {
 	public ResponseEntity<Map<String,Map<String,List<TileVo>>>> getVisitsDashboardPendingData(@RequestHeader String userName,@RequestBody VisitsFilter vf) throws IOException {
     	Map<String,Map<String,List<TileVo>>> ct = new LinkedHashMap<String, Map<String,List<TileVo>>>();
 	    try {
-	    	User u = userRepository.findByUserName(userName);
-	    	ct.put("pendingRequest",cd.getPendingVisitsData(vf,u.getRegion(),u.getSubRegion()));
+//	    	User u = userRepository.findByUserName(userName);
+	    	ct.put("pendingRequest",cd.getPendingVisitsData(vf,vf.getRegion(),vf.getSubRegion()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /visits-dashboard/pending-legal-actions", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -230,7 +232,13 @@ public class VisitsController {
     	Map<String,Map<String,Map<String,List<TileVo>>>> ct = new LinkedHashMap<String, Map<String,Map<String,List<TileVo>>>>();
 	    try {
 	    	User u = userRepository.findByUserName(userName);
-	    	ct.put("bySubRegionRequest",cd.getBySubRegionVisitsData(u.getRegion(), vf));
+			List<String> subRegions =new ArrayList<String>();
+			if(u.getDesignation().equals("RO")){
+				subRegions = IDSSUtil.getSubRegion(u.getRegion());
+			}else{
+				subRegions.add(u.getSubRegion());
+			}
+	    	ct.put("bySubRegionRequest",cd.getBySubRegionVisitsData(subRegions, vf));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /visits-dashboard/request-by-sub-region", HttpStatus.INTERNAL_SERVER_ERROR);
