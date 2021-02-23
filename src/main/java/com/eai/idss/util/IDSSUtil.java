@@ -301,13 +301,17 @@ public class IDSSUtil {
 		String date60DaysBack = currentTime.minusDays(60).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date90DaysBack = currentTime.minusDays(90).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date120DaysBack = currentTime.minusDays(120).format(DateTimeFormatter.ISO_LOCAL_DATE);
-		
+
+		String date30Days = currentTime.plusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
+
 		Map<String,String> daysMap = new LinkedHashMap<String, String>();
 		daysMap.put(date7DaysBack, "_7Days");
 		daysMap.put(date30DaysBack, "_30Days");
 		daysMap.put(date60DaysBack, "_60Days");
 		daysMap.put(date90DaysBack, "_90Days");
 		daysMap.put(date120DaysBack, "_120Days");
+		daysMap.put(date30Days, "upcomming_300Days");
+
 		daysMap.put("1970-01-01", "_allDays");
 		return daysMap;
 	}
@@ -348,11 +352,14 @@ public class IDSSUtil {
 		String date30DaysBack = currentTime.minusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date90DaysBack = currentTime.minusDays(90).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date120DaysBack = currentTime.minusDays(120).format(DateTimeFormatter.ISO_LOCAL_DATE);
-		
+
+		String date30Days = currentTime.plusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
+
 		Map<String,String> daysMap = new LinkedHashMap<String, String>();
 		daysMap.put(date30DaysBack, "_30Days");
 		daysMap.put(date90DaysBack, "_90Days");
 		daysMap.put(date120DaysBack, "_120Days");
+		daysMap.put(date30Days, "upcomming_30Days");
 		daysMap.put("1970-01-01", "_allDays");
 		return daysMap;
 	}
@@ -449,8 +456,12 @@ public class IDSSUtil {
 		String date7DaysBack = currentTime.minusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date15DaysBack = currentTime.minusDays(15).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date30DaysBack = currentTime.minusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
+		String date60DaysBack = currentTime.minusDays(60).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date90DaysBack = currentTime.minusDays(90).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date120DaysBack = currentTime.minusDays(120).format(DateTimeFormatter.ISO_LOCAL_DATE);
+
+		String date30Days = currentTime.plusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
+
 
 		Map<String,List<String>> daysMap = new LinkedHashMap<String, List<String>>();
 		List<String> days = new ArrayList<String>();
@@ -478,7 +489,12 @@ public class IDSSUtil {
 		days.add(date30DaysBack);
 		days.add("1970-01-01");
 		daysMap.put("_30ToAllDays",days);
-		
+
+		days = new ArrayList<String>();
+		days.add(date60DaysBack);
+		days.add("1970-01-01");
+		daysMap.put("_60ToAllDays",days);
+
 		days = new ArrayList<String>();
 		days.add(date90DaysBack);
 		days.add("1970-01-01");
@@ -488,6 +504,11 @@ public class IDSSUtil {
 		days.add(date120DaysBack);
 		days.add("1970-01-01");
 		daysMap.put("_120ToAllDays",days);
+
+		days = new ArrayList<String>();
+		days.add(dateToday);
+		days.add(date30Days);
+		daysMap.put("upcomming_30Days",days);
 		
 		return daysMap;
 	}
