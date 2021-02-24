@@ -639,7 +639,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			cSKUList.add(sku4);
 		}
 		ppgVo.setConsentSKU(cSKUList);
-		
+		populateEmptyObjList(ppgVo);
 		return ppgVo;
 	}
 
@@ -684,6 +684,8 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			eSKUList.add(sku);
 		}
 		ppgVo.setEsrSKU(eSKUList);
+		
+		populateEmptyObjList(ppgVo);
 		return ppgVo;
 	}
 	
@@ -721,6 +723,8 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			eSKUList.add(sku);
 		}
 		ppgVo.setEsrSKU(eSKUList);
+		
+		populateEmptyObjList(ppgVo);
 		return ppgVo;
 	}
 	
@@ -743,6 +747,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			eSKUList.add(sku);
 		}
 		ppgVo.setEsrSKU(eSKUList);
+		populateEmptyObjList(ppgVo);
 		return ppgVo;
 	}
 
@@ -823,6 +828,9 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			eSKUList.add(sku);
 		}
 		ppgVo.setEsrSKU(eSKUList);
+		
+		populateEmptyObjList(ppgVo);
+		
 		return ppgVo;
 	}
 
@@ -844,6 +852,9 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			eSKUList.add(sku);
 		}
 		ppgVo.setEsrSKU(eSKUList);
+		
+		populateEmptyObjList(ppgVo);
+		
 		return ppgVo;
 	}
 	
@@ -877,8 +888,31 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		}
 		ppgVo.setForm4SKU(form4List);
 		
+		populateEmptyObjList(ppgVo);
+		
 		ppgVoList.add(ppgVo);
 		return ppgVoList;
+	}
+
+	private void populateEmptyObjList(ComparisonTableParamGroupVo ppgVo) {
+		if(null==ppgVo.getConsentSKU() || ppgVo.getConsentSKU().isEmpty()) {
+			ppgVo.setConsentSKU(getDummySKUObj());
+		}
+		
+		if(null==ppgVo.getEsrSKU() || ppgVo.getEsrSKU().isEmpty()) {
+			ppgVo.setEsrSKU(getDummySKUObj());
+		}
+		
+		if(null==ppgVo.getForm4SKU() || ppgVo.getForm4SKU().isEmpty()) {
+			ppgVo.setForm4SKU(getDummySKUObj());
+		}
+	}
+
+	private List<SKU> getDummySKUObj() {
+		List<SKU> list = new ArrayList<SKU>();
+		SKU sku = new SKU("-","-","-");
+		list.add(sku);
+		return list;
 	}
 	
 	private List<ComparisonTableParamGroupVo> getResourcesComparisonData(long industryId,int consentYear,int esrYear) {
@@ -930,12 +964,17 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		}
 		ppgVoWater.setEsrSKU(weSKUList);
 		
+		populateEmptyObjList(ppgVoWater);
+		
 		ppgVoList.add(ppgVoWater);
 		
 		ComparisonTableParamGroupVo ppgVoInfra = new ComparisonTableParamGroupVo();
 		ppgVoInfra.setParam("Infrastructure");
 		ppgVoInfra.setConsentSKU(infracSKUList);
 		ppgVoInfra.setEsrSKU(infraeSKUList);
+		
+		populateEmptyObjList(ppgVoInfra);
+		
 		ppgVoList.add(ppgVoInfra);
 		////////////////////////////////////////////
 		

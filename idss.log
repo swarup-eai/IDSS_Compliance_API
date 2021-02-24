@@ -1,49 +1,148 @@
-2021-02-23 22:28:12 ConcentDaoImpl [INFO] getByTeamConcentData
-2021-02-23 22:28:35 ConcentDaoImpl [INFO] getByTeamConcentData : 2021-02-16
-2021-02-23 22:34:10 ConcentDaoImpl [INFO] getByTeamConcentData : 2021-01-24
-2021-02-23 22:34:26 ConcentDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "status": "In process", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 7.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Shri. V.P.Shelke", "status": "In process", "userId": "srolatur@mpcb.gov.in", "designation": "SRO", "count": 2.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Y A Balankhe ", "status": "In process", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 3.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] getByTeamConcentData : 2020-12-25
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "status": "In process", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 20.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "status": "Approved", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 2.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Shri. Jayant. A. Kadam", "status": "In process", "userId": "sroparbhani@mpcb.gov.in", "designation": "SRO", "count": 4.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Shri. R. U. PATIL", "status": "In process", "userId": "sronanded@mpcb.gov.in", "designation": "SRO", "count": 1.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Shri. V.P.Shelke", "status": "In process", "userId": "srolatur@mpcb.gov.in", "designation": "SRO", "count": 6.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Y A Balankhe ", "status": "In process", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 9.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] getByTeamConcentData : 2020-11-25
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "status": "In process", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 36.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "status": "Approved", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 4.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Shri. Jayant. A. Kadam", "status": "In process", "userId": "sroparbhani@mpcb.gov.in", "designation": "SRO", "count": 4.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Shri. R. U. PATIL", "status": "In process", "userId": "sronanded@mpcb.gov.in", "designation": "SRO", "count": 3.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Shri. V.P.Shelke", "status": "In process", "userId": "srolatur@mpcb.gov.in", "designation": "SRO", "count": 10.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Y A Balankhe ", "status": "Approved", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 1.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Y A Balankhe ", "status": "In process", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 14.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] getByTeamConcentData : 2020-10-26
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "status": "In process", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 45.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "status": "Approved", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 8.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Shri. Jayant. A. Kadam", "status": "In process", "userId": "sroparbhani@mpcb.gov.in", "designation": "SRO", "count": 5.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Shri. Jayant. A. Kadam", "status": "Approved", "userId": "sroparbhani@mpcb.gov.in", "designation": "SRO", "count": 1.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Shri. R. U. PATIL", "status": "Approved", "userId": "sronanded@mpcb.gov.in", "designation": "SRO", "count": 1.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Shri. R. U. PATIL", "status": "In process", "userId": "sronanded@mpcb.gov.in", "designation": "SRO", "count": 5.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Shri. V.P.Shelke", "status": "In process", "userId": "srolatur@mpcb.gov.in", "designation": "SRO", "count": 10.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Y A Balankhe ", "status": "Rejected", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 1.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Y A Balankhe ", "status": "Approved", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 1.0}
-2021-02-23 22:37:20 ConcentDaoImpl [INFO] {"name": "Y A Balankhe ", "status": "In process", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 22.0}
-2021-02-23 22:37:21 ConcentDaoImpl [INFO] getByTeamConcentData : 2021-03-25
-2021-02-23 22:37:21 ConcentDaoImpl [INFO] getByTeamConcentData : 1970-01-01
-2021-02-23 22:37:21 ConcentDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "status": "Rejected", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 39.0}
-2021-02-23 22:37:21 ConcentDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "status": "In process", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 121.0}
-2021-02-23 22:37:21 ConcentDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "status": "Approved", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 356.0}
-2021-02-23 22:37:21 ConcentDaoImpl [INFO] {"name": "Shri. Jayant. A. Kadam", "status": "In process", "userId": "sroparbhani@mpcb.gov.in", "designation": "SRO", "count": 20.0}
-2021-02-23 22:37:21 ConcentDaoImpl [INFO] {"name": "Shri. Jayant. A. Kadam", "status": "Approved", "userId": "sroparbhani@mpcb.gov.in", "designation": "SRO", "count": 45.0}
-2021-02-23 22:37:21 ConcentDaoImpl [INFO] {"name": "Shri. Jayant. A. Kadam", "status": "Rejected", "userId": "sroparbhani@mpcb.gov.in", "designation": "SRO", "count": 5.0}
-2021-02-23 22:37:21 ConcentDaoImpl [INFO] {"name": "Shri. R. U. PATIL", "status": "Approved", "userId": "sronanded@mpcb.gov.in", "designation": "SRO", "count": 68.0}
-2021-02-23 22:37:21 ConcentDaoImpl [INFO] {"name": "Shri. R. U. PATIL", "status": "In process", "userId": "sronanded@mpcb.gov.in", "designation": "SRO", "count": 23.0}
-2021-02-23 22:37:21 ConcentDaoImpl [INFO] {"name": "Shri. R. U. PATIL", "status": "Rejected", "userId": "sronanded@mpcb.gov.in", "designation": "SRO", "count": 5.0}
-2021-02-23 22:37:21 ConcentDaoImpl [INFO] {"name": "Shri. V.P.Shelke", "status": "Approved", "userId": "srolatur@mpcb.gov.in", "designation": "SRO", "count": 109.0}
-2021-02-23 22:37:21 ConcentDaoImpl [INFO] {"name": "Shri. V.P.Shelke", "status": "In process", "userId": "srolatur@mpcb.gov.in", "designation": "SRO", "count": 40.0}
-2021-02-23 22:37:21 ConcentDaoImpl [INFO] {"name": "Shri. V.P.Shelke", "status": "Rejected", "userId": "srolatur@mpcb.gov.in", "designation": "SRO", "count": 12.0}
-2021-02-23 22:37:21 ConcentDaoImpl [INFO] {"name": "Y A Balankhe ", "status": "In process", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 54.0}
-2021-02-23 22:37:21 ConcentDaoImpl [INFO] {"name": "Y A Balankhe ", "status": "Rejected", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 7.0}
-2021-02-23 22:37:21 ConcentDaoImpl [INFO] {"name": "Y A Balankhe ", "status": "Approved", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 85.0}
+2021-02-24 12:31:38 IndustryMasterDaoImpl [INFO] getComparisonData...906, consentYear: 2020, esrYear: 2020
+2021-02-24 12:46:49 VisitsDaoImpl [INFO] getBySubRegionVisitData
+2021-02-24 12:46:49 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _30Days
+2021-02-24 12:46:49 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Chiplun", "count": 26}
+2021-02-24 12:46:49 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Kolhapur", "count": 27}
+2021-02-24 12:46:49 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Ratnagiri", "count": 8}
+2021-02-24 12:46:49 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Sangli", "count": 28}
+2021-02-24 12:46:50 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Chiplun", "count": 7}
+2021-02-24 12:46:50 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Kolhapur", "count": 87}
+2021-02-24 12:46:50 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Chiplun", "count": 13}
+2021-02-24 12:46:50 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _90Days
+2021-02-24 12:46:50 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Chiplun", "count": 26}
+2021-02-24 12:46:50 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Kolhapur", "count": 27}
+2021-02-24 12:46:50 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Ratnagiri", "count": 8}
+2021-02-24 12:46:50 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Sangli", "count": 28}
+2021-02-24 12:46:51 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Chiplun", "count": 74}
+2021-02-24 12:46:51 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Kolhapur", "count": 96}
+2021-02-24 12:46:51 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Sangli", "count": 19}
+2021-02-24 12:46:51 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Chiplun", "count": 33}
+2021-02-24 12:46:51 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Kolhapur", "count": 37}
+2021-02-24 12:46:51 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Sangli", "count": 24}
+2021-02-24 12:46:51 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _120Days
+2021-02-24 12:46:51 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Chiplun", "count": 26}
+2021-02-24 12:46:51 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Kolhapur", "count": 27}
+2021-02-24 12:46:51 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Ratnagiri", "count": 8}
+2021-02-24 12:46:51 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Sangli", "count": 28}
+2021-02-24 12:46:52 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Chiplun", "count": 97}
+2021-02-24 12:46:52 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Kolhapur", "count": 136}
+2021-02-24 12:46:52 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Sangli", "count": 21}
+2021-02-24 12:46:52 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Chiplun", "count": 48}
+2021-02-24 12:46:52 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Kolhapur", "count": 38}
+2021-02-24 12:46:52 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Ratnagiri", "count": 1}
+2021-02-24 12:46:52 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Sangli", "count": 29}
+2021-02-24 12:46:52 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _30Days
+2021-02-24 12:46:53 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Chiplun", "count": 2}
+2021-02-24 12:46:53 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Kolhapur", "count": 9}
+2021-02-24 12:46:53 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Ratnagiri", "count": 1}
+2021-02-24 12:46:53 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Sangli", "count": 8}
+2021-02-24 12:46:53 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _90Days
+2021-02-24 12:46:54 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Chiplun", "count": 2}
+2021-02-24 12:46:54 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Kolhapur", "count": 9}
+2021-02-24 12:46:54 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Ratnagiri", "count": 1}
+2021-02-24 12:46:54 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Sangli", "count": 8}
+2021-02-24 12:46:54 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _120Days
+2021-02-24 12:46:55 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Chiplun", "count": 2}
+2021-02-24 12:46:55 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Kolhapur", "count": 9}
+2021-02-24 12:46:55 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Ratnagiri", "count": 1}
+2021-02-24 12:46:55 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Sangli", "count": 8}
+2021-02-24 13:54:15 VisitsDaoImpl [INFO] getBySubRegionVisitData
+2021-02-24 13:54:15 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _30Days
+2021-02-24 13:54:16 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Chiplun", "count": 26}
+2021-02-24 13:54:16 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Kolhapur", "count": 27}
+2021-02-24 13:54:16 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Ratnagiri", "count": 8}
+2021-02-24 13:54:16 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Sangli", "count": 28}
+2021-02-24 13:54:16 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Chiplun", "count": 31}
+2021-02-24 13:54:16 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Kolhapur", "count": 28}
+2021-02-24 13:54:16 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Ratnagiri", "count": 11}
+2021-02-24 13:54:16 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Sangli", "count": 32}
+2021-02-24 13:54:16 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Chiplun", "count": 7}
+2021-02-24 13:54:16 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Kolhapur", "count": 87}
+2021-02-24 13:54:17 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Chiplun", "count": 13}
+2021-02-24 13:54:17 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _90Days
+2021-02-24 13:54:17 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Chiplun", "count": 26}
+2021-02-24 13:54:17 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Kolhapur", "count": 27}
+2021-02-24 13:54:17 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Ratnagiri", "count": 8}
+2021-02-24 13:54:17 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Sangli", "count": 28}
+2021-02-24 13:54:17 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Chiplun", "count": 80}
+2021-02-24 13:54:17 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Kolhapur", "count": 113}
+2021-02-24 13:54:17 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Ratnagiri", "count": 21}
+2021-02-24 13:54:17 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Sangli", "count": 82}
+2021-02-24 13:54:17 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Chiplun", "count": 74}
+2021-02-24 13:54:17 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Kolhapur", "count": 96}
+2021-02-24 13:54:17 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Sangli", "count": 19}
+2021-02-24 13:54:18 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Chiplun", "count": 33}
+2021-02-24 13:54:18 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Kolhapur", "count": 37}
+2021-02-24 13:54:18 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Sangli", "count": 24}
+2021-02-24 13:54:18 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _120Days
+2021-02-24 13:54:18 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Chiplun", "count": 26}
+2021-02-24 13:54:18 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Kolhapur", "count": 27}
+2021-02-24 13:54:18 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Ratnagiri", "count": 8}
+2021-02-24 13:54:18 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Sangli", "count": 28}
+2021-02-24 13:54:18 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Chiplun", "count": 86}
+2021-02-24 13:54:18 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Kolhapur", "count": 123}
+2021-02-24 13:54:18 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Ratnagiri", "count": 21}
+2021-02-24 13:54:18 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Sangli", "count": 93}
+2021-02-24 13:54:18 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Chiplun", "count": 97}
+2021-02-24 13:54:18 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Kolhapur", "count": 136}
+2021-02-24 13:54:18 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Sangli", "count": 21}
+2021-02-24 13:54:19 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Chiplun", "count": 48}
+2021-02-24 13:54:19 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Kolhapur", "count": 38}
+2021-02-24 13:54:19 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Ratnagiri", "count": 1}
+2021-02-24 13:54:19 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Sangli", "count": 29}
+2021-02-24 13:54:19 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _30Days
+2021-02-24 13:54:20 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _90Days
+2021-02-24 13:54:21 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _120Days
+2021-02-24 13:55:43 VisitsDaoImpl [INFO] getBySubRegionVisitData
+2021-02-24 13:55:43 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _30Days
+2021-02-24 13:55:43 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Chiplun", "count": 26}
+2021-02-24 13:55:43 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Kolhapur", "count": 27}
+2021-02-24 13:55:43 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Ratnagiri", "count": 8}
+2021-02-24 13:55:43 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Sangli", "count": 28}
+2021-02-24 13:55:43 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Chiplun", "count": 31}
+2021-02-24 13:55:43 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Kolhapur", "count": 28}
+2021-02-24 13:55:43 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Ratnagiri", "count": 11}
+2021-02-24 13:55:43 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Sangli", "count": 32}
+2021-02-24 13:55:44 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Chiplun", "count": 7}
+2021-02-24 13:55:44 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Kolhapur", "count": 87}
+2021-02-24 13:55:44 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Chiplun", "count": 13}
+2021-02-24 13:55:44 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _90Days
+2021-02-24 13:55:44 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Chiplun", "count": 26}
+2021-02-24 13:55:44 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Kolhapur", "count": 27}
+2021-02-24 13:55:44 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Ratnagiri", "count": 8}
+2021-02-24 13:55:44 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Sangli", "count": 28}
+2021-02-24 13:55:44 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Chiplun", "count": 80}
+2021-02-24 13:55:44 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Kolhapur", "count": 113}
+2021-02-24 13:55:44 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Ratnagiri", "count": 21}
+2021-02-24 13:55:44 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Sangli", "count": 82}
+2021-02-24 13:55:45 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Chiplun", "count": 74}
+2021-02-24 13:55:45 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Kolhapur", "count": 96}
+2021-02-24 13:55:45 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Sangli", "count": 19}
+2021-02-24 13:55:45 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Chiplun", "count": 33}
+2021-02-24 13:55:45 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Kolhapur", "count": 37}
+2021-02-24 13:55:45 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Sangli", "count": 24}
+2021-02-24 13:55:45 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _120Days
+2021-02-24 13:55:45 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Chiplun", "count": 26}
+2021-02-24 13:55:45 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Kolhapur", "count": 27}
+2021-02-24 13:55:45 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Ratnagiri", "count": 8}
+2021-02-24 13:55:45 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Sangli", "count": 28}
+2021-02-24 13:55:45 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Chiplun", "count": 86}
+2021-02-24 13:55:45 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Kolhapur", "count": 123}
+2021-02-24 13:55:45 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Ratnagiri", "count": 21}
+2021-02-24 13:55:45 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Sangli", "count": 93}
+2021-02-24 13:55:46 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Chiplun", "count": 97}
+2021-02-24 13:55:46 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Kolhapur", "count": 136}
+2021-02-24 13:55:46 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Sangli", "count": 21}
+2021-02-24 13:55:46 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Chiplun", "count": 48}
+2021-02-24 13:55:46 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Kolhapur", "count": 38}
+2021-02-24 13:55:46 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Ratnagiri", "count": 1}
+2021-02-24 13:55:46 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Sangli", "count": 29}
+2021-02-24 13:55:46 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _30Days
+2021-02-24 13:55:47 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _90Days
+2021-02-24 13:55:48 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _120Days
+2021-02-24 13:56:40 VisitsDaoImpl [INFO] getBySubRegionVisitData
+2021-02-24 13:56:40 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _30Days
+2021-02-24 13:56:48 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Chiplun", "count": 26}
+2021-02-24 13:56:48 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Kolhapur", "count": 27}
+2021-02-24 13:56:48 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Ratnagiri", "count": 8}
+2021-02-24 13:56:48 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Sangli", "count": 28}

@@ -328,8 +328,8 @@ public class VisitsDaoImpl implements VisitsDao {
 		String dateToday = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
 		if(SCHEDULED.equalsIgnoreCase(caseType)) {
 			matchDoc.append("schduledOn", new Document()
-					.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(dateToday+" 00:00:00.000+0000"))
-					.append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
+					.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
+					.append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(dateToday+" 00:00:00.000+0000"))
 				);
 		}
 		if(PENDING.equalsIgnoreCase(caseType)) {
@@ -341,14 +341,14 @@ public class VisitsDaoImpl implements VisitsDao {
 		}
 		
 		if(COMPLETED.equalsIgnoreCase(caseType)) {
-			matchDoc.append("visitedDate", new Document()
+			matchDoc.append("schduledOn", new Document()
 					.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
 				);
 			matchDoc.append("visitStatus",VISITED);
 		}
 		
 		if(VISITED.equalsIgnoreCase(caseType)) {
-			matchDoc.append("visitedDate", new Document()
+			matchDoc.append("schduledOn", new Document()
 					.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
 				);
 			matchDoc.append("visitStatus",VISITED);
@@ -388,7 +388,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	            
 	            extractData(collection, regionVisitMap, pipeline,PENDING,SUB_REGION_WISE);
             
-	            pipeline = getSubRegionVisitsPipeline(SCHEDULED,daysMap.get(days).get(1),cf,subRegion);
+	            pipeline = getSubRegionVisitsPipeline(SCHEDULED,daysMap.get(days).get(0),cf,subRegion);
 	            
 	            extractData(collection, regionVisitMap, pipeline,SCHEDULED,SUB_REGION_WISE);
 	            
@@ -763,42 +763,31 @@ public class VisitsDaoImpl implements VisitsDao {
 			List<String> days = new ArrayList<String>(); 
 			LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 			
-			if(SCHEDULED.equalsIgnoreCase(cdr.getVisitStatus())) {
-				int futureDays = 0;
-				if(StringUtils.hasText(cdr.getDuration())) {
-					if(cdr.getDuration().contains("+")) {
-						futureDays = Integer.parseInt(cdr.getDuration().replace("+", ""));
-					}else if(cdr.getDuration().contains("_")) {
-						String[] d = cdr.getDuration().split("_");
-						futureDays = Integer.parseInt(d[0]);
+			if(StringUtils.hasText(cdr.getDuration())) {
+				if(cdr.getDuration().contains("+")) {
+					int futureDays = Integer.parseInt(cdr.getDuration().replace("+", ""));
+					days.add(currentTime.plusDays(futureDays).format(DateTimeFormatter.ISO_LOCAL_DATE));
+					days.add(currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
+				}
+				else if(cdr.getDuration().contains("-")) {
+					days.add(currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
+					int pastDaysCnt = Integer.parseInt(cdr.getDuration().replace("-", ""));
+					days.add(currentTime.minusDays(pastDaysCnt).format(DateTimeFormatter.ISO_LOCAL_DATE));
+				}else if(cdr.getDuration().contains("_")) {
+					String[] d = cdr.getDuration().split("_");
+					
+					LocalDateTime fromDate = currentTime.minusDays(Integer.parseInt(d[0]));
+					String fromDay = fromDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+					days.add(fromDay);
+					
+					if("ALL".equalsIgnoreCase(d[1])) {
+						days.add("1970-01-01");
+					}else {
+						LocalDateTime toDate = currentTime.minusDays(Integer.parseInt(d[1]));
+						String toDay = toDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+						days.add(toDay);
 					}
 				}
-				days.add(currentTime.plusDays(futureDays).format(DateTimeFormatter.ISO_LOCAL_DATE));
-				days.add(currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
-			}
-			else {
-				if(StringUtils.hasText(cdr.getDuration())) {
-					if(cdr.getDuration().contains("-")) {
-						days.add(currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE));
-						int pastDaysCnt = Integer.parseInt(cdr.getDuration().replace("-", ""));
-						days.add(currentTime.minusDays(pastDaysCnt).format(DateTimeFormatter.ISO_LOCAL_DATE));
-					}else if(cdr.getDuration().contains("_")) {
-						String[] d = cdr.getDuration().split("_");
-						
-						LocalDateTime fromDate = currentTime.minusDays(Integer.parseInt(d[0]));
-						String fromDay = fromDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
-						days.add(fromDay);
-						
-						if("ALL".equalsIgnoreCase(d[1])) {
-							days.add("1970-01-01");
-						}else {
-							LocalDateTime toDate = currentTime.minusDays(Integer.parseInt(d[1]));
-							String toDay = toDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
-							days.add(toDay);
-						}
-					}
-				}
-				
 			}
 			
 			addCriteriaFilter(cdr.getVisitStatus(), days, query);
@@ -837,7 +826,7 @@ public class VisitsDaoImpl implements VisitsDao {
 		}
 		
 		if(COMPLETED.equalsIgnoreCase(caseType)) {
-			query.addCriteria(Criteria.where("visitedDate")
+			query.addCriteria(Criteria.where("schduledOn")
 					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000")));
 			
 			query.addCriteria(Criteria.where("visitStatus").is(VISITED));
