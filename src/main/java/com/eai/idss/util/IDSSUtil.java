@@ -476,14 +476,14 @@ public class IDSSUtil {
 		daysMap.put("_0To7Days",days);
 		
 		days = new ArrayList<String>();
-		days.add(date5DaysBack);
+		days.add(dateToday);
 		days.add(date15DaysBack);
-		daysMap.put("_5To15Days",days);
+		daysMap.put("_15Days",days);
 		
 		days = new ArrayList<String>();
-		days.add(date15DaysBack);
+		days.add(dateToday);
 		days.add(date30DaysBack);
-		daysMap.put("_15To30Days",days);
+		daysMap.put("_30Days",days);
 
 		days = new ArrayList<String>();
 		days.add(date30DaysBack);
@@ -491,14 +491,14 @@ public class IDSSUtil {
 		daysMap.put("_30ToAllDays",days);
 
 		days = new ArrayList<String>();
+		days.add(dateToday);
 		days.add(date60DaysBack);
-		days.add("1970-01-01");
-		daysMap.put("_60ToAllDays",days);
+		daysMap.put("_60Days",days);
 
 		days = new ArrayList<String>();
+		days.add(dateToday);
 		days.add(date90DaysBack);
-		days.add("1970-01-01");
-		daysMap.put("_90ToAllDays",days);
+		daysMap.put("_90Days",days);
 		
 		days = new ArrayList<String>();
 		days.add(date120DaysBack);
