@@ -236,7 +236,7 @@ public class VisitsDaoImpl implements VisitsDao {
 
 				extractData(collection, regionVisitMap, pipeline,COMPLETED,REGION_WISE);
 
-				byRegionMap.put("upcomming"+days,regionVisitMap);
+				byRegionMap.put("upcoming"+days,regionVisitMap);
 
 			}
             return byRegionMap;
@@ -423,7 +423,7 @@ public class VisitsDaoImpl implements VisitsDao {
 
 				extractData(collection, regionVisitMap, pipeline,COMPLETED,SUB_REGION_WISE);
 
-				byRegionMap.put("upcomming"+days,regionVisitMap);
+				byRegionMap.put("upcoming"+days,regionVisitMap);
 
 			}
             return byRegionMap;
@@ -498,7 +498,7 @@ public class VisitsDaoImpl implements VisitsDao {
 				}else {
 					getROTeamDetailsByUpcomming(cf, u, daysMap, collection, days, regionVisitMap);
 				}
-				byRegionMap.put("upcomming"+days,regionVisitMap);
+				byRegionMap.put("upcoming"+days,regionVisitMap);
 
 			}
             return byRegionMap;

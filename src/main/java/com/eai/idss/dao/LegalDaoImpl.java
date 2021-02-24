@@ -492,7 +492,8 @@ public class LegalDaoImpl implements LegalDao {
 							.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
 							.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))
 						);
-		
+		matchDoc.append("complied",0);
+
 		if(null!=cf && null!=cf.getPendingByTeamCategoryList() ) 
 			matchDoc.append("category", new Document().append("$in", cf.getPendingByTeamCategoryList()));
 		if(null!=cf && null!=cf.getPendingByTeamActionList() ) 
