@@ -355,7 +355,7 @@ public class VisitsDaoImpl implements VisitsDao {
 		}
 		
 		if(LEGAL_NOTICES.equalsIgnoreCase(caseType)) {
-			matchDoc.append("legalDirectionIssuedOn", new Document()
+			matchDoc.append("schduledOn", new Document()
 					.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000"))
 				);
 			matchDoc.append("legalDirection", new Document().append("$ne", NA));
@@ -834,7 +834,7 @@ public class VisitsDaoImpl implements VisitsDao {
 		
 		if(LEGAL_NOTICES.equalsIgnoreCase(caseType)) {
 			
-			query.addCriteria(Criteria.where("legalDirectionIssuedOn")
+			query.addCriteria(Criteria.where("schduledOn")
 					.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000")));
 			
 			query.addCriteria(Criteria.where("legalDirection").ne(NA));

@@ -432,7 +432,7 @@ public class ConcentDaoImpl implements ConcentDao {
 		    	                    logger.info(document.toJson());
 									try {
 										ConcentByTeamVo crVo = new ObjectMapper().readValue(document.toJson(), ConcentByTeamVo.class);
-										if("In Process".equalsIgnoreCase(crVo.getStatus()))
+										if("Awaited".equalsIgnoreCase(crVo.getStatus()))
 											crVo.setStatus("Pending");
 										TileVo tVo = new TileVo(crVo.getStatus(),crVo.getCount());
 //										List<TileVo> concentStatusList = subRegionConcentMap.get(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getUserId());
@@ -568,7 +568,7 @@ public class ConcentDaoImpl implements ConcentDao {
 				query.addCriteria(Criteria.where("category").in(cdr.getCategory()));
 			if(null!=cdr.getScale() && !cdr.getScale().isEmpty())
 				query.addCriteria(Criteria.where("scale").in(cdr.getScale()));
-			if(StringUtils.hasText(cdr.getStatus()))
+			if(StringUtils.hasText(cdr.getStatus()) && !"Applied".equalsIgnoreCase(cdr.getConsentStatus()))
 				query.addCriteria(Criteria.where("status").is(cdr.getStatus()));
 			if(StringUtils.hasText(cdr.getConsentStatus()) && !"Renewal".equalsIgnoreCase(cdr.getConsentStatus()))
 				query.addCriteria(Criteria.where("consentStatus").is(cdr.getConsentStatus()));
