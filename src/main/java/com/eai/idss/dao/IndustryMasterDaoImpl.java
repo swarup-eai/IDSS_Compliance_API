@@ -1181,7 +1181,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 				paramList.addAll(getFixedConsentEFFLUENTParamList(industryId));
 				paramList.addAll(getDistinctParamListIndustryId(CONSENT,industryId,"Consent_HW_Comparison","name","quantity"));
 			}else if(ESR.equalsIgnoreCase(form)) {
-				paramList.addAll(getDistinctParamListIndustryId(ESR,industryId,"ESR_air_pollution","airPollutants","airPollutantConcentration"));
+				paramList.addAll(getDistinctParamListIndustryId(ESR,industryId,"esr_air_pollution","airPollutants","airPollutantConcentration"));
 				paramList.addAll(getDistinctParamListIndustryId(ESR,industryId,"esr_WATER_comparison","waterPollutants","waterPollutantConcentration"));
 				paramList.addAll(getDistinctParamListIndustryId(ESR,industryId,"esr_FUEL_comparison","fuelName","fuelQuantityActual"));
 				paramList.addAll(getDistinctParamListIndustryId(ESR,industryId,"esr_EFFLUENT_comparison","effluentParticulars","effluentParticularsQuantityActual"));

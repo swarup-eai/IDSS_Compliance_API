@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-@Document(collection = "ESR_air_pollution")
+@Document(collection = "esr_air_pollution")
 public class ESR_Air_Pollution_Comparison {
 
 	@Id

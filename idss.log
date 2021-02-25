@@ -234,3 +234,94 @@
 2021-02-25 11:55:20 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _30Days
 2021-02-25 11:55:21 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _90Days
 2021-02-25 11:55:22 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _120Days
+2021-02-25 13:37:29 LegalDaoImpl [INFO] getPendingLegalActionsData
+2021-02-25 13:42:31 LegalDaoImpl [INFO] getPendingLegalActionsData : _0To5Days
+2021-02-25 13:47:08 LegalDaoImpl [INFO] getPendingLegalActionsData : _0To7Days
+2021-02-25 13:47:29 LegalDaoImpl [INFO] getPendingLegalActionsData : _15Days
+2021-02-25 13:47:40 LegalDaoImpl [INFO] getPendingLegalActionsData : _30Days
+2021-02-25 13:48:19 LegalDaoImpl [INFO] {"caseType": "PD", "caseCount": 2}
+2021-02-25 13:48:20 LegalDaoImpl [INFO] {"caseType": "WN", "caseCount": 3}
+2021-02-25 13:48:20 LegalDaoImpl [INFO] {"caseType": "CD", "caseCount": 13}
+2021-02-25 13:48:20 LegalDaoImpl [INFO] {"caseType": "SCN", "caseCount": 76}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] getPendingLegalActionsData : _30ToAllDays
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "PD", "caseCount": 236}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "WN", "caseCount": 65}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "CD", "caseCount": 113}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "SCN", "caseCount": 937}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] getPendingLegalActionsData : _60Days
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "PD", "caseCount": 14}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "WN", "caseCount": 6}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "CD", "caseCount": 25}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "SCN", "caseCount": 209}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] getPendingLegalActionsData : _90Days
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "PD", "caseCount": 23}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "WN", "caseCount": 10}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "CD", "caseCount": 50}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "SCN", "caseCount": 266}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] getPendingLegalActionsData : _120ToAllDays
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "PD", "caseCount": 208}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "WN", "caseCount": 55}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "CD", "caseCount": 72}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "SCN", "caseCount": 683}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] getPendingLegalActionsData : upcoming_30Days
+2021-02-25 13:49:20 LegalDaoImpl [INFO] getPendingLegalActionsData : _allDays
+2021-02-25 13:49:20 LegalDaoImpl [INFO] {"caseType": "PD", "caseCount": 238}
+2021-02-25 13:49:20 LegalDaoImpl [INFO] {"caseType": "WN", "caseCount": 68}
+2021-02-25 13:49:20 LegalDaoImpl [INFO] {"caseType": "CD", "caseCount": 126}
+2021-02-25 13:49:20 LegalDaoImpl [INFO] {"caseType": "SCN", "caseCount": 1013}
+2021-02-25 13:57:47 LegalDaoImpl [INFO] getByTeamLegalData
+2021-02-25 13:57:47 LegalDaoImpl [INFO] getByTeamLegalData : _0To5Days
+2021-02-25 13:57:47 LegalDaoImpl [INFO] getByTeamLegalData : _0To7Days
+2021-02-25 13:57:47 LegalDaoImpl [INFO] getByTeamLegalData : _15Days
+2021-02-25 13:57:48 LegalDaoImpl [INFO] getByTeamLegalData : _30Days
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 4.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Y A Balankhe ", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 2.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] getByTeamLegalData : _30ToAllDays
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 27.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Shri. Jayant. A. Kadam", "userId": "sroparbhani@mpcb.gov.in", "designation": "SRO", "count": 6.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Shri. R. U. PATIL", "userId": "sronanded@mpcb.gov.in", "designation": "SRO", "count": 12.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Shri. V.P.Shelke", "userId": "srolatur@mpcb.gov.in", "designation": "SRO", "count": 19.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Y A Balankhe ", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 8.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] getByTeamLegalData : _60Days
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 9.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Shri. Jayant. A. Kadam", "userId": "sroparbhani@mpcb.gov.in", "designation": "SRO", "count": 3.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Shri. V.P.Shelke", "userId": "srolatur@mpcb.gov.in", "designation": "SRO", "count": 2.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Y A Balankhe ", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 4.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] getByTeamLegalData : _90Days
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 11.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Shri. Jayant. A. Kadam", "userId": "sroparbhani@mpcb.gov.in", "designation": "SRO", "count": 3.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Shri. V.P.Shelke", "userId": "srolatur@mpcb.gov.in", "designation": "SRO", "count": 2.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Y A Balankhe ", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 5.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] getByTeamLegalData : _120ToAllDays
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 17.0}
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Shri. Jayant. A. Kadam", "userId": "sroparbhani@mpcb.gov.in", "designation": "SRO", "count": 2.0}
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Shri. R. U. PATIL", "userId": "sronanded@mpcb.gov.in", "designation": "SRO", "count": 12.0}
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Shri. V.P.Shelke", "userId": "srolatur@mpcb.gov.in", "designation": "SRO", "count": 17.0}
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Y A Balankhe ", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 5.0}
+2021-02-25 13:57:49 LegalDaoImpl [INFO] getByTeamLegalData : upcoming_30Days
+2021-02-25 13:57:49 LegalDaoImpl [INFO] getByTeamLegalData : _allDays
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 31.0}
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Shri. Jayant. A. Kadam", "userId": "sroparbhani@mpcb.gov.in", "designation": "SRO", "count": 6.0}
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Shri. R. U. PATIL", "userId": "sronanded@mpcb.gov.in", "designation": "SRO", "count": 12.0}
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Shri. V.P.Shelke", "userId": "srolatur@mpcb.gov.in", "designation": "SRO", "count": 19.0}
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Y A Balankhe ", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 10.0}
+2021-02-25 22:02:24 IndustryMasterDaoImpl [INFO] {"param": ["PM"]}
+2021-02-25 22:02:25 IndustryMasterDaoImpl [INFO] {"param": ["Baggase"]}
+2021-02-25 22:02:26 IndustryMasterDaoImpl [INFO] {"param": ["NA", "5.2 Wastes/residue containing oil", "5.1 Used or spent oil", "5.1 Used /spent oil"]}
+2021-02-25 22:03:05 IndustryMasterDaoImpl [INFO] {"param": ["PM"]}
+2021-02-25 22:04:01 IndustryMasterDaoImpl [INFO] {"param": ["Baggase"]}
+2021-02-25 22:04:19 IndustryMasterDaoImpl [INFO] {"param": ["NA", "5.2 Wastes/residue containing oil", "5.1 Used or spent oil", "5.1 Used /spent oil"]}
+2021-02-25 22:05:19 IndustryMasterDaoImpl [INFO] {"param": ["PM"]}
+2021-02-25 22:05:25 IndustryMasterDaoImpl [INFO] {"param": ["Baggase"]}
+2021-02-25 22:05:26 IndustryMasterDaoImpl [INFO] {"param": ["NA", "5.2 Wastes/residue containing oil", "5.1 Used or spent oil", "5.1 Used /spent oil"]}
+2021-02-25 22:05:53 IndustryMasterDaoImpl [INFO] {"param": ["PM"]}
+2021-02-25 22:06:00 IndustryMasterDaoImpl [INFO] {"param": ["Baggase"]}
+2021-02-25 22:06:03 IndustryMasterDaoImpl [INFO] {"param": ["NA", "5.2 Wastes/residue containing oil", "5.1 Used or spent oil", "5.1 Used /spent oil"]}
+2021-02-25 22:10:00 IndustryMasterDaoImpl [INFO] {"param": ["PM"]}
+2021-02-25 22:10:01 IndustryMasterDaoImpl [INFO] {"param": ["Baggase"]}
+2021-02-25 22:10:01 IndustryMasterDaoImpl [INFO] {"param": ["NA", "5.2 Wastes/residue containing oil", "5.1 Used or spent oil", "5.1 Used /spent oil"]}
+2021-02-25 22:10:01 IndustryMasterDaoImpl [INFO] {"param": ["PM"]}
+2021-02-25 22:10:02 IndustryMasterDaoImpl [INFO] {"param": ["TSS", "BOD", "COD"]}
+2021-02-25 22:10:02 IndustryMasterDaoImpl [INFO] {"param": ["BAGASSE"]}
+2021-02-25 22:10:02 IndustryMasterDaoImpl [INFO] {"param": ["STP", "ETP"]}
+2021-02-25 22:10:03 IndustryMasterDaoImpl [INFO] {"param": ["5.1 Used or spent oil", "5.1 Used /spent oil"]}
