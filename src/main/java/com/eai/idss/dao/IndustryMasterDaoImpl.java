@@ -369,7 +369,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		LocalDate ld = csm.getCalculatedDate().withDayOfMonth(csm.getCalculatedDate().lengthOfMonth());
 		Query queryVisits = new Query();
 
-		queryVisits.addCriteria(Criteria.where("visitedDate")
+		queryVisits.addCriteria(Criteria.where("schduledOn")
 				.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fd.format(DateTimeFormatter.ISO_LOCAL_DATE)+" 00:00:00.000+0000"))
 				.lt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(ld.format(DateTimeFormatter.ISO_LOCAL_DATE)+" 00:00:00.000+0000")));
 
@@ -1170,6 +1170,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return null;
 	}
 	
+	
 	public List<Map<String,String>> getPollutionGraphParam(long industryId, String formTypes){
 		List<Map<String,String>> paramList = new ArrayList<Map<String,String>>();
 		String[] formArr = formTypes.split(",");
@@ -1200,7 +1201,33 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 				paramList.addAll(getDistinctParamList(OCEMS,"industry_mis_id",industryId,"OCEMS_data","parameter_name","value"));
 			}
 		}
-		return paramList;
+		List<Map<String,String>> fpl = new ArrayList<Map<String,String>>();
+		for(Map<String,String> mpl : paramList) {
+			if(fpl.isEmpty()) {
+				Map<String,String> fmpl = new LinkedHashMap<String, String>();
+				fmpl.put("name",mpl.get("name"));
+				fmpl.put("value",mpl.get("value"));
+				fpl.add(fmpl);
+			}
+			else{
+				boolean isParamPresent = false;
+				for(Map<String,String> fmpl : fpl) {
+					if(fmpl.get("name").equalsIgnoreCase(mpl.get("name"))){
+						fmpl.put("value1", mpl.get("value"));
+						isParamPresent = true;
+						break;
+					}
+				}
+				if(!isParamPresent) {
+					Map<String,String> fmpl = new LinkedHashMap<String, String>();
+					fmpl.put("name",mpl.get("name"));
+					fmpl.put("value",mpl.get("value"));
+					fpl.add(fmpl);
+				}
+			}
+		}
+		
+		return fpl;
 		
 	}
 
@@ -1260,14 +1287,14 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		for(Consent_EFFLUENT_Comparison cwc : cscList) {
 			if(cwc.getCapacityOfEtp()!=-999999) {
 				Map<String,String> paramMap = new LinkedHashMap<String, String>();
-				paramMap.putIfAbsent("name","CONSENT-Etp");
+				paramMap.putIfAbsent("name","Etp");
 				paramMap.putIfAbsent("value","CONSENT~~Etp~~consent_EFFLUENT_comparison~~capacityOfEtp");
 				if(!paramMap.isEmpty())
 					pl.add(paramMap);
 			}
 			if(cwc.getCapacityOfStp()!=-999999) {
 				Map<String,String> paramMap = new LinkedHashMap<String, String>();
-				paramMap.putIfAbsent("name","CONSENT-Stp");
+				paramMap.putIfAbsent("name","Stp");
 				paramMap.putIfAbsent("value","CONSENT~~Stp~~consent_EFFLUENT_comparison~~capacityOfStp");
 				if(!paramMap.isEmpty())
 					pl.add(paramMap);
@@ -1285,35 +1312,35 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		for(Consent_WATER_comparison cwc : cscList) {
 			if(cwc.getTreatedEffluentBod()!=-999999) {
 				Map<String,String> paramMap = new LinkedHashMap<String, String>();
-				paramMap.putIfAbsent("name","CONSENT-Bod");
+				paramMap.putIfAbsent("name","Bod");
 				paramMap.putIfAbsent("value","CONSENT~~Bod~~consent_WATER_comparison~~treatedEffluentBod");
 				if(!paramMap.isEmpty())
 					pl.add(paramMap);
 			}
 			if(cwc.getTreatedEffluentCod()!=-999999) {
 				Map<String,String> paramMap = new LinkedHashMap<String, String>();
-				paramMap.putIfAbsent("name","CONSENT-Cod");
+				paramMap.putIfAbsent("name","Cod");
 				paramMap.putIfAbsent("value","CONSENT~~Cod~~consent_WATER_comparison~~treatedEffluentCod");
 				if(!paramMap.isEmpty())
 					pl.add(paramMap);
 			}
 			if(cwc.getTreatedEffluentSs()!=-999999) {
 				Map<String,String> paramMap = new LinkedHashMap<String, String>();
-				paramMap.putIfAbsent("name","CONSENT-Ss");
+				paramMap.putIfAbsent("name","Ss");
 				paramMap.putIfAbsent("value","CONSENT~~Ss~~consent_WATER_comparison~~treatedEffluentSs");
 				if(!paramMap.isEmpty())
 					pl.add(paramMap);
 			}
 			if(cwc.getTreatedEffluentTds()!=-999999) {
 				Map<String,String> paramMap = new LinkedHashMap<String, String>();
-				paramMap.putIfAbsent("name","CONSENT-Tds");
+				paramMap.putIfAbsent("name","Tds");
 				paramMap.putIfAbsent("value","CONSENT~~Tds~~consent_WATER_comparison~~treatedEffluentTds");
 				if(!paramMap.isEmpty())
 					pl.add(paramMap);
 			}
 			if(cwc.getTreatedEffluentPh()!=-999999) {
 				Map<String,String> paramMap = new LinkedHashMap<String, String>();
-				paramMap.putIfAbsent("name","CONSENT-Ph");
+				paramMap.putIfAbsent("name","Ph");
 				paramMap.putIfAbsent("value","CONSENT~~Ph~~consent_WATER_comparison~~treatedEffluentPh");
 				if(!paramMap.isEmpty())
 					pl.add(paramMap);
@@ -1370,13 +1397,14 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
         );
 		
 		List<Map<String,String>> pl = new ArrayList<Map<String,String>>(); 
-		for(String s : param.getParam()) {
-			Map<String,String> paramMap = new LinkedHashMap<String, String>();
-			paramMap.put("name",formType+"-"+s);
-			paramMap.put("value",formType+"~~"+s+"~~"+collectionName+"~~"+paramField+"~~"+valueField);
-			pl.add(paramMap);
+		if(null!=param) {
+			for(String s : param.getParam()) {
+				Map<String,String> paramMap = new LinkedHashMap<String, String>();
+				paramMap.put("name",s);
+				paramMap.put("value",formType+"~~"+s+"~~"+collectionName+"~~"+paramField+"~~"+valueField);
+				pl.add(paramMap);
+			}
 		}
-		
 		return pl;
 	}
 }

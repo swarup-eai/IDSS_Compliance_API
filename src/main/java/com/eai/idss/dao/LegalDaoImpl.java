@@ -653,7 +653,7 @@ private List<? extends Bson> getLegalActionsByIndustryPipeline(LegalFilter cf,St
 		matchDoc.append("issuedOn", new Document().append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days+" 00:00:00.000+0000")));
 		matchDoc.append("legalDirection", new Document().append("$in", IDSSUtil.getLegalActionsList()));
 		
-		matchDoc.append("complied",0);
+		matchDoc.append("complied",1);
 		
 		if(null!=cf && null!=cf.getLegalActionsByIndustryCategoryList() ) 
 			matchDoc.append("category", new Document().append("$in", cf.getLegalActionsByIndustryCategoryList()));

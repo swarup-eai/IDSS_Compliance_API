@@ -1,0 +1,327 @@
+2021-02-25 11:53:06 VisitsDaoImpl [INFO] getByTeamVisitsData
+2021-02-25 11:53:06 VisitsDaoImpl [INFO] getByTeamVisitsData : _30Days
+2021-02-25 11:53:06 VisitsDaoImpl [INFO] Pending ::: {"name": "Pradeep D. Wankhde", "designation": "SRO", "userId": "sroaurangabad1@mpcb.gov.in", "count": 5.0}
+2021-02-25 11:53:06 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri. R. U. PATIL", "designation": "SRO", "userId": "sronanded@mpcb.gov.in", "count": 1.0}
+2021-02-25 11:53:06 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri. V.P.Shelke", "designation": "SRO", "userId": "srolatur@mpcb.gov.in", "count": 3.0}
+2021-02-25 11:53:06 VisitsDaoImpl [INFO] Pending ::: {"name": "Y A Balankhe ", "designation": "SRO", "userId": "srojalna@mpcb.gov.in", "count": 1.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Pending ::: {"name": " Ravindra A. Jadhav", "designation": "FO", "userId": "ravindra.jadhav@mpcb.gov.in", "count": 10.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Pending ::: {"name": "Dr. Gajanan Khadkikar", "designation": "FO", "userId": "gajanan.khadkikar@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Pending ::: {"name": "Dr. Kalyani Zadpide", "designation": "FO", "userId": "kalyani.zadpide@mpcb.gov.in", "count": 11.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Pending ::: {"name": "Dr.Y.A.Balankhe", "designation": "FO", "userId": "yogini.balankhe@mpcb.gov.in", "count": 16.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Pending ::: {"name": "Mr. R. G. Kshirsagar", "designation": "FO", "userId": "ravindra.kshirsagar@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Pending ::: {"name": "Mr. Raviraj Patil", "designation": "FO", "userId": "raviraj.patil@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri. Namdev. P. Darsewad", "designation": "FO", "userId": "namdev.darsewad@mpcb.gov.in", "count": 10.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri. Rajesh Auti", "designation": "FO", "userId": "rajesh.auti@mpcb.gov.in", "count": 13.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri. Rakesh Dafade", "designation": "FO", "userId": "rakesh.dafade@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri. S.N.Jirapure", "designation": "FO", "userId": "sanjay.jirapure@mpcb.gov.in", "count": 20.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri.Pankaj Bawane", "designation": "FO", "userId": "pankaj.bawane@mpcb.gov.in", "count": 9.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Pending ::: {"name": "Smt. D. D. Lokhande", "designation": "FO", "userId": "deepali.lokhande@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Scheduled ::: {"name": " Ravindra A. Jadhav", "designation": "FO", "userId": "ravindra.jadhav@mpcb.gov.in", "count": 13.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Dr. Gajanan Khadkikar", "designation": "FO", "userId": "gajanan.khadkikar@mpcb.gov.in", "count": 16.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Dr. Kalyani Zadpide", "designation": "FO", "userId": "kalyani.zadpide@mpcb.gov.in", "count": 17.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Dr.Y.A.Balankhe", "designation": "FO", "userId": "yogini.balankhe@mpcb.gov.in", "count": 18.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Mr. R. G. Kshirsagar", "designation": "FO", "userId": "ravindra.kshirsagar@mpcb.gov.in", "count": 22.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Mr. Raviraj Patil", "designation": "FO", "userId": "raviraj.patil@mpcb.gov.in", "count": 16.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Shri. Namdev. P. Darsewad", "designation": "FO", "userId": "namdev.darsewad@mpcb.gov.in", "count": 17.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Shri. Rajesh Auti", "designation": "FO", "userId": "rajesh.auti@mpcb.gov.in", "count": 16.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Shri. Rakesh Dafade", "designation": "FO", "userId": "rakesh.dafade@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Shri. S.N.Jirapure", "designation": "FO", "userId": "sanjay.jirapure@mpcb.gov.in", "count": 26.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Shri.Pankaj Bawane", "designation": "FO", "userId": "pankaj.bawane@mpcb.gov.in", "count": 9.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Smt. D. D. Lokhande", "designation": "FO", "userId": "deepali.lokhande@mpcb.gov.in", "count": 14.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Pradeep D. Wankhde", "designation": "SRO", "userId": "sroaurangabad1@mpcb.gov.in", "count": 1.0}
+2021-02-25 11:53:07 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Shri. R. U. PATIL", "designation": "SRO", "userId": "sronanded@mpcb.gov.in", "count": 1.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] legalNotices ::: {"name": " Ravindra A. Jadhav", "designation": "FO", "userId": "ravindra.jadhav@mpcb.gov.in", "count": 5.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Dr. Gajanan Khadkikar", "designation": "FO", "userId": "gajanan.khadkikar@mpcb.gov.in", "count": 3.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Dr. Kalyani Zadpide", "designation": "FO", "userId": "kalyani.zadpide@mpcb.gov.in", "count": 3.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Mr. R. G. Kshirsagar", "designation": "FO", "userId": "ravindra.kshirsagar@mpcb.gov.in", "count": 14.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Mr. Raviraj Patil", "designation": "FO", "userId": "raviraj.patil@mpcb.gov.in", "count": 5.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Shri. Namdev. P. Darsewad", "designation": "FO", "userId": "namdev.darsewad@mpcb.gov.in", "count": 13.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Shri. Rajesh Auti", "designation": "FO", "userId": "rajesh.auti@mpcb.gov.in", "count": 8.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Shri. Rakesh Dafade", "designation": "FO", "userId": "rakesh.dafade@mpcb.gov.in", "count": 6.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Shri. S.N.Jirapure", "designation": "FO", "userId": "sanjay.jirapure@mpcb.gov.in", "count": 14.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Shri.Pankaj Bawane", "designation": "FO", "userId": "pankaj.bawane@mpcb.gov.in", "count": 5.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Smt. D. D. Lokhande", "designation": "FO", "userId": "deepali.lokhande@mpcb.gov.in", "count": 4.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] Visited ::: {"name": " Ravindra A. Jadhav", "designation": "FO", "userId": "ravindra.jadhav@mpcb.gov.in", "count": 2.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] Visited ::: {"name": "Dr. Gajanan Khadkikar", "designation": "FO", "userId": "gajanan.khadkikar@mpcb.gov.in", "count": 4.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] Visited ::: {"name": "Dr. Kalyani Zadpide", "designation": "FO", "userId": "kalyani.zadpide@mpcb.gov.in", "count": 6.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] Visited ::: {"name": "Mr. R. G. Kshirsagar", "designation": "FO", "userId": "ravindra.kshirsagar@mpcb.gov.in", "count": 8.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] Visited ::: {"name": "Mr. Raviraj Patil", "designation": "FO", "userId": "raviraj.patil@mpcb.gov.in", "count": 3.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] Visited ::: {"name": "Shri. Namdev. P. Darsewad", "designation": "FO", "userId": "namdev.darsewad@mpcb.gov.in", "count": 6.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] Visited ::: {"name": "Shri. Rajesh Auti", "designation": "FO", "userId": "rajesh.auti@mpcb.gov.in", "count": 2.0}
+2021-02-25 11:53:08 VisitsDaoImpl [INFO] Visited ::: {"name": "Shri. S.N.Jirapure", "designation": "FO", "userId": "sanjay.jirapure@mpcb.gov.in", "count": 6.0}
+2021-02-25 11:53:09 VisitsDaoImpl [INFO] Reports ::: {"name": " Ravindra A. Jadhav", "designation": "FO", "userId": "ravindra.jadhav@mpcb.gov.in", "count": 9.0}
+2021-02-25 11:53:09 VisitsDaoImpl [INFO] Reports ::: {"name": "Dr. Gajanan Khadkikar", "designation": "FO", "userId": "gajanan.khadkikar@mpcb.gov.in", "count": 4.0}
+2021-02-25 11:53:09 VisitsDaoImpl [INFO] Reports ::: {"name": "Dr. Kalyani Zadpide", "designation": "FO", "userId": "kalyani.zadpide@mpcb.gov.in", "count": 5.0}
+2021-02-25 11:53:09 VisitsDaoImpl [INFO] Reports ::: {"name": "Mr. R. G. Kshirsagar", "designation": "FO", "userId": "ravindra.kshirsagar@mpcb.gov.in", "count": 8.0}
+2021-02-25 11:53:09 VisitsDaoImpl [INFO] Reports ::: {"name": "Mr. Raviraj Patil", "designation": "FO", "userId": "raviraj.patil@mpcb.gov.in", "count": 7.0}
+2021-02-25 11:53:09 VisitsDaoImpl [INFO] Reports ::: {"name": "Shri. Namdev. P. Darsewad", "designation": "FO", "userId": "namdev.darsewad@mpcb.gov.in", "count": 7.0}
+2021-02-25 11:53:09 VisitsDaoImpl [INFO] Reports ::: {"name": "Shri. Rajesh Auti", "designation": "FO", "userId": "rajesh.auti@mpcb.gov.in", "count": 4.0}
+2021-02-25 11:53:09 VisitsDaoImpl [INFO] Reports ::: {"name": "Shri.Pankaj Bawane", "designation": "FO", "userId": "pankaj.bawane@mpcb.gov.in", "count": 2.0}
+2021-02-25 11:53:09 VisitsDaoImpl [INFO] Reports ::: {"name": "Smt. D. D. Lokhande", "designation": "FO", "userId": "deepali.lokhande@mpcb.gov.in", "count": 1.0}
+2021-02-25 11:53:09 VisitsDaoImpl [INFO] getByTeamVisitsData : _90Days
+2021-02-25 11:53:09 VisitsDaoImpl [INFO] Pending ::: {"name": "Pradeep D. Wankhde", "designation": "SRO", "userId": "sroaurangabad1@mpcb.gov.in", "count": 5.0}
+2021-02-25 11:53:09 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri. R. U. PATIL", "designation": "SRO", "userId": "sronanded@mpcb.gov.in", "count": 1.0}
+2021-02-25 11:53:09 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri. V.P.Shelke", "designation": "SRO", "userId": "srolatur@mpcb.gov.in", "count": 3.0}
+2021-02-25 11:53:09 VisitsDaoImpl [INFO] Pending ::: {"name": "Y A Balankhe ", "designation": "SRO", "userId": "srojalna@mpcb.gov.in", "count": 1.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Pending ::: {"name": " Ravindra A. Jadhav", "designation": "FO", "userId": "ravindra.jadhav@mpcb.gov.in", "count": 10.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Pending ::: {"name": "Dr. Gajanan Khadkikar", "designation": "FO", "userId": "gajanan.khadkikar@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Pending ::: {"name": "Dr. Kalyani Zadpide", "designation": "FO", "userId": "kalyani.zadpide@mpcb.gov.in", "count": 11.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Pending ::: {"name": "Dr.Y.A.Balankhe", "designation": "FO", "userId": "yogini.balankhe@mpcb.gov.in", "count": 16.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Pending ::: {"name": "Mr. R. G. Kshirsagar", "designation": "FO", "userId": "ravindra.kshirsagar@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Pending ::: {"name": "Mr. Raviraj Patil", "designation": "FO", "userId": "raviraj.patil@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri. Namdev. P. Darsewad", "designation": "FO", "userId": "namdev.darsewad@mpcb.gov.in", "count": 10.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri. Rajesh Auti", "designation": "FO", "userId": "rajesh.auti@mpcb.gov.in", "count": 13.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri. Rakesh Dafade", "designation": "FO", "userId": "rakesh.dafade@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri. S.N.Jirapure", "designation": "FO", "userId": "sanjay.jirapure@mpcb.gov.in", "count": 20.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri.Pankaj Bawane", "designation": "FO", "userId": "pankaj.bawane@mpcb.gov.in", "count": 9.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Pending ::: {"name": "Smt. D. D. Lokhande", "designation": "FO", "userId": "deepali.lokhande@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Scheduled ::: {"name": " Ravindra A. Jadhav", "designation": "FO", "userId": "ravindra.jadhav@mpcb.gov.in", "count": 37.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Dr. Gajanan Khadkikar", "designation": "FO", "userId": "gajanan.khadkikar@mpcb.gov.in", "count": 38.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Dr. Kalyani Zadpide", "designation": "FO", "userId": "kalyani.zadpide@mpcb.gov.in", "count": 39.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Dr.Y.A.Balankhe", "designation": "FO", "userId": "yogini.balankhe@mpcb.gov.in", "count": 31.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Mr. R. G. Kshirsagar", "designation": "FO", "userId": "ravindra.kshirsagar@mpcb.gov.in", "count": 41.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Mr. Raviraj Patil", "designation": "FO", "userId": "raviraj.patil@mpcb.gov.in", "count": 45.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Shri. Namdev. P. Darsewad", "designation": "FO", "userId": "namdev.darsewad@mpcb.gov.in", "count": 36.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Shri. Rajesh Auti", "designation": "FO", "userId": "rajesh.auti@mpcb.gov.in", "count": 35.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Shri. Rakesh Dafade", "designation": "FO", "userId": "rakesh.dafade@mpcb.gov.in", "count": 27.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Shri. S.N.Jirapure", "designation": "FO", "userId": "sanjay.jirapure@mpcb.gov.in", "count": 54.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Shri.Pankaj Bawane", "designation": "FO", "userId": "pankaj.bawane@mpcb.gov.in", "count": 27.0}
+2021-02-25 11:53:10 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Smt. D. D. Lokhande", "designation": "FO", "userId": "deepali.lokhande@mpcb.gov.in", "count": 31.0}
+2021-02-25 11:53:11 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Pradeep D. Wankhde", "designation": "SRO", "userId": "sroaurangabad1@mpcb.gov.in", "count": 1.0}
+2021-02-25 11:53:11 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Shri. R. U. PATIL", "designation": "SRO", "userId": "sronanded@mpcb.gov.in", "count": 1.0}
+2021-02-25 11:53:11 VisitsDaoImpl [INFO] legalNotices ::: {"name": " Ravindra A. Jadhav", "designation": "FO", "userId": "ravindra.jadhav@mpcb.gov.in", "count": 18.0}
+2021-02-25 11:53:11 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Dr. Gajanan Khadkikar", "designation": "FO", "userId": "gajanan.khadkikar@mpcb.gov.in", "count": 9.0}
+2021-02-25 11:53:11 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Dr. Kalyani Zadpide", "designation": "FO", "userId": "kalyani.zadpide@mpcb.gov.in", "count": 9.0}
+2021-02-25 11:53:11 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Dr.Y.A.Balankhe", "designation": "FO", "userId": "yogini.balankhe@mpcb.gov.in", "count": 2.0}
+2021-02-25 11:53:11 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Mr. R. G. Kshirsagar", "designation": "FO", "userId": "ravindra.kshirsagar@mpcb.gov.in", "count": 27.0}
+2021-02-25 11:53:11 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Mr. Raviraj Patil", "designation": "FO", "userId": "raviraj.patil@mpcb.gov.in", "count": 14.0}
+2021-02-25 11:53:11 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Shri. Namdev. P. Darsewad", "designation": "FO", "userId": "namdev.darsewad@mpcb.gov.in", "count": 26.0}
+2021-02-25 11:53:11 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Shri. Rajesh Auti", "designation": "FO", "userId": "rajesh.auti@mpcb.gov.in", "count": 14.0}
+2021-02-25 11:53:11 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Shri. Rakesh Dafade", "designation": "FO", "userId": "rakesh.dafade@mpcb.gov.in", "count": 20.0}
+2021-02-25 11:53:11 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Shri. S.N.Jirapure", "designation": "FO", "userId": "sanjay.jirapure@mpcb.gov.in", "count": 30.0}
+2021-02-25 11:53:11 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Shri.Pankaj Bawane", "designation": "FO", "userId": "pankaj.bawane@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:11 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Smt. D. D. Lokhande", "designation": "FO", "userId": "deepali.lokhande@mpcb.gov.in", "count": 6.0}
+2021-02-25 11:53:12 VisitsDaoImpl [INFO] Visited ::: {"name": " Ravindra A. Jadhav", "designation": "FO", "userId": "ravindra.jadhav@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:12 VisitsDaoImpl [INFO] Visited ::: {"name": "Dr. Gajanan Khadkikar", "designation": "FO", "userId": "gajanan.khadkikar@mpcb.gov.in", "count": 26.0}
+2021-02-25 11:53:12 VisitsDaoImpl [INFO] Visited ::: {"name": "Dr. Kalyani Zadpide", "designation": "FO", "userId": "kalyani.zadpide@mpcb.gov.in", "count": 28.0}
+2021-02-25 11:53:12 VisitsDaoImpl [INFO] Visited ::: {"name": "Mr. R. G. Kshirsagar", "designation": "FO", "userId": "ravindra.kshirsagar@mpcb.gov.in", "count": 22.0}
+2021-02-25 11:53:12 VisitsDaoImpl [INFO] Visited ::: {"name": "Mr. Raviraj Patil", "designation": "FO", "userId": "raviraj.patil@mpcb.gov.in", "count": 27.0}
+2021-02-25 11:53:12 VisitsDaoImpl [INFO] Visited ::: {"name": "Shri. Namdev. P. Darsewad", "designation": "FO", "userId": "namdev.darsewad@mpcb.gov.in", "count": 20.0}
+2021-02-25 11:53:12 VisitsDaoImpl [INFO] Visited ::: {"name": "Shri. Rajesh Auti", "designation": "FO", "userId": "rajesh.auti@mpcb.gov.in", "count": 17.0}
+2021-02-25 11:53:12 VisitsDaoImpl [INFO] Visited ::: {"name": "Shri. S.N.Jirapure", "designation": "FO", "userId": "sanjay.jirapure@mpcb.gov.in", "count": 34.0}
+2021-02-25 11:53:12 VisitsDaoImpl [INFO] Visited ::: {"name": "Shri.Pankaj Bawane", "designation": "FO", "userId": "pankaj.bawane@mpcb.gov.in", "count": 13.0}
+2021-02-25 11:53:12 VisitsDaoImpl [INFO] Visited ::: {"name": "Smt. D. D. Lokhande", "designation": "FO", "userId": "deepali.lokhande@mpcb.gov.in", "count": 13.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Reports ::: {"name": " Ravindra A. Jadhav", "designation": "FO", "userId": "ravindra.jadhav@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Reports ::: {"name": "Dr. Gajanan Khadkikar", "designation": "FO", "userId": "gajanan.khadkikar@mpcb.gov.in", "count": 26.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Reports ::: {"name": "Dr. Kalyani Zadpide", "designation": "FO", "userId": "kalyani.zadpide@mpcb.gov.in", "count": 30.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Reports ::: {"name": "Mr. R. G. Kshirsagar", "designation": "FO", "userId": "ravindra.kshirsagar@mpcb.gov.in", "count": 22.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Reports ::: {"name": "Mr. Raviraj Patil", "designation": "FO", "userId": "raviraj.patil@mpcb.gov.in", "count": 29.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Reports ::: {"name": "Shri. Namdev. P. Darsewad", "designation": "FO", "userId": "namdev.darsewad@mpcb.gov.in", "count": 20.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Reports ::: {"name": "Shri. Rajesh Auti", "designation": "FO", "userId": "rajesh.auti@mpcb.gov.in", "count": 17.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Reports ::: {"name": "Shri. S.N.Jirapure", "designation": "FO", "userId": "sanjay.jirapure@mpcb.gov.in", "count": 34.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Reports ::: {"name": "Shri.Pankaj Bawane", "designation": "FO", "userId": "pankaj.bawane@mpcb.gov.in", "count": 14.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Reports ::: {"name": "Smt. D. D. Lokhande", "designation": "FO", "userId": "deepali.lokhande@mpcb.gov.in", "count": 13.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] getByTeamVisitsData : _120Days
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Pending ::: {"name": "Pradeep D. Wankhde", "designation": "SRO", "userId": "sroaurangabad1@mpcb.gov.in", "count": 5.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri. R. U. PATIL", "designation": "SRO", "userId": "sronanded@mpcb.gov.in", "count": 1.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri. V.P.Shelke", "designation": "SRO", "userId": "srolatur@mpcb.gov.in", "count": 3.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Pending ::: {"name": "Y A Balankhe ", "designation": "SRO", "userId": "srojalna@mpcb.gov.in", "count": 1.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Pending ::: {"name": " Ravindra A. Jadhav", "designation": "FO", "userId": "ravindra.jadhav@mpcb.gov.in", "count": 10.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Pending ::: {"name": "Dr. Gajanan Khadkikar", "designation": "FO", "userId": "gajanan.khadkikar@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Pending ::: {"name": "Dr. Kalyani Zadpide", "designation": "FO", "userId": "kalyani.zadpide@mpcb.gov.in", "count": 11.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Pending ::: {"name": "Dr.Y.A.Balankhe", "designation": "FO", "userId": "yogini.balankhe@mpcb.gov.in", "count": 16.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Pending ::: {"name": "Mr. R. G. Kshirsagar", "designation": "FO", "userId": "ravindra.kshirsagar@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Pending ::: {"name": "Mr. Raviraj Patil", "designation": "FO", "userId": "raviraj.patil@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri. Namdev. P. Darsewad", "designation": "FO", "userId": "namdev.darsewad@mpcb.gov.in", "count": 10.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri. Rajesh Auti", "designation": "FO", "userId": "rajesh.auti@mpcb.gov.in", "count": 13.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri. Rakesh Dafade", "designation": "FO", "userId": "rakesh.dafade@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri. S.N.Jirapure", "designation": "FO", "userId": "sanjay.jirapure@mpcb.gov.in", "count": 20.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Pending ::: {"name": "Shri.Pankaj Bawane", "designation": "FO", "userId": "pankaj.bawane@mpcb.gov.in", "count": 9.0}
+2021-02-25 11:53:13 VisitsDaoImpl [INFO] Pending ::: {"name": "Smt. D. D. Lokhande", "designation": "FO", "userId": "deepali.lokhande@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:14 VisitsDaoImpl [INFO] Scheduled ::: {"name": " Ravindra A. Jadhav", "designation": "FO", "userId": "ravindra.jadhav@mpcb.gov.in", "count": 40.0}
+2021-02-25 11:53:14 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Dr. Gajanan Khadkikar", "designation": "FO", "userId": "gajanan.khadkikar@mpcb.gov.in", "count": 38.0}
+2021-02-25 11:53:14 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Dr. Kalyani Zadpide", "designation": "FO", "userId": "kalyani.zadpide@mpcb.gov.in", "count": 42.0}
+2021-02-25 11:53:14 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Dr.Y.A.Balankhe", "designation": "FO", "userId": "yogini.balankhe@mpcb.gov.in", "count": 34.0}
+2021-02-25 11:53:14 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Mr. R. G. Kshirsagar", "designation": "FO", "userId": "ravindra.kshirsagar@mpcb.gov.in", "count": 43.0}
+2021-02-25 11:53:14 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Mr. Raviraj Patil", "designation": "FO", "userId": "raviraj.patil@mpcb.gov.in", "count": 47.0}
+2021-02-25 11:53:14 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Shri. Namdev. P. Darsewad", "designation": "FO", "userId": "namdev.darsewad@mpcb.gov.in", "count": 38.0}
+2021-02-25 11:53:14 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Shri. Rajesh Auti", "designation": "FO", "userId": "rajesh.auti@mpcb.gov.in", "count": 35.0}
+2021-02-25 11:53:14 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Shri. Rakesh Dafade", "designation": "FO", "userId": "rakesh.dafade@mpcb.gov.in", "count": 28.0}
+2021-02-25 11:53:14 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Shri. S.N.Jirapure", "designation": "FO", "userId": "sanjay.jirapure@mpcb.gov.in", "count": 58.0}
+2021-02-25 11:53:14 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Shri.Pankaj Bawane", "designation": "FO", "userId": "pankaj.bawane@mpcb.gov.in", "count": 28.0}
+2021-02-25 11:53:14 VisitsDaoImpl [INFO] Scheduled ::: {"name": "Smt. D. D. Lokhande", "designation": "FO", "userId": "deepali.lokhande@mpcb.gov.in", "count": 33.0}
+2021-02-25 11:53:17 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Pradeep D. Wankhde", "designation": "SRO", "userId": "sroaurangabad1@mpcb.gov.in", "count": 1.0}
+2021-02-25 11:53:17 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Shri. R. U. PATIL", "designation": "SRO", "userId": "sronanded@mpcb.gov.in", "count": 1.0}
+2021-02-25 11:53:17 VisitsDaoImpl [INFO] legalNotices ::: {"name": " Ravindra A. Jadhav", "designation": "FO", "userId": "ravindra.jadhav@mpcb.gov.in", "count": 19.0}
+2021-02-25 11:53:17 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Dr. Gajanan Khadkikar", "designation": "FO", "userId": "gajanan.khadkikar@mpcb.gov.in", "count": 9.0}
+2021-02-25 11:53:17 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Dr. Kalyani Zadpide", "designation": "FO", "userId": "kalyani.zadpide@mpcb.gov.in", "count": 9.0}
+2021-02-25 11:53:17 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Dr.Y.A.Balankhe", "designation": "FO", "userId": "yogini.balankhe@mpcb.gov.in", "count": 2.0}
+2021-02-25 11:53:17 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Mr. R. G. Kshirsagar", "designation": "FO", "userId": "ravindra.kshirsagar@mpcb.gov.in", "count": 28.0}
+2021-02-25 11:53:17 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Mr. Raviraj Patil", "designation": "FO", "userId": "raviraj.patil@mpcb.gov.in", "count": 14.0}
+2021-02-25 11:53:17 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Shri. Namdev. P. Darsewad", "designation": "FO", "userId": "namdev.darsewad@mpcb.gov.in", "count": 27.0}
+2021-02-25 11:53:17 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Shri. Rajesh Auti", "designation": "FO", "userId": "rajesh.auti@mpcb.gov.in", "count": 14.0}
+2021-02-25 11:53:17 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Shri. Rakesh Dafade", "designation": "FO", "userId": "rakesh.dafade@mpcb.gov.in", "count": 21.0}
+2021-02-25 11:53:17 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Shri. S.N.Jirapure", "designation": "FO", "userId": "sanjay.jirapure@mpcb.gov.in", "count": 34.0}
+2021-02-25 11:53:17 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Shri.Pankaj Bawane", "designation": "FO", "userId": "pankaj.bawane@mpcb.gov.in", "count": 13.0}
+2021-02-25 11:53:17 VisitsDaoImpl [INFO] legalNotices ::: {"name": "Smt. D. D. Lokhande", "designation": "FO", "userId": "deepali.lokhande@mpcb.gov.in", "count": 6.0}
+2021-02-25 11:53:18 VisitsDaoImpl [INFO] Visited ::: {"name": " Ravindra A. Jadhav", "designation": "FO", "userId": "ravindra.jadhav@mpcb.gov.in", "count": 12.0}
+2021-02-25 11:53:18 VisitsDaoImpl [INFO] Visited ::: {"name": "Dr. Gajanan Khadkikar", "designation": "FO", "userId": "gajanan.khadkikar@mpcb.gov.in", "count": 26.0}
+2021-02-25 11:53:18 VisitsDaoImpl [INFO] Visited ::: {"name": "Dr. Kalyani Zadpide", "designation": "FO", "userId": "kalyani.zadpide@mpcb.gov.in", "count": 31.0}
+2021-02-25 11:53:18 VisitsDaoImpl [INFO] Visited ::: {"name": "Mr. R. G. Kshirsagar", "designation": "FO", "userId": "ravindra.kshirsagar@mpcb.gov.in", "count": 24.0}
+2021-02-25 11:53:18 VisitsDaoImpl [INFO] Visited ::: {"name": "Mr. Raviraj Patil", "designation": "FO", "userId": "raviraj.patil@mpcb.gov.in", "count": 29.0}
+2021-02-25 11:53:18 VisitsDaoImpl [INFO] Visited ::: {"name": "Shri. Namdev. P. Darsewad", "designation": "FO", "userId": "namdev.darsewad@mpcb.gov.in", "count": 22.0}
+2021-02-25 11:53:18 VisitsDaoImpl [INFO] Visited ::: {"name": "Shri. Rajesh Auti", "designation": "FO", "userId": "rajesh.auti@mpcb.gov.in", "count": 17.0}
+2021-02-25 11:53:18 VisitsDaoImpl [INFO] Visited ::: {"name": "Shri. S.N.Jirapure", "designation": "FO", "userId": "sanjay.jirapure@mpcb.gov.in", "count": 38.0}
+2021-02-25 11:53:18 VisitsDaoImpl [INFO] Visited ::: {"name": "Shri.Pankaj Bawane", "designation": "FO", "userId": "pankaj.bawane@mpcb.gov.in", "count": 14.0}
+2021-02-25 11:53:18 VisitsDaoImpl [INFO] Visited ::: {"name": "Smt. D. D. Lokhande", "designation": "FO", "userId": "deepali.lokhande@mpcb.gov.in", "count": 13.0}
+2021-02-25 11:53:19 VisitsDaoImpl [INFO] Reports ::: {"name": " Ravindra A. Jadhav", "designation": "FO", "userId": "ravindra.jadhav@mpcb.gov.in", "count": 13.0}
+2021-02-25 11:53:19 VisitsDaoImpl [INFO] Reports ::: {"name": "Dr. Gajanan Khadkikar", "designation": "FO", "userId": "gajanan.khadkikar@mpcb.gov.in", "count": 26.0}
+2021-02-25 11:53:19 VisitsDaoImpl [INFO] Reports ::: {"name": "Dr. Kalyani Zadpide", "designation": "FO", "userId": "kalyani.zadpide@mpcb.gov.in", "count": 35.0}
+2021-02-25 11:53:19 VisitsDaoImpl [INFO] Reports ::: {"name": "Mr. R. G. Kshirsagar", "designation": "FO", "userId": "ravindra.kshirsagar@mpcb.gov.in", "count": 28.0}
+2021-02-25 11:53:19 VisitsDaoImpl [INFO] Reports ::: {"name": "Mr. Raviraj Patil", "designation": "FO", "userId": "raviraj.patil@mpcb.gov.in", "count": 34.0}
+2021-02-25 11:53:19 VisitsDaoImpl [INFO] Reports ::: {"name": "Shri. Namdev. P. Darsewad", "designation": "FO", "userId": "namdev.darsewad@mpcb.gov.in", "count": 22.0}
+2021-02-25 11:53:19 VisitsDaoImpl [INFO] Reports ::: {"name": "Shri. Rajesh Auti", "designation": "FO", "userId": "rajesh.auti@mpcb.gov.in", "count": 19.0}
+2021-02-25 11:53:19 VisitsDaoImpl [INFO] Reports ::: {"name": "Shri. S.N.Jirapure", "designation": "FO", "userId": "sanjay.jirapure@mpcb.gov.in", "count": 48.0}
+2021-02-25 11:53:19 VisitsDaoImpl [INFO] Reports ::: {"name": "Shri.Pankaj Bawane", "designation": "FO", "userId": "pankaj.bawane@mpcb.gov.in", "count": 24.0}
+2021-02-25 11:53:19 VisitsDaoImpl [INFO] Reports ::: {"name": "Smt. D. D. Lokhande", "designation": "FO", "userId": "deepali.lokhande@mpcb.gov.in", "count": 13.0}
+2021-02-25 11:53:19 VisitsDaoImpl [INFO] getByTeamVisitsData-Upcomming : _30Days
+2021-02-25 11:53:20 VisitsDaoImpl [INFO] getByTeamVisitsData-Upcomming : _90Days
+2021-02-25 11:53:21 VisitsDaoImpl [INFO] getByTeamVisitsData-Upcomming : _120Days
+2021-02-25 11:55:17 VisitsDaoImpl [INFO] getBySubRegionVisitData
+2021-02-25 11:55:17 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _30Days
+2021-02-25 11:55:18 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Chiplun", "count": 26}
+2021-02-25 11:55:18 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Kolhapur", "count": 31}
+2021-02-25 11:55:18 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Ratnagiri", "count": 8}
+2021-02-25 11:55:18 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Sangli", "count": 31}
+2021-02-25 11:55:18 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Chiplun", "count": 29}
+2021-02-25 11:55:18 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Kolhapur", "count": 32}
+2021-02-25 11:55:18 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Ratnagiri", "count": 11}
+2021-02-25 11:55:18 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Sangli", "count": 35}
+2021-02-25 11:55:18 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Chiplun", "count": 8}
+2021-02-25 11:55:18 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Kolhapur", "count": 14}
+2021-02-25 11:55:18 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Sangli", "count": 11}
+2021-02-25 11:55:19 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Chiplun", "count": 2}
+2021-02-25 11:55:19 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _90Days
+2021-02-25 11:55:19 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Chiplun", "count": 26}
+2021-02-25 11:55:19 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Kolhapur", "count": 31}
+2021-02-25 11:55:19 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Ratnagiri", "count": 8}
+2021-02-25 11:55:19 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Sangli", "count": 31}
+2021-02-25 11:55:19 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Chiplun", "count": 80}
+2021-02-25 11:55:19 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Kolhapur", "count": 117}
+2021-02-25 11:55:19 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Ratnagiri", "count": 21}
+2021-02-25 11:55:19 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Sangli", "count": 85}
+2021-02-25 11:55:19 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Chiplun", "count": 23}
+2021-02-25 11:55:19 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Kolhapur", "count": 51}
+2021-02-25 11:55:19 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Sangli", "count": 24}
+2021-02-25 11:55:19 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Chiplun", "count": 33}
+2021-02-25 11:55:19 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Kolhapur", "count": 37}
+2021-02-25 11:55:19 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Sangli", "count": 24}
+2021-02-25 11:55:19 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _120Days
+2021-02-25 11:55:20 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Chiplun", "count": 26}
+2021-02-25 11:55:20 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Kolhapur", "count": 31}
+2021-02-25 11:55:20 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Ratnagiri", "count": 8}
+2021-02-25 11:55:20 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Sangli", "count": 31}
+2021-02-25 11:55:20 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Chiplun", "count": 86}
+2021-02-25 11:55:20 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Kolhapur", "count": 127}
+2021-02-25 11:55:20 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Ratnagiri", "count": 21}
+2021-02-25 11:55:20 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Sangli", "count": 96}
+2021-02-25 11:55:20 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Chiplun", "count": 29}
+2021-02-25 11:55:20 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Kolhapur", "count": 57}
+2021-02-25 11:55:20 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Sangli", "count": 29}
+2021-02-25 11:55:20 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Chiplun", "count": 39}
+2021-02-25 11:55:20 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Kolhapur", "count": 38}
+2021-02-25 11:55:20 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Sangli", "count": 29}
+2021-02-25 11:55:20 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _30Days
+2021-02-25 11:55:21 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _90Days
+2021-02-25 11:55:22 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _120Days
+2021-02-25 13:37:29 LegalDaoImpl [INFO] getPendingLegalActionsData
+2021-02-25 13:42:31 LegalDaoImpl [INFO] getPendingLegalActionsData : _0To5Days
+2021-02-25 13:47:08 LegalDaoImpl [INFO] getPendingLegalActionsData : _0To7Days
+2021-02-25 13:47:29 LegalDaoImpl [INFO] getPendingLegalActionsData : _15Days
+2021-02-25 13:47:40 LegalDaoImpl [INFO] getPendingLegalActionsData : _30Days
+2021-02-25 13:48:19 LegalDaoImpl [INFO] {"caseType": "PD", "caseCount": 2}
+2021-02-25 13:48:20 LegalDaoImpl [INFO] {"caseType": "WN", "caseCount": 3}
+2021-02-25 13:48:20 LegalDaoImpl [INFO] {"caseType": "CD", "caseCount": 13}
+2021-02-25 13:48:20 LegalDaoImpl [INFO] {"caseType": "SCN", "caseCount": 76}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] getPendingLegalActionsData : _30ToAllDays
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "PD", "caseCount": 236}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "WN", "caseCount": 65}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "CD", "caseCount": 113}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "SCN", "caseCount": 937}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] getPendingLegalActionsData : _60Days
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "PD", "caseCount": 14}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "WN", "caseCount": 6}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "CD", "caseCount": 25}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "SCN", "caseCount": 209}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] getPendingLegalActionsData : _90Days
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "PD", "caseCount": 23}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "WN", "caseCount": 10}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "CD", "caseCount": 50}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "SCN", "caseCount": 266}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] getPendingLegalActionsData : _120ToAllDays
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "PD", "caseCount": 208}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "WN", "caseCount": 55}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "CD", "caseCount": 72}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] {"caseType": "SCN", "caseCount": 683}
+2021-02-25 13:49:19 LegalDaoImpl [INFO] getPendingLegalActionsData : upcoming_30Days
+2021-02-25 13:49:20 LegalDaoImpl [INFO] getPendingLegalActionsData : _allDays
+2021-02-25 13:49:20 LegalDaoImpl [INFO] {"caseType": "PD", "caseCount": 238}
+2021-02-25 13:49:20 LegalDaoImpl [INFO] {"caseType": "WN", "caseCount": 68}
+2021-02-25 13:49:20 LegalDaoImpl [INFO] {"caseType": "CD", "caseCount": 126}
+2021-02-25 13:49:20 LegalDaoImpl [INFO] {"caseType": "SCN", "caseCount": 1013}
+2021-02-25 13:57:47 LegalDaoImpl [INFO] getByTeamLegalData
+2021-02-25 13:57:47 LegalDaoImpl [INFO] getByTeamLegalData : _0To5Days
+2021-02-25 13:57:47 LegalDaoImpl [INFO] getByTeamLegalData : _0To7Days
+2021-02-25 13:57:47 LegalDaoImpl [INFO] getByTeamLegalData : _15Days
+2021-02-25 13:57:48 LegalDaoImpl [INFO] getByTeamLegalData : _30Days
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 4.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Y A Balankhe ", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 2.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] getByTeamLegalData : _30ToAllDays
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 27.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Shri. Jayant. A. Kadam", "userId": "sroparbhani@mpcb.gov.in", "designation": "SRO", "count": 6.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Shri. R. U. PATIL", "userId": "sronanded@mpcb.gov.in", "designation": "SRO", "count": 12.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Shri. V.P.Shelke", "userId": "srolatur@mpcb.gov.in", "designation": "SRO", "count": 19.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Y A Balankhe ", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 8.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] getByTeamLegalData : _60Days
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 9.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Shri. Jayant. A. Kadam", "userId": "sroparbhani@mpcb.gov.in", "designation": "SRO", "count": 3.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Shri. V.P.Shelke", "userId": "srolatur@mpcb.gov.in", "designation": "SRO", "count": 2.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Y A Balankhe ", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 4.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] getByTeamLegalData : _90Days
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 11.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Shri. Jayant. A. Kadam", "userId": "sroparbhani@mpcb.gov.in", "designation": "SRO", "count": 3.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Shri. V.P.Shelke", "userId": "srolatur@mpcb.gov.in", "designation": "SRO", "count": 2.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] {"name": "Y A Balankhe ", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 5.0}
+2021-02-25 13:57:48 LegalDaoImpl [INFO] getByTeamLegalData : _120ToAllDays
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 17.0}
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Shri. Jayant. A. Kadam", "userId": "sroparbhani@mpcb.gov.in", "designation": "SRO", "count": 2.0}
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Shri. R. U. PATIL", "userId": "sronanded@mpcb.gov.in", "designation": "SRO", "count": 12.0}
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Shri. V.P.Shelke", "userId": "srolatur@mpcb.gov.in", "designation": "SRO", "count": 17.0}
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Y A Balankhe ", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 5.0}
+2021-02-25 13:57:49 LegalDaoImpl [INFO] getByTeamLegalData : upcoming_30Days
+2021-02-25 13:57:49 LegalDaoImpl [INFO] getByTeamLegalData : _allDays
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Pradeep D. Wankhde", "userId": "sroaurangabad1@mpcb.gov.in", "designation": "SRO", "count": 31.0}
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Shri. Jayant. A. Kadam", "userId": "sroparbhani@mpcb.gov.in", "designation": "SRO", "count": 6.0}
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Shri. R. U. PATIL", "userId": "sronanded@mpcb.gov.in", "designation": "SRO", "count": 12.0}
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Shri. V.P.Shelke", "userId": "srolatur@mpcb.gov.in", "designation": "SRO", "count": 19.0}
+2021-02-25 13:57:49 LegalDaoImpl [INFO] {"name": "Y A Balankhe ", "userId": "srojalna@mpcb.gov.in", "designation": "SRO", "count": 10.0}
+2021-02-25 22:02:24 IndustryMasterDaoImpl [INFO] {"param": ["PM"]}
+2021-02-25 22:02:25 IndustryMasterDaoImpl [INFO] {"param": ["Baggase"]}
+2021-02-25 22:02:26 IndustryMasterDaoImpl [INFO] {"param": ["NA", "5.2 Wastes/residue containing oil", "5.1 Used or spent oil", "5.1 Used /spent oil"]}
+2021-02-25 22:03:05 IndustryMasterDaoImpl [INFO] {"param": ["PM"]}
+2021-02-25 22:04:01 IndustryMasterDaoImpl [INFO] {"param": ["Baggase"]}
+2021-02-25 22:04:19 IndustryMasterDaoImpl [INFO] {"param": ["NA", "5.2 Wastes/residue containing oil", "5.1 Used or spent oil", "5.1 Used /spent oil"]}
+2021-02-25 22:05:19 IndustryMasterDaoImpl [INFO] {"param": ["PM"]}
+2021-02-25 22:05:25 IndustryMasterDaoImpl [INFO] {"param": ["Baggase"]}
+2021-02-25 22:05:26 IndustryMasterDaoImpl [INFO] {"param": ["NA", "5.2 Wastes/residue containing oil", "5.1 Used or spent oil", "5.1 Used /spent oil"]}
+2021-02-25 22:05:53 IndustryMasterDaoImpl [INFO] {"param": ["PM"]}
+2021-02-25 22:06:00 IndustryMasterDaoImpl [INFO] {"param": ["Baggase"]}
+2021-02-25 22:06:03 IndustryMasterDaoImpl [INFO] {"param": ["NA", "5.2 Wastes/residue containing oil", "5.1 Used or spent oil", "5.1 Used /spent oil"]}
+2021-02-25 22:10:00 IndustryMasterDaoImpl [INFO] {"param": ["PM"]}
+2021-02-25 22:10:01 IndustryMasterDaoImpl [INFO] {"param": ["Baggase"]}
+2021-02-25 22:10:01 IndustryMasterDaoImpl [INFO] {"param": ["NA", "5.2 Wastes/residue containing oil", "5.1 Used or spent oil", "5.1 Used /spent oil"]}
+2021-02-25 22:10:01 IndustryMasterDaoImpl [INFO] {"param": ["PM"]}
+2021-02-25 22:10:02 IndustryMasterDaoImpl [INFO] {"param": ["TSS", "BOD", "COD"]}
+2021-02-25 22:10:02 IndustryMasterDaoImpl [INFO] {"param": ["BAGASSE"]}
+2021-02-25 22:10:02 IndustryMasterDaoImpl [INFO] {"param": ["STP", "ETP"]}
+2021-02-25 22:10:03 IndustryMasterDaoImpl [INFO] {"param": ["5.1 Used or spent oil", "5.1 Used /spent oil"]}
