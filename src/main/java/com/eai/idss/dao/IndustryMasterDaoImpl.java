@@ -1261,6 +1261,13 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			industryMasterDetailResponseVo.setType(industryMaster.getType());
 			industryMasterDetailResponseVo.setCscore(industryMaster.getCscore());
 			industryMasterDetailResponseVo.setIndustryName(industryMaster.getIndustryName());
+
+			industryMasterDetailResponseVo.setLastVisited(industryMaster.getLastVisited());
+			industryMasterDetailResponseVo.setConsentValidityDate(industryMaster.getConsentValidityDate());
+			industryMasterDetailResponseVo.setTotalLegalActions(industryMaster.getTotalLegalActions());
+			industryMasterDetailResponseVo.setLegalActionsPending(industryMaster.getLegalActionsPending());
+			industryMasterDetailResponseVo.setCommissioningDate(industryMaster.getCommissioningDate());
+
 			String date = LocalDate.of(1970, 1,1).format(DateTimeFormatter.ISO_LOCAL_DATE);
 
 			Query query = new Query();
@@ -1271,6 +1278,15 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			List<Directions> directionsList = mongoTemplate.find(query, Directions.class);
 
 			industryMasterDetailResponseVo.setPendingLegalAction(directionsList.size());
+
+			Query queryVisit = new Query();
+			queryVisit.addCriteria(Criteria.where("industryId").is(industryId));
+			queryVisit.with(Sort.by(Sort.Direction.DESC,"visitId"));
+			queryVisit.limit(1);
+			List<Visits> visitObj = mongoTemplate.find(queryVisit, Visits.class);
+			if(null!=visitObj && visitObj.size()>0)
+				industryMasterDetailResponseVo.setLastVisited(visitObj.get(0).getVisitedDate());
+
 			return industryMasterDetailResponseVo;
 		}catch(Exception e){
 			e.printStackTrace();
