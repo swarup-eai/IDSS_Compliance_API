@@ -895,23 +895,41 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	}
 
 	private void populateEmptyObjList(ComparisonTableParamGroupVo ppgVo) {
-		if(null==ppgVo.getConsentSKU() || ppgVo.getConsentSKU().isEmpty()) {
-			ppgVo.setConsentSKU(getDummySKUObj());
+		
+		int cSKULength = ppgVo.getConsentSKU() == null ? 0 : ppgVo.getConsentSKU().size();
+		int eSKULength = ppgVo.getEsrSKU() == null ? 0 : ppgVo.getEsrSKU().size();
+		int fSKULength = ppgVo.getForm4SKU() == null ? 0 : ppgVo.getForm4SKU().size();
+		
+		int maxSize = cSKULength > eSKULength ? cSKULength : eSKULength > fSKULength ? eSKULength : fSKULength;
+		
+		if(cSKULength < maxSize) {
+			if(cSKULength==0)
+				ppgVo.setConsentSKU(getDummySKUObj(maxSize - cSKULength));
+			else
+				ppgVo.getConsentSKU().addAll(getDummySKUObj(maxSize - cSKULength));
 		}
 		
-		if(null==ppgVo.getEsrSKU() || ppgVo.getEsrSKU().isEmpty()) {
-			ppgVo.setEsrSKU(getDummySKUObj());
+		if(eSKULength < maxSize) {
+			if(eSKULength==0)
+				ppgVo.setEsrSKU(getDummySKUObj(maxSize - eSKULength));
+			else
+				ppgVo.getEsrSKU().addAll(getDummySKUObj(maxSize - eSKULength));
 		}
 		
-		if(null==ppgVo.getForm4SKU() || ppgVo.getForm4SKU().isEmpty()) {
-			ppgVo.setForm4SKU(getDummySKUObj());
+		if(fSKULength < maxSize) {
+			if(fSKULength==0)
+				ppgVo.setForm4SKU(getDummySKUObj(maxSize - fSKULength));
+			else
+				ppgVo.getForm4SKU().addAll(getDummySKUObj(maxSize - fSKULength));
 		}
 	}
 
-	private List<SKU> getDummySKUObj() {
+	private List<SKU> getDummySKUObj(int listSize) {
 		List<SKU> list = new ArrayList<SKU>();
-		SKU sku = new SKU("-","-","-");
-		list.add(sku);
+		for(int i=0;i<listSize;i++) {
+			SKU sku = new SKU("-","-","-");
+			list.add(sku);
+		}
 		return list;
 	}
 	
@@ -937,11 +955,12 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		}
 		ppgVoRaw.setEsrSKU(eSKUList);
 		
+		populateEmptyObjList(ppgVoRaw);
 		ppgVoList.add(ppgVoRaw);
 		//////////////////////////////////
 		
 		ComparisonTableParamGroupVo ppgVoWater = new ComparisonTableParamGroupVo();
-		ppgVoRaw.setParam("Water");
+		ppgVoWater.setParam("Water");
 		List<SKU> wcSKUList = new ArrayList<SKU>();
 		List<SKU> infracSKUList = new ArrayList<SKU>();
 		for(Consent_RESOURCES_comparison csc : cscList) {

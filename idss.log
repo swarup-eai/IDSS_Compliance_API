@@ -38,3 +38,10 @@
 2021-03-02 17:10:32 IndustryMasterDaoImpl [INFO] {"param": ["DIESEL ", "NA", "DIESEL", "COAL"]}
 2021-03-02 17:10:32 IndustryMasterDaoImpl [INFO] {"param": ["STP", "ETP"]}
 2021-03-02 17:10:32 IndustryMasterDaoImpl [INFO] {"param": ["Other Hazardous Waste", "33.1 Empty barrels/containers/liners contaminated with hazardous chemicals /wastes", "35.1 Filters and filter material which have organic liquid", "28.6 Spent solvents", "28.5 Spent organic solvent", "35.3 Spent carbon*", "33.3 Discarded containers / barrels / liner", "28.2 Spent catalyst", "28.3 Spent carbon", "35.2 Spent catalyst*"]}
+2021-03-02 19:32:46 IndustryMasterDaoImpl [INFO] getComparisonData...906, consentYear: 2020, esrYear: 2020
+2021-03-02 19:40:47 IndustryMasterDaoImpl [INFO] getComparisonData...906, consentYear: 2020, esrYear: 2020
+2021-03-02 19:41:39 IndustryMasterDaoImpl [INFO] getComparisonData...906, consentYear: 2020, esrYear: 2020
+2021-03-02 19:44:08 IndustryMasterDaoImpl [INFO] getComparisonData...906, consentYear: 2020, esrYear: 2020
+2021-03-02 19:49:09 IndustryMasterDaoImpl [INFO] getComparisonData...906, consentYear: 2020, esrYear: 2020
+2021-03-02 19:52:46 IndustryMasterDaoImpl [INFO] getComparisonData...906, consentYear: 2020, esrYear: 2020
+2021-03-02 19:54:13 IndustryMasterDaoImpl [INFO] getComparisonData...906, consentYear: 2020, esrYear: 2020
