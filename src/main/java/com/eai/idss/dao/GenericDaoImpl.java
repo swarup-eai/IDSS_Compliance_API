@@ -44,6 +44,8 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
+
 @Repository
 public class GenericDaoImpl implements GenericDao {
 
@@ -466,15 +468,19 @@ public class GenericDaoImpl implements GenericDao {
 				List<MyVisits> tileMap =  new ArrayList<MyVisits>();
 	        
 	        LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
+	        LocalDateTime date = currentTime.now().withDayOfMonth(1);
+	        LocalDateTime date1 = currentTime.with(lastDayOfMonth());
 			String date7DaysBack = currentTime.minusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
 			String date7DaysAhead = currentTime.plusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
 			String today = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
-			
-			List<? extends Bson> pipeline = getMyvisitsPipeline(userName, date7DaysBack,today, true);
+			String visitedDateFromDate = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
+			String scheduledOnToDate = date1.format(DateTimeFormatter.ISO_LOCAL_DATE);
+
+				List<? extends Bson> pipeline = getMyvisitsPipeline(userName, visitedDateFromDate,today, true);
 			
 		    extractVisitsData(collection, tileMap, pipeline);
 		    
-		    pipeline = getMyvisitsPipeline(userName, date7DaysBack,date7DaysAhead, false);
+		    pipeline = getMyvisitsPipeline(userName, visitedDateFromDate,scheduledOnToDate, false);
 			
 		    extractVisitsData(collection, tileMap, pipeline);
 		    
