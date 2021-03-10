@@ -8,7 +8,16 @@ public class PollutionScoreFilter {
 	private List<String> parametersList;
 	private String fromDate;
 	private String toDate;
+	private int hours;
 	
+	public int getHours() {
+		return hours;
+	}
+
+	public void setHours(int hours) {
+		this.hours = hours;
+	}
+
 	public String getFromDate() {
 		return fromDate;
 	}

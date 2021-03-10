@@ -5,13 +5,13 @@ import java.util.Map;
 
 public class ComparisonTableResponseVo {
 
-	private Map<String,List<ComparisonTableParamGroupVo>> comparisonTable;
+	private Map<String,List<ComparisonTableSKUVo>> comparisonTable;
 
-	public Map<String, List<ComparisonTableParamGroupVo>> getComparisonTable() {
+	public Map<String, List<ComparisonTableSKUVo>> getComparisonTable() {
 		return comparisonTable;
 	}
 
-	public void setComparisonTable(Map<String, List<ComparisonTableParamGroupVo>> comparisonTable) {
+	public void setComparisonTable(Map<String, List<ComparisonTableSKUVo>> comparisonTable) {
 		this.comparisonTable = comparisonTable;
 	}
 

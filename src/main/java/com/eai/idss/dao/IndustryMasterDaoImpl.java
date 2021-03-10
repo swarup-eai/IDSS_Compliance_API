@@ -7,6 +7,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,8 +68,9 @@ import com.eai.idss.vo.BatteryVo;
 import com.eai.idss.vo.BioMedWasteAuthFormVo;
 import com.eai.idss.vo.BioMedWasteVo;
 import com.eai.idss.vo.ComlianceScoreFilter;
-import com.eai.idss.vo.ComparisonTableParamGroupVo;
+import com.eai.idss.vo.ComparisonTablePollutantVo;
 import com.eai.idss.vo.ComparisonTableResponseVo;
+import com.eai.idss.vo.ComparisonTableSKUVo;
 import com.eai.idss.vo.ComplianceScoreResponseVo;
 import com.eai.idss.vo.EWasteForm4Vo;
 import com.eai.idss.vo.EWasteVo;
@@ -88,7 +90,6 @@ import com.eai.idss.vo.PlasticVo;
 import com.eai.idss.vo.PollutionScoreFilter;
 import com.eai.idss.vo.PollutionScoreResponseVo;
 import com.eai.idss.vo.PollutionScoreValueVo;
-import com.eai.idss.vo.SKU;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -430,7 +431,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			List<PollutionScoreValueVo> psvList = new ArrayList<PollutionScoreValueVo>();
 			if(OCEMS.equalsIgnoreCase(formType.toString())) {
 				psvList = getOCEMSPollutionScoreValue(formType.toString(),"industry_mis_id",cf.getIndustryId(),collectionName.toString(),
-						null!=paramColumnName?paramColumnName.toString():null,paramName.toString(),valueColumnName.toString(),cf.getFromDate(),cf.getToDate());
+						null!=paramColumnName?paramColumnName.toString():null,paramName.toString(),valueColumnName.toString(),cf.getFromDate(),cf.getToDate(),cf.getHours());
 			}else {
 				psvList = getPollutionScoreValue(formType.toString(),"industryId",cf.getIndustryId(),collectionName.toString(),
 						null!=paramColumnName?paramColumnName.toString():null,paramName.toString(),valueColumnName.toString(),cf.getFromDate(),cf.getToDate());
@@ -467,7 +468,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 	}
 	
 	private List<PollutionScoreValueVo> getOCEMSPollutionScoreValue(String formType,String industryIdentifier, long industryId,String collectionName,
-			String paramField,String paramValue,String valueField,String fromDate,String toDate) {
+			String paramField,String paramValue,String valueField,String fromDate,String toDate,int byHourOrDay) {
 		try {
 			String dateColumnName = IDSSUtil.getDateColumnName(formType);
 			
@@ -477,9 +478,12 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 				matchDoc.append(paramField, paramValue);
 			
 			matchDoc.append(dateColumnName, new Document()
-	        		.append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(toDate+" 00:00:00.000+0000"))
+	        		.append("$lte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(toDate+" 23:59:59.000+0000"))
 	                .append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fromDate+" 00:00:00.000+0000")));
 	        
+			String groupByDateTimeFormat = "%Y-%m-%d";
+			if(1==byHourOrDay)
+				groupByDateTimeFormat = "%Y-%m-%d %H";
 			
 			List<PollutionScoreValueVo> pList = new ArrayList<PollutionScoreValueVo>();
 			List<? extends Bson> pipeline = Arrays.asList(
@@ -489,7 +493,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			                    .append("_id", false)
 			                    .append("day", new Document()
 				                        .append("$dateToString", new Document()
-				                                .append("format", "%Y-%m-%d")
+				                                .append("format", groupByDateTimeFormat)
 				                                .append("date", "$"+dateColumnName)
 				                        )
 				                )
@@ -509,7 +513,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			            new Document()
 			            .append("$project", new Document()
 			                    .append("_id", false)
-			                    .append( "monthYear","$_id")
+			                    .append( "year","$_id")
 			                    .append("value", "$value")
 			            )
 					);
@@ -604,7 +608,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 		logger.info("getComparisonData..."+industryId+", consentYear: "+consentYear+", esrYear: "+esrYear);
 		ComparisonTableResponseVo psrVo = new ComparisonTableResponseVo();
-		Map<String,List<ComparisonTableParamGroupVo>> mapPGVo = new LinkedHashMap<String, List<ComparisonTableParamGroupVo>>();
+		Map<String,List<ComparisonTableSKUVo>> mapPGVo = new LinkedHashMap<String, List<ComparisonTableSKUVo>>();
 		
 		mapPGVo.put("production",getProductionComparisonData(industryId,consentYear,esrYear, form4Year));
 		mapPGVo.put("resources",getResourcesComparisonData(industryId,consentYear,esrYear));
@@ -615,38 +619,52 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return psrVo;
 	}
 	
-	private List<ComparisonTableParamGroupVo> getStackComparisonData(long industryId,int consentYear,int esrYear) {
+	private List<ComparisonTableSKUVo> getStackComparisonData(long industryId,int consentYear,int esrYear) {
 
-		List<ComparisonTableParamGroupVo> ppgVoList = new ArrayList<ComparisonTableParamGroupVo>();
+		List<ComparisonTableSKUVo> ppgVoList = new ArrayList<ComparisonTableSKUVo>();
 		ppgVoList.add(getStackData(industryId,consentYear,esrYear));
 		return ppgVoList;
 	}
 	
-	private ComparisonTableParamGroupVo getStackData(long industryId,int consentYear,int esrYear) {
+	private ComparisonTableSKUVo getStackData(long industryId,int consentYear,int esrYear) {
 		
 		List<Consent_STACK_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_STACK_comparison.class);
-		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
+		ComparisonTableSKUVo ppgVo = new ComparisonTableSKUVo();
 		ppgVo.setParam("Stack");
-		List<SKU> cSKUList = new ArrayList<SKU>();
+		List<ComparisonTablePollutantVo> ctpList = new ArrayList<ComparisonTablePollutantVo>();
 		for(Consent_STACK_comparison csc : cscList) {
-			SKU sku1 = new SKU("Stack Number",csc.getStackNumber(),"");
-			cSKUList.add(sku1);
-			SKU sku2 = new SKU("Stack Fuel",csc.getStackFuelType(),"");
-			cSKUList.add(sku2);
-			SKU sku3 = new SKU("Stack Attached To",csc.getStackAttachedTo(),"");
-			cSKUList.add(sku3);
-			SKU sku4 = new SKU("Stack Pollutants",csc.getStackNatureOfPollutants(),"");
-			cSKUList.add(sku4);
+			ComparisonTablePollutantVo cb = new ComparisonTablePollutantVo();
+			cb.setPollutant("Stack Number");
+			cb.setConsentQuantity(String.valueOf(csc.getStackNumber()));
+			cb.setConsentUnit("");
+			ctpList.add(cb);
+			
+			cb = new ComparisonTablePollutantVo();
+			cb.setPollutant("Stack Fuel");
+			cb.setConsentQuantity(String.valueOf(csc.getStackFuelType()));
+			cb.setConsentUnit("");
+			ctpList.add(cb);
+			
+			cb = new ComparisonTablePollutantVo();
+			cb.setPollutant("Stack Attached To");
+			cb.setConsentQuantity(String.valueOf(csc.getStackAttachedTo()));
+			cb.setConsentUnit("");
+			ctpList.add(cb);
+			
+			cb = new ComparisonTablePollutantVo();
+			cb.setPollutant("Stack Pollutants");
+			cb.setConsentQuantity(String.valueOf(csc.getStackNatureOfPollutants()));
+			cb.setConsentUnit("");
+			ctpList.add(cb);
 		}
-		ppgVo.setConsentSKU(cSKUList);
-		populateEmptyObjList(ppgVo);
+		ppgVo.setData(ctpList);
 		return ppgVo;
 	}
 
 
-	private List<ComparisonTableParamGroupVo> getPollutionComparisonData(long industryId,int consentYear,int esrYear) {
+	private List<ComparisonTableSKUVo> getPollutionComparisonData(long industryId,int consentYear,int esrYear) {
 
-		List<ComparisonTableParamGroupVo> ppgVoList = new ArrayList<ComparisonTableParamGroupVo>();
+		List<ComparisonTableSKUVo> ppgVoList = new ArrayList<ComparisonTableSKUVo>();
 		
 		ppgVoList.add(getAirData(industryId,consentYear,esrYear));
 		
@@ -663,29 +681,44 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return ppgVoList;
 	}
 	
-	private ComparisonTableParamGroupVo getEffluentData(long industryId,int consentYear,int esrYear) {
+	private ComparisonTableSKUVo getEffluentData(long industryId,int consentYear,int esrYear) {
+
+		Map<String,ComparisonTablePollutantVo> pollutMap = new HashMap<String, ComparisonTablePollutantVo>();
+		ComparisonTableSKUVo ppgVo = new ComparisonTableSKUVo();
+		ppgVo.setParam("Effluent");
 		
 		List<Consent_EFFLUENT_Comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_EFFLUENT_Comparison.class);
-		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
-		ppgVo.setParam("Effluent");
-		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_EFFLUENT_Comparison csc : cscList) {
-			SKU skuE = new SKU("ETP",String.valueOf(csc.getCapacityOfEtp()),csc.getName());
-			cSKUList.add(skuE);
-			SKU skuS = new SKU("STP",String.valueOf(csc.getCapacityOfStp()),csc.getName());
-			cSKUList.add(skuS);
+			ComparisonTablePollutantVo cb = new ComparisonTablePollutantVo();
+			cb.setPollutant("ETP");
+			cb.setConsentQuantity(String.valueOf(csc.getCapacityOfEtp()));
+			cb.setConsentUnit(csc.getName());
+			pollutMap.put("ETP", cb);
+			
+			cb = new ComparisonTablePollutantVo();
+			cb.setPollutant("STP");
+			cb.setConsentQuantity(String.valueOf(csc.getCapacityOfStp()));
+			cb.setConsentUnit(csc.getName());
+			pollutMap.put("STP", cb);
 		}
-		ppgVo.setConsentSKU(cSKUList);
 		
 		List<ESR_EFFLUENT_Comparison> escList = mongoTemplate.find(getESRQueryObj(industryId, esrYear), ESR_EFFLUENT_Comparison.class);
-		List<SKU> eSKUList = new ArrayList<SKU>();
-		for(ESR_EFFLUENT_Comparison esc : escList) {
-			SKU sku = new SKU(esc.getEffluentParticulars(),String.valueOf(esc.getEffluentParticularsQuantityActual()),esc.getName());
-			eSKUList.add(sku);
+		for(ESR_EFFLUENT_Comparison csc : escList) {
+			if(pollutMap.containsKey(csc.getEffluentParticulars())){
+				ComparisonTablePollutantVo ctpVo = pollutMap.get(csc.getEffluentParticulars());
+				ctpVo.setEsrQuantity(String.valueOf(csc.getEffluentParticularsQuantityActual()));
+				ctpVo.setEsrUnit(csc.getName());
+				pollutMap.put(csc.getEffluentParticulars(), ctpVo);
+			}else {
+				ComparisonTablePollutantVo ctpVo = new ComparisonTablePollutantVo();
+				ctpVo.setPollutant(csc.getEffluentParticulars());
+				ctpVo.setEsrQuantity(String.valueOf(csc.getEffluentParticularsQuantityActual()));
+				ctpVo.setEsrUnit(csc.getName());
+				pollutMap.put(csc.getEffluentParticulars(), ctpVo);
+			}
 		}
-		ppgVo.setEsrSKU(eSKUList);
-		
-		populateEmptyObjList(ppgVo);
+		List<ComparisonTablePollutantVo> data = pollutMap.values().stream().collect(Collectors.toList());
+		ppgVo.setData(data);
 		return ppgVo;
 	}
 	
@@ -704,50 +737,89 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 //		return ppgVo;
 //	}
 	
-	private ComparisonTableParamGroupVo getHazWasteData(long industryId,int consentYear,int esrYear) {
+	private ComparisonTableSKUVo getHazWasteData(long industryId,int consentYear,int esrYear) {
+
+		Map<String,ComparisonTablePollutantVo> pollutMap = new HashMap<String, ComparisonTablePollutantVo>();
+		
+		ComparisonTableSKUVo ppgVo = new ComparisonTableSKUVo();
+		ppgVo.setParam("Hazardous Waste");
 		
 		List<Consent_HW_Comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_HW_Comparison.class);
-		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
-		ppgVo.setParam("Hazardous Waste");
-		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_HW_Comparison csc : cscList) {
-			SKU sku = new SKU(csc.getName(),String.valueOf(csc.getQuantity()),csc.getNewUom());
-			cSKUList.add(sku);
+			if(pollutMap.containsKey(csc.getName())){
+				ComparisonTablePollutantVo ctpVo = pollutMap.get(csc.getName());
+				ctpVo.setConsentQuantity(String.valueOf(csc.getQuantity()));
+				ctpVo.setConsentUnit(csc.getNewUom());
+				pollutMap.put(csc.getName(), ctpVo);
+			}else {
+				ComparisonTablePollutantVo ctpVo = new ComparisonTablePollutantVo();
+				ctpVo.setPollutant(csc.getName());
+				ctpVo.setConsentQuantity(String.valueOf(csc.getQuantity()));
+				ctpVo.setConsentUnit(csc.getNewUom());
+				pollutMap.put(csc.getName(), ctpVo);
+			}
 		}
-		ppgVo.setConsentSKU(cSKUList);
 		
 		List<ESR_FUEL_comparison> escList = mongoTemplate.find(getESRQueryObj(industryId, esrYear), ESR_FUEL_comparison.class);
-		List<SKU> eSKUList = new ArrayList<SKU>();
-		for(ESR_FUEL_comparison esc : escList) {
-			SKU sku = new SKU(esc.getName(),String.valueOf(esc.getHwQuantityNow()),esc.getNewUom());
-			eSKUList.add(sku);
+		for(ESR_FUEL_comparison csc : escList) {
+			if(pollutMap.containsKey(csc.getName())){
+				ComparisonTablePollutantVo ctpVo = pollutMap.get(csc.getName());
+				ctpVo.setEsrQuantity(String.valueOf(csc.getHwQuantityNow()));
+				ctpVo.setEsrUnit(csc.getNewUom());
+				pollutMap.put(csc.getName(), ctpVo);
+			}else {
+				ComparisonTablePollutantVo ctpVo = new ComparisonTablePollutantVo();
+				ctpVo.setPollutant(csc.getName());
+				ctpVo.setEsrQuantity(String.valueOf(csc.getHwQuantityNow()));
+				ctpVo.setEsrUnit(csc.getNewUom());
+				pollutMap.put(csc.getName(), ctpVo);
+			}
 		}
-		ppgVo.setEsrSKU(eSKUList);
-		
-		populateEmptyObjList(ppgVo);
+		List<ComparisonTablePollutantVo> data = pollutMap.values().stream().collect(Collectors.toList());
+		ppgVo.setData(data);
 		return ppgVo;
 	}
 	
-	private ComparisonTableParamGroupVo getFuelData(long industryId,int consentYear,int esrYear) {
+	private ComparisonTableSKUVo getFuelData(long industryId,int consentYear,int esrYear) {
+		ComparisonTableSKUVo ppgVo = new ComparisonTableSKUVo();
+		ppgVo.setParam("Fuel");
+		
+		Map<String,ComparisonTablePollutantVo> pollutMap = new HashMap<String, ComparisonTablePollutantVo>();
 		
 		List<Consent_FUEL_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_FUEL_comparison.class);
-		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
-		ppgVo.setParam("Fuel");
-		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_FUEL_comparison csc : cscList) {
-			SKU sku = new SKU(csc.getFuelName(),String.valueOf(csc.getFuelConsumptions()),csc.getName());
-			cSKUList.add(sku);
+			if(pollutMap.containsKey(csc.getFuelName())){
+				ComparisonTablePollutantVo ctpVo = pollutMap.get(csc.getFuelName());
+				ctpVo.setConsentQuantity(String.valueOf(csc.getFuelConsumptions()));
+				ctpVo.setConsentUnit(csc.getName());
+				pollutMap.put(csc.getFuelName(), ctpVo);
+			}else {
+				ComparisonTablePollutantVo ctpVo = new ComparisonTablePollutantVo();
+				ctpVo.setPollutant(csc.getFuelName());
+				ctpVo.setConsentQuantity(String.valueOf(csc.getFuelConsumptions()));
+				ctpVo.setConsentUnit(csc.getName());
+				pollutMap.put(csc.getFuelName(), ctpVo);
+			}
 		}
-		ppgVo.setConsentSKU(cSKUList);
 		
 		List<ESR_FUEL_comparison> escList = mongoTemplate.find(getESRQueryObj(industryId, esrYear), ESR_FUEL_comparison.class);
-		List<SKU> eSKUList = new ArrayList<SKU>();
-		for(ESR_FUEL_comparison esc : escList) {
-			SKU sku = new SKU(esc.getFuelName(),String.valueOf(esc.getFuelQuantityActual()),esc.getName());
-			eSKUList.add(sku);
+		for(ESR_FUEL_comparison csc : escList) {
+			if(pollutMap.containsKey(csc.getFuelName())){
+				ComparisonTablePollutantVo ctpVo = pollutMap.get(csc.getFuelName());
+				ctpVo.setEsrQuantity(String.valueOf(csc.getFuelQuantityActual()));
+				ctpVo.setEsrUnit(csc.getName());
+				pollutMap.put(csc.getFuelName(), ctpVo);
+			}else {
+				ComparisonTablePollutantVo ctpVo = new ComparisonTablePollutantVo();
+				ctpVo.setPollutant(csc.getFuelName());
+				ctpVo.setEsrQuantity(String.valueOf(csc.getFuelQuantityActual()));
+				ctpVo.setEsrUnit(csc.getName());
+				pollutMap.put(csc.getFuelName(), ctpVo);
+			}
 		}
-		ppgVo.setEsrSKU(eSKUList);
-		populateEmptyObjList(ppgVo);
+		
+		List<ComparisonTablePollutantVo> data = pollutMap.values().stream().collect(Collectors.toList());
+		ppgVo.setData(data);
 		return ppgVo;
 	}
 
@@ -802,202 +874,245 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		return null;
 	}
 
-	private ComparisonTableParamGroupVo getWaterData(long industryId,int consentYear,int esrYear) {
+	private ComparisonTableSKUVo getWaterData(long industryId,int consentYear,int esrYear) {
+		Map<String,ComparisonTablePollutantVo> pollutMap = new HashMap<String, ComparisonTablePollutantVo>();
+		
 		List<Consent_WATER_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_WATER_comparison.class);
-		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
+		ComparisonTableSKUVo ppgVo = new ComparisonTableSKUVo();
 		ppgVo.setParam("Water");
-		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_WATER_comparison csc : cscList) {
-			SKU skuBod = new SKU("BOD",String.valueOf(csc.getTreatedEffluentBod()),csc.getName());
-			cSKUList.add(skuBod);
-			SKU skuCOD = new SKU("COD",String.valueOf(csc.getTreatedEffluentCod()),csc.getName());
-			cSKUList.add(skuCOD);
-			SKU skuSS = new SKU("SS",String.valueOf(csc.getTreatedEffluentSs()),csc.getName());
-			cSKUList.add(skuSS);
-			SKU skuTds = new SKU("TDS",String.valueOf(csc.getTreatedEffluentTds()),csc.getName());
-			cSKUList.add(skuTds);
-			SKU skuPh = new SKU("PH",String.valueOf(csc.getTreatedEffluentPh()),csc.getName());
-			cSKUList.add(skuPh);
+			ComparisonTablePollutantVo cb = new ComparisonTablePollutantVo();
+			cb.setPollutant("BOD");
+			cb.setConsentQuantity(String.valueOf(csc.getTreatedEffluentBod()));
+			cb.setConsentUnit(csc.getName());
+			pollutMap.put("BOD", cb);
+			
+			cb = new ComparisonTablePollutantVo();
+			cb.setPollutant("COD");
+			cb.setConsentQuantity(String.valueOf(csc.getTreatedEffluentCod()));
+			cb.setConsentUnit(csc.getName());
+			pollutMap.put("COD", cb);
+			
+			cb = new ComparisonTablePollutantVo();
+			cb.setPollutant("SS");
+			cb.setConsentQuantity(String.valueOf(csc.getTreatedEffluentSs()));
+			cb.setConsentUnit(csc.getName());
+			pollutMap.put("SS", cb);
+			
+			cb = new ComparisonTablePollutantVo();
+			cb.setPollutant("TDS");
+			cb.setConsentQuantity(String.valueOf(csc.getTreatedEffluentTds()));
+			cb.setConsentUnit(csc.getName());
+			pollutMap.put("TDS", cb);
+			
+			cb = new ComparisonTablePollutantVo();
+			cb.setPollutant("PH");
+			cb.setConsentQuantity(String.valueOf(csc.getTreatedEffluentPh()));
+			cb.setConsentUnit(csc.getName());
+			pollutMap.put("PH", cb);
 		}
-		ppgVo.setConsentSKU(cSKUList);
 		
 		List<ESR_WATER_comparison> escList = mongoTemplate.find(getESRQueryObj(industryId, esrYear), ESR_WATER_comparison.class);
-		List<SKU> eSKUList = new ArrayList<SKU>();
-		for(ESR_WATER_comparison esc : escList) {
-			SKU sku = new SKU(esc.getWaterPollutants(),String.valueOf(esc.getWaterPollutantConcentration()),esc.getUomName());
-			eSKUList.add(sku);
+		for(ESR_WATER_comparison csc : escList) {
+			if(pollutMap.containsKey(csc.getWaterPollutants())){
+				ComparisonTablePollutantVo ctpVo = pollutMap.get(csc.getWaterPollutants());
+				ctpVo.setEsrQuantity(String.valueOf(csc.getWaterPollutantConcentration()));
+				ctpVo.setEsrUnit(csc.getUomName());
+				pollutMap.put(csc.getWaterPollutants(), ctpVo);
+			}else {
+				ComparisonTablePollutantVo ctpVo = new ComparisonTablePollutantVo();
+				ctpVo.setPollutant(csc.getWaterPollutants());
+				ctpVo.setEsrQuantity(String.valueOf(csc.getWaterPollutantConcentration()));
+				ctpVo.setEsrUnit(csc.getUomName());
+				pollutMap.put(csc.getWaterPollutants(), ctpVo);
+			}
 		}
-		ppgVo.setEsrSKU(eSKUList);
-		
-		populateEmptyObjList(ppgVo);
-		
+		List<ComparisonTablePollutantVo> data = pollutMap.values().stream().collect(Collectors.toList());
+		ppgVo.setData(data);
 		return ppgVo;
 	}
 
-	private ComparisonTableParamGroupVo getAirData(long industryId,int consentYear,int esrYear) {
+	private ComparisonTableSKUVo getAirData(long industryId,int consentYear,int esrYear) {
+		Map<String,ComparisonTablePollutantVo> pollutMap = new HashMap<String, ComparisonTablePollutantVo>();
 		List<Consented_Air_Pollution_Comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consented_Air_Pollution_Comparison.class);
-		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
+		ComparisonTableSKUVo ppgVo = new ComparisonTableSKUVo();
 		ppgVo.setParam("Air");
-		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consented_Air_Pollution_Comparison csc : cscList) {
-			SKU sku = new SKU(csc.getParameter(),String.valueOf(csc.getConcentration()),csc.getConcentrationUom());
-			cSKUList.add(sku);
+			if(pollutMap.containsKey(csc.getParameter())){
+				ComparisonTablePollutantVo ctpVo = pollutMap.get(csc.getParameter());
+				ctpVo.setConsentQuantity(String.valueOf(csc.getConcentration()));
+				ctpVo.setConsentUnit(csc.getConcentrationUom());
+				pollutMap.put(csc.getParameter(), ctpVo);
+			}else {
+				ComparisonTablePollutantVo ctpVo = new ComparisonTablePollutantVo();
+				ctpVo.setPollutant(csc.getParameter());
+				ctpVo.setConsentQuantity(String.valueOf(csc.getConcentration()));
+				ctpVo.setConsentUnit(csc.getConcentrationUom());
+				pollutMap.put(csc.getParameter(), ctpVo);
+			}
 		}
-		ppgVo.setConsentSKU(cSKUList);
 		
 		List<ESR_Air_Pollution_Comparison> escList = mongoTemplate.find(getESRQueryObj(industryId, esrYear), ESR_Air_Pollution_Comparison.class);
-		List<SKU> eSKUList = new ArrayList<SKU>();
-		for(ESR_Air_Pollution_Comparison esc : escList) {
-			SKU sku = new SKU(esc.getAirPollutants(),String.valueOf(esc.getAirPollutantConcentration()),esc.getConcentrationUom());
-			eSKUList.add(sku);
+		for(ESR_Air_Pollution_Comparison csc : escList) {
+			if(pollutMap.containsKey(csc.getAirPollutants())){
+				ComparisonTablePollutantVo ctpVo = pollutMap.get(csc.getAirPollutants());
+				ctpVo.setEsrQuantity(String.valueOf(csc.getAirPollutantConcentration()));
+				ctpVo.setEsrUnit(csc.getConcentrationUom());
+				pollutMap.put(csc.getAirPollutants(), ctpVo);
+			}else {
+				ComparisonTablePollutantVo ctpVo = new ComparisonTablePollutantVo();
+				ctpVo.setPollutant(csc.getAirPollutants());
+				ctpVo.setEsrQuantity(String.valueOf(csc.getAirPollutantConcentration()));
+				ctpVo.setEsrUnit(csc.getConcentrationUom());
+				pollutMap.put(csc.getAirPollutants(), ctpVo);
+			}
 		}
-		ppgVo.setEsrSKU(eSKUList);
 		
-		populateEmptyObjList(ppgVo);
-		
+		List<ComparisonTablePollutantVo> data = pollutMap.values().stream().collect(Collectors.toList());
+		ppgVo.setData(data);
 		return ppgVo;
 	}
 	
-	private List<ComparisonTableParamGroupVo> getProductionComparisonData(long industryId,int consentYear,int esrYear,int form4Year) {
-
+	private List<ComparisonTableSKUVo> getProductionComparisonData(long industryId,int consentYear,int esrYear,int form4Year) {
+		
+		List<ComparisonTableSKUVo> lstCTPG = new ArrayList<ComparisonTableSKUVo>();
+		
+		Map<String,ComparisonTablePollutantVo> pollutMap = new HashMap<String, ComparisonTablePollutantVo>();
+		
 		List<Consent_SKU_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_SKU_comparison.class);
-		List<ComparisonTableParamGroupVo> ppgVoList = new ArrayList<ComparisonTableParamGroupVo>();
-		ComparisonTableParamGroupVo ppgVo = new ComparisonTableParamGroupVo();
-		ppgVo.setParam("SKU");
-		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_SKU_comparison csc : cscList) {
-			SKU sku = new SKU(csc.getProductname(),String.valueOf(csc.getTotal()),csc.getName());
-			cSKUList.add(sku);
+			if(pollutMap.containsKey(csc.getProductname())){
+				ComparisonTablePollutantVo ctpVo = pollutMap.get(csc.getProductname());
+				ctpVo.setConsentQuantity(String.valueOf(csc.getTotal()));
+				ctpVo.setConsentUnit(csc.getName());
+				pollutMap.put(csc.getProductname(), ctpVo);
+			}else {
+				ComparisonTablePollutantVo ctpVo = new ComparisonTablePollutantVo();
+				ctpVo.setPollutant(csc.getProductname());
+				ctpVo.setConsentQuantity(String.valueOf(csc.getTotal()));
+				ctpVo.setConsentUnit(csc.getName());
+				pollutMap.put(csc.getProductname(), ctpVo);
+			}
 		}
-		ppgVo.setConsentSKU(cSKUList);
 		
 		List<ESR_SKU_comparison> escList = mongoTemplate.find(getESRQueryObj(industryId, esrYear), ESR_SKU_comparison.class);
-		List<SKU> eSKUList = new ArrayList<SKU>();
-		for(ESR_SKU_comparison esc : escList) {
-			SKU sku = new SKU(esc.getProductname(),String.valueOf(esc.getProductQty()),esc.getName());
-			eSKUList.add(sku);
+		for(ESR_SKU_comparison csc : escList) {
+			if(pollutMap.containsKey(csc.getProductname())){
+				ComparisonTablePollutantVo ctpVo = pollutMap.get(csc.getProductname());
+				ctpVo.setEsrQuantity(String.valueOf(csc.getProductQty()));
+				ctpVo.setEsrUnit(csc.getName());
+				pollutMap.put(csc.getProductname(), ctpVo);
+			}else {
+				ComparisonTablePollutantVo ctpVo = new ComparisonTablePollutantVo();
+				ctpVo.setPollutant(csc.getProductname());
+				ctpVo.setEsrQuantity(String.valueOf(csc.getProductQty()));
+				ctpVo.setEsrUnit(csc.getName());
+				pollutMap.put(csc.getProductname(), ctpVo);
+			}
 		}
-		ppgVo.setEsrSKU(eSKUList);
 		
 		
 		List<Annual_Returns_HW_Comparison> f4List = mongoTemplate.find(getForm4QueryObj(industryId, form4Year), Annual_Returns_HW_Comparison.class);
-		List<SKU> form4List = new ArrayList<SKU>();
-		for(Annual_Returns_HW_Comparison esc : f4List) {
-			SKU sku = new SKU(esc.getName(),String.valueOf(esc.getQuantity()),"");
-			form4List.add(sku);
+		for(Annual_Returns_HW_Comparison csc : f4List) {
+			if(pollutMap.containsKey(csc.getName())){
+				ComparisonTablePollutantVo ctpVo = pollutMap.get(csc.getName());
+				ctpVo.setFormQuantity(String.valueOf(csc.getQuantity()));
+				ctpVo.setFormUnit("");
+				pollutMap.put(csc.getName(), ctpVo);
+			}else {
+				ComparisonTablePollutantVo ctpVo = new ComparisonTablePollutantVo();
+				ctpVo.setPollutant(csc.getName());
+				ctpVo.setFormQuantity(String.valueOf(csc.getQuantity()));
+				ctpVo.setFormUnit("");
+				pollutMap.put(csc.getName(), ctpVo);
+			}
 		}
-		ppgVo.setForm4SKU(form4List);
 		
-		populateEmptyObjList(ppgVo);
-		
-		ppgVoList.add(ppgVo);
-		return ppgVoList;
+		ComparisonTableSKUVo ctsVo = new ComparisonTableSKUVo();
+		ctsVo.setParam("SKU");
+		List<ComparisonTablePollutantVo> data = pollutMap.values().stream().collect(Collectors.toList());
+		ctsVo.setData(data);
+			
+		lstCTPG.add(ctsVo);
+		return lstCTPG;
 	}
 
-	private void populateEmptyObjList(ComparisonTableParamGroupVo ppgVo) {
+	private List<ComparisonTableSKUVo> getResourcesComparisonData(long industryId,int consentYear,int esrYear) {
+		List<ComparisonTableSKUVo> lstCTPG = new ArrayList<ComparisonTableSKUVo>();
 		
-		int cSKULength = ppgVo.getConsentSKU() == null ? 0 : ppgVo.getConsentSKU().size();
-		int eSKULength = ppgVo.getEsrSKU() == null ? 0 : ppgVo.getEsrSKU().size();
-		int fSKULength = ppgVo.getForm4SKU() == null ? 0 : ppgVo.getForm4SKU().size();
+		Map<String,ComparisonTablePollutantVo> pollutMap = new HashMap<String, ComparisonTablePollutantVo>();
 		
-		int maxSize = cSKULength > eSKULength ? cSKULength : eSKULength > fSKULength ? eSKULength : fSKULength;
-		
-		if(cSKULength < maxSize) {
-			if(cSKULength==0)
-				ppgVo.setConsentSKU(getDummySKUObj(maxSize - cSKULength));
-			else
-				ppgVo.getConsentSKU().addAll(getDummySKUObj(maxSize - cSKULength));
-		}
-		
-		if(eSKULength < maxSize) {
-			if(eSKULength==0)
-				ppgVo.setEsrSKU(getDummySKUObj(maxSize - eSKULength));
-			else
-				ppgVo.getEsrSKU().addAll(getDummySKUObj(maxSize - eSKULength));
-		}
-		
-		if(fSKULength < maxSize) {
-			if(fSKULength==0)
-				ppgVo.setForm4SKU(getDummySKUObj(maxSize - fSKULength));
-			else
-				ppgVo.getForm4SKU().addAll(getDummySKUObj(maxSize - fSKULength));
-		}
-	}
-
-	private List<SKU> getDummySKUObj(int listSize) {
-		List<SKU> list = new ArrayList<SKU>();
-		for(int i=0;i<listSize;i++) {
-			SKU sku = new SKU("-","-","-");
-			list.add(sku);
-		}
-		return list;
-	}
-	
-	private List<ComparisonTableParamGroupVo> getResourcesComparisonData(long industryId,int consentYear,int esrYear) {
-
-		List<ComparisonTableParamGroupVo> ppgVoList = new ArrayList<ComparisonTableParamGroupVo>();
-		
-		ComparisonTableParamGroupVo ppgVoRaw = new ComparisonTableParamGroupVo();
 		List<Consent_RESOURCES_comparison> cscList = mongoTemplate.find(getConsentQueryObj(industryId, consentYear), Consent_RESOURCES_comparison.class);
-		ppgVoRaw.setParam("Raw");
-		List<SKU> cSKUList = new ArrayList<SKU>();
 		for(Consent_RESOURCES_comparison csc : cscList) {
-			SKU sku = new SKU(csc.getRawMaterialName(),String.valueOf(csc.getQty()),csc.getName());
-			cSKUList.add(sku);
+			if(pollutMap.containsKey(csc.getRawMaterialName())){
+				ComparisonTablePollutantVo ctpVo = pollutMap.get(csc.getRawMaterialName());
+				ctpVo.setConsentQuantity(String.valueOf(csc.getQty()));
+				ctpVo.setConsentUnit(csc.getName());
+				pollutMap.put(csc.getRawMaterialName(), ctpVo);
+			}else {
+				ComparisonTablePollutantVo ctpVo = new ComparisonTablePollutantVo();
+				ctpVo.setPollutant(csc.getRawMaterialName());
+				ctpVo.setConsentQuantity(String.valueOf(csc.getQty()));
+				ctpVo.setConsentUnit(csc.getName());
+				pollutMap.put(csc.getRawMaterialName(), ctpVo);
+			}
 		}
-		ppgVoRaw.setConsentSKU(cSKUList);
 		
 		List<ESR_RESOURCES_comparison> escList = mongoTemplate.find(getESRQueryObj(industryId, esrYear), ESR_RESOURCES_comparison.class);
-		List<SKU> eSKUList = new ArrayList<SKU>();
-		for(ESR_RESOURCES_comparison esc : escList) {
-			SKU sku = new SKU(esc.getRawMaterialName(),String.valueOf(esc.getRawMaterialQty()),esc.getName());
-			eSKUList.add(sku);
+		for(ESR_RESOURCES_comparison csc : escList) {
+			if(pollutMap.containsKey(csc.getRawMaterialName())){
+				ComparisonTablePollutantVo ctpVo = pollutMap.get(csc.getRawMaterialName());
+				ctpVo.setEsrQuantity(String.valueOf(csc.getRawMaterialQty()));
+				ctpVo.setEsrUnit(csc.getName());
+				pollutMap.put(csc.getRawMaterialName(), ctpVo);
+			}else {
+				ComparisonTablePollutantVo ctpVo = new ComparisonTablePollutantVo();
+				ctpVo.setPollutant(csc.getRawMaterialName());
+				ctpVo.setEsrQuantity(String.valueOf(csc.getRawMaterialQty()));
+				ctpVo.setEsrUnit(csc.getName());
+				pollutMap.put(csc.getRawMaterialName(), ctpVo);
+			}
 		}
-		ppgVoRaw.setEsrSKU(eSKUList);
-		
-		populateEmptyObjList(ppgVoRaw);
-		ppgVoList.add(ppgVoRaw);
+
+		ComparisonTableSKUVo ctsVoRaw = new ComparisonTableSKUVo();
+		ctsVoRaw.setParam("Raw");
+		List<ComparisonTablePollutantVo> data = pollutMap.values().stream().collect(Collectors.toList());
+		ctsVoRaw.setData(data);
+		lstCTPG.add(ctsVoRaw);
 		//////////////////////////////////
 		
-		ComparisonTableParamGroupVo ppgVoWater = new ComparisonTableParamGroupVo();
-		ppgVoWater.setParam("Water");
-		List<SKU> wcSKUList = new ArrayList<SKU>();
-		List<SKU> infracSKUList = new ArrayList<SKU>();
-		for(Consent_RESOURCES_comparison csc : cscList) {
-			SKU skuW = new SKU("Water consumption",String.valueOf(csc.getWaterConsumption()),"");
-			wcSKUList.add(skuW);
-			SKU skuI = new SKU("Capital Investment",String.valueOf(csc.getGrossCapital()),"Lakhs");
-			infracSKUList.add(skuI);
-			break;
-		}
-		ppgVoWater.setConsentSKU(wcSKUList);
+		ComparisonTablePollutantVo ctpVoW = new ComparisonTablePollutantVo();
+		ctpVoW.setPollutant("Water consumption");
+		if(null!=cscList && !cscList.isEmpty())
+			ctpVoW.setConsentQuantity(String.valueOf(cscList.get(0).getWaterConsumption()));
+		ctpVoW.setConsentUnit("");
+		if(null!=escList && !escList.isEmpty())
+			ctpVoW.setEsrQuantity(String.valueOf(escList.get(0).getWaterConsumptionTotalQuantityActual()));
+		ctpVoW.setEsrUnit("");
 		
-		List<SKU> weSKUList = new ArrayList<SKU>();
-		List<SKU> infraeSKUList = new ArrayList<SKU>();
-		for(ESR_RESOURCES_comparison esc : escList) {
-			SKU skuW = new SKU("Water consumption",String.valueOf(esc.getWaterConsumptionTotalQuantityActual()),"");
-			weSKUList.add(skuW);
-			SKU skuI = new SKU("Capital Investment",String.valueOf(esc.getCapitalInvestment()),"Lakhs");
-			infraeSKUList.add(skuI);
-			break;
-		}
-		ppgVoWater.setEsrSKU(weSKUList);
+		ComparisonTableSKUVo ctsVoWater = new ComparisonTableSKUVo();
+		ctsVoWater.setParam("Water");
+		ctsVoWater.setData(Arrays.asList(ctpVoW));
+		lstCTPG.add(ctsVoWater);
+		/////////////////////////////////////
 		
-		populateEmptyObjList(ppgVoWater);
+		ComparisonTablePollutantVo ctpVoI = new ComparisonTablePollutantVo();
+		ctpVoI.setPollutant("Capital Investment");
+		if(null!=cscList && !cscList.isEmpty())
+			ctpVoI.setConsentQuantity(String.valueOf(cscList.get(0).getGrossCapital()));
+		ctpVoI.setConsentUnit("Lakhs");
+		if(null!=escList && !escList.isEmpty())
+			ctpVoI.setEsrQuantity(String.valueOf(escList.get(0).getWaterConsumptionTotalQuantityActual()));
+		ctpVoI.setEsrUnit("Lakhs");
 		
-		ppgVoList.add(ppgVoWater);
+		ComparisonTableSKUVo ctsVoInfra = new ComparisonTableSKUVo();
+		ctsVoInfra.setParam("Infrastructure");
+		ctsVoInfra.setData(Arrays.asList(ctpVoI));
+		lstCTPG.add(ctsVoInfra);
 		
-		ComparisonTableParamGroupVo ppgVoInfra = new ComparisonTableParamGroupVo();
-		ppgVoInfra.setParam("Infrastructure");
-		ppgVoInfra.setConsentSKU(infracSKUList);
-		ppgVoInfra.setEsrSKU(infraeSKUList);
-		
-		populateEmptyObjList(ppgVoInfra);
-		
-		ppgVoList.add(ppgVoInfra);
 		////////////////////////////////////////////
 		
-		return ppgVoList;
+		return lstCTPG;
 	}
 
 	public MandatoryReportsResponseVo getMandatoryReportsData(long industryId,int year) {
