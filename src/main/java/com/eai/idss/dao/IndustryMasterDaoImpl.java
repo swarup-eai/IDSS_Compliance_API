@@ -1547,7 +1547,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
         );
 		
 		List<Map<String,String>> pl = new ArrayList<Map<String,String>>(); 
-		if(null!=param) {
+		if(null!=param && null!=param.getParam()) {
 			for(String s : param.getParam()) {
 				Map<String,String> paramMap = new LinkedHashMap<String, String>();
 				paramMap.put("name",s);
