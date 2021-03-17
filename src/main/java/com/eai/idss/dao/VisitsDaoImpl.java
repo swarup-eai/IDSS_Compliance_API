@@ -1432,10 +1432,14 @@ public class VisitsDaoImpl implements VisitsDao {
 					
 		List<DecisionMaking> dmList= mongoTemplate.find(query, DecisionMaking.class);
 		
-		dmv.setDate1(dmList.get(1).getSchduledOn().format(DateTimeFormatter.ISO_LOCAL_DATE));
-		dmv.setDate2(dmList.get(2).getSchduledOn().format(DateTimeFormatter.ISO_LOCAL_DATE));
-		dmv.setDate3(dmList.get(3).getSchduledOn().format(DateTimeFormatter.ISO_LOCAL_DATE));
-		dmv.setDate4(dmList.get(4).getSchduledOn().format(DateTimeFormatter.ISO_LOCAL_DATE));
+		if(dmList.size()>1)
+			dmv.setDate1(dmList.get(1).getSchduledOn().format(DateTimeFormatter.ISO_LOCAL_DATE));
+		if(dmList.size()>2)
+			dmv.setDate2(dmList.get(2).getSchduledOn().format(DateTimeFormatter.ISO_LOCAL_DATE));
+		if(dmList.size()>3)
+			dmv.setDate3(dmList.get(3).getSchduledOn().format(DateTimeFormatter.ISO_LOCAL_DATE));
+		if(dmList.size()>4)
+			dmv.setDate4(dmList.get(4).getSchduledOn().format(DateTimeFormatter.ISO_LOCAL_DATE));
 		
 		dmvList.add(getDisposalDomasticDataVo(dmList));
 		dmvList.add(getDisposalIndustrialDataVo(dmList));
