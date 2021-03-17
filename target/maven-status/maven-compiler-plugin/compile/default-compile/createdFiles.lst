@@ -20,6 +20,7 @@ com\eai\idss\service\OCEMSAlertsScheduler.class
 com\eai\idss\dao\ConcentDao.class
 com\eai\idss\dao\GenericDaoImpl$9.class
 com\eai\idss\vo\ComlianceScoreFilter.class
+com\eai\idss\vo\ComparisonTablePollutantVo.class
 com\eai\idss\model\Consent_FUEL_comparison.class
 com\eai\idss\dao\ConcentDaoImpl$3.class
 com\eai\idss\vo\IndustryMasterRequest.class
@@ -68,6 +69,7 @@ com\eai\idss\vo\VisitScheduleCurrentMonthResponseVo.class
 com\eai\idss\vo\TileVo.class
 com\eai\idss\vo\DashboardResponse.class
 com\eai\idss\dao\LegalDaoImpl.class
+com\eai\idss\vo\ComparisonTableSKUVo.class
 com\eai\idss\vo\ConcentByTeamVo.class
 com\eai\idss\repository\LeaveScheduleRepository.class
 com\eai\idss\model\User_Filters.class

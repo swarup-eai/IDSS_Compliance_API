@@ -87,6 +87,7 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ComlianceScoreFilter.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\NewBatteriesSoldVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\BenchmarkingResponseVo.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ComparisonTableSKUVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\LegalByTeamVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Esr_HW_Comparison.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\ESR_RESOURCES_comparison.java
@@ -104,6 +105,7 @@ E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Consent.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\dao\GenericDao.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\model\Plastic_Brand_Owner_Authorization.java
+E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\ComparisonTablePollutantVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\HeatmapResponseVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\vo\IndustryMasterPaginationResponseVo.java
 E:\Project work\Elixir\project\idss_compliance_api\src\main\java\com\eai\idss\service\OCEMSAlertsScheduler.java

@@ -1132,6 +1132,14 @@ public class VisitsDaoImpl implements VisitsDao {
 		    	                    logger.info(document.toJson());
 									try {
 										VisitsByComplianceVo vbc = new ObjectMapper().readValue(document.toJson(), VisitsByComplianceVo.class);
+										if("0-25".equalsIgnoreCase(vbc.getcScore()))
+												vbc.setScheduledFreq("30");
+										if("26-50".equalsIgnoreCase(vbc.getcScore()))
+											vbc.setScheduledFreq("60");
+										if("51-75".equalsIgnoreCase(vbc.getcScore()))
+											vbc.setScheduledFreq("90");
+										if("76-100".equalsIgnoreCase(vbc.getcScore()))
+											vbc.setScheduledFreq("120");
 										vbcList.add(vbc);
 									} catch (JsonMappingException e) {
 										e.printStackTrace();
@@ -1423,6 +1431,11 @@ public class VisitsDaoImpl implements VisitsDao {
 		query.limit(5);
 					
 		List<DecisionMaking> dmList= mongoTemplate.find(query, DecisionMaking.class);
+		
+		dmv.setDate1(dmList.get(1).getSchduledOn().format(DateTimeFormatter.ISO_LOCAL_DATE));
+		dmv.setDate2(dmList.get(2).getSchduledOn().format(DateTimeFormatter.ISO_LOCAL_DATE));
+		dmv.setDate3(dmList.get(3).getSchduledOn().format(DateTimeFormatter.ISO_LOCAL_DATE));
+		dmv.setDate4(dmList.get(4).getSchduledOn().format(DateTimeFormatter.ISO_LOCAL_DATE));
 		
 		dmvList.add(getDisposalDomasticDataVo(dmList));
 		dmvList.add(getDisposalIndustrialDataVo(dmList));
