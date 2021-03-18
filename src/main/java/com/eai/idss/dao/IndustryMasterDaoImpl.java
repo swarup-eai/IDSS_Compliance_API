@@ -1,5 +1,7 @@
 package com.eai.idss.dao;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -459,7 +461,8 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			for(PollutionScoreValueVo pVO : pvL) {
 				Map<String,String> msd = new LinkedHashMap<String, String>();
 				msd.put("date", pVO.getYear());
-				msd.put(rv.getForm()+"~~"+rv.getParam(), String.valueOf(pVO.getValue()));
+				//msd.put(rv.getForm()+"~~"+rv.getParam(), String.valueOf(pVO.getValue()));
+				msd.put("value", String.valueOf(BigDecimal.valueOf(pVO.getValue()).setScale(2, RoundingMode.HALF_UP)));
 				lms.add(msd);
 			}
 		}
@@ -573,6 +576,19 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 				                        )
 				                )
 			                    .append("value", "$"+valueField)
+			            ),
+			            new Document()
+		                .append("$group", new Document()
+		                        .append("_id", "$year")
+		                        .append("value", new Document()
+		                                .append("$last", "$value")
+		                        )
+		                ),
+		                new Document()
+			            .append("$project", new Document()
+			                    .append("_id", false)
+			                    .append("year", "$_id")
+			                    .append("value", "$value")
 			            )
 					);
 			MongoDatabase database = mongoClient.getDatabase(dbName);

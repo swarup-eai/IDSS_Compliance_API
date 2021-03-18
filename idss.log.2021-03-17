@@ -1,0 +1,17 @@
+2021-03-17 15:10:59 VisitsDaoImpl [INFO] getVisitsByCompliance
+2021-03-17 15:10:59 VisitsDaoImpl [INFO] getVisitsByCompliance : 2021-02-15
+2021-03-17 15:11:06 VisitsDaoImpl [INFO] getVisitsByCompliance : 2020-12-17
+2021-03-17 15:11:08 VisitsDaoImpl [INFO] getVisitsByCompliance : 2020-11-17
+2021-03-17 15:11:21 VisitsDaoImpl [INFO] getVisitsByCompliance
+2021-03-17 15:11:21 VisitsDaoImpl [INFO] getVisitsByCompliance : 2021-02-15
+2021-03-17 15:11:21 VisitsDaoImpl [INFO] getVisitsByCompliance : 2020-12-17
+2021-03-17 15:11:21 VisitsDaoImpl [INFO] {"cScore": "0-25", "scheduledFreq": 30.0, "actualFreq": 65.0}
+2021-03-17 15:11:22 VisitsDaoImpl [INFO] {"cScore": "26-50", "scheduledFreq": 60.0, "actualFreq": 149.0}
+2021-03-17 15:11:22 VisitsDaoImpl [INFO] {"cScore": "51-75", "scheduledFreq": 90.0, "actualFreq": 136.0}
+2021-03-17 15:11:22 VisitsDaoImpl [INFO] {"cScore": "76-100", "scheduledFreq": 117.0, "actualFreq": 139.0}
+2021-03-17 15:11:22 VisitsDaoImpl [INFO] getVisitsByCompliance : 2020-11-17
+2021-03-17 15:11:22 VisitsDaoImpl [INFO] {"cScore": "0-25", "scheduledFreq": 30.0, "actualFreq": 65.0}
+2021-03-17 15:11:22 VisitsDaoImpl [INFO] {"cScore": "26-50", "scheduledFreq": 60.0, "actualFreq": 139.0}
+2021-03-17 15:11:22 VisitsDaoImpl [INFO] {"cScore": "51-75", "scheduledFreq": 90.0, "actualFreq": 150.0}
+2021-03-17 15:11:22 VisitsDaoImpl [INFO] {"cScore": "76-100", "scheduledFreq": 117.0, "actualFreq": 164.0}
+2021-03-17 16:49:24 IndustryMasterDaoImpl [INFO] getComplainceScoreCardData
