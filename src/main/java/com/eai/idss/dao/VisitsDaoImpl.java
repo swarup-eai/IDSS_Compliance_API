@@ -1,5 +1,7 @@
 package com.eai.idss.dao;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -1404,24 +1406,6 @@ public class VisitsDaoImpl implements VisitsDao {
 	public DecisionMakingVo getVisitDetailsDecisionMaking(long industryId,long visitId) {
 		DecisionMakingVo dmv = new DecisionMakingVo();
 		
-		Query queryIm = new Query();
-		queryIm.addCriteria(Criteria.where("industryId").is(industryId));
-		List<IndustryMaster> imList= mongoTemplate.find(queryIm, IndustryMaster.class);
-		int cscore = imList.get(0).getCscore();
-		if(cscore>=0 && cscore<=25) {
-			dmv.setAction("Closure Notice");
-			dmv.setSuggestion("Closure Notice");
-		}else if(cscore>=26 && cscore<=50) {
-			dmv.setAction("Suggestive Action");
-			dmv.setSuggestion("Suggestive Action");
-		}else if(cscore>=51 && cscore<=75) {
-			dmv.setAction("Show Cause Notice");
-			dmv.setSuggestion("Show Cause Notice");
-		}else if(cscore>=76 && cscore<=100) {
-			dmv.setAction("No Actions");
-			dmv.setSuggestion("No Actions");
-		}
-		
 		List<DecisionMakingParamVo> dmvList = new ArrayList<DecisionMakingParamVo>();
 		
 		Query query = new Query();
@@ -1453,7 +1437,33 @@ public class VisitsDaoImpl implements VisitsDao {
 		dmvList.add(getStackExistDataVo(dmList));
 		dmvList.add(getSTPOpDataVo(dmList));
 		dmvList.add(getETPOpDataVo(dmList));
-		dmvList.add(getPercGreenTreesPlantedDataVo(dmList));
+		
+		int violationCnt = 0;
+		for(DecisionMakingParamVo dmVo : dmvList) {
+			if(!dmVo.getCurrentValue().equalsIgnoreCase(dmVo.getRequiredValue()))
+				violationCnt++;
+		}
+		
+		DecisionMakingParamVo greenTreeVo = getPercGreenTreesPlantedDataVo(dmList);
+		dmvList.add(greenTreeVo);
+		
+		if(new BigDecimal(greenTreeVo.getCurrentValue()).compareTo(new BigDecimal(greenTreeVo.getRequiredValue()))==-1)
+			violationCnt++;
+		
+		int violationPer = (violationCnt * 100)/13; 
+		if(violationPer>=0 && violationPer<=25) {
+			dmv.setAction("Closure Notice");
+			dmv.setSuggestion("Closure Notice");
+		}else if(violationPer>=26 && violationPer<=50) {
+			dmv.setAction("Suggestive Action");
+			dmv.setSuggestion("Suggestive Action");
+		}else if(violationPer>=51 && violationPer<=75) {
+			dmv.setAction("Show Cause Notice");
+			dmv.setSuggestion("Show Cause Notice");
+		}else if(violationPer>=76 && violationPer<=100) {
+			dmv.setAction("No Actions");
+			dmv.setSuggestion("No Actions");
+		}
 					
 		dmv.setDmpList(dmvList);
 		return dmv;
@@ -1463,15 +1473,15 @@ public class VisitsDaoImpl implements VisitsDao {
 		DecisionMakingParamVo dmv1 = new DecisionMakingParamVo();
 		dmv1.setParameter("Percentage Green Trees Planted");
 		dmv1.setRequiredValue(String.valueOf(dmList.get(0).getRequiredPercentPlantation()));
-		dmv1.setCurrentValue(String.valueOf(dmList.get(0).getPercentPlantation()));
+		dmv1.setCurrentValue(String.valueOf(BigDecimal.valueOf(dmList.get(0).getPercentPlantation()).setScale(2, RoundingMode.HALF_UP)));
 		if(dmList.size()>1) 
-			dmv1.setPastValueDate1(String.valueOf(dmList.get(1).getPercentPlantation()));
+			dmv1.setPastValueDate1(String.valueOf(BigDecimal.valueOf(dmList.get(1).getPercentPlantation()).setScale(2, RoundingMode.HALF_UP)));
 		if(dmList.size()>2) 
-			dmv1.setPastValueDate2(String.valueOf(dmList.get(2).getPercentPlantation()));
+			dmv1.setPastValueDate2(String.valueOf(BigDecimal.valueOf(dmList.get(2).getPercentPlantation()).setScale(2, RoundingMode.HALF_UP)));
 		if(dmList.size()>3) 
-			dmv1.setPastValueDate3(String.valueOf(dmList.get(3).getPercentPlantation()));
+			dmv1.setPastValueDate3(String.valueOf(BigDecimal.valueOf(dmList.get(3).getPercentPlantation()).setScale(2, RoundingMode.HALF_UP)));
 		if(dmList.size()>4) 
-			dmv1.setPastValueDate4(String.valueOf(dmList.get(4).getPercentPlantation()));
+			dmv1.setPastValueDate4(String.valueOf(BigDecimal.valueOf(dmList.get(4).getPercentPlantation()).setScale(2, RoundingMode.HALF_UP)));
 		return dmv1;
 	}
 	

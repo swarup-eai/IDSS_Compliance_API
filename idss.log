@@ -14,3 +14,4 @@
 2021-03-17 15:11:22 VisitsDaoImpl [INFO] {"cScore": "26-50", "scheduledFreq": 60.0, "actualFreq": 139.0}
 2021-03-17 15:11:22 VisitsDaoImpl [INFO] {"cScore": "51-75", "scheduledFreq": 90.0, "actualFreq": 150.0}
 2021-03-17 15:11:22 VisitsDaoImpl [INFO] {"cScore": "76-100", "scheduledFreq": 117.0, "actualFreq": 164.0}
+2021-03-17 16:49:24 IndustryMasterDaoImpl [INFO] getComplainceScoreCardData

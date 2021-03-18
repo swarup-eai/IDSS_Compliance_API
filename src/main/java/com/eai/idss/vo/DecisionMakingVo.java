@@ -6,10 +6,10 @@ public class DecisionMakingVo {
 	private String action;
 	private String suggestion;
 	private List<DecisionMakingParamVo> dmpList;
-	private String date1;
-	private String date2;
-	private String date3;
-	private String date4;
+	private String date1="-";
+	private String date2="-";
+	private String date3="-";
+	private String date4="-";
 	
 	public String getDate1() {
 		return date1;
