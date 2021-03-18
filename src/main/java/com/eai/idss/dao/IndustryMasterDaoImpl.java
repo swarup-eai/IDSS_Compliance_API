@@ -406,10 +406,10 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		logger.info("getPollutionScoreData..."+cf.getIndustryId());
 		List<PollutionScoreResponseVo> responseList = new ArrayList<PollutionScoreResponseVo>();
 
-		
+		StringBuilder formType = null;
 		for(String param : cf.getParametersList()) {
 			String[] pa = param.split("~~");
-			StringBuilder formType = null;
+			formType = null;
 			StringBuilder paramName = null;
 			StringBuilder collectionName = null;
 			StringBuilder paramColumnName = null;
@@ -461,8 +461,10 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			for(PollutionScoreValueVo pVO : pvL) {
 				Map<String,String> msd = new LinkedHashMap<String, String>();
 				msd.put("date", pVO.getYear());
-				//msd.put(rv.getForm()+"~~"+rv.getParam(), String.valueOf(pVO.getValue()));
-				msd.put("value", String.valueOf(BigDecimal.valueOf(pVO.getValue()).setScale(2, RoundingMode.HALF_UP)));
+				if(OCEMS.equalsIgnoreCase(formType.toString())) 
+					msd.put("value", String.valueOf(BigDecimal.valueOf(pVO.getValue()).setScale(2, RoundingMode.HALF_UP)));
+				else
+					msd.put(rv.getForm()+"~~"+rv.getParam(), String.valueOf(pVO.getValue()));
 				lms.add(msd);
 			}
 		}
