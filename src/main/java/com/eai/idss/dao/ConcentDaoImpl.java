@@ -439,7 +439,7 @@ public class ConcentDaoImpl implements ConcentDao {
 										List<TileVo> concentStatusList = subRegionConcentMap.get(crVo.getUserId());
 										if(null==concentStatusList) concentStatusList = new ArrayList<TileVo>();
 										concentStatusList.add(tVo);
-										subRegionConcentMap.put(crVo.getUserId(), concentStatusList);
+										subRegionConcentMap.put(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getUserId(), concentStatusList);
 									
 									} catch (JsonMappingException e) {
 										e.printStackTrace();

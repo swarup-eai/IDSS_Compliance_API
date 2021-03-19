@@ -271,7 +271,7 @@ public class VisitsDaoImpl implements VisitsDao {
 									List<TileVo> concentStatusList = regionVisitMap.get(crVo.getUserId());
 									if(null==concentStatusList) concentStatusList = new ArrayList<TileVo>();
 									concentStatusList.add(tVo);
-									regionVisitMap.put(crVo.getUserId(), concentStatusList);
+									regionVisitMap.put(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getUserId(), concentStatusList);
 								}else if(SUB_REGION_WISE.equalsIgnoreCase(extractType)) {
 									VisitsSubRegionVo crVo = new ObjectMapper().readValue(document.toJson(), VisitsSubRegionVo.class);
 									TileVo tVo = new TileVo(type,crVo.getCount());
