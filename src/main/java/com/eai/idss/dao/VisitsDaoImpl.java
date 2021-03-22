@@ -1452,17 +1452,17 @@ public class VisitsDaoImpl implements VisitsDao {
 		
 		int violationPer = (violationCnt * 100)/13; 
 		if(violationPer>=0 && violationPer<=25) {
-			dmv.setAction("Closure Notice");
-			dmv.setSuggestion("Closure Notice");
-		}else if(violationPer>=26 && violationPer<=50) {
-			dmv.setAction("Suggestive Action");
-			dmv.setSuggestion("Suggestive Action");
-		}else if(violationPer>=51 && violationPer<=75) {
-			dmv.setAction("Show Cause Notice");
-			dmv.setSuggestion("Show Cause Notice");
-		}else if(violationPer>=76 && violationPer<=100) {
 			dmv.setAction("No Actions");
 			dmv.setSuggestion("No Actions");
+		}else if(violationPer>=26 && violationPer<=50) {
+			dmv.setAction("Show Cause Notice");
+			dmv.setSuggestion("Show Cause Notice");
+		}else if(violationPer>=51 && violationPer<=75) {
+			dmv.setAction("Suggestive Action");
+			dmv.setSuggestion("Suggestive Action");
+		}else if(violationPer>=76 && violationPer<=100) {
+			dmv.setAction("Closure Notice");
+			dmv.setSuggestion("Closure Notice");
 		}
 					
 		dmv.setDmpList(dmvList);
