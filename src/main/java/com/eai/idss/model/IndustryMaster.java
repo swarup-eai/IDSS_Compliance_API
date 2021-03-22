@@ -33,6 +33,9 @@ public class IndustryMaster {
 	private String latitudeDegree;
 	private String longitudeDegree;
 	private String sroEmailId;
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private LocalDate registrationDate;
+
 	
 	public String getSroEmailId() {
 		return sroEmailId;
@@ -145,5 +148,11 @@ public class IndustryMaster {
 	public void setLongitudeDegree(String  longitudeDegree) {
 		this.longitudeDegree = longitudeDegree;
 	}
-	
+	public LocalDate getRegistrationDate() {
+		return registrationDate;
+	}
+	public void setRegistrationDate(LocalDate registrationDate) {
+		this.registrationDate = registrationDate;
+	}
+
 }
