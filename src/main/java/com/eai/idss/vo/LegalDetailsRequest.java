@@ -11,7 +11,14 @@ public class LegalDetailsRequest {
 	String region;
 	List<String> scale;
 	private String userId;
+	private String complied;
 	
+	public String getComplied() {
+		return complied;
+	}
+	public void setComplied(String complied) {
+		this.complied = complied;
+	}
 	public String getUserId() {
 		return userId;
 	}

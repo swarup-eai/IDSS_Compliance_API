@@ -1440,7 +1440,7 @@ public class VisitsDaoImpl implements VisitsDao {
 		
 		int violationCnt = 0;
 		for(DecisionMakingParamVo dmVo : dmvList) {
-			if(!dmVo.getCurrentValue().equalsIgnoreCase(dmVo.getRequiredValue()))
+			if(!"-".equals(dmVo.getRequiredValue()) && !dmVo.getCurrentValue().equalsIgnoreCase(dmVo.getRequiredValue()))
 				violationCnt++;
 		}
 		
@@ -1472,7 +1472,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	private DecisionMakingParamVo getPercGreenTreesPlantedDataVo(List<DecisionMaking> dmList) {
 		DecisionMakingParamVo dmv1 = new DecisionMakingParamVo();
 		dmv1.setParameter("Percentage Green Trees Planted");
-		dmv1.setRequiredValue(String.valueOf(dmList.get(0).getRequiredPercentPlantation()));
+		dmv1.setRequiredValue(String.valueOf(dmList.get(0).getRequiredPercentPlantation()==-999999?"-":dmList.get(0).getRequiredPercentPlantation()));
 		dmv1.setCurrentValue(String.valueOf(BigDecimal.valueOf(dmList.get(0).getPercentPlantation()).setScale(2, RoundingMode.HALF_UP)));
 		if(dmList.size()>1) 
 			dmv1.setPastValueDate1(String.valueOf(BigDecimal.valueOf(dmList.get(1).getPercentPlantation()).setScale(2, RoundingMode.HALF_UP)));
@@ -1488,7 +1488,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	private DecisionMakingParamVo getETPOpDataVo(List<DecisionMaking> dmList) {
 		DecisionMakingParamVo dmv1 = new DecisionMakingParamVo();
 		dmv1.setParameter("ETP Operational");
-		dmv1.setRequiredValue(dmList.get(0).getRequiredEtpOperational()==1?"Yes":"No");
+		dmv1.setRequiredValue(dmList.get(0).getRequiredEtpOperational()==1?"Yes":dmList.get(0).getRequiredEtpOperational()==-999999?"-":"No");
 		dmv1.setCurrentValue(dmList.get(0).getEtpOperational()==1?"Yes":"No");
 		if(dmList.size()>1) 
 			dmv1.setPastValueDate1(dmList.get(1).getEtpOperational()==1?"Yes":"No");
@@ -1504,7 +1504,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	private DecisionMakingParamVo getSTPOpDataVo(List<DecisionMaking> dmList) {
 		DecisionMakingParamVo dmv1 = new DecisionMakingParamVo();
 		dmv1.setParameter("STP Operational");
-		dmv1.setRequiredValue(dmList.get(0).getRequiredStpOperational()==1?"Yes":"No");
+		dmv1.setRequiredValue(dmList.get(0).getRequiredStpOperational()==1?"Yes":dmList.get(0).getRequiredStpOperational()==-999999?"-":"No");
 		dmv1.setCurrentValue(dmList.get(0).getStpOperational()==1?"Yes":"No");
 		if(dmList.size()>1) 
 			dmv1.setPastValueDate1(dmList.get(1).getStpOperational()==1?"Yes":"No");
@@ -1520,7 +1520,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	private DecisionMakingParamVo getStackExistDataVo(List<DecisionMaking> dmList) {
 		DecisionMakingParamVo dmv1 = new DecisionMakingParamVo();
 		dmv1.setParameter("Stack Exists");
-		dmv1.setRequiredValue(dmList.get(0).getRequiredStackFacilityExist()==1?"Yes":"No");
+		dmv1.setRequiredValue(dmList.get(0).getRequiredStackFacilityExist()==1?"Yes":dmList.get(0).getRequiredStackFacilityExist()==-999999?"-":"No");
 		dmv1.setCurrentValue(dmList.get(0).getStackFacilityExist()==1?"Yes":"No");
 		if(dmList.size()>1) 
 			dmv1.setPastValueDate1(dmList.get(1).getStackFacilityExist()==1?"Yes":"No");
@@ -1536,7 +1536,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	private DecisionMakingParamVo getOMSStackInstallDataVo(List<DecisionMaking> dmList) {
 		DecisionMakingParamVo dmv1 = new DecisionMakingParamVo();
 		dmv1.setParameter("Online Monitoring System Stack Installed");
-		dmv1.setRequiredValue(dmList.get(0).getRequiredOmsStackInstalled()==1?"Yes":"No");
+		dmv1.setRequiredValue(dmList.get(0).getRequiredOmsStackInstalled()==1?"Yes":dmList.get(0).getRequiredOmsStackInstalled()==-999999?"-":"No");
 		dmv1.setCurrentValue(dmList.get(0).getOmsStackInstalled()==1?"Yes":"No");
 		if(dmList.size()>1) 
 			dmv1.setPastValueDate1(dmList.get(1).getOmsStackInstalled()==1?"Yes":"No");
@@ -1553,7 +1553,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	private DecisionMakingParamVo getOMSStackPropPlacedDataVo(List<DecisionMaking> dmList) {
 		DecisionMakingParamVo dmv1 = new DecisionMakingParamVo();
 		dmv1.setParameter("Online Monitoring System Stack Properly Placed");
-		dmv1.setRequiredValue(dmList.get(0).getRequiredOmsStackProperlyPlaced()==1?"Yes":"No");
+		dmv1.setRequiredValue(dmList.get(0).getRequiredOmsStackProperlyPlaced()==1?"Yes":dmList.get(0).getRequiredOmsStackProperlyPlaced()==-999999?"-":"No");
 		dmv1.setCurrentValue(dmList.get(0).getOmsStackProperlyPlaced()==1?"Yes":"No");
 		if(dmList.size()>1) 
 			dmv1.setPastValueDate1(dmList.get(1).getOmsStackProperlyPlaced()==1?"Yes":"No");
@@ -1570,7 +1570,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	private DecisionMakingParamVo getOMSWaterInstalledDataVo(List<DecisionMaking> dmList) {
 		DecisionMakingParamVo dmv1 = new DecisionMakingParamVo();
 		dmv1.setParameter("Online Monitoring System Water Installed");
-		dmv1.setRequiredValue(dmList.get(0).getRequiredOmswInstalled()==1?"Yes":"No");
+		dmv1.setRequiredValue(dmList.get(0).getRequiredOmswInstalled()==1?"Yes":dmList.get(0).getRequiredOmswInstalled()==-999999?"-":"No");
 		dmv1.setCurrentValue(dmList.get(0).getOmswInstalled()==1?"Yes":"No");
 		if(dmList.size()>1) 
 			dmv1.setPastValueDate1(dmList.get(1).getOmswInstalled()==1?"Yes":"No");
@@ -1586,7 +1586,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	private DecisionMakingParamVo getOMSWaterPropPlacedDataVo(List<DecisionMaking> dmList) {
 		DecisionMakingParamVo dmv1 = new DecisionMakingParamVo();
 		dmv1.setParameter("Online Monitoring System Water Properly Placed");
-		dmv1.setRequiredValue(dmList.get(0).getRequiredOmswPlacedProperly()==1?"Yes":"No");
+		dmv1.setRequiredValue(dmList.get(0).getRequiredOmswPlacedProperly()==1?"Yes":dmList.get(0).getRequiredOmswPlacedProperly()==-999999?"-":"No");
 		dmv1.setCurrentValue(dmList.get(0).getOmswPlacedProperly()==1?"Yes":"No");
 		if(dmList.size()>1) 
 			dmv1.setPastValueDate1(dmList.get(1).getOmswPlacedProperly()==1?"Yes":"No");
@@ -1602,7 +1602,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	private DecisionMakingParamVo getOMSAirDataVo(List<DecisionMaking> dmList) {
 		DecisionMakingParamVo dmv1 = new DecisionMakingParamVo();
 		dmv1.setParameter("Online Monitoring System Ambient Air Installed");
-		dmv1.setRequiredValue(dmList.get(0).getRequiredOmsAmbientInstalled()==1?"Yes":"No");
+		dmv1.setRequiredValue(dmList.get(0).getRequiredOmsAmbientInstalled()==1?"Yes":dmList.get(0).getRequiredOmsAmbientInstalled()==-999999?"-":"No");
 		dmv1.setCurrentValue(dmList.get(0).getOmsAmbientInstalled()==1?"Yes":"No");
 		if(dmList.size()>1) 
 			dmv1.setPastValueDate1(dmList.get(1).getOmsAmbientInstalled()==1?"Yes":"No");
@@ -1618,7 +1618,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	private DecisionMakingParamVo getLegalComplaintsDataVo(List<DecisionMaking> dmList) {
 		DecisionMakingParamVo dmv1 = new DecisionMakingParamVo();
 		dmv1.setParameter("Legal Complaints");
-		dmv1.setRequiredValue(dmList.get(0).getRequiredLegalAnyComplaint()==1?"Yes":"No");
+		dmv1.setRequiredValue(dmList.get(0).getRequiredLegalAnyComplaint()==1?"Yes":dmList.get(0).getRequiredLegalAnyComplaint()==-999999?"-":"No");
 		dmv1.setCurrentValue(dmList.get(0).getLegalAnyComplaint()==1?"Yes":"No");
 		if(dmList.size()>1) 
 			dmv1.setPastValueDate1(dmList.get(1).getLegalAnyComplaint()==1?"Yes":"No");
@@ -1634,7 +1634,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	private DecisionMakingParamVo getDisposalDomasticDataVo(List<DecisionMaking> dmList) {
 		DecisionMakingParamVo dmv1 = new DecisionMakingParamVo();
 		dmv1.setParameter("Generating Domestic Waste as per consent");
-		dmv1.setRequiredValue(dmList.get(0).getRequiredDisposalDomesticAsPerConsent()==1?"Yes":"No");
+		dmv1.setRequiredValue(dmList.get(0).getRequiredDisposalDomesticAsPerConsent()==1?"Yes":dmList.get(0).getRequiredDisposalDomesticAsPerConsent()==-999999?"-":"No");
 		dmv1.setCurrentValue(dmList.get(0).getDisposalDomesticAsPerConsent()==1?"Yes":"No");
 		if(dmList.size()>1) 
 			dmv1.setPastValueDate1(dmList.get(1).getDisposalDomesticAsPerConsent()==1?"Yes":"No");
@@ -1650,7 +1650,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	private DecisionMakingParamVo getBankGurrentyImposedDataVo(List<DecisionMaking> dmList) {
 		DecisionMakingParamVo dmv1 = new DecisionMakingParamVo();
 		dmv1.setParameter("Bank Gurantee Imposed");
-		dmv1.setRequiredValue(dmList.get(0).getRequiredBgImposed()==1?"Yes":"No");
+		dmv1.setRequiredValue(dmList.get(0).getRequiredBgImposed()==1?"Yes":dmList.get(0).getRequiredBgImposed()==-999999?"-":"No");
 		dmv1.setCurrentValue(dmList.get(0).getBgImposed()==1?"Yes":"No");
 		if(dmList.size()>1) 
 			dmv1.setPastValueDate1(dmList.get(1).getBgImposed()==1?"Yes":"No");
@@ -1666,7 +1666,7 @@ public class VisitsDaoImpl implements VisitsDao {
 	private DecisionMakingParamVo getDisposalIndustrialDataVo(List<DecisionMaking> dmList) {
 		DecisionMakingParamVo dmv1 = new DecisionMakingParamVo();
 		dmv1.setParameter("Disposal Industrial Waste as per Consent");
-		dmv1.setRequiredValue(dmList.get(0).getRequiredDisposalIndustrialAsPerConsent()==1?"Yes":"No");
+		dmv1.setRequiredValue(dmList.get(0).getRequiredDisposalIndustrialAsPerConsent()==1?"Yes":dmList.get(0).getRequiredDisposalIndustrialAsPerConsent()==-999999?"-":"No");
 		dmv1.setCurrentValue(dmList.get(0).getDisposalIndustrialAsPerConsent()==1?"Yes":"No");
 		if(dmList.size()>1) 
 			dmv1.setPastValueDate1(dmList.get(1).getDisposalIndustrialAsPerConsent()==1?"Yes":"No");

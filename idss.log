@@ -86,3 +86,170 @@
 2021-03-22 13:48:55 GenericDaoImpl [INFO] {"dateView": "19", "visitDetail": [{"industryName": "Nath Pulp And Paper Mills Ltd", "industryId": 12858.0, "visitStatus": "Pending", "visitId": 181418}]}
 2021-03-22 13:48:55 GenericDaoImpl [INFO] {"dateView": "30", "visitDetail": [{"industryName": "Metalman Auto Pvt. Ltd. (Powder Coating)", "industryId": 8073.0, "visitStatus": "Pending", "visitId": 181420}, {"industryName": "Glenmark Pharmaceuticals Ltd.", "industryId": 8943.0, "visitStatus": "Pending", "visitId": 181421}]}
 2021-03-22 13:48:56 GenericDaoImpl [INFO] getIndustryScore
+2021-03-22 16:01:15 VisitsDaoImpl [INFO] getBySubRegionVisitData
+2021-03-22 16:01:15 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _30Days
+2021-03-22 16:01:17 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai I", "count": 17}
+2021-03-22 16:01:17 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai II", "count": 13}
+2021-03-22 16:01:17 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai III", "count": 4}
+2021-03-22 16:01:17 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai IV", "count": 6}
+2021-03-22 16:01:19 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai I", "count": 22}
+2021-03-22 16:01:19 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai II", "count": 16}
+2021-03-22 16:01:19 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai III", "count": 8}
+2021-03-22 16:01:19 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai IV", "count": 8}
+2021-03-22 16:01:22 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Mumbai I", "count": 5}
+2021-03-22 16:01:22 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Mumbai III", "count": 1}
+2021-03-22 16:01:23 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _90Days
+2021-03-22 16:01:23 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai I", "count": 17}
+2021-03-22 16:01:23 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai II", "count": 13}
+2021-03-22 16:01:23 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai III", "count": 4}
+2021-03-22 16:01:23 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai IV", "count": 6}
+2021-03-22 16:01:23 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai I", "count": 66}
+2021-03-22 16:01:23 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai II", "count": 45}
+2021-03-22 16:01:23 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai III", "count": 21}
+2021-03-22 16:01:23 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai IV", "count": 18}
+2021-03-22 16:01:24 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Mumbai I", "count": 11}
+2021-03-22 16:01:24 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Mumbai III", "count": 5}
+2021-03-22 16:01:24 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Mumbai III", "count": 3}
+2021-03-22 16:01:24 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _120Days
+2021-03-22 16:01:24 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai I", "count": 17}
+2021-03-22 16:01:24 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai II", "count": 13}
+2021-03-22 16:01:24 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai III", "count": 4}
+2021-03-22 16:01:24 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai IV", "count": 6}
+2021-03-22 16:01:25 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai I", "count": 77}
+2021-03-22 16:01:25 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai II", "count": 58}
+2021-03-22 16:01:25 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai III", "count": 29}
+2021-03-22 16:01:25 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai IV", "count": 22}
+2021-03-22 16:01:25 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Mumbai I", "count": 13}
+2021-03-22 16:01:25 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Mumbai III", "count": 7}
+2021-03-22 16:01:25 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Mumbai III", "count": 3}
+2021-03-22 16:01:25 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _30Days
+2021-03-22 16:01:27 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _90Days
+2021-03-22 16:01:28 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _120Days
+2021-03-22 16:02:22 VisitsDaoImpl [INFO] getBySubRegionVisitData
+2021-03-22 16:02:22 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _30Days
+2021-03-22 16:12:00 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai I", "count": 17}
+2021-03-22 16:12:55 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai II", "count": 13}
+2021-03-22 16:13:00 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai III", "count": 4}
+2021-03-22 16:13:01 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai IV", "count": 6}
+2021-03-22 16:19:38 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai I", "count": 22}
+2021-03-22 16:19:38 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai II", "count": 16}
+2021-03-22 16:19:38 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai III", "count": 8}
+2021-03-22 16:19:38 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai IV", "count": 8}
+2021-03-22 16:19:38 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Mumbai I", "count": 5}
+2021-03-22 16:19:38 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Mumbai III", "count": 1}
+2021-03-22 16:19:39 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _90Days
+2021-03-22 16:19:39 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai I", "count": 17}
+2021-03-22 16:19:39 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai II", "count": 13}
+2021-03-22 16:19:39 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai III", "count": 4}
+2021-03-22 16:19:39 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai IV", "count": 6}
+2021-03-22 16:19:39 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai I", "count": 66}
+2021-03-22 16:19:39 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai II", "count": 45}
+2021-03-22 16:19:39 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai III", "count": 21}
+2021-03-22 16:19:39 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai IV", "count": 18}
+2021-03-22 16:19:40 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Mumbai I", "count": 11}
+2021-03-22 16:19:40 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Mumbai III", "count": 5}
+2021-03-22 16:19:40 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Mumbai III", "count": 3}
+2021-03-22 16:19:40 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _120Days
+2021-03-22 16:19:40 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai I", "count": 17}
+2021-03-22 16:19:40 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai II", "count": 13}
+2021-03-22 16:19:40 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai III", "count": 4}
+2021-03-22 16:19:40 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai IV", "count": 6}
+2021-03-22 16:19:40 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai I", "count": 77}
+2021-03-22 16:19:40 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai II", "count": 58}
+2021-03-22 16:19:40 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai III", "count": 29}
+2021-03-22 16:19:40 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai IV", "count": 22}
+2021-03-22 16:19:41 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Mumbai I", "count": 13}
+2021-03-22 16:19:41 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Mumbai III", "count": 7}
+2021-03-22 16:19:41 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Mumbai III", "count": 3}
+2021-03-22 16:19:41 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _30Days
+2021-03-22 16:19:42 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _90Days
+2021-03-22 16:19:43 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _120Days
+2021-03-22 16:36:28 VisitsDaoImpl [INFO] getBySubRegionVisitData
+2021-03-22 16:36:34 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _30Days
+2021-03-22 16:38:14 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai I", "count": 17}
+2021-03-22 16:38:43 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai II", "count": 13}
+2021-03-22 16:38:53 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai III", "count": 4}
+2021-03-22 16:38:54 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai IV", "count": 6}
+2021-03-22 16:39:13 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai I", "count": 22}
+2021-03-22 16:39:14 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai II", "count": 16}
+2021-03-22 16:39:15 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai III", "count": 8}
+2021-03-22 16:39:16 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai IV", "count": 8}
+2021-03-22 16:39:24 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Mumbai I", "count": 5}
+2021-03-22 16:39:26 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Mumbai III", "count": 1}
+2021-03-22 16:39:35 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _90Days
+2021-03-22 16:39:42 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai I", "count": 17}
+2021-03-22 16:39:44 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai II", "count": 13}
+2021-03-22 16:39:44 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai III", "count": 4}
+2021-03-22 16:39:45 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai IV", "count": 6}
+2021-03-22 16:39:52 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai I", "count": 66}
+2021-03-22 16:39:54 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai II", "count": 45}
+2021-03-22 16:39:55 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai III", "count": 21}
+2021-03-22 16:39:55 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai IV", "count": 18}
+2021-03-22 16:40:01 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Mumbai I", "count": 11}
+2021-03-22 16:40:05 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Mumbai III", "count": 5}
+2021-03-22 16:40:05 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Mumbai III", "count": 3}
+2021-03-22 16:40:05 VisitsDaoImpl [INFO] getBySubRegionVisitsData : _120Days
+2021-03-22 16:40:06 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai I", "count": 17}
+2021-03-22 16:40:06 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai II", "count": 13}
+2021-03-22 16:40:06 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai III", "count": 4}
+2021-03-22 16:40:06 VisitsDaoImpl [INFO] Pending ::: {"subRegion": "Mumbai IV", "count": 6}
+2021-03-22 16:40:06 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai I", "count": 77}
+2021-03-22 16:40:06 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai II", "count": 58}
+2021-03-22 16:40:06 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai III", "count": 29}
+2021-03-22 16:40:06 VisitsDaoImpl [INFO] Scheduled ::: {"subRegion": "Mumbai IV", "count": 22}
+2021-03-22 16:40:07 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Mumbai I", "count": 13}
+2021-03-22 16:40:07 VisitsDaoImpl [INFO] legalNotices ::: {"subRegion": "Mumbai III", "count": 7}
+2021-03-22 16:40:07 VisitsDaoImpl [INFO] completed ::: {"subRegion": "Mumbai III", "count": 3}
+2021-03-22 16:40:07 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _30Days
+2021-03-22 16:40:08 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _90Days
+2021-03-22 16:40:09 VisitsDaoImpl [INFO] getBySubRegionVisitsData-upcomming : _120Days
+2021-03-22 19:07:41 ConcentDaoImpl [INFO] getPendingRequestConcentData
+2021-03-22 19:07:41 ConcentDaoImpl [INFO] getPendingRequestConcentData : 2021-03-15
+2021-03-22 19:07:42 ConcentDaoImpl [INFO] getPendingRequestConcentData : 2021-02-20
+2021-03-22 19:07:42 ConcentDaoImpl [INFO] getPendingRequestConcentData : 2021-01-21
+2021-03-22 19:07:42 ConcentDaoImpl [INFO] {"caseType": "Renewal", "caseCount": 10}
+2021-03-22 19:07:42 ConcentDaoImpl [INFO] {"caseType": "New", "caseCount": 2}
+2021-03-22 19:07:42 ConcentDaoImpl [INFO] {"caseType": "Expansion", "caseCount": 4}
+2021-03-22 19:07:42 ConcentDaoImpl [INFO] {"caseType": "Operate", "caseCount": 4}
+2021-03-22 19:07:42 ConcentDaoImpl [INFO] getPendingRequestConcentData : 2020-12-22
+2021-03-22 19:07:42 ConcentDaoImpl [INFO] {"caseType": "Renewal", "caseCount": 26}
+2021-03-22 19:07:42 ConcentDaoImpl [INFO] {"caseType": "New", "caseCount": 5}
+2021-03-22 19:07:42 ConcentDaoImpl [INFO] {"caseType": "Expansion", "caseCount": 6}
+2021-03-22 19:07:42 ConcentDaoImpl [INFO] {"caseType": "Operate", "caseCount": 7}
+2021-03-22 19:07:42 ConcentDaoImpl [INFO] getPendingRequestConcentData : 2020-11-22
+2021-03-22 19:07:43 ConcentDaoImpl [INFO] {"caseType": "Renewal", "caseCount": 40}
+2021-03-22 19:07:43 ConcentDaoImpl [INFO] {"caseType": "New", "caseCount": 7}
+2021-03-22 19:07:43 ConcentDaoImpl [INFO] {"caseType": "Expansion", "caseCount": 10}
+2021-03-22 19:07:43 ConcentDaoImpl [INFO] {"caseType": "Operate", "caseCount": 13}
+2021-03-22 19:07:43 ConcentDaoImpl [INFO] getPendingRequestConcentData : 2021-04-21
+2021-03-22 19:07:43 ConcentDaoImpl [INFO] getPendingRequestConcentData : 1970-01-01
+2021-03-22 19:07:43 ConcentDaoImpl [INFO] {"caseType": "Renewal", "caseCount": 456}
+2021-03-22 19:07:43 ConcentDaoImpl [INFO] {"caseType": "Closed", "caseCount": 1}
+2021-03-22 19:07:43 ConcentDaoImpl [INFO] {"caseType": "New", "caseCount": 144}
+2021-03-22 19:07:43 ConcentDaoImpl [INFO] {"caseType": "Expansion", "caseCount": 73}
+2021-03-22 19:07:43 ConcentDaoImpl [INFO] {"caseType": "Operate", "caseCount": 258}
+2021-03-22 19:08:18 ConcentDaoImpl [INFO] getPendingRequestConcentData
+2021-03-22 19:08:30 ConcentDaoImpl [INFO] getPendingRequestConcentData : 2021-03-15
+2021-03-22 19:08:47 ConcentDaoImpl [INFO] getPendingRequestConcentData : 2021-02-20
+2021-03-22 19:08:49 ConcentDaoImpl [INFO] getPendingRequestConcentData : 2021-01-21
+2021-03-22 19:08:50 ConcentDaoImpl [INFO] {"caseType": "Renewal", "caseCount": 10}
+2021-03-22 19:08:50 ConcentDaoImpl [INFO] {"caseType": "New", "caseCount": 2}
+2021-03-22 19:08:50 ConcentDaoImpl [INFO] {"caseType": "Expansion", "caseCount": 4}
+2021-03-22 19:08:50 ConcentDaoImpl [INFO] {"caseType": "Operate", "caseCount": 4}
+2021-03-22 19:08:50 ConcentDaoImpl [INFO] getPendingRequestConcentData : 2020-12-22
+2021-03-22 19:08:56 ConcentDaoImpl [INFO] {"caseType": "Renewal", "caseCount": 26}
+2021-03-22 19:08:56 ConcentDaoImpl [INFO] {"caseType": "New", "caseCount": 5}
+2021-03-22 19:08:56 ConcentDaoImpl [INFO] {"caseType": "Expansion", "caseCount": 6}
+2021-03-22 19:08:56 ConcentDaoImpl [INFO] {"caseType": "Operate", "caseCount": 7}
+2021-03-22 19:08:56 ConcentDaoImpl [INFO] getPendingRequestConcentData : 2020-11-22
+2021-03-22 19:09:02 ConcentDaoImpl [INFO] {"caseType": "Renewal", "caseCount": 40}
+2021-03-22 19:09:02 ConcentDaoImpl [INFO] {"caseType": "New", "caseCount": 7}
+2021-03-22 19:09:02 ConcentDaoImpl [INFO] {"caseType": "Expansion", "caseCount": 10}
+2021-03-22 19:09:02 ConcentDaoImpl [INFO] {"caseType": "Operate", "caseCount": 13}
+2021-03-22 19:09:02 ConcentDaoImpl [INFO] getPendingRequestConcentData : 2021-04-21
+2021-03-22 19:09:10 ConcentDaoImpl [INFO] getPendingRequestConcentData : 1970-01-01
+2021-03-22 19:24:36 ConcentDaoImpl [INFO] {"caseType": "Renewal", "caseCount": 456}
+2021-03-22 19:24:36 ConcentDaoImpl [INFO] {"caseType": "Closed", "caseCount": 1}
+2021-03-22 19:24:36 ConcentDaoImpl [INFO] {"caseType": "New", "caseCount": 144}
+2021-03-22 19:24:36 ConcentDaoImpl [INFO] {"caseType": "Expansion", "caseCount": 73}
+2021-03-22 19:24:36 ConcentDaoImpl [INFO] {"caseType": "Operate", "caseCount": 258}
