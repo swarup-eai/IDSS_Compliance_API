@@ -22,6 +22,8 @@ public class IndustryMasterDetailResponseVo {
     private int legalActionsPending;
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate lastVisited;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private LocalDate registrationDate;
 
     public String getIndustryName() {
         return industryName;
@@ -96,5 +98,10 @@ public class IndustryMasterDetailResponseVo {
     public void setCommissioningDate(Date commissioningDate) {
         this.commissioningDate = commissioningDate;
     }
-
+    public void setRegistrationDate(LocalDate registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+    public LocalDate getRegistrationDate() {
+        return registrationDate;
+    }
 }

@@ -1401,6 +1401,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			industryMasterDetailResponseVo.setLegalActionsPending(industryMaster.getLegalActionsPending());
 			industryMasterDetailResponseVo.setCommissioningDate(industryMaster.getCommissioningDate());
 
+			industryMasterDetailResponseVo.setRegistrationDate(industryMaster.getRegistrationDate());
 			String date = LocalDate.of(1970, 1,1).format(DateTimeFormatter.ISO_LOCAL_DATE);
 
 			Query query = new Query();
