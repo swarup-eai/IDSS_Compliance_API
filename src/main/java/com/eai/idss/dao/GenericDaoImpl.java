@@ -1,5 +1,7 @@
 package com.eai.idss.dao;
 
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
+
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,9 +16,9 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
@@ -43,8 +45,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-
-import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 @Repository
 public class GenericDaoImpl implements GenericDao {
@@ -470,8 +470,6 @@ public class GenericDaoImpl implements GenericDao {
 	        LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
 	        LocalDateTime date = currentTime.now().withDayOfMonth(1);
 	        LocalDateTime date1 = currentTime.with(lastDayOfMonth());
-			String date7DaysBack = currentTime.minusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
-			String date7DaysAhead = currentTime.plusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
 			String today = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
 			String visitedDateFromDate = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
 			String scheduledOnToDate = date1.format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -542,11 +540,12 @@ public class GenericDaoImpl implements GenericDao {
 		if(visited) {
 			matchDoc = new Document()
 	        .append("$match", new Document()
-	                .append("visitedDate", new Document()
+	                .append("schduledOn", new Document()
 	                		.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(toDate+" 00:00:00.000+0000"))
 	                        .append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fromDate+" 00:00:00.000+0000"))
 	                )
 	                .append("userId", userName)
+	                .append("visitStatus","Visited")
 	        );
 			groupDoc = new Document()
 	        .append("$group", new Document()
@@ -569,6 +568,7 @@ public class GenericDaoImpl implements GenericDao {
 			                        .append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fromDate+" 00:00:00.000+0000"))
 			                )
 			                .append("userId", userName)
+			                .append("visitStatus", new Document().append("$ne", "Visited"))
 			);
 			groupDoc = new Document()
 			        .append("$group", new Document()
