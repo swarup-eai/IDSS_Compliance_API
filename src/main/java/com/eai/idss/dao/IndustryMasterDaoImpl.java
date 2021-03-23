@@ -138,11 +138,12 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		
 		IndustryMasterPaginationResponseVo imprVo = new IndustryMasterPaginationResponseVo();
 		
-		Query query = new Query().with(page);
+		Query query = new Query();
+		query.with(Sort.by(Sort.Direction.ASC,"industryId"));
 		setCriteria(imr, query);
 		
-		Query queryCnt = new Query();
-		setCriteria(imr, queryCnt);
+//		Query queryCnt = new Query();
+//		setCriteria(imr, queryCnt);
 
 		List<IndustryMaster> filteredIndustryMaster = mongoTemplate.find(query, IndustryMaster.class);
 		
@@ -152,24 +153,38 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			
 			filterForPendingCases(imr, filteredIndustryMaster);
 			
-			List<IndustryMaster> filteredIndustryMasterCnt = mongoTemplate.find(queryCnt, IndustryMaster.class);
+//			List<IndustryMaster> filteredIndustryMasterCnt = mongoTemplate.find(queryCnt, IndustryMaster.class);
+//			
+//			filterForLegalActions(imr, filteredIndustryMasterCnt);
+//			
+//			filterForPendingCases(imr, filteredIndustryMasterCnt);
+//			
+			imprVo.setTotalRecords(filteredIndustryMaster.size());
 			
-			filterForLegalActions(imr, filteredIndustryMasterCnt);
+//			Page<IndustryMaster> imPage = PageableExecutionUtils.getPage(filteredIndustryMaster, page,
+//			        () -> mongoTemplate.count(query, IndustryMaster.class));
 			
-			filterForPendingCases(imr, filteredIndustryMasterCnt);
+			List<IndustryMaster> filteredIndustryMasterFinal = new ArrayList<IndustryMaster>();
+			int i=0;
+			int skipRecords = page.getPageNumber() * page.getPageSize();
+			for(IndustryMaster iml : filteredIndustryMaster) {
+				if(skipRecords>0) {
+					skipRecords--;
+					continue;
+				}
+				filteredIndustryMasterFinal.add(iml);
+				i++;
+				if(i==page.getPageSize())
+					break;
+			}
 			
-			imprVo.setTotalRecords(filteredIndustryMasterCnt.size());
-			
-			Page<IndustryMaster> imPage = PageableExecutionUtils.getPage(filteredIndustryMaster, page,
-			        () -> mongoTemplate.count(query, IndustryMaster.class));
-			
-			for(IndustryMaster im : imPage) {
+			for(IndustryMaster im : filteredIndustryMasterFinal) {
 				populateLegalActionsPending(im);
 				
 				populateLastVisited(im);
 			}
 			
-			imprVo.setImList(imPage.toList());
+			imprVo.setImList(filteredIndustryMasterFinal);
 			
 			return imprVo;
 		}
