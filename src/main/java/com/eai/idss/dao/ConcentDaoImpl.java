@@ -568,7 +568,7 @@ public class ConcentDaoImpl implements ConcentDao {
 				query.addCriteria(Criteria.where("category").in(cdr.getCategory()));
 			if(null!=cdr.getScale() && !cdr.getScale().isEmpty())
 				query.addCriteria(Criteria.where("scale").in(cdr.getScale()));
-			if(StringUtils.hasText(cdr.getStatus()) && !"Applied".equalsIgnoreCase(cdr.getConsentStatus()))
+			if(StringUtils.hasText(cdr.getStatus())  && !"Applied".equalsIgnoreCase(cdr.getStatus()) && !"Applied".equalsIgnoreCase(cdr.getConsentStatus()))
 				query.addCriteria(Criteria.where("status").is(cdr.getStatus()));
 			if(StringUtils.hasText(cdr.getConsentStatus()) && !"Renewal".equalsIgnoreCase(cdr.getConsentStatus()))
 				query.addCriteria(Criteria.where("consentStatus").is(cdr.getConsentStatus()));

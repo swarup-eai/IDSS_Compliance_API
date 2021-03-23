@@ -29,3 +29,58 @@
 2021-03-23 15:05:58 LegalDaoImpl [INFO] {"legalDirection": "PD", "subRegion": "Raigad II", "count": 7}
 2021-03-23 15:05:58 LegalDaoImpl [INFO] {"legalDirection": "PD", "subRegion": "Mahad", "count": 9}
 2021-03-23 15:05:58 LegalDaoImpl [INFO] {"legalDirection": "CD", "subRegion": "Mahad", "count": 1}
+2021-03-23 18:31:40 LegalDaoImpl [INFO] getByTeamLegalData
+2021-03-23 18:31:40 LegalDaoImpl [INFO] getByTeamLegalData : _0To5Days
+2021-03-23 18:31:40 LegalDaoImpl [INFO] getByTeamLegalData : _0To7Days
+2021-03-23 18:31:41 LegalDaoImpl [INFO] getByTeamLegalData : _15Days
+2021-03-23 18:31:41 LegalDaoImpl [INFO] getByTeamLegalData : _30Days
+2021-03-23 18:31:41 LegalDaoImpl [INFO] getByTeamLegalData : _30ToAllDays
+2021-03-23 18:31:41 LegalDaoImpl [INFO] {"name": "Prashant Gaikwad", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 38.0}
+2021-03-23 18:31:41 LegalDaoImpl [INFO] {"name": "Shri. Navanath Sambhaji Awatade", "userId": "srosangli@mpcb.gov.in", "designation": "SRO", "count": 18.0}
+2021-03-23 18:31:41 LegalDaoImpl [INFO] {"name": "Shri. Ravindra Andhale", "userId": "srochiplun@mpcb.gov.in", "designation": "SRO", "count": 11.0}
+2021-03-23 18:31:41 LegalDaoImpl [INFO] getByTeamLegalData : _60Days
+2021-03-23 18:31:42 LegalDaoImpl [INFO] {"name": "Prashant Gaikwad", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 27.0}
+2021-03-23 18:31:42 LegalDaoImpl [INFO] getByTeamLegalData : _90Days
+2021-03-23 18:31:42 LegalDaoImpl [INFO] {"name": "Prashant Gaikwad", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 27.0}
+2021-03-23 18:31:42 LegalDaoImpl [INFO] {"name": "Shri. Navanath Sambhaji Awatade", "userId": "srosangli@mpcb.gov.in", "designation": "SRO", "count": 1.0}
+2021-03-23 18:31:42 LegalDaoImpl [INFO] getByTeamLegalData : _120ToAllDays
+2021-03-23 18:31:42 LegalDaoImpl [INFO] {"name": "Prashant Gaikwad", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 9.0}
+2021-03-23 18:31:42 LegalDaoImpl [INFO] {"name": "Shri. Navanath Sambhaji Awatade", "userId": "srosangli@mpcb.gov.in", "designation": "SRO", "count": 11.0}
+2021-03-23 18:31:42 LegalDaoImpl [INFO] {"name": "Shri. Ravindra Andhale", "userId": "srochiplun@mpcb.gov.in", "designation": "SRO", "count": 9.0}
+2021-03-23 18:31:42 LegalDaoImpl [INFO] getByTeamLegalData : upcoming_30Days
+2021-03-23 18:31:42 LegalDaoImpl [INFO] getByTeamLegalData : _allDays
+2021-03-23 18:31:43 LegalDaoImpl [INFO] {"name": "Prashant Gaikwad", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 38.0}
+2021-03-23 18:31:43 LegalDaoImpl [INFO] {"name": "Shri. Navanath Sambhaji Awatade", "userId": "srosangli@mpcb.gov.in", "designation": "SRO", "count": 18.0}
+2021-03-23 18:31:43 LegalDaoImpl [INFO] {"name": "Shri. Ravindra Andhale", "userId": "srochiplun@mpcb.gov.in", "designation": "SRO", "count": 11.0}
+2021-03-23 18:49:43 LegalDaoImpl [INFO] getByTeamLegalData
+2021-03-23 18:49:48 LegalDaoImpl [INFO] getByTeamLegalData : _0To5Days
+2021-03-23 18:50:13 LegalDaoImpl [INFO] getByTeamLegalData : _0To7Days
+2021-03-23 18:50:21 LegalDaoImpl [INFO] getByTeamLegalData : _15Days
+2021-03-23 18:50:23 LegalDaoImpl [INFO] getByTeamLegalData : _30Days
+2021-03-23 18:50:25 LegalDaoImpl [INFO] getByTeamLegalData : _30ToAllDays
+2021-03-23 18:50:32 LegalDaoImpl [INFO] {"name": "Prashant Gaikwad", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 38.0}
+2021-03-23 18:50:32 LegalDaoImpl [INFO] {"name": "Shri. Navanath Sambhaji Awatade", "userId": "srosangli@mpcb.gov.in", "designation": "SRO", "count": 18.0}
+2021-03-23 18:50:32 LegalDaoImpl [INFO] {"name": "Shri. Ravindra Andhale", "userId": "srochiplun@mpcb.gov.in", "designation": "SRO", "count": 11.0}
+2021-03-23 18:50:32 LegalDaoImpl [INFO] getByTeamLegalData : _60Days
+2021-03-23 18:50:34 LegalDaoImpl [INFO] {"name": "Prashant Gaikwad", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 27.0}
+2021-03-23 18:50:34 LegalDaoImpl [INFO] getByTeamLegalData : _90Days
+2021-03-23 18:50:35 LegalDaoImpl [INFO] {"name": "Prashant Gaikwad", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 27.0}
+2021-03-23 18:50:35 LegalDaoImpl [INFO] {"name": "Shri. Navanath Sambhaji Awatade", "userId": "srosangli@mpcb.gov.in", "designation": "SRO", "count": 1.0}
+2021-03-23 18:50:35 LegalDaoImpl [INFO] getByTeamLegalData : _120ToAllDays
+2021-03-23 18:50:54 LegalDaoImpl [INFO] {"name": "Prashant Gaikwad", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 9.0}
+2021-03-23 18:50:54 LegalDaoImpl [INFO] {"name": "Shri. Navanath Sambhaji Awatade", "userId": "srosangli@mpcb.gov.in", "designation": "SRO", "count": 11.0}
+2021-03-23 18:50:54 LegalDaoImpl [INFO] {"name": "Shri. Ravindra Andhale", "userId": "srochiplun@mpcb.gov.in", "designation": "SRO", "count": 9.0}
+2021-03-23 18:50:56 LegalDaoImpl [INFO] getByTeamLegalData : upcoming_30Days
+2021-03-23 18:53:20 LegalDaoImpl [INFO] getByTeamLegalData : _allDays
+2021-03-23 18:53:48 LegalDaoImpl [INFO] {"name": "Prashant Gaikwad", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 38.0}
+2021-03-23 18:53:48 LegalDaoImpl [INFO] {"name": "Shri. Navanath Sambhaji Awatade", "userId": "srosangli@mpcb.gov.in", "designation": "SRO", "count": 18.0}
+2021-03-23 18:53:48 LegalDaoImpl [INFO] {"name": "Shri. Ravindra Andhale", "userId": "srochiplun@mpcb.gov.in", "designation": "SRO", "count": 11.0}
+2021-03-23 18:55:35 LegalDaoImpl [INFO] getByTeamLegalData
+2021-03-23 18:55:51 LegalDaoImpl [INFO] getByTeamLegalData : _60Days
+2021-03-23 18:56:54 LegalDaoImpl [INFO] {"name": "Prashant Gaikwad", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 27.0}
+2021-03-23 19:01:34 LegalDaoImpl [INFO] getByTeamLegalData
+2021-03-23 19:01:36 LegalDaoImpl [INFO] getByTeamLegalData : _60Days
+2021-03-23 19:01:40 LegalDaoImpl [INFO] {"name": "Prashant Gaikwad", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 27.0}
+2021-03-23 19:01:40 LegalDaoImpl [INFO] getByTeamLegalData : _90Days
+2021-03-23 19:01:40 LegalDaoImpl [INFO] {"name": "Prashant Gaikwad", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 27.0}
+2021-03-23 19:01:40 LegalDaoImpl [INFO] {"name": "Shri. Navanath Sambhaji Awatade", "userId": "srosangli@mpcb.gov.in", "designation": "SRO", "count": 1.0}
