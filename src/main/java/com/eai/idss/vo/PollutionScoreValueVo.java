@@ -4,14 +4,19 @@ public class PollutionScoreValueVo {
 
 	private String year;
 	private double value;
+	private int thresholdValue; 
 	
 	public  PollutionScoreValueVo() {
 		
 	}
-	
 	public  PollutionScoreValueVo(String y,double v) {
 		this.year=y;
 		this.value=v;
+	}
+	public  PollutionScoreValueVo(String y,double v,int thresholdValue) {
+		this.year=y;
+		this.value=v;
+		this.thresholdValue=thresholdValue;
 	}
 	
 	public String getYear() {
@@ -25,6 +30,14 @@ public class PollutionScoreValueVo {
 	}
 	public void setValue(double value) {
 		this.value = value;
+	}
+
+	public int getThresholdValue() {
+		return thresholdValue;
+	}
+
+	public void setThresholdValue(int thresholdValue) {
+		this.thresholdValue = thresholdValue;
 	}
 	
 }

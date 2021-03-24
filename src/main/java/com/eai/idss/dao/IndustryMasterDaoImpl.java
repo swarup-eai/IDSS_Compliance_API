@@ -21,13 +21,11 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -476,8 +474,10 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			for(PollutionScoreValueVo pVO : pvL) {
 				Map<String,String> msd = new LinkedHashMap<String, String>();
 				msd.put("date", pVO.getYear());
-				if(OCEMS.equalsIgnoreCase(formType.toString())) 
+				if(OCEMS.equalsIgnoreCase(formType.toString())) {
 					msd.put("value", String.valueOf(BigDecimal.valueOf(pVO.getValue()).setScale(2, RoundingMode.HALF_UP)));
+					msd.put("thresholdValue",String.valueOf(pVO.getThresholdValue()));
+				}
 				else
 					msd.put(rv.getForm()+"~~"+rv.getParam(), String.valueOf(pVO.getValue()));
 				lms.add(msd);
@@ -518,12 +518,16 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 				                        )
 				                )
 			                    .append("value", "$"+valueField)
+			                    .append("thresholdValue", "$upper_limit")
 			            ),
 			            new Document()
 			            .append("$group", new Document()
 			                    .append("_id", "$day")
 			                    .append("value",  new Document()
 		                                .append("$avg", "$value")
+		                                )
+			                    .append("thresholdValue",  new Document()
+		                                .append("$avg", "$thresholdValue")
 		                                )
 			            ),
 			            new Document()
@@ -535,6 +539,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			                    .append("_id", false)
 			                    .append( "year","$_id")
 			                    .append("value", "$value")
+			                    .append("thresholdValue", "$thresholdValue")
 			            )
 					);
 			MongoDatabase database = mongoClient.getDatabase(dbName);
