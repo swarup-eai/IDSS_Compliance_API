@@ -574,6 +574,8 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			String paramField,String paramValue,String valueField,String fromDate,String toDate) {
 		try {
 			String dateColumnName = IDSSUtil.getDateColumnName(formType);
+			if("Consent_HW_Comparison".equalsIgnoreCase(collectionName))
+				dateColumnName = "consentApprovalDate";
 			
 			Document matchDoc = new Document();
 			matchDoc.append(industryIdentifier, industryId);
