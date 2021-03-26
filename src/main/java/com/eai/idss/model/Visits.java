@@ -37,6 +37,15 @@ public class Visits {
 	private String sroName;
 	private String subRegion;
 	
+	@Field("adminName")
+	private String visitedBy;
+	
+	public String getVisitedBy() {
+		return visitedBy;
+	}
+	public void setVisitedBy(String visitedBy) {
+		this.visitedBy = visitedBy;
+	}
 	public String getSroName() {
 		return sroName;
 	}

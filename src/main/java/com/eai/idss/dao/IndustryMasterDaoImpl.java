@@ -140,9 +140,6 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		query.with(Sort.by(Sort.Direction.ASC,"industryId"));
 		setCriteria(imr, query);
 		
-//		Query queryCnt = new Query();
-//		setCriteria(imr, queryCnt);
-
 		List<IndustryMaster> filteredIndustryMaster = mongoTemplate.find(query, IndustryMaster.class);
 		
 		if(null!=filteredIndustryMaster && !filteredIndustryMaster.isEmpty()) {
@@ -151,16 +148,7 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			
 			filterForPendingCases(imr, filteredIndustryMaster);
 			
-//			List<IndustryMaster> filteredIndustryMasterCnt = mongoTemplate.find(queryCnt, IndustryMaster.class);
-//			
-//			filterForLegalActions(imr, filteredIndustryMasterCnt);
-//			
-//			filterForPendingCases(imr, filteredIndustryMasterCnt);
-//			
 			imprVo.setTotalRecords(filteredIndustryMaster.size());
-			
-//			Page<IndustryMaster> imPage = PageableExecutionUtils.getPage(filteredIndustryMaster, page,
-//			        () -> mongoTemplate.count(query, IndustryMaster.class));
 			
 			List<IndustryMaster> filteredIndustryMasterFinal = new ArrayList<IndustryMaster>();
 			int i=0;

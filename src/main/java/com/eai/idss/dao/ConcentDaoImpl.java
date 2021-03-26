@@ -557,7 +557,11 @@ public class ConcentDaoImpl implements ConcentDao {
 												.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(today+" 00:00:00.000+0000")));
 				}
 			}else { // -30, -60, -90 days in past
-				query.addCriteria(Criteria.where("created")
+				if(null!=cdr.getDuration() && cdr.getDuration().intValue()==-999999)
+					query.addCriteria(Criteria.where("created")
+							.gt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse("1970-01-01 00:00:00.000+0000")));
+				else	
+					query.addCriteria(Criteria.where("created")
 												.gt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(pastOrFutureDay+" 00:00:00.000+0000"))
 												.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(today+" 00:00:00.000+0000")));
 			}
@@ -570,7 +574,7 @@ public class ConcentDaoImpl implements ConcentDao {
 				query.addCriteria(Criteria.where("scale").in(cdr.getScale()));
 			if(StringUtils.hasText(cdr.getStatus())  && !"Applied".equalsIgnoreCase(cdr.getStatus()) && !"Applied".equalsIgnoreCase(cdr.getConsentStatus()))
 				query.addCriteria(Criteria.where("status").is(cdr.getStatus()));
-			if(StringUtils.hasText(cdr.getConsentStatus()) && !"Renewal".equalsIgnoreCase(cdr.getConsentStatus()))
+			if(StringUtils.hasText(cdr.getConsentStatus()) )
 				query.addCriteria(Criteria.where("consentStatus").is(cdr.getConsentStatus()));
 			if(StringUtils.hasText(cdr.getSubRegion()))
 				query.addCriteria(Criteria.where("subRegion").is(cdr.getSubRegion()));
