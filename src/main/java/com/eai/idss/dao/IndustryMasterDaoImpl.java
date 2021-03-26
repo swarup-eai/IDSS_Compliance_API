@@ -696,6 +696,12 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			cb.setConsentQuantity(String.valueOf(csc.getStackNatureOfPollutants()));
 			cb.setConsentUnit("");
 			ctpList.add(cb);
+			
+			cb = new ComparisonTablePollutantVo();
+			cb.setPollutant("Stack Fuel Quantity");
+			cb.setConsentQuantity(String.valueOf(csc.getStackFuelQuantity()));
+			cb.setConsentUnit("");
+			ctpList.add(cb);
 		}
 		ppgVo.setData(ctpList);
 		return ppgVo;
