@@ -86,15 +86,15 @@ public class GenericDaoImpl implements GenericDao {
 		    	                    logger.info(document.toJson());
 									try {
 										TileVo tVo = new ObjectMapper().readValue(document.toJson(), TileVo.class);
-										if(!"Operate".equalsIgnoreCase(tVo.getCaseType()) && !"New".equalsIgnoreCase(tVo.getCaseType()) )
+//										if(!"Operate".equalsIgnoreCase(tVo.getCaseType()) && !"New".equalsIgnoreCase(tVo.getCaseType()) )
 											tVoList.add(tVo);
-										else {
-											tNewVo.setCaseCount(tNewVo.getCaseCount() + tVo.getCaseCount());
-											List<Integer> ind = tNewVo.getIndustries();
-											if(null==ind) ind = new ArrayList<Integer>();
-											ind.addAll(tVo.getIndustries());
-											tNewVo.setIndustries(ind);
-										}
+//										else {
+//											tNewVo.setCaseCount(tNewVo.getCaseCount() + tVo.getCaseCount());
+//											List<Integer> ind = tNewVo.getIndustries();
+//											if(null==ind) ind = new ArrayList<Integer>();
+//											ind.addAll(tVo.getIndustries());
+//											tNewVo.setIndustries(ind);
+//										}
 									} catch (JsonMappingException e) {
 										e.printStackTrace();
 									} catch (JsonProcessingException e) {
