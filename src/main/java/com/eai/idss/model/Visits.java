@@ -39,6 +39,8 @@ public class Visits {
 	
 	@Field("adminName")
 	private String visitedBy;
+
+	private String legalDirection;
 	
 	public String getVisitedBy() {
 		return visitedBy;
@@ -161,6 +163,12 @@ public class Visits {
 	}
 	public String getPriority() {
 		return priority;
+	}
+	public String getLegalDirection() {
+		return legalDirection;
+	}
+	public void setLegalDirection(String legalDirection) {
+		this.legalDirection = legalDirection;
 	}
 	
 }
