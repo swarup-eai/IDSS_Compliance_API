@@ -848,13 +848,15 @@ public class VisitsDaoImpl implements VisitsDao {
 			Query query = new Query().with(pageable);
 			getQueryCriteria(cdr, userName, query);
 			
-//			Query queryCnt = new Query();
-//			getQueryCriteria(cdr, userName, queryCnt);
+			Query queryCnt = new Query();
+			getQueryCriteria(cdr, userName, queryCnt);
 			
 			VisitsPaginationResponseVo vprv = new VisitsPaginationResponseVo();
 	
 //			vprv.setTotalRecords(mongoTemplate.count(queryCnt, Visits.class));
-			
+			List<Visits> filteredVisitListTotalCount= mongoTemplate.find(queryCnt, Visits.class);
+			applyCScoreFilterTotalCount(cdr,filteredVisitListTotalCount);
+			vprv.setTotalRecords(filteredVisitListTotalCount.size());
 			List<Visits> filteredVisitList= mongoTemplate.find(query, Visits.class);
 			
 			applyCScoreFilter(cdr, filteredVisitList);
@@ -866,7 +868,6 @@ public class VisitsDaoImpl implements VisitsDao {
 			
 			List<Visits> finalVisitList = cPage.toList();
 
-			vprv.setTotalRecords(finalVisitList.size());
 
 			populateCScore(finalVisitList);
 			
@@ -925,6 +926,23 @@ public class VisitsDaoImpl implements VisitsDao {
 			List<Long> ldmIndIdList = imList.stream().map(IndustryMaster::getIndustryId).collect(Collectors.toList());
 			
 			filteredVisitList.removeIf(i -> !ldmIndIdList.contains(i.getIndustryId()));
+		}
+	}
+	private void applyCScoreFilterTotalCount(VisitsScheduleDetailsRequest cdr, List<Visits> filteredVisitListTotalCount) {
+		if(StringUtils.hasText(cdr.getCompliance()) && !"ALL".equalsIgnoreCase(cdr.getCompliance())) {
+			String[] op = cdr.getCompliance().split("-");
+
+			List<Long> indIdList = filteredVisitListTotalCount.stream().map(Visits::getIndustryId).collect(Collectors.toList());
+			Query queryIM = new Query();
+
+			queryIM.addCriteria(Criteria.where("industryId").in(indIdList));
+			queryIM.addCriteria(Criteria.where("cscore").gte(Integer.parseInt(op[0])).lte(Integer.parseInt(op[1])));
+
+			List<IndustryMaster> imList = mongoTemplate.find(queryIM, IndustryMaster.class);
+
+			List<Long> ldmIndIdList = imList.stream().map(IndustryMaster::getIndustryId).collect(Collectors.toList());
+
+			filteredVisitListTotalCount.removeIf(i -> !ldmIndIdList.contains(i.getIndustryId()));
 		}
 	}
 	
