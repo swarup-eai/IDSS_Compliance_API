@@ -848,12 +848,12 @@ public class VisitsDaoImpl implements VisitsDao {
 			Query query = new Query().with(pageable);
 			getQueryCriteria(cdr, userName, query);
 			
-			Query queryCnt = new Query();
-			getQueryCriteria(cdr, userName, queryCnt);
+//			Query queryCnt = new Query();
+//			getQueryCriteria(cdr, userName, queryCnt);
 			
 			VisitsPaginationResponseVo vprv = new VisitsPaginationResponseVo();
 	
-			vprv.setTotalRecords(mongoTemplate.count(queryCnt, Visits.class));
+//			vprv.setTotalRecords(mongoTemplate.count(queryCnt, Visits.class));
 			
 			List<Visits> filteredVisitList= mongoTemplate.find(query, Visits.class);
 			
@@ -865,7 +865,9 @@ public class VisitsDaoImpl implements VisitsDao {
 			        () -> mongoTemplate.count(query, Visits.class));
 			
 			List<Visits> finalVisitList = cPage.toList();
-			
+
+			vprv.setTotalRecords(finalVisitList.size());
+
 			populateCScore(finalVisitList);
 			
 			vprv.setVisitsList(finalVisitList);
