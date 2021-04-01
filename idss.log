@@ -1,6 +1,38 @@
-2021-03-25 13:53:07 IndustryMasterDaoImpl [INFO] getPollutionScoreData...11
-2021-03-25 15:12:59 IndustryMasterDaoImpl [INFO] getPollutionScoreData...906
-2021-03-25 15:13:01 IndustryMasterDaoImpl [INFO] {"year": "2020", "value": 80.0}
-2021-03-25 15:13:19 IndustryMasterDaoImpl [INFO] getPollutionScoreData...11
-2021-03-25 15:13:19 IndustryMasterDaoImpl [INFO] {"year": "2019", "value": 12500.0}
-2021-03-25 15:13:19 IndustryMasterDaoImpl [INFO] {"year": "2020", "value": 19575.0}
+2021-04-01 18:50:00 ConcentDaoImpl [INFO] getPendingRequestConcentDataNew
+2021-04-01 18:50:00 ConcentDaoImpl [INFO] getUpcomingRenewalConcentDataNew : 2021-04-01
+2021-04-01 18:50:00 ConcentDaoImpl [INFO] {"caseType": "Closed", "caseCount": 1}
+2021-04-01 18:50:00 ConcentDaoImpl [INFO] {"caseType": "Operate", "caseCount": 50}
+2021-04-01 18:50:00 ConcentDaoImpl [INFO] {"caseType": "New", "caseCount": 6}
+2021-04-01 18:50:00 ConcentDaoImpl [INFO] {"caseType": "Renewal", "caseCount": 135}
+2021-04-01 18:50:00 ConcentDaoImpl [INFO] getUpcomingRenewalConcentDataNew : 2021-04-08
+2021-04-01 18:50:00 ConcentDaoImpl [INFO] getUpcomingRenewalConcentDataNew : 2021-05-01
+2021-04-01 18:50:01 ConcentDaoImpl [INFO] {"caseType": "Renewal", "caseCount": 12}
+2021-04-01 18:50:01 ConcentDaoImpl [INFO] {"caseType": "Operate", "caseCount": 4}
+2021-04-01 18:50:01 ConcentDaoImpl [INFO] getUpcomingRenewalConcentDataNew : 2021-05-31
+2021-04-01 18:50:01 ConcentDaoImpl [INFO] {"caseType": "Closed", "caseCount": 1}
+2021-04-01 18:50:01 ConcentDaoImpl [INFO] {"caseType": "Operate", "caseCount": 13}
+2021-04-01 18:50:01 ConcentDaoImpl [INFO] {"caseType": "Renewal", "caseCount": 25}
+2021-04-01 18:50:01 ConcentDaoImpl [INFO] getUpcomingRenewalConcentDataNew : 2021-06-30
+2021-04-01 18:50:01 ConcentDaoImpl [INFO] {"caseType": "Closed", "caseCount": 1}
+2021-04-01 18:50:01 ConcentDaoImpl [INFO] {"caseType": "Operate", "caseCount": 19}
+2021-04-01 18:50:01 ConcentDaoImpl [INFO] {"caseType": "Renewal", "caseCount": 37}
+2021-04-01 18:50:01 ConcentDaoImpl [INFO] getUpcomingRenewalConcentDataNew : 2021-07-30
+2021-04-01 18:50:02 ConcentDaoImpl [INFO] {"caseType": "Renewal", "caseCount": 39}
+2021-04-01 18:50:02 ConcentDaoImpl [INFO] {"caseType": "Closed", "caseCount": 1}
+2021-04-01 18:50:02 ConcentDaoImpl [INFO] {"caseType": "Operate", "caseCount": 19}
+2021-04-01 19:17:09 VisitsDaoImpl [INFO] getPendingVisitsData
+2021-04-01 19:17:09 VisitsDaoImpl [INFO] getPendingVisitsData : _0To7Days
+2021-04-01 19:17:09 VisitsDaoImpl [INFO] {"caseType": "SSI", "caseCount": 2}
+2021-04-01 19:17:09 VisitsDaoImpl [INFO] {"caseType": "LSI", "caseCount": 12}
+2021-04-01 19:17:09 VisitsDaoImpl [INFO] {"caseType": "MSI", "caseCount": 1}
+2021-04-01 19:17:09 VisitsDaoImpl [INFO] getPendingVisitsData : _7To15Days
+2021-04-01 19:17:10 VisitsDaoImpl [INFO] {"caseType": "LSI", "caseCount": 15}
+2021-04-01 19:17:10 VisitsDaoImpl [INFO] {"caseType": "MSI", "caseCount": 2}
+2021-04-01 19:17:10 VisitsDaoImpl [INFO] getPendingVisitsData : _15To30Days
+2021-04-01 19:17:10 VisitsDaoImpl [INFO] {"caseType": "LSI", "caseCount": 19}
+2021-04-01 19:17:10 VisitsDaoImpl [INFO] {"caseType": "SSI", "caseCount": 5}
+2021-04-01 19:17:10 VisitsDaoImpl [INFO] getPendingVisitsData : _30ToAllDays
+2021-04-01 19:17:10 VisitsDaoImpl [INFO] {"caseType": "LSI", "caseCount": 4}
+2021-04-01 19:17:10 VisitsDaoImpl [INFO] getPendingVisitsData : _60ToAllDays
+2021-04-01 19:17:11 VisitsDaoImpl [INFO] getPendingVisitsData : _90ToAllDays
+2021-04-01 19:17:11 VisitsDaoImpl [INFO] getPendingVisitsData : _120ToAllDays

@@ -1,0 +1,6 @@
+2021-03-25 13:53:07 IndustryMasterDaoImpl [INFO] getPollutionScoreData...11
+2021-03-25 15:12:59 IndustryMasterDaoImpl [INFO] getPollutionScoreData...906
+2021-03-25 15:13:01 IndustryMasterDaoImpl [INFO] {"year": "2020", "value": 80.0}
+2021-03-25 15:13:19 IndustryMasterDaoImpl [INFO] getPollutionScoreData...11
+2021-03-25 15:13:19 IndustryMasterDaoImpl [INFO] {"year": "2019", "value": 12500.0}
+2021-03-25 15:13:19 IndustryMasterDaoImpl [INFO] {"year": "2020", "value": 19575.0}

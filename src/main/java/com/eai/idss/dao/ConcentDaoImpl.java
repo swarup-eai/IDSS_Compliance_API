@@ -553,7 +553,7 @@ public class ConcentDaoImpl implements ConcentDao {
 				}else { // 30/60/90 days in future
 					
 					query.addCriteria(Criteria.where("consentValidityDate")
-												.lt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(pastOrFutureDay+" 00:00:00.000+0000"))
+												.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(pastOrFutureDay+" 00:00:00.000+0000"))
 												.gte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(today+" 00:00:00.000+0000")));
 				}
 			}else { // -30, -60, -90 days in past
