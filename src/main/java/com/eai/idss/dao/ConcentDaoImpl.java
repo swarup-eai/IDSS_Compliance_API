@@ -435,8 +435,8 @@ public class ConcentDaoImpl implements ConcentDao {
 										if("Awaited".equalsIgnoreCase(crVo.getStatus()))
 											crVo.setStatus("Pending");
 										TileVo tVo = new TileVo(crVo.getStatus(),crVo.getCount());
-//										List<TileVo> concentStatusList = subRegionConcentMap.get(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getUserId());
-										List<TileVo> concentStatusList = subRegionConcentMap.get(crVo.getUserId());
+										List<TileVo> concentStatusList = subRegionConcentMap.get(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getUserId());
+//										List<TileVo> concentStatusList = subRegionConcentMap.get(crVo.getUserId());
 										if(null==concentStatusList) concentStatusList = new ArrayList<TileVo>();
 										concentStatusList.add(tVo);
 										subRegionConcentMap.put(crVo.getName()+"~"+crVo.getDesignation()+"~"+crVo.getUserId(), concentStatusList);

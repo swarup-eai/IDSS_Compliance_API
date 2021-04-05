@@ -144,11 +144,14 @@ public class VisitsDaoImpl implements VisitsDao {
 	
 	private List<? extends Bson> getPendingVisitsPipeline(List<String> days,VisitsFilter vf,String region, String subRegion) throws ParseException {
 		
+		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
+		String dateToday = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
+		
 		Document matchDoc = new Document();
 		
 		matchDoc.append("schduledOn", new Document()
-							.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
-							.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))
+							.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(dateToday+" 00:00:00.000+0000"))
+							.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
 						);
 		matchDoc.append("visitStatus", PENDING);
 

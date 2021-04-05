@@ -36,3 +36,75 @@
 2021-04-01 19:17:10 VisitsDaoImpl [INFO] getPendingVisitsData : _60ToAllDays
 2021-04-01 19:17:11 VisitsDaoImpl [INFO] getPendingVisitsData : _90ToAllDays
 2021-04-01 19:17:11 VisitsDaoImpl [INFO] getPendingVisitsData : _120ToAllDays
+2021-04-05 16:59:52 ConcentDaoImpl [INFO] getByTeamConcentData
+2021-04-05 16:59:56 ConcentDaoImpl [INFO] getByTeamConcentData : 2021-03-29
+2021-04-05 17:10:45 ConcentDaoImpl [INFO] getByTeamConcentData : 2021-03-06
+2021-04-05 17:10:53 ConcentDaoImpl [INFO] {"name": "Prashant Gaikwad", "status": "In process", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 2.0}
+2021-04-05 17:10:53 ConcentDaoImpl [INFO] {"name": "Shri. Ravindra Andhale", "status": "In process", "userId": "srochiplun@mpcb.gov.in", "designation": "SRO", "count": 2.0}
+2021-04-05 17:10:53 ConcentDaoImpl [INFO] getByTeamConcentData : 2021-02-04
+2021-04-05 17:11:00 ConcentDaoImpl [INFO] {"name": "Mrs. Indira Tanaji Gaikwad", "status": "In process", "userId": "sroratnagiri@mpcb.gov.in", "designation": "SRO", "count": 5.0}
+2021-04-05 17:11:00 ConcentDaoImpl [INFO] {"name": "Prashant Gaikwad", "status": "In process", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 26.0}
+2021-04-05 17:11:00 ConcentDaoImpl [INFO] {"name": "Shri. Navanath Sambhaji Awatade", "status": "In process", "userId": "srosangli@mpcb.gov.in", "designation": "SRO", "count": 12.0}
+2021-04-05 17:11:00 ConcentDaoImpl [INFO] {"name": "Shri. Ravindra Andhale", "status": "In process", "userId": "srochiplun@mpcb.gov.in", "designation": "SRO", "count": 15.0}
+2021-04-05 17:11:00 ConcentDaoImpl [INFO] getByTeamConcentData : 2021-01-05
+2021-04-05 17:11:29 ConcentDaoImpl [INFO] {"name": "Mrs. Indira Tanaji Gaikwad", "status": "In process", "userId": "sroratnagiri@mpcb.gov.in", "designation": "SRO", "count": 6.0}
+2021-04-05 17:12:13 ConcentDaoImpl [INFO] {"name": "Mrs. Indira Tanaji Gaikwad", "status": "Approved", "userId": "sroratnagiri@mpcb.gov.in", "designation": "SRO", "count": 1.0}
+2021-04-05 17:14:10 ConcentDaoImpl [INFO] getByTeamConcentData
+2021-04-05 17:14:10 ConcentDaoImpl [INFO] getByTeamConcentData : 2021-03-29
+2021-04-05 17:14:10 ConcentDaoImpl [INFO] getByTeamConcentData : 2021-03-06
+2021-04-05 17:14:11 ConcentDaoImpl [INFO] {"name": "Prashant Gaikwad", "status": "In process", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 2.0}
+2021-04-05 17:14:11 ConcentDaoImpl [INFO] {"name": "Shri. Ravindra Andhale", "status": "In process", "userId": "srochiplun@mpcb.gov.in", "designation": "SRO", "count": 2.0}
+2021-04-05 17:14:11 ConcentDaoImpl [INFO] getByTeamConcentData : 2021-02-04
+2021-04-05 17:14:11 ConcentDaoImpl [INFO] {"name": "Mrs. Indira Tanaji Gaikwad", "status": "In process", "userId": "sroratnagiri@mpcb.gov.in", "designation": "SRO", "count": 5.0}
+2021-04-05 17:14:11 ConcentDaoImpl [INFO] {"name": "Prashant Gaikwad", "status": "In process", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 26.0}
+2021-04-05 17:14:11 ConcentDaoImpl [INFO] {"name": "Shri. Navanath Sambhaji Awatade", "status": "In process", "userId": "srosangli@mpcb.gov.in", "designation": "SRO", "count": 12.0}
+2021-04-05 17:14:11 ConcentDaoImpl [INFO] {"name": "Shri. Ravindra Andhale", "status": "In process", "userId": "srochiplun@mpcb.gov.in", "designation": "SRO", "count": 15.0}
+2021-04-05 17:14:11 ConcentDaoImpl [INFO] getByTeamConcentData : 2021-01-05
+2021-04-05 17:14:11 ConcentDaoImpl [INFO] {"name": "Mrs. Indira Tanaji Gaikwad", "status": "In process", "userId": "sroratnagiri@mpcb.gov.in", "designation": "SRO", "count": 6.0}
+2021-04-05 17:14:11 ConcentDaoImpl [INFO] {"name": "Mrs. Indira Tanaji Gaikwad", "status": "Approved", "userId": "sroratnagiri@mpcb.gov.in", "designation": "SRO", "count": 1.0}
+2021-04-05 17:14:11 ConcentDaoImpl [INFO] {"name": "Prashant Gaikwad", "status": "In process", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 45.0}
+2021-04-05 17:14:11 ConcentDaoImpl [INFO] {"name": "Shri. Navanath Sambhaji Awatade", "status": "In process", "userId": "srosangli@mpcb.gov.in", "designation": "SRO", "count": 22.0}
+2021-04-05 17:14:11 ConcentDaoImpl [INFO] {"name": "Shri. Ravindra Andhale", "status": "In process", "userId": "srochiplun@mpcb.gov.in", "designation": "SRO", "count": 23.0}
+2021-04-05 17:14:11 ConcentDaoImpl [INFO] getByTeamConcentData : 2020-12-06
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Mrs. Indira Tanaji Gaikwad", "status": "In process", "userId": "sroratnagiri@mpcb.gov.in", "designation": "SRO", "count": 11.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Mrs. Indira Tanaji Gaikwad", "status": "Approved", "userId": "sroratnagiri@mpcb.gov.in", "designation": "SRO", "count": 1.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Prashant Gaikwad", "status": "In process", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 63.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Prashant Gaikwad", "status": "Approved", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 1.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Shri. Navanath Sambhaji Awatade", "status": "Approved", "userId": "srosangli@mpcb.gov.in", "designation": "SRO", "count": 1.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Shri. Navanath Sambhaji Awatade", "status": "In process", "userId": "srosangli@mpcb.gov.in", "designation": "SRO", "count": 29.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Shri. Ravindra Andhale", "status": "In process", "userId": "srochiplun@mpcb.gov.in", "designation": "SRO", "count": 35.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] getByTeamConcentData : 2021-05-05
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] getByTeamConcentData : 1970-01-01
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Mrs. Indira Tanaji Gaikwad", "status": "Awaited", "userId": "sroratnagiri@mpcb.gov.in", "designation": "SRO", "count": 4.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Mrs. Indira Tanaji Gaikwad", "status": "Approved", "userId": "sroratnagiri@mpcb.gov.in", "designation": "SRO", "count": 70.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Mrs. Indira Tanaji Gaikwad", "status": "In process", "userId": "sroratnagiri@mpcb.gov.in", "designation": "SRO", "count": 32.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Mrs. Indira Tanaji Gaikwad", "status": "Rejected", "userId": "sroratnagiri@mpcb.gov.in", "designation": "SRO", "count": 11.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Prashant Gaikwad", "status": "In process", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 194.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Prashant Gaikwad", "status": "Awaited", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 53.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Prashant Gaikwad", "status": "Approved", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 499.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Prashant Gaikwad", "status": "Rejected", "userId": "srokolhapur@mpcb.gov.in", "designation": "SRO", "count": 72.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Shri. Navanath Sambhaji Awatade", "status": "Approved", "userId": "srosangli@mpcb.gov.in", "designation": "SRO", "count": 200.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Shri. Navanath Sambhaji Awatade", "status": "Awaited", "userId": "srosangli@mpcb.gov.in", "designation": "SRO", "count": 9.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Shri. Navanath Sambhaji Awatade", "status": "Rejected", "userId": "srosangli@mpcb.gov.in", "designation": "SRO", "count": 28.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Shri. Navanath Sambhaji Awatade", "status": "In process", "userId": "srosangli@mpcb.gov.in", "designation": "SRO", "count": 79.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Shri. Ravindra Andhale", "status": "In process", "userId": "srochiplun@mpcb.gov.in", "designation": "SRO", "count": 65.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Shri. Ravindra Andhale", "status": "Awaited", "userId": "srochiplun@mpcb.gov.in", "designation": "SRO", "count": 1.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Shri. Ravindra Andhale", "status": "Rejected", "userId": "srochiplun@mpcb.gov.in", "designation": "SRO", "count": 7.0}
+2021-04-05 17:14:12 ConcentDaoImpl [INFO] {"name": "Shri. Ravindra Andhale", "status": "Approved", "userId": "srochiplun@mpcb.gov.in", "designation": "SRO", "count": 149.0}
+2021-04-05 17:33:08 VisitsDaoImpl [INFO] getPendingVisitsData
+2021-04-05 17:33:08 VisitsDaoImpl [INFO] getPendingVisitsData : _15Days
+2021-04-05 17:33:10 VisitsDaoImpl [INFO] {"caseType": "LSI", "caseCount": 191}
+2021-04-05 17:33:10 VisitsDaoImpl [INFO] {"caseType": "SSI", "caseCount": 38}
+2021-04-05 17:33:10 VisitsDaoImpl [INFO] {"caseType": "MSI", "caseCount": 34}
+2021-04-05 17:33:10 VisitsDaoImpl [INFO] getPendingVisitsData : _30Days
+2021-04-05 17:33:11 VisitsDaoImpl [INFO] {"caseType": "LSI", "caseCount": 424}
+2021-04-05 17:33:11 VisitsDaoImpl [INFO] {"caseType": "SSI", "caseCount": 74}
+2021-04-05 17:33:11 VisitsDaoImpl [INFO] {"caseType": "MSI", "caseCount": 67}
+2021-04-05 17:33:11 VisitsDaoImpl [INFO] getPendingVisitsData : _60Days
+2021-04-05 17:33:11 VisitsDaoImpl [INFO] {"caseType": "LSI", "caseCount": 545}
+2021-04-05 17:33:11 VisitsDaoImpl [INFO] {"caseType": "SSI", "caseCount": 97}
+2021-04-05 17:33:11 VisitsDaoImpl [INFO] {"caseType": "MSI", "caseCount": 87}
+2021-04-05 17:33:11 VisitsDaoImpl [INFO] getPendingVisitsData : _90Days
+2021-04-05 17:33:11 VisitsDaoImpl [INFO] {"caseType": "LSI", "caseCount": 545}
+2021-04-05 17:33:11 VisitsDaoImpl [INFO] {"caseType": "SSI", "caseCount": 97}
+2021-04-05 17:33:11 VisitsDaoImpl [INFO] {"caseType": "MSI", "caseCount": 87}

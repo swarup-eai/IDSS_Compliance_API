@@ -520,50 +520,30 @@ public class IDSSUtil {
 	
 	public static Map<String, List<String>> getDaysMapForVisits() {
 		LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
-		String dateToday = currentTime.format(DateTimeFormatter.ISO_LOCAL_DATE);
-		String date7DaysBack = currentTime.minusDays(7).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date15DaysBack = currentTime.minusDays(15).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date30DaysBack = currentTime.minusDays(30).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date60DaysBack = currentTime.minusDays(60).format(DateTimeFormatter.ISO_LOCAL_DATE);
 		String date90DaysBack = currentTime.minusDays(90).format(DateTimeFormatter.ISO_LOCAL_DATE);
-		String date120DaysBack = currentTime.minusDays(120).format(DateTimeFormatter.ISO_LOCAL_DATE);
 
 		Map<String,List<String>> daysMap = new LinkedHashMap<String, List<String>>();
 		List<String> days = new ArrayList<String>();
 		
-		days.add(dateToday);
-		days.add(date7DaysBack);
-		daysMap.put("_0To7Days",days);
-		
-		days = new ArrayList<String>();
-		days.add(date7DaysBack);
-		days.add(date15DaysBack);
-		daysMap.put("_7To15Days",days);
 		
 		days = new ArrayList<String>();
 		days.add(date15DaysBack);
-		days.add(date30DaysBack);
-		daysMap.put("_15To30Days",days);
-
+		daysMap.put("_15Days",days);
+		
 		days = new ArrayList<String>();
 		days.add(date30DaysBack);
-		days.add("1970-01-01");
-		daysMap.put("_30ToAllDays",days);
+		daysMap.put("_30Days",days);
 
 		days = new ArrayList<String>();
 		days.add(date60DaysBack);
-		days.add("1970-01-01");
-		daysMap.put("_60ToAllDays",days);
+		daysMap.put("_60Days",days);
 
 		days = new ArrayList<String>();
 		days.add(date90DaysBack);
-		days.add("1970-01-01");
-		daysMap.put("_90ToAllDays",days);
-		
-		days = new ArrayList<String>();
-		days.add(date120DaysBack);
-		days.add("1970-01-01");
-		daysMap.put("_120ToAllDays",days);
+		daysMap.put("_90Days",days);
 		
 		return daysMap;
 	}
