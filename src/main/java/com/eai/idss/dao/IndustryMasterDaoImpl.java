@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import com.eai.idss.repository.CscoreMasterRepository;
+import com.eai.idss.vo.*;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -62,34 +64,6 @@ import com.eai.idss.model.Plastic_Recycler_Authorization;
 import com.eai.idss.model.Visits;
 import com.eai.idss.repository.IndustryMasterRepository;
 import com.eai.idss.util.IDSSUtil;
-import com.eai.idss.vo.AnnualReturnsVo;
-import com.eai.idss.vo.BatteriesSoldToVo;
-import com.eai.idss.vo.BatteryVo;
-import com.eai.idss.vo.BioMedWasteAuthFormVo;
-import com.eai.idss.vo.BioMedWasteVo;
-import com.eai.idss.vo.ComlianceScoreFilter;
-import com.eai.idss.vo.ComparisonTablePollutantVo;
-import com.eai.idss.vo.ComparisonTableResponseVo;
-import com.eai.idss.vo.ComparisonTableSKUVo;
-import com.eai.idss.vo.ComplianceScoreResponseVo;
-import com.eai.idss.vo.EWasteForm4Vo;
-import com.eai.idss.vo.EWasteVo;
-import com.eai.idss.vo.Form1AVo;
-import com.eai.idss.vo.Form3Vo;
-import com.eai.idss.vo.Form5Vo;
-import com.eai.idss.vo.IndustryMasterDetailResponseVo;
-import com.eai.idss.vo.IndustryMasterPaginationResponseVo;
-import com.eai.idss.vo.IndustryMasterRequest;
-import com.eai.idss.vo.MandatoryReportsResponseVo;
-import com.eai.idss.vo.NewBatteriesSoldVo;
-import com.eai.idss.vo.OldUsedBatteriesVo;
-import com.eai.idss.vo.ParameterVo;
-import com.eai.idss.vo.PlasticAuthorizationFormVo;
-import com.eai.idss.vo.PlasticForm4Vo;
-import com.eai.idss.vo.PlasticVo;
-import com.eai.idss.vo.PollutionScoreFilter;
-import com.eai.idss.vo.PollutionScoreResponseVo;
-import com.eai.idss.vo.PollutionScoreValueVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -129,6 +103,10 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 
 	@Autowired
 	IndustryMasterRepository industryMasterRepository;
+
+	@Autowired
+	CscoreMasterRepository cscoreMasterRepository;
+
 	
 	public static final Logger logger = Logger.getLogger(IndustryMasterDaoImpl.class);
 	
@@ -1461,6 +1439,32 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public List<ComplianceScoreTableResponseVo> getComplianceScpreDetailByIndustryId(long industryId) {
+		try {
+			logger.info("getComplianceScpreDetailByIndustryId");
+
+			CScoreMaster cScoreMaster = cscoreMasterRepository.findTop1ByIndustryIdOrderByCalculatedDateDesc(industryId);
+
+			List<ComplianceScoreTableResponseVo> complianceScoreList = new ArrayList<ComplianceScoreTableResponseVo>();
+			complianceScoreList.add(new ComplianceScoreTableResponseVo("Visits reports", (int) cScoreMaster.getScoreByVisitsReport(),30));
+			complianceScoreList.add(new ComplianceScoreTableResponseVo("ESR filed", (int) cScoreMaster.getScoreByEsrFiled(),10));
+			complianceScoreList.add(new ComplianceScoreTableResponseVo("Other mandatory report", (int) cScoreMaster.getScoreByOtherSubmissions(),10));
+			complianceScoreList.add(new ComplianceScoreTableResponseVo("Consent expiry", (int) cScoreMaster.getScoreByConsentExpiry(),20));
+			complianceScoreList.add(new ComplianceScoreTableResponseVo("OCEMS violation", (int) cScoreMaster.getScoreByOcemsViolations(),25));
+			complianceScoreList.add(new ComplianceScoreTableResponseVo("ESR Violations", (int) cScoreMaster.getScoreByEsrViolations(),25));
+			complianceScoreList.add(new ComplianceScoreTableResponseVo("Legal warnings", (int) cScoreMaster.getScoreByLegalWarnings(),10));
+			complianceScoreList.add(new ComplianceScoreTableResponseVo("Legal actions", (int) cScoreMaster.getScoreByLegalActions(),20));
+			complianceScoreList.add(new ComplianceScoreTableResponseVo("Repeat offenders", (int) cScoreMaster.getScoreByRepeatOffenders(),20));
+			complianceScoreList.add(new ComplianceScoreTableResponseVo("C_score", (int) cScoreMaster.getCscore(),100));
+
+			return complianceScoreList;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return new ArrayList<>();
 	}
 
 	private List<Map<String,String>> getFixedConsentEFFLUENTParamList(long industryId) {

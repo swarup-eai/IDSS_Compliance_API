@@ -1,6 +1,7 @@
 package com.eai.idss.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -208,6 +209,18 @@ public class IndustryMasterController {
 			return new ResponseEntity("Exception in industry name.", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return new ResponseEntity<List<String>>(industryNameList,HttpStatus.OK);
+	}
+	@RequestMapping(method = RequestMethod.GET, value = "/compliance-score", produces = "application/json")
+	public ResponseEntity<List<ComplianceScoreTableResponseVo>> getComplianceScoreDetailByIndustryId(@RequestParam(required = true) long industryId) throws IOException {
+		List<ComplianceScoreTableResponseVo> complianceScoreData = new ArrayList<>();
+		try {
+			complianceScoreData = imd.getComplianceScpreDetailByIndustryId(industryId);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity("Exception in /compliance-score", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return new ResponseEntity<List<ComplianceScoreTableResponseVo>>(complianceScoreData,HttpStatus.OK);
 	}
 
 }
