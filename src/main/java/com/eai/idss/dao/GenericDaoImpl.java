@@ -606,26 +606,29 @@ public class GenericDaoImpl implements GenericDao {
 		return pipeline;
 	}
 
-	public List<TopPerfVo> getTopPerformer(String region){
-		List<TopPerfVo> tVoList = new ArrayList<TopPerfVo>();
+	public Map<String,List<TopPerfVo>> getTopPerformer(String region){
+//		List<TopPerfVo> tVoList = new ArrayList<TopPerfVo>();
+		Map<String,List<TopPerfVo>> tVoList = new LinkedHashMap<String, List<TopPerfVo>>();
+
 		try {
-		 	MongoDatabase database = mongoClient.getDatabase(dbName);
+			LocalDateTime currentTime = LocalDateTime.now(ZoneId.of("Asia/Kolkata"));
+			LocalDateTime date = currentTime.now().withDayOfMonth(1);
+			LocalDateTime date1 = currentTime.with(lastDayOfMonth());
+			String currentMonthFirstDay = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
+			String currentMonthLastDay = date1.format(DateTimeFormatter.ISO_LOCAL_DATE);
+
+			LocalDateTime lastMonth = currentTime.minusMonths(1);
+			LocalDateTime lastMonthStartDate = lastMonth.withDayOfMonth(1);
+			LocalDateTime lastMonthEndDate = lastMonth.with(lastDayOfMonth());
+			String lastMonthStartDateFormat = lastMonthStartDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+			String lastMonthEndDateFormat = lastMonthEndDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+
+			MongoDatabase database = mongoClient.getDatabase(dbName);
 	        MongoCollection<Document> collection = database.getCollection("topPerformance");
-			List<? extends Bson> pipeline = Arrays.asList(
-					new Document()
-	                .append("$sort", new Document()
-	                        .append("regionTpScore", -1.0)
-	                ),
-					new Document().append("$limit", 4),
-					new Document()
-		            .append("$project", new Document()
-		                    .append("_id", false)
-		                    .append("region", "$region")
-		                    .append("rating", "$regionTpScore")
-		            )
-			);
-			
-			collection.aggregate(pipeline)
+
+			List<? extends Bson> pipelineLastMonth = getTopPerformancePipline(lastMonthStartDateFormat,lastMonthEndDateFormat);
+			List<TopPerfVo> topPerfVoLastMonthList = new ArrayList<TopPerfVo>();
+			collection.aggregate(pipelineLastMonth)
 	        .allowDiskUse(false)
 	        .forEach(new Consumer<Document>() {
 	                @Override
@@ -636,22 +639,70 @@ public class GenericDaoImpl implements GenericDao {
 							double d = tVo.getRating()*5/100;
 							double rating = (float)(Math.ceil(d * 4) / 4d);
 							tVo.setRating(rating);
-							tVoList.add(tVo);
+							topPerfVoLastMonthList.add(tVo);
 						} catch (JsonMappingException e) {
 							e.printStackTrace();
 						} catch (JsonProcessingException e) {
 							e.printStackTrace();
 						}
-	                    
+
 	                }
 	            }
 	        );
+			tVoList.put("lastMonth",topPerfVoLastMonthList);
+			List<? extends Bson> pipelineCurrentMonth = getTopPerformancePipline(currentMonthFirstDay,currentMonthLastDay);
+			List<TopPerfVo> topPerfVoCurrentMonthList = new ArrayList<TopPerfVo>();
+			collection.aggregate(pipelineCurrentMonth)
+					.allowDiskUse(false)
+					.forEach(new Consumer<Document>() {
+								 @Override
+								 public void accept(Document document) {
+									 logger.info(document.toJson());
+									 try {
+										 TopPerfVo tVo = new ObjectMapper().readValue(document.toJson(), TopPerfVo.class);
+										 double d = tVo.getRating()*5/100;
+										 double rating = (float)(Math.ceil(d * 4) / 4d);
+										 tVo.setRating(rating);
+										 topPerfVoCurrentMonthList.add(tVo);
+									 } catch (JsonMappingException e) {
+										 e.printStackTrace();
+									 } catch (JsonProcessingException e) {
+										 e.printStackTrace();
+									 }
+
+								 }
+							 }
+					);
+		tVoList.put("currentMonth",topPerfVoCurrentMonthList);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		return tVoList;
 	}
-	
+	private List<? extends Bson> getTopPerformancePipline(String startDay,String endDay) throws ParseException {
+		Document matchDoc = new Document();
+		matchDoc.append("applicationCreatedOn", new Document()
+				.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(startDay+" 00:00:00.000+0000"))
+				.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(endDay+" 00:00:00.000+0000"))
+		);
+
+
+		List<? extends Bson> pipeline = Arrays.asList(
+//				new Document().append("$match", matchDoc),
+					new Document()
+	                .append("$sort", new Document()
+	                        .append("regionTpScore", -1.0)
+	                ),
+//					new Document().append("$limit", 4),
+					new Document()
+		            .append("$project", new Document()
+		                    .append("_id", false)
+		                    .append("region", "$region")
+		                    .append("rating", "$regionTpScore")
+		            )
+			);
+		return pipeline;
+	}
 	public List<String> getIndustryTypes(String category) {
 		try {
 			Query query = new Query();

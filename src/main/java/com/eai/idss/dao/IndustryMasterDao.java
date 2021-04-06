@@ -3,16 +3,8 @@ package com.eai.idss.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.eai.idss.vo.*;
 import org.springframework.data.domain.Pageable;
-
-import com.eai.idss.vo.ComlianceScoreFilter;
-import com.eai.idss.vo.ComparisonTableResponseVo;
-import com.eai.idss.vo.ComplianceScoreResponseVo;
-import com.eai.idss.vo.IndustryMasterDetailResponseVo;
-import com.eai.idss.vo.IndustryMasterPaginationResponseVo;
-import com.eai.idss.vo.IndustryMasterRequest;
-import com.eai.idss.vo.MandatoryReportsResponseVo;
-import com.eai.idss.vo.PollutionScoreFilter;
 
 public interface IndustryMasterDao {
 
@@ -31,5 +23,7 @@ public interface IndustryMasterDao {
 	public IndustryMasterDetailResponseVo getIndustryMasterDetailByIndustryId(long industryId);
 
 	public List<String> getIndustryNameBySearch(String industryName);
+
+	public List<ComplianceScoreTableResponseVo> getComplianceScpreDetailByIndustryId(long industryId);
 	
 }

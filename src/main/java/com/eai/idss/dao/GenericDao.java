@@ -15,7 +15,7 @@ public interface GenericDao {
 	
 	public List<MyVisits> getMyVisitsData(String userName);
 	
-	public List<TopPerfVo> getTopPerformer(String region);
+	public Map<String,List<TopPerfVo>>  getTopPerformer(String region);
 	
 	public List<String> getIndustryTypes(String category) ;
 	
