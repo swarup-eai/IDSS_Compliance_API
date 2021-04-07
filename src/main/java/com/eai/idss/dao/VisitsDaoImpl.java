@@ -848,33 +848,50 @@ public class VisitsDaoImpl implements VisitsDao {
 	
 	public VisitsPaginationResponseVo getVisitsSchedulePaginatedRecords(VisitsScheduleDetailsRequest cdr, Pageable pageable,String userName){
 		try {
-			Query query = new Query().with(pageable);
+			Query query = new Query();
 			getQueryCriteria(cdr, userName, query);
-			
-			Query queryCnt = new Query();
-			getQueryCriteria(cdr, userName, queryCnt);
-			
+
+//			Query queryCnt = new Query();
+//			getQueryCriteria(cdr, userName, queryCnt);
+
 			VisitsPaginationResponseVo vprv = new VisitsPaginationResponseVo();
-	
+
 //			vprv.setTotalRecords(mongoTemplate.count(queryCnt, Visits.class));
-			List<Visits> filteredVisitListTotalCount= mongoTemplate.find(queryCnt, Visits.class);
-			applyCScoreFilterTotalCount(cdr,filteredVisitListTotalCount);
-			vprv.setTotalRecords(filteredVisitListTotalCount.size());
+//			List<Visits> filteredVisitListTotalCount= mongoTemplate.find(queryCnt, Visits.class);
+//			applyCScoreFilterTotalCount(cdr,filteredVisitListTotalCount);
+//			vprv.setTotalRecords(filteredVisitListTotalCount.size());
+
 			List<Visits> filteredVisitList= mongoTemplate.find(query, Visits.class);
 			
 			applyCScoreFilter(cdr, filteredVisitList);
-			
-			Page<Visits> cPage = PageableExecutionUtils.getPage(
-					filteredVisitList,
-					pageable,
-			        () -> mongoTemplate.count(query, Visits.class));
-			
-			List<Visits> finalVisitList = cPage.toList();
+
+//			Page<Visits> cPage = PageableExecutionUtils.getPage(
+//					filteredVisitList,
+//					pageable,
+//			        () -> mongoTemplate.count(query, Visits.class));
+//
+//			List<Visits> finalVisitList = cPage.toList();
+
+			vprv.setTotalRecords(filteredVisitList.size());
+
+			List<Visits> filteredVisitsFinal = new ArrayList<Visits>();
+			int i=0;
+			int skipRecords = pageable.getPageNumber() * pageable.getPageSize();
+			for(Visits visit : filteredVisitList) {
+				if(skipRecords>0) {
+					skipRecords--;
+					continue;
+				}
+				filteredVisitsFinal.add(visit);
+				i++;
+				if(i==pageable.getPageSize())
+					break;
+			}
 
 
-			populateCScore(finalVisitList);
+			populateCScore(filteredVisitsFinal);
 			
-			vprv.setVisitsList(finalVisitList);
+			vprv.setVisitsList(filteredVisitsFinal);
 			
 			return vprv;
 		}	
@@ -948,7 +965,7 @@ public class VisitsDaoImpl implements VisitsDao {
 			filteredVisitListTotalCount.removeIf(i -> !ldmIndIdList.contains(i.getIndustryId()));
 		}
 	}
-	
+
 	public Map<String,List<TileVo>> getVisitsScheduleByScaleCategory(String userName){
 		try {
 			logger.info("getVisitsScheduleByScaleCategory");
