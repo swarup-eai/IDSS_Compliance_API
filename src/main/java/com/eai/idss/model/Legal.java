@@ -25,7 +25,8 @@ public class Legal {
 	private int totalDirections;
 	private long industryId;
 	private String sroName;
-	
+	private int complied;
+
 	public String getSroName() {
 		return sroName;
 	}
@@ -112,5 +113,10 @@ public class Legal {
 	public void setSubRegion(String subRegion) {
 		this.subRegion = subRegion;
 	}
-
+	public int getComplied() {
+		return complied;
+	}
+	public void setComplied(int complied) {
+		this.complied = complied;
+	}
 }

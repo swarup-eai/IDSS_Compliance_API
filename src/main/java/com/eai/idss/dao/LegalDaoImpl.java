@@ -581,8 +581,13 @@ public class LegalDaoImpl implements LegalDao {
 												.gt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(toDay+" 00:00:00.000+0000"))
 												.lte(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(fromDay+" 00:00:00.000+0000")));
 			}
-			if(StringUtils.hasText(cdr.getComplied()))
-				query.addCriteria(Criteria.where("complied").is(cdr.getComplied()));
+			if(StringUtils.hasText(cdr.getComplied())){
+				if(cdr.getComplied().equals("0")){
+					query.addCriteria(Criteria.where("complied").is(0));
+				}else if(cdr.getComplied().equals("1")){
+					query.addCriteria(Criteria.where("complied").is(1));
+				}
+			}
 			if(StringUtils.hasText(cdr.getRegion()))
 					query.addCriteria(Criteria.where("region").is(cdr.getRegion()));
 			if(null!=cdr.getCategory() && !cdr.getCategory().isEmpty())
