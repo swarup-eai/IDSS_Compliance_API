@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import com.eai.idss.vo.*;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -29,12 +30,6 @@ import org.springframework.util.StringUtils;
 import com.eai.idss.model.Consent;
 import com.eai.idss.model.User;
 import com.eai.idss.util.IDSSUtil;
-import com.eai.idss.vo.ConcentByRegionVo;
-import com.eai.idss.vo.ConcentByTeamVo;
-import com.eai.idss.vo.ConcentFilter;
-import com.eai.idss.vo.ConsentDetailsRequest;
-import com.eai.idss.vo.ConsentPaginationResponseVo;
-import com.eai.idss.vo.TileVo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -235,7 +230,7 @@ public class ConcentDaoImpl implements ConcentDao {
 	}
 	
 	
-	public Map<String,Map<String,List<TileVo>>> getByRegionConcentData(ConcentFilter cf){
+	public Map<String,List<ConsentDrillDownRegionAndSubRegionResponseVO>> getByRegionConcentData(ConcentFilter cf){
 		try {
 			logger.info("getByRegionConcentData");
 			Map<String, String> daysMap = IDSSUtil.getPastDaysMap();
@@ -243,12 +238,14 @@ public class ConcentDaoImpl implements ConcentDao {
 		 	MongoDatabase database = mongoClient.getDatabase(dbName);
             MongoCollection<Document> collection = database.getCollection("Consent");
             
-            Map<String,Map<String,List<TileVo>>> byRegionMap = new LinkedHashMap<String, Map<String,List<TileVo>>>(); 
+            Map<String,List<ConsentDrillDownRegionAndSubRegionResponseVO>> byRegionMap = new LinkedHashMap<String, List<ConsentDrillDownRegionAndSubRegionResponseVO>>();
             
             for(String days : daysMap.keySet()) {
             	logger.info("getByRegionConcentData : "+days);
             	Map<String,List<TileVo>> regionConcentMap = IDSSUtil.getRegionMap();
-	            List<? extends Bson> pipeline = getByRegionConcentPipeline(days,cf);
+				List<ConsentDrillDownRegionAndSubRegionResponseVO> consentDrillDownRegionAndSubRegionResponseVOList= new ArrayList<ConsentDrillDownRegionAndSubRegionResponseVO>();
+
+				List<? extends Bson> pipeline = getByRegionConcentPipeline(days,cf);
 	            
 	            collection.aggregate(pipeline)
 	                    .allowDiskUse(false)
@@ -258,14 +255,23 @@ public class ConcentDaoImpl implements ConcentDao {
 		    	                    logger.info(document.toJson());
 									try {
 										ConcentByRegionVo crVo = new ObjectMapper().readValue(document.toJson(), ConcentByRegionVo.class);
-										String regionNameCamelCase = crVo.getRegion().replaceAll(" ", "").replaceAll("\"", "");
-										regionNameCamelCase = "" +Character.toLowerCase(regionNameCamelCase.charAt(0)) + regionNameCamelCase.substring(1);
-										crVo.setRegion(regionNameCamelCase);
-										TileVo tVo = new TileVo(crVo.getStatus(),crVo.getCount());
-										List<TileVo> concentStatusList = regionConcentMap.get(crVo.getRegion());
-										if(null==concentStatusList) concentStatusList = new ArrayList<TileVo>();
-										concentStatusList.add(tVo);
-										regionConcentMap.put(crVo.getRegion(), concentStatusList);
+//										String regionNameCamelCase = crVo.getRegion().replaceAll(" ", "").replaceAll("\"", "");
+//										regionNameCamelCase = "" +Character.toLowerCase(regionNameCamelCase.charAt(0)) + regionNameCamelCase.substring(1);
+//										crVo.setRegion(regionNameCamelCase);
+//										TileVo tVo = new TileVo(crVo.getStatus(),crVo.getCount());
+//										List<TileVo> concentStatusList = regionConcentMap.get(crVo.getRegion());
+//										if(null==concentStatusList) {
+//											concentStatusList = new ArrayList<TileVo>();
+//										}else {
+//											concentStatusList.add(tVo);
+//										}
+//										regionConcentMap.put(crVo.getRegion(), concentStatusList);
+										ConsentDrillDownRegionAndSubRegionResponseVO consentDrillDownRegionAndSubRegionResponseVO = new ConsentDrillDownRegionAndSubRegionResponseVO();
+										consentDrillDownRegionAndSubRegionResponseVO.setRegion(crVo.getRegion());
+										consentDrillDownRegionAndSubRegionResponseVO.setStatus(crVo.getStatus());
+										consentDrillDownRegionAndSubRegionResponseVO.setCount(crVo.getCount());
+
+										consentDrillDownRegionAndSubRegionResponseVOList.add(consentDrillDownRegionAndSubRegionResponseVO);
 									
 									} catch (JsonMappingException e) {
 										e.printStackTrace();
@@ -276,7 +282,7 @@ public class ConcentDaoImpl implements ConcentDao {
 		    	                }
 		    	            }
 	                    );
-	            byRegionMap.put(daysMap.get(days),regionConcentMap);
+	            byRegionMap.put(daysMap.get(days),consentDrillDownRegionAndSubRegionResponseVOList);
             }
             return byRegionMap;
 		}catch(Exception e) {
@@ -323,7 +329,7 @@ public class ConcentDaoImpl implements ConcentDao {
 	}
 	
 	
-	public Map<String,Map<String,List<TileVo>>> getBySubRegionConcentData(List<String> subRegion, ConcentFilter cf){
+	public Map<String,List<ConsentDrillDownRegionAndSubRegionResponseVO>> getBySubRegionConcentData(List<String> subRegion, ConcentFilter cf){
 		try {
 			logger.info("getPendingRequestConcentData");
 			Map<String, String> daysMap = IDSSUtil.getPastDaysMap();
@@ -332,7 +338,7 @@ public class ConcentDaoImpl implements ConcentDao {
             MongoCollection<Document> collection = database.getCollection("Consent");
 
 
-			Map<String,Map<String,List<TileVo>>> tileMap = new LinkedHashMap<String, Map<String,List<TileVo>>>();
+			Map<String,List<ConsentDrillDownRegionAndSubRegionResponseVO>> tileMap = new LinkedHashMap<String, List<ConsentDrillDownRegionAndSubRegionResponseVO>>();
             
             for(String days : daysMap.keySet()) {
             	logger.info("getPendingRequestConcentData : "+days);
@@ -340,6 +346,7 @@ public class ConcentDaoImpl implements ConcentDao {
 
 //	            List<TileVo> tVoList = new ArrayList<TileVo>();
 				Map<String,List<TileVo>> subRegionMap = new LinkedHashMap<String, List<TileVo>>();
+				List<ConsentDrillDownRegionAndSubRegionResponseVO> consentDrillDownSubRegionResponseVOList= new ArrayList<ConsentDrillDownRegionAndSubRegionResponseVO>();
 
 				collection.aggregate(pipeline)
 	                    .allowDiskUse(false)
@@ -349,11 +356,18 @@ public class ConcentDaoImpl implements ConcentDao {
 		    	                    logger.info(document.toJson());
 									try {
 										ConcentByRegionVo cVo = new ObjectMapper().readValue(document.toJson(), ConcentByRegionVo.class);
-										List<TileVo> tVoList = subRegionMap.get(cVo.getSubRegion());
-										if(null==tVoList)
-											tVoList = new ArrayList<TileVo>();
-										tVoList.add(new TileVo(cVo.getStatus(),cVo.getCount()));
-										subRegionMap.put(cVo.getSubRegion(),tVoList);
+//										List<TileVo> tVoList = subRegionMap.get(cVo.getSubRegion());
+//										if(null==tVoList)
+//											tVoList = new ArrayList<TileVo>();
+//										tVoList.add(new TileVo(cVo.getStatus(),cVo.getCount()));
+//										subRegionMap.put(cVo.getSubRegion(),tVoList);
+
+										ConsentDrillDownRegionAndSubRegionResponseVO consentDrillDownRegionAndSubRegionResponseVO = new ConsentDrillDownRegionAndSubRegionResponseVO();
+										consentDrillDownRegionAndSubRegionResponseVO.setRegion(cVo.getSubRegion());
+										consentDrillDownRegionAndSubRegionResponseVO.setStatus(cVo.getStatus());
+										consentDrillDownRegionAndSubRegionResponseVO.setCount(cVo.getCount());
+
+										consentDrillDownSubRegionResponseVOList.add(consentDrillDownRegionAndSubRegionResponseVO);
 									
 									} catch (JsonMappingException e) {
 										e.printStackTrace();
@@ -364,7 +378,7 @@ public class ConcentDaoImpl implements ConcentDao {
 		    	                }
 		    	            }
 	                    );
-	            tileMap.put(daysMap.get(days), subRegionMap);
+	            tileMap.put(daysMap.get(days), consentDrillDownSubRegionResponseVOList);
             
             }
             return tileMap;

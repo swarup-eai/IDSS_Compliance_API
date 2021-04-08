@@ -626,7 +626,7 @@ public class GenericDaoImpl implements GenericDao {
 			MongoDatabase database = mongoClient.getDatabase(dbName);
 	        MongoCollection<Document> collection = database.getCollection("topPerformance");
 
-			List<? extends Bson> pipelineLastMonth = getTopPerformancePipline(lastMonthStartDateFormat,lastMonthEndDateFormat);
+			List<? extends Bson> pipelineLastMonth = getTopPerformancePipline(1,lastMonthStartDateFormat,lastMonthEndDateFormat);
 			List<TopPerfVo> topPerfVoLastMonthList = new ArrayList<TopPerfVo>();
 			collection.aggregate(pipelineLastMonth)
 	        .allowDiskUse(false)
@@ -650,7 +650,7 @@ public class GenericDaoImpl implements GenericDao {
 	            }
 	        );
 			tVoList.put("lastMonth",topPerfVoLastMonthList);
-			List<? extends Bson> pipelineCurrentMonth = getTopPerformancePipline(currentMonthFirstDay,currentMonthLastDay);
+			List<? extends Bson> pipelineCurrentMonth = getTopPerformancePipline(2,currentMonthFirstDay,currentMonthLastDay);
 			List<TopPerfVo> topPerfVoCurrentMonthList = new ArrayList<TopPerfVo>();
 			collection.aggregate(pipelineCurrentMonth)
 					.allowDiskUse(false)
@@ -679,16 +679,17 @@ public class GenericDaoImpl implements GenericDao {
 		}
 		return tVoList;
 	}
-	private List<? extends Bson> getTopPerformancePipline(String startDay,String endDay) throws ParseException {
+	private List<? extends Bson> getTopPerformancePipline(int monthValue,String startDay,String endDay) throws ParseException {
 		Document matchDoc = new Document();
-		matchDoc.append("applicationCreatedOn", new Document()
-				.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(startDay+" 00:00:00.000+0000"))
-				.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(endDay+" 00:00:00.000+0000"))
-		);
+//		matchDoc.append("applicationCreatedOn", new Document()
+//				.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(startDay+" 00:00:00.000+0000"))
+//				.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(endDay+" 00:00:00.000+0000"))
+//		);
 
+		matchDoc.append("monthNumber", monthValue);
 
 		List<? extends Bson> pipeline = Arrays.asList(
-//				new Document().append("$match", matchDoc),
+				new Document().append("$match", matchDoc),
 					new Document()
 	                .append("$sort", new Document()
 	                        .append("regionTpScore", -1.0)

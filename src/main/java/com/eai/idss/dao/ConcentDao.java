@@ -3,13 +3,10 @@ package com.eai.idss.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.eai.idss.vo.*;
 import org.springframework.data.domain.Pageable;
 
 import com.eai.idss.model.User;
-import com.eai.idss.vo.ConcentFilter;
-import com.eai.idss.vo.ConsentDetailsRequest;
-import com.eai.idss.vo.ConsentPaginationResponseVo;
-import com.eai.idss.vo.TileVo;
 
 public interface ConcentDao {
 
@@ -17,9 +14,9 @@ public interface ConcentDao {
 	
 	public Map<String,Map<String,List<TileVo>>> getUpcomingRenewalConcentData(String region,String subRegion);
 	
-	public Map<String,Map<String,List<TileVo>>> getByRegionConcentData(ConcentFilter cf);
+	public Map<String,List<ConsentDrillDownRegionAndSubRegionResponseVO>> getByRegionConcentData(ConcentFilter cf);
 	
-	public Map<String,Map<String,List<TileVo>>> getBySubRegionConcentData(List<String> subRegion,ConcentFilter cf);
+	public Map<String,List<ConsentDrillDownRegionAndSubRegionResponseVO>> getBySubRegionConcentData(List<String> subRegion,ConcentFilter cf);
 	
 	public Map<String,Map<String,List<TileVo>>> getByTeamConcentData(ConcentFilter cf,User u);
 	
