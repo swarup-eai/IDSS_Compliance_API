@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.*;
 
 import com.eai.idss.util.IDSSUtil;
+import com.eai.idss.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -19,10 +20,6 @@ import com.eai.idss.dao.ConcentDao;
 import com.eai.idss.dao.GenericDao;
 import com.eai.idss.model.User;
 import com.eai.idss.repository.UserRepository;
-import com.eai.idss.vo.ConcentFilter;
-import com.eai.idss.vo.ConsentDetailsRequest;
-import com.eai.idss.vo.ConsentPaginationResponseVo;
-import com.eai.idss.vo.TileVo;
 
 
 @RestController
@@ -124,8 +121,8 @@ public class ConsentController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.POST, value = "/concent-dashboard/request-by-sub-region",  produces = "application/json")
-    public ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>> getConcentDashboardBySubRegionData(@RequestHeader String userName, @RequestBody ConcentFilter cf) throws IOException {
-		Map<String,Map<String,Map<String,List<TileVo>>>> ct = new LinkedHashMap<String, Map<String,Map<String,List<TileVo>>>>();
+    public ResponseEntity<Map<String,Map<String,List<ConsentDrillDownRegionAndSubRegionResponseVO>>>> getConcentDashboardBySubRegionData(@RequestHeader String userName, @RequestBody ConcentFilter cf) throws IOException {
+		Map<String,Map<String,List<ConsentDrillDownRegionAndSubRegionResponseVO>>> ct = new LinkedHashMap<String, Map<String,List<ConsentDrillDownRegionAndSubRegionResponseVO>>>();
 	    try {
 	    	User u = userRepository.findByUserName(userName);
 	    	List<String> subRegions =new ArrayList<String>();
@@ -139,7 +136,7 @@ public class ConsentController {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /concent-dashboard/pending-request", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	    return new ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>>(ct,HttpStatus.OK);
+	    return new ResponseEntity<Map<String,Map<String,List<ConsentDrillDownRegionAndSubRegionResponseVO>>>>(ct,HttpStatus.OK);
 	}
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -158,15 +155,15 @@ public class ConsentController {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.POST, value = "/concent-dashboard/by-region", produces = "application/json")
-	public ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>> getConcentDashboardByRegionData(ConcentFilter cf) throws IOException {
-    	Map<String,Map<String,Map<String,List<TileVo>>>> ct = new HashMap<String,Map<String, Map<String,List<TileVo>>>>();
+	public ResponseEntity<Map<String,Map<String,List<ConsentDrillDownRegionAndSubRegionResponseVO>>>> getConcentDashboardByRegionData(ConcentFilter cf) throws IOException {
+    	Map<String,Map<String,List<ConsentDrillDownRegionAndSubRegionResponseVO>>> ct = new HashMap<String,Map<String, List<ConsentDrillDownRegionAndSubRegionResponseVO>>>();
 	    try {
 	    	ct.put("byRegion",cd.getByRegionConcentData(cf));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /concent-dashboard/by-region", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	    return new ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>>(ct,HttpStatus.OK);
+	    return new ResponseEntity<Map<String,Map<String,List<ConsentDrillDownRegionAndSubRegionResponseVO>>>>(ct,HttpStatus.OK);
 	}
     
 }
