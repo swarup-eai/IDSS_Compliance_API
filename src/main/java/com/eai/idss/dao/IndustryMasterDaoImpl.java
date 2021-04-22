@@ -271,8 +271,17 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 		List<Legal> ldmObj = mongoTemplate.find(queryLDM, Legal.class);
 		if(null!=ldmObj && ldmObj.size()>0) {
 			int lap = (int)(ldmObj.get(0).getTotalLegalActionsCreated()-ldmObj.get(0).getTotalDirections());
-			im.setLegalActionsPending(lap>0?lap:0);
-			im.setTotalLegalActions((int)ldmObj.get(0).getTotalLegalActionsCreated());
+			int legalActionPending =0;
+			for(int i=0;i<ldmObj.size();i++){
+				if(ldmObj.get(i).getComplied() == 0){
+					legalActionPending = legalActionPending + 1;
+				}
+			}
+
+			im.setLegalActionsPending(legalActionPending);
+			im.setTotalLegalActions(ldmObj.size());
+//			im.setLegalActionsPending(lap>0?lap:0);
+//			im.setTotalLegalActions((int)ldmObj.get(0).getTotalLegalActionsCreated());
 		}
 		return queryLDM;
 	}
@@ -1406,6 +1415,23 @@ public class IndustryMasterDaoImpl implements IndustryMasterDao {
 			List<Directions> directionsList = mongoTemplate.find(query, Directions.class);
 
 			industryMasterDetailResponseVo.setPendingLegalAction(directionsList.size());
+
+			Query queryLDM = new Query();
+			queryLDM.addCriteria(Criteria.where("industryId").is(industryId));
+			List<Legal> ldmObj = mongoTemplate.find(queryLDM, Legal.class);
+			if(null!=ldmObj && ldmObj.size()>0) {
+				int legalActionPending =0;
+				for(int i=0;i<ldmObj.size();i++){
+					if(ldmObj.get(i).getComplied() == 0){
+						legalActionPending = legalActionPending + 1;
+					}
+				}
+
+				industryMasterDetailResponseVo.setLegalActionsPending(legalActionPending);
+				industryMasterDetailResponseVo.setTotalLegalActions(ldmObj.size());
+//			im.setLegalActionsPending(lap>0?lap:0);
+//			im.setTotalLegalActions((int)ldmObj.get(0).getTotalLegalActionsCreated());
+			}
 
 			Query queryVisit = new Query();
 			queryVisit.addCriteria(Criteria.where("industryId").is(industryId));
