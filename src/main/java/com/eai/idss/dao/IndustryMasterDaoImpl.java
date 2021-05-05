@@ -73,7 +73,9 @@ import com.mongodb.client.MongoDatabase;
 
 
 @Repository
-public class IndustryMasterDaoImpl implements IndustryMasterDao {
+public class
+
+IndustryMasterDaoImpl implements IndustryMasterDao {
 	
 
 	@Value("${dbName}")
