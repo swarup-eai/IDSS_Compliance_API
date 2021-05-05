@@ -130,6 +130,7 @@ public class ConsentController {
 				subRegions = IDSSUtil.getSubRegion(u.getRegion());
 			}else{
 	    		subRegions.add(u.getSubRegion());
+
 			}
 	    	ct.put("bySubRegionRequest",cd.getBySubRegionConcentData(subRegions, cf));
 		} catch (Exception e) {
@@ -159,6 +160,7 @@ public class ConsentController {
     	Map<String,Map<String,List<ConsentDrillDownRegionAndSubRegionResponseVO>>> ct = new HashMap<String,Map<String, List<ConsentDrillDownRegionAndSubRegionResponseVO>>>();
 	    try {
 	    	ct.put("byRegion",cd.getByRegionConcentData(cf));
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity("Exception in /concent-dashboard/by-region", HttpStatus.INTERNAL_SERVER_ERROR);

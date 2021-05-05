@@ -111,6 +111,8 @@ public class LegalDaoImpl implements LegalDao {
 							.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
 							.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))
 						);
+
+
 		matchDoc.append("legalDirection", new Document().append("$in", IDSSUtil.getLegalActionsList()));
 		
 		matchDoc.append("complied",0);
@@ -605,7 +607,7 @@ public class LegalDaoImpl implements LegalDao {
 			
 		}
 	}
-	
+
 	public Map<String,List<TileVo>> getLegalActionsByIndustryData(LegalFilter cf,String region,String subRegion){
 		try {
 			logger.info("getLegalActionsByIndustryData");
@@ -619,7 +621,7 @@ public class LegalDaoImpl implements LegalDao {
             for(String days : daysMap.keySet()) {
             	logger.info("getLegalActionsByIndustryData : "+days);
             	List<? extends Bson> pipeline = getLegalActionsByIndustryPipeline(cf,days,region,subRegion);
-	            
+
 	            List<TileVo> tVoList = new ArrayList<TileVo>();
 	            collection.aggregate(pipeline)
 	                    .allowDiskUse(false)
@@ -652,7 +654,7 @@ public class LegalDaoImpl implements LegalDao {
 private List<? extends Bson> getLegalActionsByIndustryPipeline(LegalFilter cf,String days,String region,String subRegion) throws ParseException {
 		
 		Document matchDoc = new Document();
-		
+
 //		matchDoc.append("issuedOn", new Document()
 //							.append("$lt", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(0)+" 00:00:00.000+0000"))
 //							.append("$gte", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ").parse(days.get(1)+" 00:00:00.000+0000"))

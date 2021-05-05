@@ -754,7 +754,7 @@ public class VisitsDaoImpl implements VisitsDao {
 			        () -> mongoTemplate.count(query, Visits.class));
 			
 			vprv.setVisitsList(cPage.toList());
-			
+
 			return vprv;
 		}
 		catch(Exception e) {
@@ -784,6 +784,8 @@ public class VisitsDaoImpl implements VisitsDao {
 					LocalDateTime fromDate = currentTime.minusDays(Integer.parseInt(d[0]));
 					String fromDay = fromDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
 					days.add(fromDay);
+
+
 					
 					if("ALL".equalsIgnoreCase(d[1])) {
 						days.add("1970-01-01");
@@ -792,7 +794,8 @@ public class VisitsDaoImpl implements VisitsDao {
 						String toDay = toDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
 						days.add(toDay);
 					}
-				}
+
+																																																																																																																																																																							}
 			}
 			
 			addCriteriaFilter(cdr.getVisitStatus(), days, query);
@@ -808,7 +811,7 @@ public class VisitsDaoImpl implements VisitsDao {
 			if(StringUtils.hasText(cdr.getUserId())) {
 				Criteria orCriteria = new Criteria();
 				orCriteria.orOperator(Criteria.where("userId").is(cdr.getUserId()),Criteria.where("reportingToUserId").is(cdr.getUserId()));
-				
+
 				query.addCriteria(orCriteria);
 			}
 		}

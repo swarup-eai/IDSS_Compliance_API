@@ -230,7 +230,9 @@ public class VisitsController {
 	@RequestMapping(method = RequestMethod.POST, value = "/visits-dashboard/visits-by-sub-region",  produces = "application/json")
 	public ResponseEntity<Map<String,Map<String,Map<String,List<TileVo>>>>> getVisitDataBySubRegionData(@RequestHeader String userName,@RequestBody VisitsFilter vf) throws IOException {
     	Map<String,Map<String,Map<String,List<TileVo>>>> ct = new LinkedHashMap<String, Map<String,Map<String,List<TileVo>>>>();
-	    try {
+
+
+		try {
 	    	User u = userRepository.findByUserName(userName);
 			List<String> subRegions =new ArrayList<String>();
 			if(u.getDesignation().equals("RO")){

@@ -60,7 +60,7 @@ public class CommonController {
 	public ResponseEntity<Map<String,List<String>>> getDropDownData(@RequestHeader(value="userName") String userName) throws IOException {
     	User u = userRepository.findByUserName(userName);
     	Map<String,List<String>> dd = new HashMap<String, List<String>>();
-    	if(u!=null & (u.getDesignation().equalsIgnoreCase("MS") 
+    	if(u!=null & (u.getDesignation().equalsIgnoreCase("MS")
     			|| u.getDesignation().equalsIgnoreCase("HOD"))
     			|| u.getDesignation().equalsIgnoreCase("ADMIN")) {
     		dd.put("regionList", IDSSUtil.getRegionList());
@@ -100,5 +100,6 @@ public class CommonController {
 		}
 		return new ResponseEntity<List<HeatmapResponseVo>>(heatmapResponseVo,HttpStatus.OK);
 	}
+
 
 }
