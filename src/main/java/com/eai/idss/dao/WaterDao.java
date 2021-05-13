@@ -17,4 +17,7 @@ public interface WaterDao {
     public List<WaterStationListResponseVo> getWaterStationList(WaterStationRegionRequest wsr);
     public  List<WaterDataResponseVo> getWaterStationDetailStationId(WaterDetailRequest wdr);
 
+    public List<CetpStationListResponseVo> getCetpStationList(CetpStationListRequest csr);
+
+    public List<CetpStationDetailsResponseVo> getCetpStationInfo(CetpStationDetailsRequest cdr);
 }

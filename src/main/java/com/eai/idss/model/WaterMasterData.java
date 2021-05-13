@@ -14,13 +14,15 @@ public class WaterMasterData {
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate readDate;
 
-    private double fecalColiform;
-    private double pH;
-    private double BOD;
-    private double COD;
-    private double dissolvedOxygen;
-    private double nitrate;
+    private Double fecalColiform;
+    private Double pH;
+    private Double BOD;
+    private Double COD;
+    private Double dissolvedOxygen;
+    private Double nitrate;
     public List<String > requestWaterParam;
+
+    private String  className;
 
 
     public long getStnId() {
@@ -47,58 +49,67 @@ public class WaterMasterData {
         this.requestWaterParam=requestWaterParam;
     }
 
-    public double getpH()
+    public Double getpH()
     {
         return pH;
     }
-    public  void setpH(double pH)
+    public  void setpH(Double pH)
     {
         this.pH=pH;
     }
 
-    public double getFecalColiform()
+    public Double getFecalColiform()
     {
         return fecalColiform;
     }
-    public void setFecalColiform(double fecalColiform)
+    public void setFecalColiform(Double fecalColiform)
     {
         this.fecalColiform=fecalColiform;
     }
 
-    public double getBOD()
+    public Double getBOD()
     {
         return BOD;
     }
-    public void setBOD(double BOD)
+    public void setBOD(Double BOD)
     {
         this.BOD=BOD;
     }
 
-    public  double getCOD()
+    public  Double getCOD()
     {
         return  COD;
     }
-    public void  setCOD(double COD)
+    public void  setCOD(Double COD)
     {
         this.COD=COD;
     }
 
-    public  double getDissolvedOxygen()
+    public  Double getDissolvedOxygen()
     {
         return dissolvedOxygen;
     }
-    public  void setDissolvedOxygen(double dissolvedOxygen)
+    public  void setDissolvedOxygen(Double dissolvedOxygen)
     {
         this.dissolvedOxygen=dissolvedOxygen;
     }
 
-    public double getNitrate()
+    public Double getNitrate()
     {
         return  nitrate;
     }
-    public void setNitrate(double nitrate)
+    public void setNitrate(Double nitrate)
     {
         this.nitrate=nitrate;
+    }
+
+    public String getClassName()
+    {
+        return className;
+    }
+    public  void  setClassName(String className)
+    {
+        this.className=className;
     }
 
 }
